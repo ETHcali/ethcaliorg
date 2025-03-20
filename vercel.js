@@ -2,6 +2,6 @@
   "version": 2,
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/ethcali.html" }
+    { "src": "/(.*)", "dest": "ethcali.html" }
   ]
 }
