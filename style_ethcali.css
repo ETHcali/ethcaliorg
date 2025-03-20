@@ -602,22 +602,36 @@ section:nth-child(odd) {
 
 /* Mission Section */
 .mission {
-  background: var(--bg-dark);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2rem 0;
+  position: relative;
+}
+
+.mission-background {
+  background-image: url('path/to/Banner.jpg');
+  background-size: cover;
+  background-position: center;
+  color: var(--text-primary);
 }
 
 .mission-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 3rem;
+  text-align: center;
+  padding: 2rem;
+  z-index: 1;
 }
 
 .mission-text {
-  flex: 1;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .mission-text p {
   font-size: 1.1rem;
-  margin-bottom: 1.5rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
 }
 
 .mission-animation {
@@ -1186,4 +1200,66 @@ section:nth-child(odd) {
   .org-cards {
     grid-template-columns: 1fr;
   }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mission-text p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mission-text p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Calendar Section */
+.calendar-section {
+    background: var(--bg-darker);
+    padding: 4rem 0; /* Add padding for spacing */
+}
+
+.calendar-content {
+    display: flex;
+    justify-content: center; /* Center the iframe */
+    align-items: center;
+    flex-direction: column; /* Stack iframe and button vertically */
+}
+
+.calendar-content iframe {
+    max-width: 100%; /* Make the iframe responsive */
+    height: 800px; /* Set a larger height for the iframe */
+}
+
+/* Center the button */
+.add-to-calendar {
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center the button */
+    margin-top: 2rem; /* Space between iframe and button */
+}
+
+.add-to-calendar .btn {
+    padding: 0.8rem 2rem; /* Button padding */
+    font-family: var(--font-heading);
+    font-size: 1rem; /* Button font size */
+    text-transform: uppercase;
+    border-radius: var(--border-radius);
+    background: var(--gradient-primary);
+    color: var(--bg-dark);
+    transition: var(--transition-fast);
+}
+
+.add-to-calendar .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glow-neon);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .calendar-content iframe {
+        width: 100%; /* Full width on smaller screens */
+        height: 400px; /* Adjust height for smaller screens */
+    }
 }
