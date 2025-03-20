@@ -2,12 +2,12 @@
   "version": 2,
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/", "dest": "/ethcali.html" }
+    { "src": "/", "dest": "/index.html" }
   ],
   
   "rewrites": [
     {
-      "source": "/", "destination": "/ethcali.html" 
+      "source": "/", "destination": "/index.html" 
     }
   ],
 
