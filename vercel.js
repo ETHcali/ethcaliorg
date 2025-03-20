@@ -1,15 +1,7 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "ethcali.html",
-        "use": "@vercel/static"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/ethcali.html"
-      }
-    ]
-  }
+  "version": 2,
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/ethcali.html" }
+  ]
+}
