@@ -1215,51 +1215,38 @@ section:nth-child(odd) {
   }
 }
 
-/* Calendar Section */
+/* Calendar Section Styles */
 .calendar-section {
-    background: var(--bg-darker);
-    padding: 4rem 0; /* Add padding for spacing */
+    background-color: var(--bg-dark);
+    padding: 4rem 0;
 }
 
-.calendar-content {
+.calendar-container {
     display: flex;
-    justify-content: center; /* Center the iframe */
+    justify-content: center;
     align-items: center;
-    flex-direction: column; /* Stack iframe and button vertically */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
 }
 
-.calendar-content iframe {
-    max-width: 100%; /* Make the iframe responsive */
-    height: 800px; /* Set a larger height for the iframe */
+.calendar-container iframe {
+    max-width: 100%;
+    width: 800px;
+    height: 600px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
 
-/* Center the button */
-.add-to-calendar {
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center the button */
-    margin-top: 2rem; /* Space between iframe and button */
+.calendar-container iframe:hover {
+    transform: scale(1.02);
 }
 
-.add-to-calendar .btn {
-    padding: 0.8rem 2rem; /* Button padding */
-    font-family: var(--font-heading);
-    font-size: 1rem; /* Button font size */
-    text-transform: uppercase;
-    border-radius: var(--border-radius);
-    background: var(--gradient-primary);
-    color: var(--bg-dark);
-    transition: var(--transition-fast);
-}
-
-.add-to-calendar .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--glow-neon);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .calendar-content iframe {
-        width: 100%; /* Full width on smaller screens */
-        height: 400px; /* Adjust height for smaller screens */
+@media (max-width: 900px) {
+    .calendar-container iframe {
+        width: 100%;
+        height: 450px;
     }
 }
