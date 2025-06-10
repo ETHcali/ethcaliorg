@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+    <style>
+        .eth-blue { fill: #62688F; }
+        .eth-light { fill: #8A92B2; }
+        .bg-dark { fill: #0a0a0a; }
+    </style>
+    
+    <!-- Background -->
+    <rect width="400" height="300" class="bg-dark"/>
+    
+    <!-- Ethereum Diamond Shapes -->
+    <polygon points="200,50 150,125 200,175" class="eth-blue" opacity="0.7"/>
+    <polygon points="200,50 250,125 200,175" class="eth-light" opacity="0.7"/>
+    
+    <!-- Event Icons -->
+    <circle cx="100" cy="200" r="20" fill="#62688F"/>
+    <circle cx="300" cy="200" r="20" fill="#8A92B2"/>
+    
+    <!-- Calendar-like Grid -->
+    <g stroke="#62688F" stroke-width="2" opacity="0.5">
+        <line x1="50" y1="250" x2="350" y2="250" />
+        <line x1="100" y1="250" x2="100" y2="270" />
+        <line x1="150" y1="250" x2="150" y2="270" />
+        <line x1="200" y1="250" x2="200" y2="270" />
+        <line x1="250" y1="250" x2="250" y2="270" />
+        <line x1="300" y1="250" x2="300" y2="270" />
+    </g>
+</svg> 

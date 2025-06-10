@@ -1,0 +1,244 @@
+:root {
+    --bg-dark: #0a0a0a;
+    --bg-darker: #050505;
+    --text-primary: #e0e0e0;
+    --text-secondary: #888;
+    --accent-color: #62688F;
+    --border-color: #222;
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Space Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: rgba(10, 10, 10, 0.9);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    width: 50px;
+    margin-right: 15px;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.logo-text span {
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+}
+
+.logo-text .highlight {
+    color: var(--accent-color);
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--accent-color);
+}
+
+.events-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 5%;
+}
+
+.events-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.events-header h1 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.event-card {
+    background-color: var(--bg-darker);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.event-card h2 {
+    font-family: var(--font-heading);
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.event-card .event-date {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.event-card .event-location {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.event-card .event-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.event-card .event-links a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.event-card .event-links a:hover {
+    color: var(--accent-color);
+}
+
+.events-footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.events-footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-links {
+        margin-top: 1rem;
+    }
+}
+
+.official-events-section {
+    background-color: var(--bg-darker);
+    padding: 4rem 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.official-events-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.official-events-text {
+    flex: 1;
+}
+
+.official-events-text p {
+    margin-bottom: 1rem;
+}
+
+.official-events-text ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+}
+
+.official-events-text ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.official-events-text ul li::before {
+    content: '•';
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.official-events-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.official-events-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.official-events-image img:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .official-events-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .official-events-text ul {
+        text-align: left;
+        align-self: center;
+    }
+
+    .official-events-image {
+        margin-top: 2rem;
+    }
+} 
