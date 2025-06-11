@@ -49,3 +49,7 @@ Thumbs.db
 
 # Yarn Integrity file
 .yarn-integrity
+
+# Next.js and Nuxt.js directories
+.next/
+.nuxt/

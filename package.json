@@ -1,39 +1,21 @@
 {
-    "name": "ethcali-website",
+    "name": "ethcaliorg",
     "version": "1.0.0",
     "description": "Ethereum Cali Community Website",
-    "main": "index.js",
     "scripts": {
-        "start": "npx http-server",
-        "dev": "npx live-server",
-        "build": "echo 'Static site build complete'",
-        "lint": "npx eslint .",
-        "format": "npx prettier --write ."
-    },
-    "keywords": [
-        "ethereum",
-        "web3",
-        "cali",
-        "colombia",
-        "blockchain"
-    ],
-    "author": "Ethereum Cali Team",
-    "license": "MIT",
-    "devDependencies": {
-        "eslint": "^8.57.1",
-        "http-server": "^14.1.1",
-        "live-server": "^1.2.2",
-        "prettier": "^3.5.3"
-    },
-    "engines": {
-        "node": ">=16.0.0"
+        "build": "echo 'No build step needed for static site'",
+        "start": "echo 'Static site'"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/wmb81321/ethcaliorg.git"
+        "url": "https://github.com/wmb81321/ethcaliorg.git"
     },
-    "bugs": {
-        "url": "https://github.com/wmb81321/ethcaliorg/issues"
-    },
-    "homepage": "https://github.com/wmb81321/ethcaliorg#readme"
+    "keywords": [
+        "ethereum",
+        "cali",
+        "community",
+        "web3"
+    ],
+    "author": "William Martinez",
+    "license": "ISC"
 }
