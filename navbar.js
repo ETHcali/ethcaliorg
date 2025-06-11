@@ -1,6 +1,6 @@
 /**
  * Ethereum Cali - Navbar Module
- * Professional navbar functionality with wallet integration
+ * Simplified navbar functionality
  */
 
 document.addEventListener('DOMContentLoaded', function() {
