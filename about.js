@@ -79,8 +79,8 @@ class TeamManager {
                 role: "Full Stack Developer",
                 description: "Core member desde Abril 2025. Desarrollador full stack del ecosistema.",
                 status: "Core",
-                image: "",
-                linkedin: "",
+                image: "team/cristobal valencia.jpg",
+                linkedin: "https://www.linkedin.com/in/cristobalvalenciaceron",
                 twitter: ""
             },
             {
@@ -88,8 +88,8 @@ class TeamManager {
                 role: "Lawyer",
                 description: "Core member desde Mayo 2025. Asesor legal especializado en tecnologías blockchain.",
                 status: "Core",
-                image: "",
-                linkedin: "",
+                image: "team/juan david burgos.jpg",
+                linkedin: "https://www.linkedin.com/in/juan-david-burgos-giraldo-0000000000",
                 twitter: ""
             },
             // Contributors

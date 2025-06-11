@@ -1,220 +1,160 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Events page loaded');
+    
     const eventsContainer = document.getElementById('events-list');
-    const monthNames = [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
     
-    let allEventsByMonth = {}; // Store all events data for filtering
-
-    // Function to parse date string
-    function parseDate(dateStr) {
-        // Handle cases like "January 5", "February 16"
-        const months = {
-            'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
-            'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
-        };
-        
-        // Split the date string
-        const parts = dateStr.split(' ');
-        const monthIndex = months[parts[0]];
-        const day = parseInt(parts[1]);
-        
-        // Use current year (2025)
-        return new Date(2025, monthIndex, day);
+    if (!eventsContainer) {
+        console.error('Events container not found');
+        return;
     }
 
-    // Function to create social media links
-    function createSocialLinks(website, social, chat) {
-        const links = [];
-        
-        // Website link
-        if (website && website !== '-') {
-            links.push(`
-                <a href="${website.startsWith('http') ? website : 'https://' + website}" 
-                   target="_blank" 
-                   title="Sitio Web" 
-                   class="event-link website">
-                    <i class="fas fa-globe"></i>
-                </a>
-            `);
-        }
-        
-        // Chat link
-        if (chat && chat !== '-') {
-            const chatLink = chat.startsWith('t.me') 
-                ? `https://${chat}` 
-                : chat.startsWith('http') 
-                    ? chat 
-                    : `https://${chat}`;
-            
-            links.push(`
-                <a href="${chatLink}" 
-                   target="_blank" 
-                   title="Chat Comunidad" 
-                   class="event-link chat">
-                    <i class="fas fa-comments"></i>
-                </a>
-            `);
-        }
-        
-        return links.join('');
+    // Load events from CSV
+    function loadEventsFromCSV() {
+        fetch('2025ethereumevents.csv')
+            .then(response => response.text())
+            .then(csvText => {
+                console.log('CSV loaded successfully');
+                const events = parseCSV(csvText);
+                console.log(`Parsed ${events.length} events`);
+                displayEvents(events);
+            })
+            .catch(error => {
+                console.error('Error loading CSV:', error);
+                showError('Could not load events data');
+            });
     }
 
-    // Function to get the primary event link for the Discover button
-    function getPrimaryEventLink(website, social) {
-        // Prioritize website, then social media
-        if (website && website !== '-') {
-            return website.startsWith('http') ? website : 'https://' + website;
-        } else if (social && social !== '-') {
-            return social.startsWith('http') ? social : `https://${social}`;
+    // Parse CSV data with correct field mapping
+    function parseCSV(csvText) {
+        const lines = csvText.split('\n');
+        const events = [];
+        
+        // Find header line
+        let headerIndex = -1;
+        for (let i = 0; i < lines.length; i++) {
+            if (lines[i].includes('Event,startDate,endDate')) {
+                headerIndex = i;
+                break;
+            }
         }
-        return null;
+        
+        if (headerIndex === -1) {
+            console.error('Header not found');
+            return events;
+        }
+        
+        console.log('Found header at line:', headerIndex + 1);
+        
+        // Parse events
+        for (let i = headerIndex + 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            
+            // Skip empty lines and non-event lines
+            if (!line || line === ',,,,,,,' || line.startsWith('Last update') || line.startsWith('*not ethereum')) {
+                continue;
+            }
+            
+            // Parse CSV line (handle quoted fields properly)
+            const fields = parseCSVLine(line);
+            
+            // Skip if not enough fields or no event name
+            // CSV structure: [empty], Event, startDate, endDate, Geo, Link, Social, Chat
+            if (fields.length < 8 || !fields[1] || fields[1].trim() === '' || fields[1] === 'Event') {
+                continue;
+            }
+            
+            const event = {
+                name: cleanField(fields[1]),
+                startDate: cleanField(fields[2]),
+                endDate: cleanField(fields[3]),
+                geo: cleanField(fields[4]), // Complete geo info like "Lisbon, POR"
+                link: cleanField(fields[5]), // Main website link for Discover button
+                social: cleanField(fields[6]),
+                chat: cleanField(fields[7])
+            };
+            
+            // Only add if has a valid name
+            if (event.name && event.name !== 'TBD' && event.name !== 'Event') {
+                events.push(event);
+                console.log(`Added event: ${event.name} in ${event.geo}`);
+            }
+        }
+        
+        return events;
     }
 
-    // Fetch the CSV file
-    fetch('2025ethereumevents.csv')
-        .then(response => response.text())
-        .then(csvText => {
-            // Split the CSV into lines
-            const lines = csvText.split('\n');
-            
-            // Skip the header rows and last few empty rows
-            const eventLines = lines.slice(7, -4);
-            
-            // Group events by month
-            const eventsByMonth = {};
-            
-            // Parse events
-            eventLines.forEach(line => {
-                // Split the line by comma, handling potential CSV complexities
-                const fields = line.split(',').map(field => field.trim().replace(/^"|"$/g, ''));
-                
-                // Skip empty or invalid lines
-                if (fields.length < 2 || !fields[1] || fields[1] === 'Event') return;
-
-                // Parse the start date
-                try {
-                    const startDate = parseDate(fields[2]);
-                    const monthKey = monthNames[startDate.getMonth()];
-                    
-                    // Create month array if it doesn't exist
-                    if (!eventsByMonth[monthKey]) {
-                        eventsByMonth[monthKey] = [];
-                    }
-                    
-                    // Add event to the month
-                    eventsByMonth[monthKey].push({
-                        name: fields[1],
-                        startDate: fields[2],
-                        endDate: fields[3],
-                        location: fields[4],
-                        website: fields[5],
-                        social: fields[6],
-                        chat: fields[7]
-                    });
-                } catch (error) {
-                    console.warn(`Could not parse date for event: ${fields[1]}`, error);
-                }
-            });
-
-            // Store events data globally for filtering
-            allEventsByMonth = eventsByMonth;
-
-            // Sort months chronologically
-            const sortedMonths = monthNames.filter(month => eventsByMonth[month]);
-
-            // Render all events with month headers initially
-            renderEvents(sortedMonths, eventsByMonth, true);
-            
-            // Setup month filtering
-            setupMonthFiltering();
-        })
-        .catch(error => {
-            console.error('Error loading events:', error);
-            eventsContainer.innerHTML = `
-                <div class="error-message">
-                    <p>No se pudieron cargar los eventos. Por favor, intenta de nuevo más tarde.</p>
-                </div>
-            `;
-        });
-
-    // Function to render events with proper grid distribution
-    function renderEvents(months, eventsByMonth, showMonthHeaders = true) {
-        eventsContainer.innerHTML = ''; // Clear container
+    // Parse a single CSV line handling quoted fields
+    function parseCSVLine(line) {
+        const fields = [];
+        let current = '';
+        let inQuotes = false;
         
-        // Collect all events with month info
-        const allEvents = [];
-        months.forEach(month => {
-            const monthEvents = eventsByMonth[month].sort((a, b) => {
-                const dateA = parseDate(a.startDate);
-                const dateB = parseDate(b.startDate);
-                return dateA - dateB;
-            });
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
             
-            monthEvents.forEach(event => {
-                allEvents.push({ ...event, month });
-            });
+            if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+                fields.push(current);
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        fields.push(current); // Add the last field
+        
+        return fields;
+    }
+
+    // Clean field data
+    function cleanField(field) {
+        if (!field) return '';
+        return field.trim().replace(/^"|"$/g, ''); // Remove quotes and trim
+    }
+
+    // Display all events
+    function displayEvents(events) {
+        eventsContainer.innerHTML = ''; // Clear existing content
+        
+        if (events.length === 0) {
+            showError('No events found');
+            return;
+        }
+        
+        const grid = document.createElement('div');
+        grid.className = 'events-grid';
+        
+        events.forEach(event => {
+            const card = createEventCard(event);
+            grid.appendChild(card);
         });
         
-        // Create main events grid
-        const eventsGrid = document.createElement('div');
-        eventsGrid.classList.add('events-grid');
-        
-        // If showing multiple months and headers are enabled, organize by month
-        if (showMonthHeaders && months.length > 1) {
-            months.forEach(month => {
-                // Month header
-                const monthHeader = document.createElement('div');
-                monthHeader.classList.add('month-header');
-                monthHeader.innerHTML = `<h2 class="month-title">${month.toUpperCase()}</h2>`;
-                eventsGrid.appendChild(monthHeader);
-                
-                // Events for this month
-                const monthEvents = allEvents.filter(event => event.month === month);
-                monthEvents.forEach(event => {
-                    eventsGrid.appendChild(createEventCard(event));
-                });
-            });
-        } else {
-            // Single month or all events mixed - just add all cards
-            allEvents.forEach(event => {
-                eventsGrid.appendChild(createEventCard(event));
-            });
-        }
-        
-        eventsContainer.appendChild(eventsGrid);
+        eventsContainer.appendChild(grid);
+        console.log(`Displayed ${events.length} events`);
     }
-    
-    // Function to create a single event card
+
+    // Create individual event card
     function createEventCard(event) {
         const card = document.createElement('div');
-        card.classList.add('event-card');
+        card.className = 'event-card';
         
-        // Parse the start date to get proper month
-        const startDate = parseDate(event.startDate);
-        card.setAttribute('data-month', startDate.getMonth());
-
-        // Format date range
-        let dateDisplay = event.startDate;
+        // Format date
+        let dateDisplay = event.startDate || 'TBD';
         if (event.endDate && event.endDate !== '-' && event.endDate !== event.startDate) {
             dateDisplay += ` - ${event.endDate}`;
         }
-
-        // Get primary link for discover button
-        const primaryLink = getPrimaryEventLink(event.website, event.social);
         
-        // Create social links
-        const socialLinks = createSocialLinks(event.website, event.social, event.chat);
-
+        // Clean and prepare links
+        const mainLink = cleanLink(event.link); // Main link for Discover button
+        const socialLink = cleanSocialLink(event.social);
+        const chatLink = cleanChatLink(event.chat);
+        
+        // Use complete geo information
+        const location = event.geo || 'Location TBD';
+        
         card.innerHTML = `
             <div class="event-card-header">
-                <div class="event-card-title">
-                    <h3>${event.name}</h3>
-                    <button class="event-share-btn" onclick="shareEvent('${event.name}', '${event.location}', '${dateDisplay}')">
-                        <i class="fas fa-share-alt"></i>
-                    </button>
-                </div>
+                <h3>${event.name}</h3>
                 <div class="event-date">
                     <i class="fas fa-calendar-alt"></i>
                     <span>${dateDisplay}</span>
@@ -224,99 +164,73 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="event-card-body">
                 <div class="event-location">
                     <i class="fas fa-map-marker-alt"></i>
-                    <span>${event.location || 'Ubicación por confirmar'}</span>
-                </div>
-                
-                <div class="event-links">
-                    ${socialLinks}
+                    <span>${location}</span>
                 </div>
             </div>
             
             <div class="event-card-footer">
-                ${primaryLink ? `
-                    <a href="${primaryLink}" target="_blank" class="btn-discover">
+                <div class="event-links">
+                    ${mainLink ? `<a href="${mainLink}" target="_blank" class="event-link website" title="Website"><i class="fas fa-globe"></i></a>` : ''}
+                    ${socialLink ? `<a href="${socialLink}" target="_blank" class="event-link twitter" title="Social"><i class="fab fa-twitter"></i></a>` : ''}
+                    ${chatLink ? `<a href="${chatLink}" target="_blank" class="event-link chat" title="Chat"><i class="fas fa-comments"></i></a>` : ''}
+                </div>
+                ${mainLink ? `
+                    <a href="${mainLink}" target="_blank" class="btn-discover">
                         <span>Discover</span>
                         <i class="fas fa-external-link-alt"></i>
                     </a>
                 ` : `
-                    <div class="btn-discover disabled">
+                    <div class="btn-discover" style="background: #666; cursor: not-allowed;">
                         <span>Coming Soon</span>
                         <i class="fas fa-clock"></i>
                     </div>
                 `}
             </div>
         `;
-
+        
         return card;
     }
 
-    // Function to setup month filtering
-    function setupMonthFiltering() {
-        const monthButtons = document.querySelectorAll('.month-btn');
-        
-        monthButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                // Remove active class from all buttons
-                monthButtons.forEach(btn => btn.classList.remove('active'));
-                
-                // Add active class to clicked button
-                e.target.classList.add('active');
-                
-                const selectedMonth = e.target.getAttribute('data-month');
-                filterEventsByMonth(selectedMonth);
-            });
-        });
+    // Clean main website link (for Discover button)
+    function cleanLink(link) {
+        if (!link || link === '-' || link.trim() === '') return null;
+        link = link.trim();
+        return link.startsWith('http') ? link : `https://${link}`;
     }
 
-    // Function to filter events by month
-    function filterEventsByMonth(monthFilter) {
-        if (monthFilter === 'all') {
-            // Show all months with headers
-            const sortedMonths = monthNames.filter(month => allEventsByMonth[month]);
-            renderEvents(sortedMonths, allEventsByMonth, true);
-        } else {
-            // Show only selected month without headers (single month)
-            const monthIndex = parseInt(monthFilter);
-            const selectedMonthName = monthNames[monthIndex];
-            
-            if (allEventsByMonth[selectedMonthName]) {
-                const filteredEvents = { [selectedMonthName]: allEventsByMonth[selectedMonthName] };
-                renderEvents([selectedMonthName], filteredEvents, false);
-            } else {
-                eventsContainer.innerHTML = `
-                    <div class="no-events-message">
-                        <h3>No hay eventos en ${selectedMonthName}</h3>
-                        <p>Selecciona otro mes para ver los eventos disponibles.</p>
-                    </div>
-                `;
-            }
-        }
+    // Clean social link
+    function cleanSocialLink(social) {
+        if (!social || social === '-' || social.trim() === '') return null;
+        social = social.trim();
+        if (social.startsWith('http')) return social;
+        if (social.startsWith('warpcast.com')) return `https://${social}`;
+        return `https://x.com/${social.replace('@', '')}`;
     }
+
+    // Clean chat link
+    function cleanChatLink(chat) {
+        if (!chat || chat === '-' || chat.trim() === '') return null;
+        chat = chat.trim();
+        if (chat.startsWith('http')) return chat;
+        if (chat.includes('t.me') || chat.includes('telegram')) {
+            return chat.startsWith('t.me') ? `https://${chat}` : `https://t.me/${chat}`;
+        }
+        if (chat.includes('discord')) {
+            return chat.startsWith('discord') ? `https://${chat}` : `https://discord.gg/${chat}`;
+        }
+        return `https://${chat}`;
+    }
+
+    // Show error message
+    function showError(message) {
+        eventsContainer.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: #ccc;">
+                <h3>⚠️ ${message}</h3>
+                <p>Please try again later</p>
+            </div>
+        `;
+    }
+
+    // Start loading events
+    loadEventsFromCSV();
 });
-
-// Global function to share event details
-window.shareEvent = function(eventName, location, date) {
-    if (navigator.share) {
-        navigator.share({
-            title: `${eventName} - Ethereum Cali`,
-            text: `¡Únete a ${eventName} en ${location}! Fecha: ${date}`,
-            url: window.location.href
-        }).catch(console.error);
-    } else {
-        // Fallback: copy to clipboard
-        const shareText = `${eventName}\nFecha: ${date}\nLugar: ${location}\n${window.location.href}`;
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(shareText).then(() => {
-                // Show feedback - find the button that was clicked
-                const buttons = document.querySelectorAll('.event-share-btn');
-                buttons.forEach(button => {
-                    const originalIcon = button.innerHTML;
-                    button.innerHTML = '<i class="fas fa-check"></i>';
-                    setTimeout(() => {
-                        button.innerHTML = originalIcon;
-                    }, 2000);
-                });
-            }).catch(console.error);
-        }
-    }
-};
