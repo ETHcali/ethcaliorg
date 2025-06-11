@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="shared-components.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="venues.js"></script>
     <script>
         $(function(){
             $.get("navbar.html", function(data) {
@@ -236,6 +237,11 @@
             color: white;
         }
 
+        .venue-type.other {
+            background: linear-gradient(135deg, #2F4F4F, #708090);
+            color: white;
+        }
+
         .venue-status {
             display: flex;
             align-items: center;
@@ -429,311 +435,22 @@
                     <button class="filter-btn" data-filter="university">University</button>
                     <button class="filter-btn" data-filter="restaurant">Restaurant</button>
                     <button class="filter-btn" data-filter="office-partner">Office Partner</button>
+                    <button class="filter-btn" data-filter="bar-open-air">Bar Open Air</button>
                 </div>
             </div>
 
-            <div class="venues-grid">
-                <!-- Binaural -->
-                <div class="venue-card" data-type="gastrobar">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">🍹</span>
-                            Binaural
-                        </h3>
-                        <span class="venue-type gastrobar">GastroBar</span>
-                        <div class="venue-status status-activated">
-                            <div class="status-dot"></div>
-                            <span>ACTIVATED</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>2 Actividades</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/oRua2cYx5jzkt7bk6" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Albahaca Terraza -->
-                <div class="venue-card" data-type="gastrobar">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">🍹</span>
-                            Albahaca Terraza
-                        </h3>
-                        <span class="venue-type gastrobar">GastroBar</span>
-                        <div class="venue-status status-activated">
-                            <div class="status-dot"></div>
-                            <span>ACTIVATED</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>0 Actividades</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/X2BAQxsmdaZxdcrd6" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- La Pergola -->
-                <div class="venue-card" data-type="gastrobar">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">🍹</span>
-                            La Pergola
-                        </h3>
-                        <span class="venue-type gastrobar">GastroBar</span>
-                        <div class="venue-status status-to-talk">
-                            <div class="status-dot"></div>
-                            <span>TO TALK</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>0 Actividades</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/JfDhKGyZ9jHjgWoW8" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bengala Bandolero -->
-                <div class="venue-card" data-type="club-music">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">💿</span>
-                            Bengala Bandolero
-                        </h3>
-                        <span class="venue-type club-music">Club Music</span>
-                        <div class="venue-status status-opening">
-                            <div class="status-dot"></div>
-                            <span>OPENING</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>0 Actividades</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/Fh8gYrTUwJZ3ZdDQ7" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Discoteca 1060 -->
-                <div class="venue-card" data-type="club-music">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">💿</span>
-                            Discoteca 1060
-                        </h3>
-                        <span class="venue-type club-music">Club Music</span>
-                        <div class="venue-status status-activated">
-                            <div class="status-dot"></div>
-                            <span>ACTIVATED</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>1 Actividad</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/AaDxC247DFEue3kh9" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Colectivo Coworking -->
-                <div class="venue-card" data-type="coworking">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">👨🏼‍💻</span>
-                            Colectivo Coworking
-                        </h3>
-                        <span class="venue-type coworking">Coworking</span>
-                        <div class="venue-status status-activated">
-                            <div class="status-dot"></div>
-                            <span>ACTIVATED</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>1 Actividad</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/WaXtVbq51WyYJwxo8" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RAMADA CAFE -->
-                <div class="venue-card" data-type="coworking">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">👨🏼‍💻</span>
-                            RAMADA CAFE
-                        </h3>
-                        <span class="venue-type coworking">Coworking</span>
-                        <div class="venue-status status-activated">
-                            <div class="status-dot"></div>
-                            <span>ACTIVATED</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>4 Actividades</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/4R99Qru9UKBzWpGr8" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Universidad ICESI -->
-                <div class="venue-card" data-type="university">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">🎓</span>
-                            Universidad ICESI
-                        </h3>
-                        <span class="venue-type university">University</span>
-                        <div class="venue-status status-activated">
-                            <div class="status-dot"></div>
-                            <span>ACTIVATED</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>7 Actividades</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/ToW59gW56w4TxwoeA" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Universidad UAO -->
-                <div class="venue-card" data-type="university">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">🎓</span>
-                            Universidad UAO
-                        </h3>
-                        <span class="venue-type university">University</span>
-                        <div class="venue-status status-activated">
-                            <div class="status-dot"></div>
-                            <span>ACTIVATED</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>1 Actividad</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/djcuzzJCp375FqnMA" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Torre de Cali -->
-                <div class="venue-card" data-type="office-partner">
-                    <div class="venue-header">
-                        <h3 class="venue-name">
-                            <span class="venue-icon">🏢</span>
-                            Torre de Cali Piso 40
-                        </h3>
-                        <span class="venue-type office-partner">Office Partner</span>
-                        <div class="venue-status status-activated">
-                            <div class="status-dot"></div>
-                            <span>ACTIVATED</span>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <div class="venue-stats">
-                            <div class="activities-count">
-                                <i class="fas fa-calendar"></i>
-                                <span>1 Actividad</span>
-                            </div>
-                            <a href="https://maps.app.goo.gl/4RrNkT1dWUGvsovH9" class="venue-link" target="_blank">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ver Ubicación
-                            </a>
-                        </div>
-                    </div>
+            <div class="venues-grid" id="venues-container">
+                <!-- Dynamic content will be loaded here by venues.js -->
+                <div style="text-align: center; padding: 2rem; color: #ccc; width: 100%;">
+                    <h3>🔄 Loading venues...</h3>
+                    <p>Please wait while we load venue data</p>
                 </div>
             </div>
         </div>
     </section>
 
     <script>
-        // Filter functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const venueCards = document.querySelectorAll('.venue-card');
-
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // Remove active class from all buttons
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    // Add active class to clicked button
-                    this.classList.add('active');
-
-                    const filter = this.getAttribute('data-filter');
-
-                    venueCards.forEach(card => {
-                        if (filter === 'all' || card.getAttribute('data-type') === filter) {
-                            card.style.display = 'block';
-                            card.style.animation = 'fadeInUp 0.5s ease forwards';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                });
-            });
-        });
-
-        // Add fade in animation
+        // Add fade in animation for dynamic content
         const style = document.createElement('style');
         style.textContent = `
             @keyframes fadeInUp {
