@@ -1,28 +1,31 @@
 {
-  "rewrites": [
+  "version": 2,
+  "public": true,
+  "routes": [
+    { "handle": "filesystem" },
     {
-      "source": "/",
-      "destination": "/ethcali.html"
+      "src": "/",
+      "dest": "/ethcali.html"
     },
     {
-      "source": "/index",
-      "destination": "/ethcali.html"
+      "src": "/index",
+      "dest": "/ethcali.html"
     },
     {
-      "source": "/home",
-      "destination": "/ethcali.html"
+      "src": "/home",
+      "dest": "/ethcali.html"
     },
     {
-      "source": "/events",
-      "destination": "/events.html"
+      "src": "/events",
+      "dest": "/events.html"
     },
     {
-      "source": "/about",
-      "destination": "/about.html"
+      "src": "/about",
+      "dest": "/about.html"
     },
     {
-      "source": "/venues",
-      "destination": "/ethcalivenues.html"
+      "src": "/venues",
+      "dest": "/ethcalivenues.html"
     }
   ],
   "headers": [

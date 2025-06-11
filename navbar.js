@@ -1,31 +1,60 @@
 /**
  * Ethereum Cali - Navbar Module
- * Simple navbar interactions
+ * Simple navbar loading and interactions
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Navbar loading function
+(function() {
+    // Ensure DOM is fully loaded
+    function domReady(fn) {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', fn);
+        } else {
+            fn();
+        }
+    }
+
+    // Load navbar function
     function loadNavbar() {
         const navbarContainer = document.getElementById('navbar-container');
         if (!navbarContainer) {
-            console.error('Navbar container not found');
+            console.error('Navbar container not found. Please add <div id="navbar-container"></div> to your HTML.');
             return;
         }
+
+        // Fallback content in case fetch fails
+        const fallbackNavbar = `
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <a href="/ethcali.html" class="navbar-logo">Ethereum Cali</a>
+                </div>
+                <div class="nav-links">
+                    <a href="/ethcali.html" class="nav-link">Home</a>
+                    <a href="/events.html" class="nav-link">Events</a>
+                    <a href="/about.html" class="nav-link">About</a>
+                    <a href="/ethcalivenues.html" class="nav-link">Venues</a>
+                </div>
+            </nav>
+        `;
 
         fetch('navbar.html')
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    console.warn('Failed to fetch navbar, using fallback');
+                    navbarContainer.innerHTML = fallbackNavbar;
+                    return null;
                 }
                 return response.text();
             })
             .then(html => {
-                navbarContainer.innerHTML = html;
+                if (html) {
+                    navbarContainer.innerHTML = html;
+                }
                 setupNavbarInteractions();
             })
             .catch(error => {
-                console.error('Error loading navbar:', error);
-                navbarContainer.innerHTML = `<div class="error-message">Failed to load navbar: ${error.message}</div>`;
+                console.error('Navbar loading error:', error);
+                navbarContainer.innerHTML = fallbackNavbar;
+                setupNavbarInteractions();
             });
     }
 
@@ -78,12 +107,15 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (currentFile.includes('venues')) {
             const venuesLink = document.querySelector('a[href="ethcalivenues.html"]');
             if (venuesLink) venuesLink.classList.add('active');
+        } else if (currentFile.includes('ethcali')) {
+            const homeLink = document.querySelector('a[href="ethcali.html"]');
+            if (homeLink) homeLink.classList.add('active');
         }
     }
 
-    // Load navbar
-    loadNavbar();
-});
+    // Initialize
+    domReady(loadNavbar);
+})();
 
 // Footer Module
 class EthereumCaliFooter {
