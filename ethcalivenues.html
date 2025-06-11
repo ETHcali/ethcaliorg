@@ -1,860 +1,753 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Ethereum Cali - Venues</title>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-		$(function(){
-			$.get("navbar.html", function(data) {
-				$("body").prepend(data);
-			});
-		});
-	</script>
-	<style>
-	/* cspell:disable-file */
-	/* webkit printing magic: print all background colors */
-	html {
-		-webkit-print-color-adjust: exact;
-	}
-	* {
-		box-sizing: border-box;
-		-webkit-print-color-adjust: exact;
-	}
-
-	html,
-	body {
-		margin: 0;
-		padding: 0;
-	}
-	@media only screen {
-		body {
-			margin: 2em auto;
-			max-width: 900px;
-			color: rgb(55, 53, 47);
-		}
-	}
-
-	body {
-		line-height: 1.5;
-		white-space: pre-wrap;
-	}
-
-	a,
-	a.visited {
-		color: inherit;
-		text-decoration: underline;
-	}
-
-	.pdf-relative-link-path {
-		font-size: 80%;
-		color: #444;
-	}
-
-	h1,
-	h2,
-	h3 {
-		letter-spacing: -0.01em;
-		line-height: 1.2;
-		font-weight: 600;
-		margin-bottom: 0;
-	}
-
-	.page-title {
-		font-size: 2.5rem;
-		font-weight: 700;
-		margin-top: 0;
-		margin-bottom: 0.75em;
-	}
-
-	h1 {
-		font-size: 1.875rem;
-		margin-top: 1.875rem;
-	}
-
-	h2 {
-		font-size: 1.5rem;
-		margin-top: 1.5rem;
-	}
-
-	h3 {
-		font-size: 1.25rem;
-		margin-top: 1.25rem;
-	}
-
-	.source {
-		border: 1px solid #ddd;
-		border-radius: 3px;
-		padding: 1.5em;
-		word-break: break-all;
-	}
-
-	.callout {
-		border-radius: 3px;
-		padding: 1rem;
-	}
-
-	figure {
-		margin: 1.25em 0;
-		page-break-inside: avoid;
-	}
-
-	figcaption {
-		opacity: 0.5;
-		font-size: 85%;
-		margin-top: 0.5em;
-	}
-
-	mark {
-		background-color: transparent;
-	}
-
-	.indented {
-		padding-left: 1.5em;
-	}
-
-	hr {
-		background: transparent;
-		display: block;
-		width: 100%;
-		height: 1px;
-		visibility: visible;
-		border: none;
-		border-bottom: 1px solid rgba(55, 53, 47, 0.09);
-	}
-
-	img {
-		max-width: 100%;
-	}
-
-	@media only print {
-		img {
-			max-height: 100vh;
-			object-fit: contain;
-		}
-	}
-
-	@page {
-		margin: 1in;
-	}
-
-	.collection-content {
-		font-size: 0.875rem;
-	}
-
-	.column-list {
-		display: flex;
-		justify-content: space-between;
-	}
-
-	.column {
-		padding: 0 1em;
-	}
-
-	.column:first-child {
-		padding-left: 0;
-	}
-
-	.column:last-child {
-		padding-right: 0;
-	}
-
-	.table_of_contents-item {
-		display: block;
-		font-size: 0.875rem;
-		line-height: 1.3;
-		padding: 0.125rem;
-	}
-
-	.table_of_contents-indent-1 {
-		margin-left: 1.5rem;
-	}
-
-	.table_of_contents-indent-2 {
-		margin-left: 3rem;
-	}
-
-	.table_of_contents-indent-3 {
-		margin-left: 4.5rem;
-	}
-
-	.table_of_contents-link {
-		text-decoration: none;
-		opacity: 0.7;
-		border-bottom: 1px solid rgba(55, 53, 47, 0.18);
-	}
-
-	table,
-	th,
-	td {
-		border: 1px solid rgba(55, 53, 47, 0.09);
-		border-collapse: collapse;
-	}
-
-	table {
-		border-left: none;
-		border-right: none;
-	}
-
-	th,
-	td {
-		font-weight: normal;
-		padding: 0.25em 0.5em;
-		line-height: 1.5;
-		min-height: 1.5em;
-		text-align: left;
-	}
-
-	th {
-		color: rgba(55, 53, 47, 0.6);
-	}
-
-	ol,
-	ul {
-		margin: 0;
-		margin-block-start: 0.6em;
-		margin-block-end: 0.6em;
-	}
-
-	li > ol:first-child,
-	li > ul:first-child {
-		margin-block-start: 0.6em;
-	}
-
-	ul > li {
-		list-style: disc;
-	}
-
-	ul.to-do-list {
-		padding-inline-start: 0;
-	}
-
-	ul.to-do-list > li {
-		list-style: none;
-	}
-
-	.to-do-children-checked {
-		text-decoration: line-through;
-		opacity: 0.375;
-	}
-
-	ul.toggle > li {
-		list-style: none;
-	}
-
-	ul {
-		padding-inline-start: 1.7em;
-	}
-
-	ul > li {
-		padding-left: 0.1em;
-	}
-
-	ol {
-		padding-inline-start: 1.6em;
-	}
-
-	ol > li {
-		padding-left: 0.2em;
-	}
-
-	.mono ol {
-		padding-inline-start: 2em;
-	}
-
-	.mono ol > li {
-		text-indent: -0.4em;
-	}
-
-	.toggle {
-		padding-inline-start: 0em;
-		list-style-type: none;
-	}
-
-	/* Indent toggle children */
-	.toggle > li > details {
-		padding-left: 1.7em;
-	}
-
-	.toggle > li > details > summary {
-		margin-left: -1.1em;
-	}
-
-	.selected-value {
-		display: inline-block;
-		padding: 0 0.5em;
-		background: rgba(206, 205, 202, 0.5);
-		border-radius: 3px;
-		margin-right: 0.5em;
-		margin-top: 0.3em;
-		margin-bottom: 0.3em;
-		white-space: nowrap;
-	}
-
-	.collection-title {
-		display: inline-block;
-		margin-right: 1em;
-	}
-
-	.page-description {
-		margin-bottom: 2em;
-	}
-
-	.simple-table {
-		margin-top: 1em;
-		font-size: 0.875rem;
-		empty-cells: show;
-	}
-	.simple-table td {
-		height: 29px;
-		min-width: 120px;
-	}
-
-	.simple-table th {
-		height: 29px;
-		min-width: 120px;
-	}
-
-	.simple-table-header-color {
-		background: rgb(247, 246, 243);
-		color: black;
-	}
-	.simple-table-header {
-		font-weight: 500;
-	}
-
-	time {
-		opacity: 0.5;
-	}
-
-	.icon {
-		display: inline-block;
-		max-width: 1.2em;
-		max-height: 1.2em;
-		text-decoration: none;
-		vertical-align: text-bottom;
-		margin-right: 0.5em;
-	}
-
-	img.icon {
-		border-radius: 3px;
-	}
-
-	.user-icon {
-		width: 1.5em;
-		height: 1.5em;
-		border-radius: 100%;
-		margin-right: 0.5rem;
-	}
-
-	.user-icon-inner {
-		font-size: 0.8em;
-	}
-
-	.text-icon {
-		border: 1px solid #000;
-		text-align: center;
-	}
-
-	.page-cover-image {
-		display: block;
-		object-fit: cover;
-		width: 100%;
-		max-height: 30vh;
-	}
-
-	.page-header-icon {
-		font-size: 3rem;
-		margin-bottom: 1rem;
-	}
-
-	.page-header-icon-with-cover {
-		margin-top: -0.72em;
-		margin-left: 0.07em;
-	}
-
-	.page-header-icon img {
-		border-radius: 3px;
-	}
-
-	.link-to-page {
-		margin: 1em 0;
-		padding: 0;
-		border: none;
-		font-weight: 500;
-	}
-
-	p > .user {
-		opacity: 0.5;
-	}
-
-	td > .user,
-	td > time {
-		white-space: nowrap;
-	}
-
-	input[type="checkbox"] {
-		transform: scale(1.5);
-		margin-right: 0.6em;
-		vertical-align: middle;
-	}
-
-	p {
-		margin-top: 0.5em;
-		margin-bottom: 0.5em;
-	}
-
-	.image {
-		border: none;
-		margin: 1.5em 0;
-		padding: 0;
-		border-radius: 0;
-		text-align: center;
-	}
-
-	.code,
-	code {
-		background: rgba(135, 131, 120, 0.15);
-		border-radius: 3px;
-		padding: 0.2em 0.4em;
-		border-radius: 3px;
-		font-size: 85%;
-		tab-size: 2;
-	}
-
-	code {
-		color: #eb5757;
-	}
-
-	.code {
-		padding: 1.5em 1em;
-	}
-
-	.code-wrap {
-		white-space: pre-wrap;
-		word-break: break-all;
-	}
-
-	.code > code {
-		background: none;
-		padding: 0;
-		font-size: 100%;
-		color: inherit;
-	}
-
-	blockquote {
-		font-size: 1.25em;
-		margin: 1em 0;
-		padding-left: 1em;
-		border-left: 3px solid rgb(55, 53, 47);
-	}
-
-	.bookmark {
-		text-decoration: none;
-		max-height: 8em;
-		padding: 0;
-		display: flex;
-		width: 100%;
-		align-items: stretch;
-	}
-
-	.bookmark-title {
-		font-size: 0.85em;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		height: 1.75em;
-		white-space: nowrap;
-	}
-
-	.bookmark-text {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.bookmark-info {
-		flex: 4 1 180px;
-		padding: 12px 14px 14px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-	}
-
-	.bookmark-image {
-		width: 33%;
-		flex: 1 1 180px;
-		display: block;
-		position: relative;
-		object-fit: cover;
-		border-radius: 1px;
-	}
-
-	.bookmark-description {
-		color: rgba(55, 53, 47, 0.6);
-		font-size: 0.75em;
-		overflow: hidden;
-		max-height: 4.5em;
-		word-break: break-word;
-	}
-
-	.bookmark-href {
-		font-size: 0.75em;
-		margin-top: 0.25em;
-	}
-
-	.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
-	.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
-	.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
-	.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
-	.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
-	.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
-	.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
-	.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
-	.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
-	.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
-	.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
-	.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
-	.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
-	.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
-	.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
-	.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
-	.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
-	.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
-	.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
-	.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
-	.highlight-default {
-		color: rgba(50, 48, 44, 1);
-	}
-	.highlight-gray {
-		color: rgba(115, 114, 110, 1);
-		fill: rgba(115, 114, 110, 1);
-	}
-	.highlight-brown {
-		color: rgba(159, 107, 83, 1);
-		fill: rgba(159, 107, 83, 1);
-	}
-	.highlight-orange {
-		color: rgba(217, 115, 13, 1);
-		fill: rgba(217, 115, 13, 1);
-	}
-	.highlight-yellow {
-		color: rgba(203, 145, 47, 1);
-		fill: rgba(203, 145, 47, 1);
-	}
-	.highlight-teal {
-		color: rgba(68, 131, 97, 1);
-		fill: rgba(68, 131, 97, 1);
-	}
-	.highlight-blue {
-		color: rgba(51, 126, 169, 1);
-		fill: rgba(51, 126, 169, 1);
-	}
-	.highlight-purple {
-		color: rgba(144, 101, 176, 1);
-		fill: rgba(144, 101, 176, 1);
-	}
-	.highlight-pink {
-		color: rgba(193, 76, 138, 1);
-		fill: rgba(193, 76, 138, 1);
-	}
-	.highlight-red {
-		color: rgba(205, 60, 58, 1);
-		fill: rgba(205, 60, 58, 1);
-	}
-	.highlight-default_background {
-		color: rgba(50, 48, 44, 1);
-	}
-	.highlight-gray_background {
-		background: rgba(248, 248, 247, 1);
-	}
-	.highlight-brown_background {
-		background: rgba(244, 238, 238, 1);
-	}
-	.highlight-orange_background {
-		background: rgba(251, 236, 221, 1);
-	}
-	.highlight-yellow_background {
-		background: rgba(251, 243, 219, 1);
-	}
-	.highlight-teal_background {
-		background: rgba(237, 243, 236, 1);
-	}
-	.highlight-blue_background {
-		background: rgba(231, 243, 248, 1);
-	}
-	.highlight-purple_background {
-		background: rgba(248, 243, 252, 1);
-	}
-	.highlight-pink_background {
-		background: rgba(252, 241, 246, 1);
-	}
-	.highlight-red_background {
-		background: rgba(253, 235, 236, 1);
-	}
-	.block-color-default {
-		color: inherit;
-		fill: inherit;
-	}
-	.block-color-gray {
-		color: rgba(115, 114, 110, 1);
-		fill: rgba(115, 114, 110, 1);
-	}
-	.block-color-brown {
-		color: rgba(159, 107, 83, 1);
-		fill: rgba(159, 107, 83, 1);
-	}
-	.block-color-orange {
-		color: rgba(217, 115, 13, 1);
-		fill: rgba(217, 115, 13, 1);
-	}
-	.block-color-yellow {
-		color: rgba(203, 145, 47, 1);
-		fill: rgba(203, 145, 47, 1);
-	}
-	.block-color-teal {
-		color: rgba(68, 131, 97, 1);
-		fill: rgba(68, 131, 97, 1);
-	}
-	.block-color-blue {
-		color: rgba(51, 126, 169, 1);
-		fill: rgba(51, 126, 169, 1);
-	}
-	.block-color-purple {
-		color: rgba(144, 101, 176, 1);
-		fill: rgba(144, 101, 176, 1);
-	}
-	.block-color-pink {
-		color: rgba(193, 76, 138, 1);
-		fill: rgba(193, 76, 138, 1);
-	}
-	.block-color-red {
-		color: rgba(205, 60, 58, 1);
-		fill: rgba(205, 60, 58, 1);
-	}
-	.block-color-default_background {
-		color: inherit;
-		fill: inherit;
-	}
-	.block-color-gray_background {
-		background: rgba(248, 248, 247, 1);
-	}
-	.block-color-brown_background {
-		background: rgba(244, 238, 238, 1);
-	}
-	.block-color-orange_background {
-		background: rgba(251, 236, 221, 1);
-	}
-	.block-color-yellow_background {
-		background: rgba(251, 243, 219, 1);
-	}
-	.block-color-teal_background {
-		background: rgba(237, 243, 236, 1);
-	}
-	.block-color-blue_background {
-		background: rgba(231, 243, 248, 1);
-	}
-	.block-color-purple_background {
-		background: rgba(248, 243, 252, 1);
-	}
-	.block-color-pink_background {
-		background: rgba(252, 241, 246, 1);
-	}
-	.block-color-red_background {
-		background: rgba(253, 235, 236, 1);
-	}
-	.select-value-color-uiBlue { background-color: undefined; }
-	.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
-	.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
-	.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
-	.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
-	.select-value-color-translucentGray { background-color: undefined; }
-	.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
-	.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
-	.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
-	.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
-	.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
-	.select-value-color-pageGlass { background-color: undefined; }
-	.select-value-color-washGlass { background-color: undefined; }
-
-	.checkbox {
-		display: inline-flex;
-		vertical-align: text-bottom;
-		width: 16;
-		height: 16;
-		background-size: 16px;
-		margin-left: 2px;
-		margin-right: 5px;
-	}
-
-	.checkbox-on {
-		background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
-	}
-
-	.checkbox-off {
-		background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
-	}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethereum Cali - Venues</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared-components.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function(){
+            $.get("navbar.html", function(data) {
+                $("body").prepend(data);
+            });
+        });
+    </script>
+    <style>
+        /* Cyber Venues Page Styles */
+        :root {
+            --cyber-primary: #62688F;
+            --cyber-secondary: #5A6FBF;
+            --cyber-accent: #ff0066;
+            --cyber-dark: #000812;
+            --cyber-dark-alt: #001122;
+            --cyber-grid: rgba(98, 104, 143, 0.1);
+            --cyber-glow: rgba(98, 104, 143, 0.3);
+            --cyber-border: rgba(98, 104, 143, 0.4);
+            --cyber-text: #ffffff;
+            --cyber-text-dim: #8892b0;
+            --cyber-bg-card: rgba(20, 20, 30, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-dark-alt) 100%);
+            color: var(--cyber-text);
+            font-family: 'Space Mono', monospace;
+            line-height: 1.6;
+            margin: 0;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .venues-hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: radial-gradient(ellipse at center, var(--cyber-dark-alt) 0%, var(--cyber-dark) 70%);
+            border-bottom: 1px solid var(--cyber-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .venues-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(98,104,143,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
+            opacity: 0.3;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(10px, 10px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-icon {
+            font-size: 4rem;
+            color: var(--cyber-primary);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px var(--cyber-glow);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .page-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            margin: 0 0 1rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cyber-primary);
+            text-shadow: 0 0 20px var(--cyber-glow);
+        }
+
+        .page-description {
+            font-size: 1.2rem;
+            color: var(--cyber-text-dim);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .cyber-line {
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyber-primary), var(--cyber-secondary));
+            margin: 0 auto;
+            border-radius: 2px;
+            box-shadow: 0 0 20px var(--cyber-glow);
+        }
+
+        /* Venues Section */
+        .venues-section {
+            padding: 4rem 0;
+        }
+
+        .venues-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Venue Cards */
+        .venue-card {
+            background: var(--cyber-bg-card);
+            border: 1px solid var(--cyber-border);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .venue-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(98, 104, 143, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .venue-card:hover::before {
+            left: 100%;
+        }
+
+        .venue-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--cyber-primary);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 30px var(--cyber-glow);
+        }
+
+        .venue-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--cyber-border);
+        }
+
+        .venue-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--cyber-primary);
+            margin: 0 0 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .venue-icon {
+            font-size: 1.2rem;
+        }
+
+        .venue-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .venue-type.gastrobar {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+        }
+
+        .venue-type.club-music {
+            background: linear-gradient(135deg, #FF1493, #FF69B4);
+            color: white;
+        }
+
+        .venue-type.coworking {
+            background: linear-gradient(135deg, #4169E1, #6495ED);
+            color: white;
+        }
+
+        .venue-type.university {
+            background: linear-gradient(135deg, #DC143C, #FF6347);
+            color: white;
+        }
+
+        .venue-type.restaurant {
+            background: linear-gradient(135deg, #9370DB, #BA55D3);
+            color: white;
+        }
+
+        .venue-type.office-partner {
+            background: linear-gradient(135deg, #32CD32, #98FB98);
+            color: #000;
+        }
+
+        .venue-type.bar-open-air {
+            background: linear-gradient(135deg, #696969, #A9A9A9);
+            color: white;
+        }
+
+        .venue-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-activated .status-dot {
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        .status-opening .status-dot {
+            background: #0088ff;
+            box-shadow: 0 0 10px #0088ff;
+        }
+
+        .status-to-talk .status-dot {
+            background: #ff4444;
+            box-shadow: 0 0 10px #ff4444;
+        }
+
+        .venue-body {
+            padding: 1.5rem;
+        }
+
+        .venue-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .activities-count {
+            background: linear-gradient(135deg, var(--cyber-primary), var(--cyber-secondary));
+            color: var(--cyber-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .venue-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--cyber-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .venue-link:hover {
+            color: var(--cyber-secondary);
+            transform: translateX(5px);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--cyber-border);
+            border-radius: 25px;
+            color: var(--cyber-text-dim);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--cyber-primary), transparent);
+            transition: left 0.3s ease;
+        }
+
+        .filter-btn:hover::before,
+        .filter-btn.active::before {
+            left: 100%;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--cyber-primary);
+            color: var(--cyber-primary);
+            box-shadow: 0 0 15px var(--cyber-glow);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .venues-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .venue-card {
+                margin: 0;
+            }
+            
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .filter-btn {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .venues-hero {
+                padding: 2rem 0;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .venue-header {
+                padding: 1rem;
+            }
+            
+            .venue-body {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-	<article id="54a836ea-66fd-473e-be20-e6ae8ba31c8d" class="page sans">
-		<header>
-			<img class="page-cover-image" src="https://www.notion.so/images/page-cover/woodcuts_3.jpg" style="object-position:center 19.999999999999996%">
-			<div class="page-header-icon page-header-icon-with-cover">
-				<span class="icon">🏟️</span>
-			</div>
-			<h1 class="page-title">ETHCALI VENUES</h1>
-			<p class="page-description">Estas son las venues habilitadas para nuestros eventos y meetups en Cali</p>
-		</header>
-		<div class="page-body">
-			<table class="collection-content">
-				<thead>
-					<tr>
-						<th><span class="icon property-icon"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(71, 70, 68, 0.6);flex-shrink:0" class="typesTitle"><path d="M0.637695 13.1914C1.0957 13.1914 1.32812 13 1.47852 12.5215L2.24414 10.3887H6.14746L6.90625 12.5215C7.05664 13 7.2959 13.1914 7.74707 13.1914C8.22559 13.1914 8.5332 12.9043 8.5332 12.4531C8.5332 12.2891 8.50586 12.1523 8.44434 11.9678L5.41602 3.79199C5.2041 3.21777 4.82129 2.9375 4.19922 2.9375C3.60449 2.9375 3.21484 3.21777 3.0166 3.78516L-0.0322266 12.002C-0.09375 12.1797 -0.121094 12.3232 -0.121094 12.4668C-0.121094 12.918 0.166016 13.1914 0.637695 13.1914ZM2.63379 9.12402L4.17871 4.68066H4.21973L5.76465 9.12402H2.63379ZM12.2793 13.2324C13.3115 13.2324 14.2891 12.6787 14.7129 11.8037H14.7402V12.5762C14.7471 12.9863 15.0273 13.2393 15.4238 13.2393C15.834 13.2393 16.1143 12.9795 16.1143 12.5215V8.00977C16.1143 6.49902 14.9658 5.52148 13.1543 5.52148C11.7666 5.52148 10.6592 6.08887 10.2695 6.99121C10.1943 7.15527 10.1533 7.3125 10.1533 7.46289C10.1533 7.81152 10.4062 8.04395 10.7686 8.04395C11.0215 8.04395 11.2129 7.94824 11.3496 7.73633C11.7529 6.99121 12.2861 6.65625 13.1064 6.65625C14.0977 6.65625 14.6992 7.20996 14.6992 8.1123V8.67285L12.5664 8.7959C10.7686 8.8916 9.77734 9.69824 9.77734 11.0107C9.77734 12.3369 10.8096 13.2324 12.2793 13.2324ZM12.6621 12.1387C11.8008 12.1387 11.2129 11.667 11.2129 10.9561C11.2129 10.2725 11.7598 9.82129 12.7578 9.75977L14.6992 9.62988V10.3203C14.6992 11.3457 13.7969 12.1387 12.6621 12.1387Z"></path></svg></span>Name</th>
-						<th><span class="icon property-icon"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(71, 70, 68, 0.6);flex-shrink:0" class="typesSelect"><path d="M8 15.126C11.8623 15.126 15.0615 11.9336 15.0615 8.06445C15.0615 4.20215 11.8623 1.00293 7.99316 1.00293C4.13086 1.00293 0.938477 4.20215 0.938477 8.06445C0.938477 11.9336 4.1377 15.126 8 15.126ZM8 13.7383C4.85547 13.7383 2.33301 11.209 2.33301 8.06445C2.33301 4.91992 4.84863 2.39746 7.99316 2.39746C11.1377 2.39746 13.6738 4.91992 13.6738 8.06445C13.6738 11.209 11.1445 13.7383 8 13.7383ZM7.62402 10.6348C7.79492 10.915 8.20508 10.9287 8.37598 10.6348L10.666 6.73145C10.8574 6.41016 10.7002 6.04102 10.3652 6.04102H5.62793C5.29297 6.04102 5.14941 6.43066 5.32031 6.73145L7.62402 10.6348Z"></path></svg></span>TYPE</th>
-						<th><span class="icon property-icon"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(71, 70, 68, 0.6);flex-shrink:0" class="typesStatus"><path d="M8.75488 1.02344C8.75488 0.613281 8.41309 0.264648 8.00293 0.264648C7.59277 0.264648 7.25098 0.613281 7.25098 1.02344V3.11523C7.25098 3.51855 7.59277 3.86719 8.00293 3.86719C8.41309 3.86719 8.75488 3.51855 8.75488 3.11523V1.02344ZM3.91504 5.0293C4.20215 5.31641 4.69434 5.32324 4.97461 5.03613C5.26855 4.74902 5.26855 4.25684 4.98145 3.96973L3.53906 2.52051C3.25195 2.2334 2.7666 2.21973 2.47949 2.50684C2.19238 2.79395 2.18555 3.28613 2.47266 3.57324L3.91504 5.0293ZM10.9629 4.01758C10.6826 4.30469 10.6826 4.79688 10.9697 5.08398C11.2568 5.37109 11.749 5.36426 12.0361 5.07715L13.4854 3.62793C13.7725 3.34082 13.7725 2.84863 13.4785 2.55469C13.1982 2.27441 12.7061 2.27441 12.4189 2.56152L10.9629 4.01758ZM15.0234 8.78906C15.4336 8.78906 15.7822 8.44727 15.7822 8.03711C15.7822 7.62695 15.4336 7.28516 15.0234 7.28516H12.9385C12.5283 7.28516 12.1797 7.62695 12.1797 8.03711C12.1797 8.44727 12.5283 8.78906 12.9385 8.78906H15.0234ZM0.975586 7.28516C0.56543 7.28516 0.223633 7.62695 0.223633 8.03711C0.223633 8.44727 0.56543 8.78906 0.975586 8.78906H3.07422C3.48438 8.78906 3.83301 8.44727 3.83301 8.03711C3.83301 7.62695 3.48438 7.28516 3.07422 7.28516H0.975586ZM12.0361 10.9902C11.749 10.71 11.2568 10.71 10.9629 10.9971C10.6826 11.2842 10.6826 11.7764 10.9697 12.0635L12.4258 13.5127C12.7129 13.7998 13.2051 13.793 13.4922 13.5059C13.7793 13.2256 13.7725 12.7266 13.4854 12.4395L12.0361 10.9902ZM2.52051 12.4395C2.22656 12.7266 2.22656 13.2188 2.50684 13.5059C2.79395 13.793 3.28613 13.7998 3.57324 13.5127L5.02246 12.0703C5.31641 11.7832 5.31641 11.291 5.03613 11.0039C4.74902 10.7168 4.25684 10.71 3.96973 10.9971L2.52051 12.4395ZM8.75488 12.9658C8.75488 12.5557 8.41309 12.207 8.00293 12.207C7.59277 12.207 7.25098 12.5557 7.25098 12.9658V15.0576C7.25098 15.4609 7.59277 15.8096 8.00293 15.8096C8.41309 15.8096 8.75488 15.4609 8.75488 15.0576V12.9658Z"></path></svg></span>Status</th>
-						<th><span class="icon property-icon"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(71, 70, 68, 0.6);flex-shrink:0" class="typesNumber"><path d="M2.4834 10.9902H4.33594L3.75488 13.8887C3.74121 13.9639 3.72754 14.0664 3.72754 14.1416C3.72754 14.5381 3.99414 14.7637 4.39746 14.7637C4.81445 14.7637 5.09473 14.5449 5.18359 14.1143L5.80566 10.9902H8.79297L8.21191 13.8887C8.19824 13.9639 8.18457 14.0664 8.18457 14.1416C8.18457 14.5381 8.45117 14.7637 8.85449 14.7637C9.27148 14.7637 9.55176 14.5449 9.63379 14.1143L10.2627 10.9902H12.4502C12.9287 10.9902 13.2432 10.6758 13.2432 10.2109C13.2432 9.8418 12.9902 9.56836 12.6006 9.56836H10.5498L11.2129 6.28711H13.3662C13.8379 6.28711 14.1523 5.96582 14.1523 5.50098C14.1523 5.13184 13.9062 4.8584 13.5098 4.8584H11.5L12.0195 2.27441C12.0264 2.21973 12.0469 2.11035 12.0469 2.01465C12.0469 1.625 11.7666 1.39258 11.3633 1.39258C10.9053 1.39258 10.6797 1.63867 10.5977 2.05566L10.0303 4.8584H7.04297L7.5625 2.27441C7.57617 2.21973 7.58984 2.11035 7.58984 2.01465C7.58984 1.625 7.30957 1.39258 6.91309 1.39258C6.44824 1.39258 6.21582 1.63867 6.13379 2.05566L5.57324 4.8584H3.54297C3.06445 4.8584 2.75 5.18652 2.75 5.65137C2.75 6.03418 3.00293 6.28711 3.39258 6.28711H5.28613L4.62305 9.56836H2.63379C2.15527 9.56836 1.84082 9.89648 1.84082 10.3613C1.84082 10.7373 2.09375 10.9902 2.4834 10.9902ZM6.09277 9.56836L6.75586 6.28711H9.74316L9.08008 9.56836H6.09277Z"></path></svg></span>ACTIVIDADES</th>
-						<th><span class="icon property-icon"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(71, 70, 68, 0.6);flex-shrink:0" class="typesUrl"><path d="M7.69922 10.8945L8.73828 9.84863C7.91797 9.77344 7.34375 9.51367 6.91992 9.08984C5.76465 7.93457 5.76465 6.29395 6.91309 5.14551L9.18262 2.87598C10.3379 1.7207 11.9717 1.7207 13.127 2.87598C14.2891 4.04492 14.2822 5.67188 13.1338 6.82031L11.958 7.99609C12.1768 8.49512 12.2451 9.10352 12.1289 9.62988L14.0908 7.6748C15.7725 6 15.7793 3.62109 14.084 1.92578C12.3887 0.223633 10.0098 0.237305 8.33496 1.91211L5.95605 4.29785C4.28125 5.97266 4.26758 8.35156 5.96289 10.0469C6.36621 10.4434 6.90625 10.7441 7.69922 10.8945ZM8.30078 5.13184L7.26855 6.17773C8.08203 6.25293 8.66309 6.51953 9.08008 6.93652C10.2422 8.09863 10.2422 9.73242 9.08691 10.8809L6.81738 13.1504C5.66211 14.3057 4.03516 14.3057 2.87305 13.1504C1.71094 11.9883 1.71777 10.3545 2.87305 9.20605L4.04199 8.03027C3.83008 7.53125 3.75488 6.92969 3.87109 6.39648L1.91602 8.35156C0.234375 10.0264 0.227539 12.4121 1.92285 14.1074C3.61816 15.8027 5.99707 15.7891 7.67188 14.1143L10.0439 11.7354C11.7256 10.0537 11.7324 7.6748 10.0371 5.98633C9.64062 5.58301 9.10059 5.28223 8.30078 5.13184Z"></path></svg></span>URL</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr id="d8fb888d-5f67-427c-b2e8-371ee921585d">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Binaural%20d8fb888d5f67427cb2e8371ee921585d.html"><span class="icon">🍹</span>Binaural</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-brown">GastroBar</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">2</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/oRua2cYx5jzkt7bk6" class="url-value">https://maps.app.goo.gl/oRua2cYx5jzkt7bk6</a></td>
-					</tr>
-					<tr id="b3457135-8d03-4355-ab9c-a4d34aed2f01">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Albahaca%20Terraza%20b34571358d034355ab9ca4d34aed2f01.html"><span class="icon">🍹</span>Albahaca Terraza</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-brown">GastroBar</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">0</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/X2BAQxsmdaZxdcrd6" class="url-value">https://maps.app.goo.gl/X2BAQxsmdaZxdcrd6</a></td>
-					</tr>
-					<tr id="a5436384-bbfe-49f8-9f83-511009e2b283">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/La%20Pergola%20a5436384bbfe49f89f83511009e2b283.html"><span class="icon">🍹</span>La Pergola</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-brown">GastroBar</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-red"><div class="status-dot status-dot-color-red"></div>TO TALK</span></td>
-						<td class="cell-&gt;~uq">0</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/JfDhKGyZ9jHjgWoW8" class="url-value">https://maps.app.goo.gl/JfDhKGyZ9jHjgWoW8</a></td>
-					</tr>
-					<tr id="64eb1fbb-8bb0-4b4b-8d90-49fbb0bd6de6">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Bengala%20Bandolero%2064eb1fbb8bb04b4b8d9049fbb0bd6de6.html"><span class="icon">💿</span>Bengala Bandolero</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-pink">Club Music</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-blue"><div class="status-dot status-dot-color-blue"></div>OPENING</span></td>
-						<td class="cell-&gt;~uq">0</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/Fh8gYrTUwJZ3ZdDQ7" class="url-value">https://maps.app.goo.gl/Fh8gYrTUwJZ3ZdDQ7</a></td>
-					</tr>
-					<tr id="2aa54538-3154-4d11-904e-4eadf0879e8f">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Discoteca%201060%202aa5453831544d11904e4eadf0879e8f.html"><span class="icon">💿</span>Discoteca 1060</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-pink">Club Music</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">1</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/AaDxC247DFEue3kh9" class="url-value">https://maps.app.goo.gl/AaDxC247DFEue3kh9</a></td>
-					</tr>
-					<tr id="0dc72985-10af-4e22-ba5b-0741aca12b06">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Colectivo%20Coworking%200dc7298510af4e22ba5b0741aca12b06.html"><span class="icon">👨🏼‍💻</span>Colectivo Coworking</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-blue">Coworking</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">1</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/WaXtVbq51WyYJwxo8" class="url-value">https://maps.app.goo.gl/WaXtVbq51WyYJwxo8</a></td>
-					</tr>
-					<tr id="82d0bce3-8b98-49a3-9310-f962d2a04500">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/RAMADA%20CAFE%2082d0bce38b9849a39310f962d2a04500.html"><span class="icon">👨🏼‍💻</span>RAMADA CAFE</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-blue">Coworking</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">4</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/4R99Qru9UKBzWpGr8" class="url-value">https://maps.app.goo.gl/4R99Qru9UKBzWpGr8</a></td>
-					</tr>
-					<tr id="1f844439-d84e-8012-a60e-c27e407dd2e0">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Universidad%20USB%20-%20Laboratorio%20Financiero%201f844439d84e8012a60ec27e407dd2e0.html">Universidad USB - Laboratorio Financiero</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-red">University</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq"></td>
-						<td class="cell-hMaa"></td>
-					</tr>
-					<tr id="80137ee2-a26d-4aaa-8ef4-144f2385c495">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Universidad%20ICESI%20-%20Laboratorio%20Financiero%2080137ee2a26d4aaa8ef4144f2385c495.html"><span class="icon">🎓</span>Universidad ICESI -  Laboratorio Financiero</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-red">University</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">7</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/ToW59gW56w4TxwoeA" class="url-value">https://maps.app.goo.gl/ToW59gW56w4TxwoeA</a></td>
-					</tr>
-					<tr id="6c4706d7-e9c7-46d0-b9be-501186130678">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Universidad%20UAO%206c4706d7e9c746d0b9be501186130678.html"><span class="icon">🎓</span>Universidad UAO</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-red">University</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">1</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/djcuzzJCp375FqnMA" class="url-value">https://maps.app.goo.gl/djcuzzJCp375FqnMA</a></td>
-					</tr>
-					<tr id="f67974df-a22a-4e11-bdcf-a850242be64a">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Universidad%20Santiago%20de%20Cali%20(USC)%20f67974dfa22a4e11bdcfa850242be64a.html"><span class="icon">🎓</span>Universidad Santiago de Cali (USC)</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-red">University</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">1</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/3hH8vgLzbJYxpjF2A" class="url-value">https://maps.app.goo.gl/3hH8vgLzbJYxpjF2A</a></td>
-					</tr>
-					<tr id="49d77b24-3bc4-4ecf-aa04-3aff2c90772b">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Universidad%20del%20Valle%2049d77b243bc44ecfaa043aff2c90772b.html"><span class="icon">🎓</span>Universidad del Valle</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-red">University</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">1</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/ZyYV65dG2MrarX777" class="url-value">https://maps.app.goo.gl/ZyYV65dG2MrarX777</a></td>
-					</tr>
-					<tr id="39c81902-889a-4600-9bff-bf06aec12973">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/La%20Pizzicleta%2039c81902889a46009bffbf06aec12973.html"><span class="icon">🍕</span>La Pizzicleta</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-purple">Restaurant</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">1</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/JZKcachS6L1zKzUJ6" class="url-value">https://maps.app.goo.gl/JZKcachS6L1zKzUJ6</a></td>
-					</tr>
-					<tr id="8b96d51e-39f8-4869-85c1-9d887ba922bb">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/El%20Pizzaron%208b96d51e39f8486985c19d887ba922bb.html"><span class="icon">🍕</span>El Pizzaron</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-purple">Restaurant</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">2</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/NCtDGHFeLfRgziw37" class="url-value">https://maps.app.goo.gl/NCtDGHFeLfRgziw37</a></td>
-					</tr>
-					<tr id="3e18d698-9f20-4028-ab5b-6d46cd813798">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/La%20galeri%CC%81a%20de%20la%20Plaza%203e18d6989f204028ab5b6d46cd813798.html"><span class="icon">🍕</span>La galería de la Plaza</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-purple">Restaurant</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">1</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/39dY3XbwBvYFX8Wx7" class="url-value">https://maps.app.goo.gl/39dY3XbwBvYFX8Wx7</a></td>
-					</tr>
-					<tr id="79954aa0-4012-4e76-b81a-c24e749dbe0d">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/TDT%20Novena%2079954aa040124e76b81ac24e749dbe0d.html"><span class="icon">🍕</span>TDT Novena</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-purple">Restaurant</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">1</td>
-						<td class="cell-hMaa"></td>
-					</tr>
-					<tr id="14585ef6-7886-47ef-824f-f0bbc8a87d13">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/La%20plaza%20market%2014585ef6788647ef824ff0bbc8a87d13.html"><span class="icon">🍕</span>La plaza market</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-gray">Bar Open Air</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-blue"><div class="status-dot status-dot-color-blue"></div>OPENING</span></td>
-						<td class="cell-&gt;~uq">0</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/RJaA2ZpuEBiGKxeq6" class="url-value">https://maps.app.goo.gl/RJaA2ZpuEBiGKxeq6</a></td>
-					</tr>
-					<tr id="11344439-d84e-803a-87e3-c9622a5912a9">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Zona%20america%20-%20NIDO%20Distrito%20de%20Innovacion%2011344439d84e803a87e3c9622a5912a9.html"><span class="icon">🏢</span>Zona america - NIDO: Distrito de Innovacion </a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-green">Office Partner</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">0</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/Mb1RVAhBoaWDVte96" class="url-value">https://maps.app.goo.gl/Mb1RVAhBoaWDVte96</a></td>
-					</tr>
-					<tr id="825e7a7e-a66f-4bf4-987c-5c2327e03c54">
-						<td class="cell-title"><a href="ETHCALI%20VENUES%2054a836ea66fd473ebe20e6ae8ba31c8d/Torre%20de%20Cali%20Piso%2040%20825e7a7ea66f4bf4987c5c2327e03c54.html"><span class="icon">🏢</span>Torre de Cali Piso 40</a></td>
-						<td class="cell-YnKz"><span class="selected-value select-value-color-green">Office Partner</span></td>
-						<td class="cell-GbH{"><span class="status-value select-value-color-green"><div class="status-dot status-dot-color-green"></div>ACTIVATED</span></td>
-						<td class="cell-&gt;~uq">1</td>
-						<td class="cell-hMaa"><a href="https://maps.app.goo.gl/4RrNkT1dWUGvsovH9" class="url-value">https://maps.app.goo.gl/4RrNkT1dWUGvsovH9</a></td>
-					</tr>
-				</tbody>
-			</table>
-			<br/><br/>
-		</div>
-	</article>
-	<span class="sans" style="font-size:14px;padding-top:2em"></span>
+    <main class="venues-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-icon">🏟️</div>
+                <h1 class="page-title">ETH CALI VENUES</h1>
+                <p class="page-description">Estas son las venues habilitadas para nuestros eventos y meetups en Cali</p>
+                <div class="cyber-line"></div>
+            </div>
+        </div>
+    </main>
+
+    <section class="venues-section">
+        <div class="container">
+            <div class="filter-section">
+                <h2 style="font-family: 'Orbitron', monospace; color: var(--cyber-primary); text-align: center; margin-bottom: 1rem;">Filtrar por Tipo</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="gastrobar">GastroBar</button>
+                    <button class="filter-btn" data-filter="club-music">Club Music</button>
+                    <button class="filter-btn" data-filter="coworking">Coworking</button>
+                    <button class="filter-btn" data-filter="university">University</button>
+                    <button class="filter-btn" data-filter="restaurant">Restaurant</button>
+                    <button class="filter-btn" data-filter="office-partner">Office Partner</button>
+                </div>
+            </div>
+
+            <div class="venues-grid">
+                <!-- Binaural -->
+                <div class="venue-card" data-type="gastrobar">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">🍹</span>
+                            Binaural
+                        </h3>
+                        <span class="venue-type gastrobar">GastroBar</span>
+                        <div class="venue-status status-activated">
+                            <div class="status-dot"></div>
+                            <span>ACTIVATED</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>2 Actividades</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/oRua2cYx5jzkt7bk6" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Albahaca Terraza -->
+                <div class="venue-card" data-type="gastrobar">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">🍹</span>
+                            Albahaca Terraza
+                        </h3>
+                        <span class="venue-type gastrobar">GastroBar</span>
+                        <div class="venue-status status-activated">
+                            <div class="status-dot"></div>
+                            <span>ACTIVATED</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>0 Actividades</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/X2BAQxsmdaZxdcrd6" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- La Pergola -->
+                <div class="venue-card" data-type="gastrobar">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">🍹</span>
+                            La Pergola
+                        </h3>
+                        <span class="venue-type gastrobar">GastroBar</span>
+                        <div class="venue-status status-to-talk">
+                            <div class="status-dot"></div>
+                            <span>TO TALK</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>0 Actividades</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/JfDhKGyZ9jHjgWoW8" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bengala Bandolero -->
+                <div class="venue-card" data-type="club-music">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">💿</span>
+                            Bengala Bandolero
+                        </h3>
+                        <span class="venue-type club-music">Club Music</span>
+                        <div class="venue-status status-opening">
+                            <div class="status-dot"></div>
+                            <span>OPENING</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>0 Actividades</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/Fh8gYrTUwJZ3ZdDQ7" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Discoteca 1060 -->
+                <div class="venue-card" data-type="club-music">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">💿</span>
+                            Discoteca 1060
+                        </h3>
+                        <span class="venue-type club-music">Club Music</span>
+                        <div class="venue-status status-activated">
+                            <div class="status-dot"></div>
+                            <span>ACTIVATED</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>1 Actividad</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/AaDxC247DFEue3kh9" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colectivo Coworking -->
+                <div class="venue-card" data-type="coworking">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">👨🏼‍💻</span>
+                            Colectivo Coworking
+                        </h3>
+                        <span class="venue-type coworking">Coworking</span>
+                        <div class="venue-status status-activated">
+                            <div class="status-dot"></div>
+                            <span>ACTIVATED</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>1 Actividad</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/WaXtVbq51WyYJwxo8" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RAMADA CAFE -->
+                <div class="venue-card" data-type="coworking">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">👨🏼‍💻</span>
+                            RAMADA CAFE
+                        </h3>
+                        <span class="venue-type coworking">Coworking</span>
+                        <div class="venue-status status-activated">
+                            <div class="status-dot"></div>
+                            <span>ACTIVATED</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>4 Actividades</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/4R99Qru9UKBzWpGr8" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Universidad ICESI -->
+                <div class="venue-card" data-type="university">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">🎓</span>
+                            Universidad ICESI
+                        </h3>
+                        <span class="venue-type university">University</span>
+                        <div class="venue-status status-activated">
+                            <div class="status-dot"></div>
+                            <span>ACTIVATED</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>7 Actividades</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/ToW59gW56w4TxwoeA" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Universidad UAO -->
+                <div class="venue-card" data-type="university">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">🎓</span>
+                            Universidad UAO
+                        </h3>
+                        <span class="venue-type university">University</span>
+                        <div class="venue-status status-activated">
+                            <div class="status-dot"></div>
+                            <span>ACTIVATED</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>1 Actividad</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/djcuzzJCp375FqnMA" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Torre de Cali -->
+                <div class="venue-card" data-type="office-partner">
+                    <div class="venue-header">
+                        <h3 class="venue-name">
+                            <span class="venue-icon">🏢</span>
+                            Torre de Cali Piso 40
+                        </h3>
+                        <span class="venue-type office-partner">Office Partner</span>
+                        <div class="venue-status status-activated">
+                            <div class="status-dot"></div>
+                            <span>ACTIVATED</span>
+                        </div>
+                    </div>
+                    <div class="venue-body">
+                        <div class="venue-stats">
+                            <div class="activities-count">
+                                <i class="fas fa-calendar"></i>
+                                <span>1 Actividad</span>
+                            </div>
+                            <a href="https://maps.app.goo.gl/4RrNkT1dWUGvsovH9" class="venue-link" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ver Ubicación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const venueCards = document.querySelectorAll('.venue-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    const filter = this.getAttribute('data-filter');
+
+                    venueCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-type') === filter) {
+                            card.style.display = 'block';
+                            card.style.animation = 'fadeInUp 0.5s ease forwards';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+
+        // Add fade in animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
-</html>
+</html> 
