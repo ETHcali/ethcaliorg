@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
+    
+    let allEventsByMonth = {}; // Store all events data for filtering
 
     // Function to parse date string
     function parseDate(dateStr) {
@@ -38,19 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `);
         }
         
-        // Social media link
-        if (social && social !== '-') {
-            const socialLink = social.startsWith('http') ? social : `https://${social}`;
-            links.push(`
-                <a href="${socialLink}" 
-                   target="_blank" 
-                   title="Redes Sociales" 
-                   class="event-link social">
-                    <i class="fas fa-share-alt"></i>
-                </a>
-            `);
-        }
-        
         // Chat link
         if (chat && chat !== '-') {
             const chatLink = chat.startsWith('t.me') 
@@ -70,6 +59,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         return links.join('');
+    }
+
+    // Function to get the primary event link for the Discover button
+    function getPrimaryEventLink(website, social) {
+        // Prioritize website, then social media
+        if (website && website !== '-') {
+            return website.startsWith('http') ? website : 'https://' + website;
+        } else if (social && social !== '-') {
+            return social.startsWith('http') ? social : `https://${social}`;
+        }
+        return null;
     }
 
     // Fetch the CSV file
@@ -118,70 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // Store events data globally for filtering
+            allEventsByMonth = eventsByMonth;
+
             // Sort months chronologically
             const sortedMonths = monthNames.filter(month => eventsByMonth[month]);
 
-            // Render events grouped by month
-            sortedMonths.forEach(month => {
-                // Create month section
-                const monthSection = document.createElement('div');
-                monthSection.classList.add('events-month-section');
-                
-                // Month header
-                const monthHeader = document.createElement('h2');
-                monthHeader.classList.add('events-month-header');
-                monthHeader.textContent = month;
-                monthSection.appendChild(monthHeader);
-                
-                // Events grid for this month
-                const monthEventsGrid = document.createElement('div');
-                monthEventsGrid.classList.add('events-month-grid');
-                
-                // Sort events within the month
-                const monthEvents = eventsByMonth[month].sort((a, b) => {
-                    const dateA = parseDate(a.startDate);
-                    const dateB = parseDate(b.startDate);
-                    return dateA - dateB;
-                });
-                
-                // Create event cards
-                monthEvents.forEach(event => {
-                    const eventCard = document.createElement('div');
-                    eventCard.classList.add('event-card');
-                    
-                    // Determine date display
-                    const dateDisplay = event.startDate === event.endDate 
-                        ? event.startDate 
-                        : `${event.startDate} - ${event.endDate}`;
-                    
-                    // Construct event card HTML
-                    eventCard.innerHTML = `
-                        <div class="event-card-header">
-                            <h2>${event.name}</h2>
-                            <div class="event-date">
-                                <i class="fas fa-calendar-alt"></i> ${dateDisplay}
-                            </div>
-                        </div>
-                        <div class="event-card-body">
-                            <div class="event-location">
-                                <i class="fas fa-map-marker-alt"></i> ${event.location}
-                            </div>
-                            <div class="event-links">
-                                ${createSocialLinks(event.website, event.social, event.chat)}
-                            </div>
-                        </div>
-                    `;
-                    
-                    // Add to month grid
-                    monthEventsGrid.appendChild(eventCard);
-                });
-                
-                // Add month grid to month section
-                monthSection.appendChild(monthEventsGrid);
-                
-                // Add month section to main container
-                eventsContainer.appendChild(monthSection);
-            });
+            // Render all events with month headers initially
+            renderEvents(sortedMonths, eventsByMonth, true);
+            
+            // Setup month filtering
+            setupMonthFiltering();
         })
         .catch(error => {
             console.error('Error loading events:', error);
@@ -191,4 +138,146 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         });
+
+    // Function to render events with proper grid distribution
+    function renderEvents(months, eventsByMonth, showMonthHeaders = true) {
+        eventsContainer.innerHTML = ''; // Clear container
+        
+        // Collect all events with month info
+        const allEvents = [];
+        months.forEach(month => {
+            const monthEvents = eventsByMonth[month].sort((a, b) => {
+                const dateA = parseDate(a.startDate);
+                const dateB = parseDate(b.startDate);
+                return dateA - dateB;
+            });
+            
+            monthEvents.forEach(event => {
+                allEvents.push({ ...event, month });
+            });
+        });
+        
+        // Create main events grid
+        const eventsGrid = document.createElement('div');
+        eventsGrid.classList.add('events-grid');
+        
+        // If showing multiple months and headers are enabled, organize by month
+        if (showMonthHeaders && months.length > 1) {
+            months.forEach(month => {
+                // Month header
+                const monthHeader = document.createElement('div');
+                monthHeader.classList.add('month-header');
+                monthHeader.innerHTML = `<h2 class="month-title">${month.toUpperCase()}</h2>`;
+                eventsGrid.appendChild(monthHeader);
+                
+                // Events for this month
+                const monthEvents = allEvents.filter(event => event.month === month);
+                monthEvents.forEach(event => {
+                    eventsGrid.appendChild(createEventCard(event));
+                });
+            });
+        } else {
+            // Single month or all events mixed - just add all cards
+            allEvents.forEach(event => {
+                eventsGrid.appendChild(createEventCard(event));
+            });
+        }
+        
+        eventsContainer.appendChild(eventsGrid);
+    }
+    
+    // Function to create a single event card
+    function createEventCard(event) {
+        const card = document.createElement('div');
+        card.classList.add('event-card');
+        card.setAttribute('data-month', new Date(event.date).getMonth());
+
+        // Determine link priority: website > social media
+        const websiteLink = event.website || event.twitter || event.chat;
+        const websiteLinkType = event.website ? 'website' : (event.twitter ? 'twitter' : 'chat');
+
+        // Format date with full month name and day
+        const eventDate = new Date(event.date);
+        const formattedDate = eventDate.toLocaleDateString('es-ES', { 
+            weekday: 'long', 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric' 
+        });
+
+        card.innerHTML = `
+            <div class="event-card-header">
+                <h2>${event.name}</h2>
+                <div class="event-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    ${formattedDate}
+                </div>
+            </div>
+            <div class="event-card-body">
+                <div class="event-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ${event.city}, ${event.country}
+                </div>
+            </div>
+            <div class="event-links">
+                ${websiteLink ? `
+                    <a href="${websiteLink}" target="_blank" class="event-link ${websiteLinkType}">
+                        <i class="fas fa-${websiteLinkType === 'website' ? 'globe' : (websiteLinkType === 'twitter' ? 'twitter' : 'comments')}"></i>
+                        ${websiteLinkType === 'website' ? 'Sitio Web' : (websiteLinkType === 'twitter' ? 'Twitter' : 'Chat')}
+                    </a>
+                ` : ''}
+                ${event.twitter && websiteLinkType !== 'twitter' ? `
+                    <a href="${event.twitter}" target="_blank" class="event-link twitter">
+                        <i class="fab fa-twitter"></i>
+                        Twitter
+                    </a>
+                ` : ''}
+            </div>
+        `;
+
+        return card;
+    }
+
+    // Function to setup month filtering
+    function setupMonthFiltering() {
+        const monthButtons = document.querySelectorAll('.month-btn');
+        
+        monthButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Remove active class from all buttons
+                monthButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                e.target.classList.add('active');
+                
+                const selectedMonth = e.target.getAttribute('data-month');
+                filterEventsByMonth(selectedMonth);
+            });
+        });
+    }
+
+    // Function to filter events by month
+    function filterEventsByMonth(monthFilter) {
+        if (monthFilter === 'all') {
+            // Show all months with headers
+            const sortedMonths = monthNames.filter(month => allEventsByMonth[month]);
+            renderEvents(sortedMonths, allEventsByMonth, true);
+        } else {
+            // Show only selected month without headers (single month)
+            const monthIndex = parseInt(monthFilter);
+            const selectedMonthName = monthNames[monthIndex];
+            
+            if (allEventsByMonth[selectedMonthName]) {
+                const filteredEvents = { [selectedMonthName]: allEventsByMonth[selectedMonthName] };
+                renderEvents([selectedMonthName], filteredEvents, false);
+            } else {
+                eventsContainer.innerHTML = `
+                    <div class="no-events-message">
+                        <h3>No hay eventos en ${selectedMonthName}</h3>
+                        <p>Selecciona otro mes para ver los eventos disponibles.</p>
+                    </div>
+                `;
+            }
+        }
+    }
 }); 
