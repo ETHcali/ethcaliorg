@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Global function to share event details
-function shareEvent(eventName, location, date) {
+window.shareEvent = function(eventName, location, date) {
     if (navigator.share) {
         navigator.share({
             title: `${eventName} - Ethereum Cali`,
@@ -305,14 +305,18 @@ function shareEvent(eventName, location, date) {
     } else {
         // Fallback: copy to clipboard
         const shareText = `${eventName}\nFecha: ${date}\nLugar: ${location}\n${window.location.href}`;
-        navigator.clipboard.writeText(shareText).then(() => {
-            // Show feedback
-            const button = event.target.closest('.event-share-btn');
-            const originalIcon = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i>';
-            setTimeout(() => {
-                button.innerHTML = originalIcon;
-            }, 2000);
-        }).catch(console.error);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(shareText).then(() => {
+                // Show feedback - find the button that was clicked
+                const buttons = document.querySelectorAll('.event-share-btn');
+                buttons.forEach(button => {
+                    const originalIcon = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => {
+                        button.innerHTML = originalIcon;
+                    }, 2000);
+                });
+            }).catch(console.error);
+        }
     }
-}
+};
