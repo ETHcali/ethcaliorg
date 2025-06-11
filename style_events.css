@@ -209,79 +209,106 @@ body {
 
 .official-events-section {
     background-color: var(--bg-darker);
-    padding: 4rem 0;
-    border-top: 1px solid var(--border-color);
+    padding: 4rem 2rem;
+    margin-bottom: 3rem;
+    border-radius: 12px;
 }
 
 .official-events-content {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+    gap: 3rem;
 }
 
 .official-events-text {
-    flex: 1;
+    flex: 2;
 }
 
-.official-events-text p {
-    margin-bottom: 1rem;
+.official-events-text h2 {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-family: var(--font-heading);
 }
 
 .official-events-text ul {
     list-style-type: none;
-    padding-left: 0;
-    margin-bottom: 1.5rem;
+    padding: 0;
+    margin-bottom: 2rem;
 }
 
 .official-events-text ul li {
     position: relative;
-    padding-left: 1.5rem;
-    margin-bottom: 0.5rem;
+    padding-left: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
 }
 
 .official-events-text ul li::before {
     content: '•';
-    color: var(--accent-color);
     position: absolute;
     left: 0;
+    color: var(--accent-color);
     font-weight: bold;
 }
 
 .official-events-image {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    max-width: 300px;
 }
 
 .official-events-image img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-.official-events-image img:hover {
-    transform: scale(1.05);
+.btn-primary {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-@media (max-width: 768px) {
+.btn-primary:hover {
+    background-color: color-mix(in srgb, var(--accent-color) 80%, white);
+    transform: translateY(-3px);
+}
+
+.btn-primary i {
+    margin-left: 0.5rem;
+}
+
+@media (max-width: 992px) {
     .official-events-content {
         flex-direction: column;
         text-align: center;
     }
 
-    .official-events-text ul {
-        text-align: left;
-        align-self: center;
+    .official-events-text ul li {
+        padding-left: 0;
+    }
+
+    .official-events-text ul li::before {
+        display: none;
     }
 
     .official-events-image {
+        max-width: 250px;
         margin-top: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .official-events-section {
+        padding: 2rem 1rem;
+    }
+
+    .official-events-content {
+        gap: 1.5rem;
     }
 }
 
