@@ -1,11 +1,23 @@
 {
-    "name": "ethcali-web",
+    "name": "ethcaliorg",
     "version": "1.0.0",
-    "description": "Ethereum Cali Website",
+    "description": "Ethereum Cali Community Website",
     "scripts": {
-        "start": "npx http-server ./ethcaliorg -p 8000 -c-1",
-        "build": "mkdir -p public && cp -r ethcaliorg/* public/"
+        "build": "mkdir -p public && cp -r *.html *.css *.js *.csv team branding 'Sarun Pro' public/ 2>/dev/null || cp -r *.html *.css *.js *.csv team branding public/",
+        "start": "npx http-server . -p 8000 -c-1"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wmb81321/ethcaliorg.git"
+    },
+    "keywords": [
+        "ethereum",
+        "cali",
+        "community",
+        "web3"
+    ],
+    "author": "William Martinez",
+    "license": "ISC",
     "dependencies": {
         "http-server": "^14.1.1"
     }

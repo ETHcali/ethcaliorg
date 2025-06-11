@@ -31,4 +31,8 @@
 .env.test.local
 .env.production.local
 node_modules/
-.git/ 
+.git/
+.gitignore
+README.md
+
+# Keep everything else 
