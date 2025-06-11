@@ -1,24 +1,42 @@
 {
-  "buildCommand": "echo 'No build step needed for static site'",
-  "outputDirectory": "./",
-  "rewrites": [
+  "builds": [
     {
-      "source": "/",
-      "destination": "/ethcali.html"
+      "src": "*.html",
+      "use": "@vercel/static"
     },
     {
-      "source": "/about",
-      "destination": "/about.html"
+      "src": "*.css",
+      "use": "@vercel/static"
     },
     {
-      "source": "/events",
-      "destination": "/events.html"
+      "src": "*.js",
+      "use": "@vercel/static"
     },
     {
-      "source": "/venues",
-      "destination": "/ethcalivenues.html"
+      "src": "*.csv",
+      "use": "@vercel/static"
     }
   ],
-  "cleanUrls": true,
-  "trailingSlash": false
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/ethcali.html"
+    },
+    {
+      "src": "/index.html",
+      "dest": "/ethcali.html"
+    },
+    {
+      "src": "/events",
+      "dest": "/events.html"
+    },
+    {
+      "src": "/about",
+      "dest": "/about.html"
+    },
+    {
+      "src": "/venues",
+      "dest": "/ethcalivenues.html"
+    }
+  ]
 }

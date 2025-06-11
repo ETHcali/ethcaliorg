@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETH Cali - Ethereum Community in Cali, Colombia</title>
+    <meta http-equiv="refresh" content="0; url=./ethcali.html">
+    <link rel="canonical" href="./ethcali.html">
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Join the vibrant Ethereum community in Cali, Colombia. Discover global Ethereum events, local venues, and connect with builders and innovators.">
+    <meta name="keywords" content="Ethereum, Cali, Colombia, blockchain, crypto, community, events, ETH">
+    <meta name="author" content="ETH Cali Team">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ethcali.vercel.app/">
+    <meta property="og:title" content="ETH Cali - Ethereum Community in Cali, Colombia">
+    <meta property="og:description" content="Join the vibrant Ethereum community in Cali, Colombia. Discover global Ethereum events, local venues, and connect with builders and innovators.">
+    <meta property="og:image" content="./branding/eth-cali-logo.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ethcali.vercel.app/">
+    <meta property="twitter:title" content="ETH Cali - Ethereum Community in Cali, Colombia">
+    <meta property="twitter:description" content="Join the vibrant Ethereum community in Cali, Colombia. Discover global Ethereum events, local venues, and connect with builders and innovators.">
+    <meta property="twitter:image" content="./branding/eth-cali-logo.png">
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        
+        .redirect-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: url('./branding/eth-cali-logo.png') center/contain no-repeat;
+            border-radius: 50%;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        a {
+            color: #40e0d0;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-container">
+        <div class="logo"></div>
+        <h1>ETH Cali</h1>
+        <p>Redirecting to the main site...</p>
+        <div class="spinner"></div>
+        <p>If you're not redirected automatically, <a href="./ethcali.html">click here</a>.</p>
+    </div>
+    
+    <script>
+        // Fallback redirect in case meta refresh doesn't work
+        setTimeout(() => {
+            window.location.href = './ethcali.html';
+        }, 1000);
+    </script>
+</body>
+</html> 
