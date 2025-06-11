@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Eventos de Ethereum en 2025">
-    <link rel="icon" type="image/png" href="/branding/Open SEA - Ethereum Cali3.png.png">
+    <link rel="icon" type="image/png" href="/branding/faviconethcali38x38">
     <title>Ethereum | Eventos Internacionales 2025</title>
     
     <link rel="stylesheet" href="shared-components.css">
@@ -13,10 +13,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function(){
+            $.get("navbar.html", function(data) {
+                $("body").prepend(data);
+            });
+        });
+    </script>
 </head>
 <body>
-    <div id="navbar-container"></div>
-
     <main class="events-container">
         <!-- Hero Section -->
         <header class="events-hero">
