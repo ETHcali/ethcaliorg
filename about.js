@@ -80,7 +80,7 @@ class TeamManager {
                 role: "Full Stack Developer",
                 description: "Core member desde Abril 2025. Desarrollador full stack del ecosistema.",
                 status: "Core",
-                image: "./team/cristobal valencia.jpg",
+                image: "./team/cristobal.jpg",
                 linkedin: "https://www.linkedin.com/in/cristobalvalenciaceron",
                 twitter: ""
             },

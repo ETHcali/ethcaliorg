@@ -13,7 +13,7 @@
     --font-body: 'Space Mono', monospace;
     --cyber-primary: #62688F;
     --cyber-secondary: #5A6FBF;
-    --cyber-accent: #ff0066;
+    --cyber-accent: #001aff;
     --cyber-dark: #000812;
     --cyber-dark-alt: #001122;
     --cyber-grid: rgba(98, 104, 143, 0.1);
@@ -695,13 +695,6 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
-    background: linear-gradient(135deg, var(--cyber-dark-alt), var(--cyber-dark));
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.card-avatar img:hover {
-    transform: scale(1.05);
 }
 
 .card-avatar::before {
