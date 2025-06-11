@@ -10,13 +10,7 @@
     <link rel="stylesheet" href="shared-components.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="venues.js"></script>
-    <script>
-        $(function(){
-            $.get("navbar.html", function(data) {
-                $("body").prepend(data);
-            });
-        });
-    </script>
+    <script src="navbar.js"></script>
     <style>
         /* Cyber Venues Page Styles */
         :root {
@@ -500,6 +494,9 @@
     </style>
 </head>
 <body>
+    <div id="navbar-container"></div>
+    <div class="cursor"></div>
+    <div class="noise-overlay"></div>
     <main class="venues-hero">
         <div class="container">
             <div class="hero-content">

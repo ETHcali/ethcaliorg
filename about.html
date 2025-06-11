@@ -15,16 +15,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(function(){
-            $.get("navbar.html", function(data) {
-                $("body").prepend(data);
-            });
-        });
-    </script>
+    <script src="navbar.js"></script>
 </head>
 <body>
     <div id="navbar-container"></div>
+    <div class="cursor"></div>
+    <div class="noise-overlay"></div>
 
     <main class="about-container">
         <!-- Hero Section -->
@@ -118,7 +114,6 @@
     <div id="footer-container"></div>
     
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
-    <script src="navbar.js"></script>
     <script src="about.js"></script>
 </body>
 </html> 

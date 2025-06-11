@@ -12,15 +12,12 @@
     <link rel="stylesheet" href="style_events.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(function(){
-            $.get("navbar.html", function(data) {
-                $("body").prepend(data);
-            });
-        });
-    </script>
+    <script src="navbar.js"></script>
 </head>
 <body>
+    <div id="navbar-container"></div>
+    <div class="cursor"></div>
+    <div class="noise-overlay"></div>
     <main class="events-container">
         <!-- Hero Section -->
         <header class="events-hero">
@@ -142,7 +139,6 @@
     <div id="footer-container"></div>
 
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
-    <script src="navbar.js"></script>
     <script src="events.js"></script>
 </body>
 </html> 
