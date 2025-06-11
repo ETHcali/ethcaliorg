@@ -2,7 +2,32 @@
   "version": 2,
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/", "dest": "/ethcali.html" }
-  ]
-
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/404.html"
+    },
+    {
+      "src": "/index",
+      "dest": "/"
+    },
+    {
+      "src": "/index.html",
+      "dest": "/"
+    },
+    {
+      "src": "/about.html",
+      "dest": "/about"
+    },
+    {
+      "src": "/events.html",
+      "dest": "/events"
+    },
+    {
+      "src": "/([^.]+)\\.html$",
+      "dest": "/$1"
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
