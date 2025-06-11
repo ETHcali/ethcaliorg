@@ -190,48 +190,60 @@ document.addEventListener('DOMContentLoaded', () => {
     function createEventCard(event) {
         const card = document.createElement('div');
         card.classList.add('event-card');
-        card.setAttribute('data-month', new Date(event.date).getMonth());
+        
+        // Parse the start date to get proper month
+        const startDate = parseDate(event.startDate);
+        card.setAttribute('data-month', startDate.getMonth());
 
-        // Determine link priority: website > social media
-        const websiteLink = event.website || event.twitter || event.chat;
-        const websiteLinkType = event.website ? 'website' : (event.twitter ? 'twitter' : 'chat');
+        // Format date range
+        let dateDisplay = event.startDate;
+        if (event.endDate && event.endDate !== '-' && event.endDate !== event.startDate) {
+            dateDisplay += ` - ${event.endDate}`;
+        }
 
-        // Format date with full month name and day
-        const eventDate = new Date(event.date);
-        const formattedDate = eventDate.toLocaleDateString('es-ES', { 
-            weekday: 'long', 
-            day: 'numeric', 
-            month: 'long', 
-            year: 'numeric' 
-        });
+        // Get primary link for discover button
+        const primaryLink = getPrimaryEventLink(event.website, event.social);
+        
+        // Create social links
+        const socialLinks = createSocialLinks(event.website, event.social, event.chat);
 
         card.innerHTML = `
             <div class="event-card-header">
-                <h2>${event.name}</h2>
+                <div class="event-card-title">
+                    <h3>${event.name}</h3>
+                    <button class="event-share-btn" onclick="shareEvent('${event.name}', '${event.location}', '${dateDisplay}')">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
                 <div class="event-date">
                     <i class="fas fa-calendar-alt"></i>
-                    ${formattedDate}
+                    <span>${dateDisplay}</span>
                 </div>
             </div>
+            
             <div class="event-card-body">
                 <div class="event-location">
                     <i class="fas fa-map-marker-alt"></i>
-                    ${event.city}, ${event.country}
+                    <span>${event.location || 'Ubicación por confirmar'}</span>
+                </div>
+                
+                <div class="event-links">
+                    ${socialLinks}
                 </div>
             </div>
-            <div class="event-links">
-                ${websiteLink ? `
-                    <a href="${websiteLink}" target="_blank" class="event-link ${websiteLinkType}">
-                        <i class="fas fa-${websiteLinkType === 'website' ? 'globe' : (websiteLinkType === 'twitter' ? 'twitter' : 'comments')}"></i>
-                        ${websiteLinkType === 'website' ? 'Sitio Web' : (websiteLinkType === 'twitter' ? 'Twitter' : 'Chat')}
+            
+            <div class="event-card-footer">
+                ${primaryLink ? `
+                    <a href="${primaryLink}" target="_blank" class="btn-discover">
+                        <span>Discover</span>
+                        <i class="fas fa-external-link-alt"></i>
                     </a>
-                ` : ''}
-                ${event.twitter && websiteLinkType !== 'twitter' ? `
-                    <a href="${event.twitter}" target="_blank" class="event-link twitter">
-                        <i class="fab fa-twitter"></i>
-                        Twitter
-                    </a>
-                ` : ''}
+                ` : `
+                    <div class="btn-discover disabled">
+                        <span>Coming Soon</span>
+                        <i class="fas fa-clock"></i>
+                    </div>
+                `}
             </div>
         `;
 
@@ -280,4 +292,27 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-}); 
+});
+
+// Global function to share event details
+function shareEvent(eventName, location, date) {
+    if (navigator.share) {
+        navigator.share({
+            title: `${eventName} - Ethereum Cali`,
+            text: `¡Únete a ${eventName} en ${location}! Fecha: ${date}`,
+            url: window.location.href
+        }).catch(console.error);
+    } else {
+        // Fallback: copy to clipboard
+        const shareText = `${eventName}\nFecha: ${date}\nLugar: ${location}\n${window.location.href}`;
+        navigator.clipboard.writeText(shareText).then(() => {
+            // Show feedback
+            const button = event.target.closest('.event-share-btn');
+            const originalIcon = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => {
+                button.innerHTML = originalIcon;
+            }, 2000);
+        }).catch(console.error);
+    }
+}
