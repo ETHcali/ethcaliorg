@@ -316,6 +316,80 @@
             transform: translateX(5px);
         }
 
+        /* Stats Section */
+        .stats-section {
+            margin-bottom: 3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: var(--cyber-bg-card);
+            border: 1px solid var(--cyber-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyber-primary);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 20px var(--cyber-glow);
+        }
+
+        .stat-card.total-stat {
+            border-color: var(--cyber-primary);
+            background: linear-gradient(135deg, rgba(98, 104, 143, 0.1) 0%, rgba(90, 111, 191, 0.1) 100%);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(98, 104, 143, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cyber-primary);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px var(--cyber-glow);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--cyber-text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
         /* Filter Section */
         .filter-section {
             margin-bottom: 2rem;
@@ -372,6 +446,19 @@
             .container {
                 padding: 0 1rem;
             }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
             
             .venues-grid {
                 grid-template-columns: 1fr;
@@ -425,6 +512,17 @@
 
     <section class="venues-section">
         <div class="container">
+            <!-- Venue Statistics -->
+            <div class="stats-section">
+                <h2 style="font-family: 'Orbitron', monospace; color: var(--cyber-primary); text-align: center; margin-bottom: 2rem;">Estadísticas de Venues</h2>
+                <div id="venue-stats">
+                    <!-- Dynamic stats will be loaded here -->
+                    <div style="text-align: center; color: var(--cyber-text-dim);">
+                        <p>Loading statistics...</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="filter-section">
                 <h2 style="font-family: 'Orbitron', monospace; color: var(--cyber-primary); text-align: center; margin-bottom: 1rem;">Filtrar por Tipo</h2>
                 <div class="filter-buttons">

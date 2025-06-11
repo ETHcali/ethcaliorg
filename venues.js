@@ -107,7 +107,93 @@ document.addEventListener('DOMContentLoaded', () => {
             venuesContainer.appendChild(card);
         });
         
+        // Update statistics
+        updateVenueStats(venues);
+        
         console.log(`Displayed ${venues.length} venues`);
+    }
+
+    // Update venue statistics
+    function updateVenueStats(venues) {
+        // Calculate statistics
+        const stats = calculateVenueStats(venues);
+        
+        // Update stats display
+        const statsContainer = document.getElementById('venue-stats');
+        if (statsContainer) {
+            statsContainer.innerHTML = createStatsHTML(stats);
+            setupStatCardFiltering();
+        }
+    }
+
+    // Setup stat card filtering functionality
+    function setupStatCardFiltering() {
+        const statCards = document.querySelectorAll('.stat-card');
+        
+        statCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const type = this.getAttribute('data-type');
+                const filterBtns = document.querySelectorAll('.filter-btn');
+                
+                // Update filter buttons
+                filterBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-filter') === (type || 'all')) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                // Filter venues
+                filterVenues(type || 'all');
+            });
+        });
+    }
+
+    // Calculate venue statistics
+    function calculateVenueStats(venues) {
+        const typeStats = {};
+        let totalVenues = venues.length;
+        
+        venues.forEach(venue => {
+            const type = venue.type;
+            if (typeStats[type]) {
+                typeStats[type]++;
+            } else {
+                typeStats[type] = 1;
+            }
+        });
+        
+        return {
+            total: totalVenues,
+            byType: typeStats
+        };
+    }
+
+    // Create statistics HTML
+    function createStatsHTML(stats) {
+        let html = `
+            <div class="stats-grid">
+                <div class="stat-card total-stat">
+                    <div class="stat-icon">🏟️</div>
+                    <div class="stat-number">${stats.total}</div>
+                    <div class="stat-label">Total Venues</div>
+                </div>
+        `;
+        
+        // Add type statistics
+        Object.entries(stats.byType).forEach(([type, count]) => {
+            const icon = getVenueIcon(type);
+            html += `
+                <div class="stat-card type-stat" data-type="${formatTypeForFilter(type)}">
+                    <div class="stat-icon">${icon}</div>
+                    <div class="stat-number">${count}</div>
+                    <div class="stat-label">${type}</div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        return html;
     }
 
     // Create individual venue card
