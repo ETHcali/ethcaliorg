@@ -144,7 +144,23 @@ class TeamManager {
     }
 
     init() {
+        this.preloadImages();
         this.renderTeam();
+    }
+
+    preloadImages() {
+        this.teamMembers.forEach(member => {
+            if (member.image) {
+                const img = new Image();
+                img.onload = () => {
+                    console.log(`✅ Loaded: ${member.image}`);
+                };
+                img.onerror = () => {
+                    console.error(`❌ Failed to load: ${member.image}`);
+                };
+                img.src = member.image;
+            }
+        });
     }
 
     renderTeam() {
@@ -173,7 +189,11 @@ class TeamManager {
             <div class="card-header">
                 <div class="card-avatar">
                     ${member.image ? 
-                        `<img src="${member.image}" alt="${member.name}" />` :
+                        `<img src="${member.image}" alt="${member.name}" loading="lazy" 
+                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
+                              onload="this.style.opacity='1';" 
+                              style="opacity:0; transition: opacity 0.3s ease;" />
+                         <div class="card-placeholder" style="display:none;">${member.name.charAt(0)}</div>` :
                         `<div class="card-placeholder">${member.name.charAt(0)}</div>`
                     }
                 </div>

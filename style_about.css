@@ -695,6 +695,13 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+    background: linear-gradient(135deg, var(--cyber-dark-alt), var(--cyber-dark));
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card-avatar img:hover {
+    transform: scale(1.05);
 }
 
 .card-avatar::before {
