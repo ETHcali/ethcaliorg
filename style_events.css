@@ -271,7 +271,7 @@ body {
 /* CLEAN EVENT CARDS */
 .event-card {
     background: rgba(98, 104, 143, 0.1);
-    border: 1px solid rgba(98, 104, 143, 0.3);
+    border: 10px solid rgba(98, 104, 143, 0.3);
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;

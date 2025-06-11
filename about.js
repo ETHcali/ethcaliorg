@@ -6,6 +6,7 @@
 class TeamManager {
     constructor() {
         this.teamContainer = document.getElementById('team-grid');
+        this.basePath = this.getBasePath();
         this.teamMembers = [
             // Core Team Members
             {
@@ -13,7 +14,7 @@ class TeamManager {
                 role: "Economist, Project Manager, Web3 Hacker",
                 description: "Core member desde Octubre 2022. Visionario y líder del ecosistema Ethereum Cali.",
                 status: "Core",
-                image: "team/william.png",
+                image: "./team/william.png",
                 linkedin: "https://www.linkedin.com/in/williammartinez8/",
                 twitter: "https://twitter.com/0xwmb",
                 github: "https://github.com/wmb81321"
@@ -23,7 +24,7 @@ class TeamManager {
                 role: "Researcher, Web3 Hacker", 
                 description: "Core member desde Octubre 2022. Investigador y hacker especializado en Web3.",
                 status: "Core",
-                image: "team/Juanurrea.png",
+                image: "./team/Juanurrea.png",
                 linkedin: "",
                 twitter: "https://twitter.com/juan21179"
             },
@@ -32,7 +33,7 @@ class TeamManager {
                 role: "Economist, Trader, Web3 Researcher",
                 description: "Core member desde Octubre 2023. Economista y trader especializado en investigación Web3.",
                 status: "Core", 
-                image: "team/filadelfo.png",
+                image: "./team/filadelfo.png",
                 linkedin: "https://www.linkedin.com/in/filadelfo-caicedo/",
                 twitter: "https://twitter.com/Filatrader",
                 github: "https://github.com/phill900"
@@ -42,7 +43,7 @@ class TeamManager {
                 role: "Community Manager, Digital Marketing",
                 description: "Core member desde Febrero 2024. Gestora de comunidad y especialista en marketing digital.",
                 status: "Core",
-                image: "team/maria del mar.png",
+                image: "./team/maria del mar.png",
                 linkedin: "https://www.linkedin.com/in/mariadelmarborrerog/",
                 twitter: "https://twitter.com/marimarketingw3"
             },
@@ -51,7 +52,7 @@ class TeamManager {
                 role: "WEB3 Developer",
                 description: "Core member desde Agosto 2023. Desarrollador especializado en tecnologías Web3.",
                 status: "Core",
-                image: "team/juan jose bailon.png",
+                image: "./team/juan jose bailon.png",
                 linkedin: "https://linkedin.com/in/juan-bailon-ab3767192",
                 twitter: "",
                 github: "https://github.com/juanbailon"
@@ -61,7 +62,7 @@ class TeamManager {
                 role: "Business Developer, NFT Strategy",
                 description: "Core member desde Diciembre 2022. Desarrollador de negocios y estratega NFT.",
                 status: "Core",
-                image: "team/juan esteban sierra.png",
+                image: "./team/juan esteban sierra.png",
                 linkedin: "https://www.linkedin.com/in/juanfteth/",
                 twitter: "https://twitter.com/juaNFT_ETH"
             },
@@ -70,7 +71,7 @@ class TeamManager {
                 role: "Front End Developer",
                 description: "Core member desde Noviembre 2023. Desarrollador frontend especializado en interfaces Web3.",
                 status: "Core",
-                image: "team/miguel bolanos.png",
+                image: "./team/miguel bolanos.png",
                 linkedin: "",
                 twitter: "https://twitter.com/MAB015"
             },
@@ -79,7 +80,7 @@ class TeamManager {
                 role: "Full Stack Developer",
                 description: "Core member desde Abril 2025. Desarrollador full stack del ecosistema.",
                 status: "Core",
-                image: "team/cristobal valencia.jpg",
+                image: "./team/cristobal valencia.jpg",
                 linkedin: "https://www.linkedin.com/in/cristobalvalenciaceron",
                 twitter: ""
             },
@@ -88,7 +89,7 @@ class TeamManager {
                 role: "Lawyer",
                 description: "Core member desde Mayo 2025. Asesor legal especializado en tecnologías blockchain.",
                 status: "Core",
-                image: "team/juan david burgos.jpg",
+                image: "./team/juan david burgos.jpg",
                 linkedin: "https://www.linkedin.com/in/juan-david-burgos-giraldo-0000000000",
                 twitter: ""
             },
@@ -98,7 +99,7 @@ class TeamManager {
                 role: "Project Manager, Web3 Product Manager",
                 description: "Contribuidora desde Mayo 2024. Gestora de proyectos y productos Web3.",
                 status: "Contribuidor",
-                image: "team/adriana_lucema.png",
+                image: "./team/adriana_lucema.png",
                 linkedin: "https://www.linkedin.com/in/adriana-lucema/",
                 twitter: "https://twitter.com/AdriLucema"
             },
@@ -107,7 +108,7 @@ class TeamManager {
                 role: "Educador, Web3 Hacker",
                 description: "Contribuidor desde Enero 2023. Educador y hacker especializado en Web3.",
                 status: "Contribuidor",
-                image: "team/joseluisrivas.png",
+                image: "./team/joseluisrivas.png",
                 linkedin: "https://www.linkedin.com/in/jlrivasv/",
                 twitter: "https://twitter.com/cointaigas"
             },
@@ -116,7 +117,7 @@ class TeamManager {
                 role: "Entrepreneur, WEB3 Developer",
                 description: "Contribuidor desde Enero 2023. Emprendedor y desarrollador Web3.",
                 status: "Contribuidor",
-                image: "team/camilosacanamboy.png",
+                image: "./team/camilosacanamboy.png",
                 linkedin: "",
                 twitter: "https://twitter.com/camilosaka"
             },
@@ -125,7 +126,7 @@ class TeamManager {
                 role: "Entrepreneur",
                 description: "Contribuidor desde Octubre 2022. Emprendedor del ecosistema.",
                 status: "Contribuidor",
-                image: "team/andresjimenez.png",
+                image: "./team/andresjimenez.png",
                 linkedin: "",
                 twitter: "https://twitter.com/Andresjimenezv"
             },
@@ -134,7 +135,7 @@ class TeamManager {
                 role: "Entrepreneur, Web3 Hacker",
                 description: "Contribuidor desde Octubre 2022. Emprendedor y hacker Web3.",
                 status: "Contribuidor",
-                image: "team/camilotobar.png",
+                image: "./team/camilotobar.png",
                 linkedin: "",
                 twitter: ""
             }
@@ -148,17 +149,33 @@ class TeamManager {
         this.renderTeam();
     }
 
+    getBasePath() {
+        // Get the current path to determine if we need to adjust image paths
+        const currentPath = window.location.pathname;
+        const isCleanUrl = !currentPath.includes('.html');
+        return isCleanUrl && currentPath !== '/' ? '../' : './';
+    }
+
     preloadImages() {
         this.teamMembers.forEach(member => {
             if (member.image) {
                 const img = new Image();
+                const fullImagePath = member.image.startsWith('./') ? 
+                    member.image : `${this.basePath}${member.image}`;
+                
                 img.onload = () => {
-                    console.log(`✅ Loaded: ${member.image}`);
+                    console.log(`✅ Loaded: ${fullImagePath}`);
                 };
                 img.onerror = () => {
-                    console.error(`❌ Failed to load: ${member.image}`);
+                    console.error(`❌ Failed to load: ${fullImagePath}`);
+                    // Try alternative path
+                    const altImg = new Image();
+                    const altPath = member.image.replace('./', '/');
+                    altImg.onload = () => console.log(`✅ Alternative loaded: ${altPath}`);
+                    altImg.onerror = () => console.error(`❌ Alternative failed: ${altPath}`);
+                    altImg.src = altPath;
                 };
-                img.src = member.image;
+                img.src = fullImagePath;
             }
         });
     }
@@ -190,7 +207,7 @@ class TeamManager {
                 <div class="card-avatar">
                     ${member.image ? 
                         `<img src="${member.image}" alt="${member.name}" loading="lazy" 
-                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
+                              onerror="console.error('Image failed:', this.src); this.style.display='none'; this.nextElementSibling.style.display='flex';" 
                               onload="this.style.opacity='1';" 
                               style="opacity:0; transition: opacity 0.3s ease;" />
                          <div class="card-placeholder" style="display:none;">${member.name.charAt(0)}</div>` :

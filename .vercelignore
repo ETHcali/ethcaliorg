@@ -1,0 +1,34 @@
+# Vercel ignore file
+# Make sure these important assets are NOT ignored
+
+# Don't ignore team images
+!team/
+!team/*.png
+!team/*.jpg
+!team/*.jpeg
+
+# Don't ignore branding assets
+!branding/
+!branding/*.png
+!branding/*.jpg
+!branding/*.svg
+
+# Don't ignore fonts
+!Sarun Pro/
+!Sarun Pro/*.ttf
+!Sarun Pro/*.woff
+!Sarun Pro/*.woff2
+
+# Don't ignore data files
+!*.csv
+
+# Files to ignore
+.DS_Store
+*.log
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+node_modules/
+.git/ 
