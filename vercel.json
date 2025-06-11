@@ -1,45 +1,48 @@
 {
-  "functions": {
-    "*.html": {
-      "runtime": "@vercel/static"
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/ethcali.html"
+    },
+    {
+      "source": "/index",
+      "destination": "/ethcali.html"
+    },
+    {
+      "source": "/home",
+      "destination": "/ethcali.html"
+    },
+    {
+      "source": "/events",
+      "destination": "/events.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/venues",
+      "destination": "/ethcalivenues.html"
     }
-  },
-  "routes": [
+  ],
+  "headers": [
     {
-      "src": "/team/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "source": "/team/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
-      "src": "/branding/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      "src": "^/$",
-      "dest": "/ethcali.html"
-    },
-    {
-      "src": "^/index\\.html$",
-      "dest": "/ethcali.html"
-    },
-    {
-      "src": "^/events/?$",
-      "dest": "/events.html"
-    },
-    {
-      "src": "^/about/?$",
-      "dest": "/about.html"
-    },
-    {
-      "src": "^/venues/?$",
-      "dest": "/ethcalivenues.html"
-    },
-    {
-      "src": "^/home/?$",
-      "dest": "/ethcali.html"
+      "source": "/branding/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ],
   "cleanUrls": true,
