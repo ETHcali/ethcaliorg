@@ -1,31 +1,22 @@
 {
-  "version": 2,
-  "buildCommand": null,
-  "installCommand": null,
-  "outputDirectory": ".",
-  "framework": null,
-  "routes": [
-    { "handle": "filesystem" },
+  "rewrites": [
     {
-      "src": "/",
-      "dest": "/ethcali.html"
+      "source": "/",
+      "destination": "/ethcali.html"
     },
     {
-      "src": "/about",
-      "dest": "/about.html"
+      "source": "/about",
+      "destination": "/about.html"
     },
     {
-      "src": "/events",
-      "dest": "/events.html"
+      "source": "/events",
+      "destination": "/events.html"
     },
     {
-      "src": "/venues",
-      "dest": "/ethcalivenues.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/404.html"
+      "source": "/venues",
+      "destination": "/ethcalivenues.html"
     }
   ],
-  "cleanUrls": true
+  "cleanUrls": true,
+  "trailingSlash": false
 }
