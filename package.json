@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "description": "Ethereum Cali Community Website",
     "scripts": {
-        "build": "rm -rf public && mkdir -p public && cp -r *.html *.css *.js *.csv team branding 'Sarun Pro' public/",
+        "build": "mkdir -p public && cp -r *.html *.css *.js *.csv team branding 'Sarun Pro' public/",
+        "vercel-build": "mkdir -p public && cp -r *.html *.css *.js *.csv team branding 'Sarun Pro' public/",
         "start": "npx http-server . -p 8000 -c-1",
         "dev": "npx live-server --port=8000 --no-browser"
     },
