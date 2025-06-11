@@ -3,8 +3,11 @@
     "version": "1.0.0",
     "description": "Ethereum Cali Community Website",
     "scripts": {
-        "build": "mkdir -p public && cp -r *.html *.css *.js *.csv team branding 'Sarun Pro' public/ 2>/dev/null || cp -r *.html *.css *.js *.csv team branding public/",
-        "start": "npx http-server . -p 8000 -c-1"
+        "start": "npx http-server . -p 8000 -c-1",
+        "dev": "npx live-server --port=8000 --no-browser",
+        "build": "mkdir -p public && cp -r *.html *.css *.js *.csv team branding 'Sarun Pro' public/",
+        "clean": "rm -rf public",
+        "rebuild": "npm run clean && npm run build"
     },
     "repository": {
         "type": "git",
@@ -18,7 +21,8 @@
     ],
     "author": "William Martinez",
     "license": "ISC",
-    "dependencies": {
-        "http-server": "^14.1.1"
+    "devDependencies": {
+        "http-server": "^14.1.1",
+        "live-server": "^1.2.2"
     }
 } 
