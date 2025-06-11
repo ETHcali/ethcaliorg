@@ -1,3 +1,38 @@
+# Ethereum Cali Website
+
+## Project Overview
+A community website for Ethereum Cali, showcasing our mission, events, and community initiatives.
+
+## Local Development
+
+### Prerequisites
+- Node.js (v14 or later)
+- npm
+
+### Setup
+1. Clone the repository
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+### Available Scripts
+- `npm run dev`: Start development server with live reload
+- `npm run start`: Serve the site statically
+- `npm run build`: Build the project for production
+
+## Deployment
+The site is deployed on Vercel, with automatic deployments from the main branch.
+
+## Technologies
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- Vercel Hosting
+
+## License
+ISC License
+
 # ETH Cali Organization Website 🚀
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel&logoColor=white)](https://ethcali.vercel.app)
