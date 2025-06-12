@@ -2,20 +2,6 @@
   "version": 2,
   "public": true,
   "outputDirectory": "dist",
-  "builds": [
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.js",
-      "use": "@vercel/static"
-    }
-  ],
   "rewrites": [
     { "source": "/", "destination": "/ethcali.html" },
     { "source": "/index", "destination": "/ethcali.html" },
