@@ -16,32 +16,13 @@
       "use": "@vercel/static"
     }
   ],
-  "routes": [
-    { "handle": "filesystem" },
-    {
-      "src": "/",
-      "dest": "/ethcali.html"
-    },
-    {
-      "src": "/index",
-      "dest": "/ethcali.html"
-    },
-    {
-      "src": "/home",
-      "dest": "/ethcali.html"
-    },
-    {
-      "src": "/events",
-      "dest": "/events.html"
-    },
-    {
-      "src": "/about",
-      "dest": "/about.html"
-    },
-    {
-      "src": "/venues",
-      "dest": "/ethcalivenues.html"
-    }
+  "rewrites": [
+    { "source": "/", "destination": "/ethcali.html" },
+    { "source": "/index", "destination": "/ethcali.html" },
+    { "source": "/home", "destination": "/ethcali.html" },
+    { "source": "/events", "destination": "/events.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/venues", "destination": "/ethcalivenues.html" }
   ],
   "headers": [
     {
