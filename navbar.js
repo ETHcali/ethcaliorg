@@ -63,11 +63,33 @@
         // Mobile menu toggle
         const mobileToggle = document.querySelector('.mobile-menu-toggle');
         const navLinks = document.querySelector('.nav-links');
-        
+        const walletBtn = document.getElementById('wallet-connect');
+        const walletStatus = document.getElementById('wallet-status');
+
         if (mobileToggle && navLinks) {
             mobileToggle.addEventListener('click', () => {
                 navLinks.classList.toggle('mobile-active');
                 mobileToggle.classList.toggle('active');
+            });
+        }
+
+        // Wallet connect logic
+        if (walletBtn && window.ethereum) {
+            walletBtn.addEventListener('click', async () => {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    if (accounts && accounts[0]) {
+                        const short = accounts[0].slice(0, 6) + '...' + accounts[0].slice(-4);
+                        walletStatus.textContent = short;
+                        walletBtn.classList.add('connected');
+                    }
+                } catch (err) {
+                    walletStatus.textContent = 'Error';
+                }
+            });
+        } else if (walletBtn) {
+            walletBtn.addEventListener('click', () => {
+                walletStatus.textContent = 'No wallet';
             });
         }
 
@@ -156,4 +178,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Export for potential use in other scripts
-window.EthereumCaliFooter = EthereumCaliFooter; 
+window.EthereumCaliFooter = EthereumCaliFooter;
