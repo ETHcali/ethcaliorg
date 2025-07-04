@@ -245,34 +245,32 @@
         padding: 1rem;
         gap: 1rem;
     }
-    
     .navbar-center {
         display: none;
     }
-    
     .mobile-menu-toggle {
         display: flex;
         justify-self: end;
     }
-    
     .nav-links {
         position: fixed;
         top: 70px;
         left: 0;
-        width: 100%;
+        width: 100vw;
         background: rgba(12, 12, 17, 0.98);
         backdrop-filter: blur(20px);
         flex-direction: column;
-        padding: 2rem;
+        padding: 2rem 1rem;
         gap: 1.5rem;
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, display 0.3s ease;
         border-bottom: 1px solid rgba(98, 104, 143, 0.2);
         z-index: 999;
+        display: none;
     }
-    
     .nav-links.mobile-active {
         transform: translateX(0);
+        display: flex;
     }
     
     .wallet-btn {
@@ -303,4 +301,4 @@
     .navbar {
         padding: 0.75rem;
     }
-} 
+}
