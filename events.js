@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const events = parseCSV(csvText);
                 console.log(`Parsed ${events.length} events`);
                 displayEvents(events);
+                setupMonthFilters(events);
             })
             .catch(error => {
                 console.error('Error loading CSV:', error);
@@ -112,25 +113,42 @@ document.addEventListener('DOMContentLoaded', () => {
         return field.trim().replace(/^"|"$/g, ''); // Remove quotes and trim
     }
 
-    // Display all events
-    function displayEvents(events) {
-        eventsContainer.innerHTML = ''; // Clear existing content
-        
-        if (events.length === 0) {
+    // Display all events with optional filter
+    function displayEvents(events, month = 'all') {
+        eventsContainer.innerHTML = '';
+        let filtered = events;
+        if (month !== 'all') {
+            filtered = events.filter(ev => {
+                if (!ev.startDate) return false;
+                const date = new Date(ev.startDate);
+                return date.getMonth() === parseInt(month);
+            });
+        }
+        if (filtered.length === 0) {
             showError('No events found');
             return;
         }
-        
         const grid = document.createElement('div');
         grid.className = 'events-grid';
-        
-        events.forEach(event => {
+        filtered.forEach(event => {
             const card = createEventCard(event);
             grid.appendChild(card);
         });
-        
         eventsContainer.appendChild(grid);
-        console.log(`Displayed ${events.length} events`);
+        console.log(`Displayed ${filtered.length} events`);
+    }
+
+    // Lógica de filtrado por mes
+    function setupMonthFilters(events) {
+        const filterBtns = document.querySelectorAll('.month-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const month = btn.getAttribute('data-month');
+                displayEvents(events, month);
+            });
+        });
     }
 
     // Create individual event card
