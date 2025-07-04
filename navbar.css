@@ -46,13 +46,17 @@
 
 .logo-img {
     width: 68px;
-    height: 68px;
+    height: auto;
+    max-height: 68px;
+    object-fit: scale-down;
+    aspect-ratio: unset;
     border-radius: 12px;
     transition: all 0.3s ease;
     box-shadow: 0 0 20px rgba(98, 104, 143, 0.3);
     border: 2px solid rgba(98, 104, 143, 0.2);
     margin: 0;
     padding: 0;
+    display: block;
 }
 
 .navbar-brand:hover .logo-img {
@@ -293,7 +297,8 @@
 
     .logo-img {
         width: 42px;
-        height: 42px;
+        height: auto;
+        max-height: 42px;
     }
 }
 

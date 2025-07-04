@@ -321,6 +321,23 @@ a:hover:after {
 .logo {
   display: flex;
   align-items: center;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.logo img,
+.logo-img {
+  width: 68px !important;
+  height: auto !important;
+  max-height: 68px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  object-fit: scale-down !important;
+  aspect-ratio: unset !important;
+  border-radius: 12px;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block;
 }
 
 .logo img {
