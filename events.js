@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Events page loaded');
-    
     const eventsContainer = document.getElementById('events-list');
-    
     if (!eventsContainer) {
         console.error('Events container not found');
         return;
@@ -13,9 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('2025ethereumevents.csv')
             .then(response => response.text())
             .then(csvText => {
-                console.log('CSV loaded successfully');
                 const events = parseCSV(csvText);
-                console.log(`Parsed ${events.length} events`);
                 displayEvents(events);
                 setupMonthFilters(events);
             })
@@ -28,9 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Parse CSV data with correct field mapping
     function parseCSV(csvText) {
         const lines = csvText.split('\n');
-        const events = [];
-        
-        // Find header line
         let headerIndex = -1;
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].includes('Event,startDate,endDate')) {
@@ -38,49 +30,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             }
         }
-        
         if (headerIndex === -1) {
             console.error('Header not found');
-            return events;
+            return [];
         }
-        
-        console.log('Found header at line:', headerIndex + 1);
-        
-        // Parse events
+        const events = [];
         for (let i = headerIndex + 1; i < lines.length; i++) {
             const line = lines[i].trim();
-            
-            // Skip empty lines and non-event lines
             if (!line || line === ',,,,,,,' || line.startsWith('Last update') || line.startsWith('*not ethereum')) {
                 continue;
             }
-            
-            // Parse CSV line (handle quoted fields properly)
             const fields = parseCSVLine(line);
-            
-            // Skip if not enough fields or no event name
-            // CSV structure: [empty], Event, startDate, endDate, Geo, Link, Social, Chat
             if (fields.length < 8 || !fields[1] || fields[1].trim() === '' || fields[1] === 'Event') {
                 continue;
             }
-            
             const event = {
                 name: cleanField(fields[1]),
                 startDate: cleanField(fields[2]),
                 endDate: cleanField(fields[3]),
-                geo: cleanField(fields[4]), // Complete geo info like "Lisbon, POR"
-                link: cleanField(fields[5]), // Main website link for Discover button
+                geo: cleanField(fields[4]),
+                link: cleanField(fields[5]),
                 social: cleanField(fields[6]),
                 chat: cleanField(fields[7])
             };
-            
-            // Only add if has a valid name
             if (event.name && event.name !== 'TBD' && event.name !== 'Event') {
                 events.push(event);
-                console.log(`Added event: ${event.name} in ${event.geo}`);
             }
         }
-        
         return events;
     }
 
@@ -89,10 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const fields = [];
         let current = '';
         let inQuotes = false;
-        
         for (let i = 0; i < line.length; i++) {
             const char = line[i];
-            
             if (char === '"') {
                 inQuotes = !inQuotes;
             } else if (char === ',' && !inQuotes) {
@@ -103,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         fields.push(current); // Add the last field
-        
         return fields;
     }
 

@@ -140,7 +140,6 @@ class TeamManager {
                 twitter: ""
             }
         ];
-        
         this.init();
     }
 
@@ -150,7 +149,6 @@ class TeamManager {
     }
 
     getBasePath() {
-        // Get the current path to determine if we need to adjust image paths
         const currentPath = window.location.pathname;
         const isCleanUrl = !currentPath.includes('.html');
         return isCleanUrl && currentPath !== '/' ? '../' : './';
@@ -248,39 +246,29 @@ class TeamManager {
         return card;
     }
 
-    // Method to update team data (can be called externally)
     updateTeamData(newTeamData) {
         this.teamMembers = newTeamData;
         this.renderTeam();
     }
 
-    // Method to add a single team member
     addTeamMember(member) {
         this.teamMembers.push(member);
         this.renderTeam();
     }
 
-    // Method to validate team member data
     validateMember(member) {
         const required = ['name', 'role'];
-        const optional = ['description', 'image', 'linkedin', 'twitter'];
-        
-        // Check required fields
         for (let field of required) {
             if (!member[field] || member[field].trim() === '') {
                 throw new Error(`Missing required field: ${field}`);
             }
         }
-
-        // Validate URLs if provided
         if (member.linkedin && !this.isValidURL(member.linkedin)) {
             throw new Error('Invalid LinkedIn URL');
         }
-        
         if (member.twitter && !this.isValidURL(member.twitter)) {
             throw new Error('Invalid Twitter URL');
         }
-
         return true;
     }
 
@@ -288,7 +276,7 @@ class TeamManager {
         try {
             new URL(string);
             return true;
-        } catch (_) {
+        } catch {
             return false;
         }
     }
@@ -323,4 +311,4 @@ function loadTeamFromNotion(teamData) {
 // Export for potential module use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = TeamManager;
-} 
+}
