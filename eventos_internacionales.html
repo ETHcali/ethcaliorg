@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos Internacionales | ETHCALI</title>
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="style_events.css">
+    <link rel="stylesheet" href="shared-components.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <div id="navbar-placeholder"></div>
+    <div class="events-container">
+        <div class="container">
+            <h1 class="section-title">Eventos Internacionales</h1>
+            <!-- Filtros de tipo de evento -->
+            <div class="event-type-filters" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem;">
+                <a href="eventos_internacionales.html" class="event-type-btn active">Internacionales</a>
+                <a href="eventos_locales.html" class="event-type-btn">Locales</a>
+            </div>
+            <div class="events-grid">
+                <!-- Ejemplo de tarjeta de evento internacional -->
+                <div class="event-card">
+                    <img src="branding/Banner1200x400.png" alt="Evento Internacional" class="event-image">
+                    <div class="event-card-header">
+                        <h3>ETHGlobal Paris 2025</h3>
+                        <div class="event-date"><i class="fa fa-calendar"></i> 10-12 Julio 2025</div>
+                    </div>
+                    <div class="event-card-body">
+                        <div class="event-location"><i class="fa fa-map-marker"></i> París, Francia</div>
+                        <p>El evento más grande de Ethereum en Europa. Charlas, hackatón y networking internacional.</p>
+                    </div>
+                    <div class="event-card-footer">
+                        <a href="#" class="btn-discover">Ver más</a>
+                    </div>
+                </div>
+                <!-- Más tarjetas aquí -->
+            </div>
+        </div>
+    </div>
+    <script src="navbar.js"></script>
+</body>
+</html>
