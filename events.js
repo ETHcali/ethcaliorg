@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load events from CSV
     function loadEventsFromCSV() {
-        fetch('2025ethereumevents.csv')
+        fetch('eventos_ethcali.csv')
             .then(response => response.text())
             .then(csvText => {
                 const events = parseCSV(csvText);
@@ -23,39 +23,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Parse CSV data with correct field mapping
     function parseCSV(csvText) {
         const lines = csvText.split('\n');
-        let headerIndex = -1;
-        for (let i = 0; i < lines.length; i++) {
-            if (lines[i].includes('Event,startDate,endDate')) {
-                headerIndex = i;
-                break;
-            }
-        }
-        if (headerIndex === -1) {
-            console.error('Header not found');
-            return [];
-        }
+        if (lines.length < 2) return [];
+        const header = lines[0].split(',');
         const events = [];
-        for (let i = headerIndex + 1; i < lines.length; i++) {
+        for (let i = 1; i < lines.length; i++) {
             const line = lines[i].trim();
-            if (!line || line === ',,,,,,,' || line.startsWith('Last update') || line.startsWith('*not ethereum')) {
-                continue;
-            }
+            if (!line || line.startsWith('Last update') || line.startsWith('*not ethereum')) continue;
             const fields = parseCSVLine(line);
-            if (fields.length < 8 || !fields[1] || fields[1].trim() === '' || fields[1] === 'Event') {
-                continue;
+            // Map fields by header
+            const event = {};
+            for (let j = 0; j < header.length; j++) {
+                event[header[j].trim()] = cleanField(fields[j] || '');
             }
-            const event = {
-                name: cleanField(fields[1]),
-                startDate: cleanField(fields[2]),
-                endDate: cleanField(fields[3]),
-                geo: cleanField(fields[4]),
-                link: cleanField(fields[5]),
-                social: cleanField(fields[6]),
-                chat: cleanField(fields[7])
-            };
-            if (event.name && event.name !== 'TBD' && event.name !== 'Event') {
-                events.push(event);
-            }
+            // Adapt to card structure
+            events.push({
+                name: event['Name'],
+                startDate: event['Date'],
+                endDate: '',
+                geo: event['Location'],
+                link: event['instagram post'] || event['registration'] || event['RVSP'] || '',
+                social: event['Recap Social Media'] || '',
+                chat: event['Protocol to mint'] || '',
+                // Puedes agregar más campos si quieres mostrarlos en la card
+            });
         }
         return events;
     }
@@ -124,26 +114,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Lista EXCLUSIVA de imágenes permitidas para las cards
+    const eventImages = [
+        'branding/events/Screenshot from 2025-07-30 02-44-45.png',
+        'branding/events/Screenshot from 2025-07-30 03-03-56.png',
+        'branding/events/Screenshot from 2025-07-30 03-08-37.png',
+        'branding/events/Screenshot from 2025-07-30 03-09-14.png',
+        'branding/events/Screenshot from 2025-07-30 03-09-55.png',
+        'branding/events/Screenshot from 2025-07-30 03-10-30.png',
+        'branding/events/Screenshot from 2025-07-30 03-28-04.png'
+    ];
+    let imageIndex = 0;
+
     // Create individual event card
     function createEventCard(event) {
         const card = document.createElement('div');
         card.className = 'event-card';
-        
+
+        // Seleccionar imagen de la lista, ciclando si es necesario
+        const imageName = eventImages[imageIndex % eventImages.length];
+        imageIndex++;
+        let imgTag = `<img src="${imageName}" alt="${event.name}" class="event-image">`;
+
         // Format date
         let dateDisplay = event.startDate || 'TBD';
         if (event.endDate && event.endDate !== '-' && event.endDate !== event.startDate) {
             dateDisplay += ` - ${event.endDate}`;
         }
-        
+
         // Clean and prepare links
         const mainLink = cleanLink(event.link); // Main link for Discover button
         const socialLink = cleanSocialLink(event.social);
         const chatLink = cleanChatLink(event.chat);
-        
+
         // Use complete geo information
         const location = event.geo || 'Location TBD';
-        
+
         card.innerHTML = `
+            ${imgTag}
             <div class="event-card-header">
                 <h3>${event.name}</h3>
                 <div class="event-date">
@@ -151,14 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span>${dateDisplay}</span>
                 </div>
             </div>
-            
             <div class="event-card-body">
                 <div class="event-location">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>${location}</span>
                 </div>
             </div>
-            
             <div class="event-card-footer">
                 <div class="event-links">
                     ${mainLink ? `<a href="${mainLink}" target="_blank" class="event-link website" title="Website"><i class="fas fa-globe"></i></a>` : ''}
@@ -178,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `}
             </div>
         `;
-        
+
         return card;
     }
 
@@ -207,19 +213,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return chat.startsWith('t.me') ? `https://${chat}` : `https://t.me/${chat}`;
         }
         if (chat.includes('discord')) {
-            return chat.startsWith('discord') ? `https://${chat}` : `https://discord.gg/${chat}`;
+            return chat.startsWith('discord') ? `https://${chat}` : `https://discord.gg/${chat}`
         }
-        return `https://${chat}`;
-    }
-
-    // Show error message
-    function showError(message) {
-        eventsContainer.innerHTML = `
-            <div style="text-align: center; padding: 2rem; color: #ccc;">
-                <h3>⚠️ ${message}</h3>
-                <p>Please try again later</p>
-            </div>
-        `;
+        return null;
     }
 
     // Start loading events

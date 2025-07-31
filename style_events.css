@@ -326,6 +326,69 @@ body {
     color: var(--cyber-secondary);
 }
 
+.event-type-badge {
+    background: linear-gradient(135deg, var(--cyber-primary), var(--cyber-secondary));
+    color: var(--cyber-text);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+    margin-top: 0.5rem;
+    border: 1px solid var(--cyber-border);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.event-collab {
+    display: flex;
+    align-items: center;
+    color: var(--cyber-text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.event-collab i {
+    margin-right: 0.5rem;
+    color: var(--cyber-secondary);
+}
+
+.event-stats {
+    display: flex;
+    gap: 1rem;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    color: var(--cyber-text-dim);
+    font-size: 0.85rem;
+    background: rgba(98, 104, 143, 0.1);
+    padding: 0.3rem 0.6rem;
+    border-radius: 15px;
+    border: 1px solid var(--cyber-border);
+}
+
+.stat-item i {
+    margin-right: 0.3rem;
+    color: var(--cyber-secondary);
+}
+
+.stat-item a {
+    color: var(--cyber-primary);
+    text-decoration: none;
+    margin-left: 0.3rem;
+}
+
+.stat-item a:hover {
+    color: var(--cyber-secondary);
+    text-decoration: underline;
+}
+
+
+
 .event-card-body {
     padding: 1rem 1.5rem;
     flex-grow: 1;
@@ -353,7 +416,9 @@ body {
 
 .event-links {
     display: flex;
-    gap: 0.75rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .event-link {
@@ -367,6 +432,27 @@ body {
     color: var(--cyber-text-dim);
     text-decoration: none;
     transition: all 0.3s ease;
+}
+
+.link-item {
+    display: flex;
+    align-items: center;
+    color: var(--cyber-text-dim);
+    font-size: 0.85rem;
+    text-decoration: none;
+    padding: 0.3rem 0;
+    transition: all 0.3s ease;
+}
+
+.link-item i {
+    margin-right: 0.5rem;
+    color: var(--cyber-secondary);
+    width: 16px;
+}
+
+.link-item:hover {
+    color: var(--cyber-primary);
+    transform: translateX(5px);
 }
 
 .event-link:hover {

@@ -1,0 +1,381 @@
+{
+  "events": [
+    {
+      "id": "devcon-vi-2022",
+      "name": "Devcon VI",
+      "date": "2022-11-14",
+      "type": "Event",
+      "category": "Volunteering",
+      "location": {
+        "name": "Agora",
+        "address": "Bogotá",
+        "mapsUrl": "https://maps.app.goo.gl/psm34tA11wb5kh2V8"
+      },
+      "collaboration": {
+        "name": "Devcon",
+        "url": "https://archive.devcon.org/watch/?event=devcon-6&sort=eventId&order=asc"
+      },
+      "links": {
+        "main": "https://archive.devcon.org/watch/?event=devcon-6&sort=eventId&order=asc",
+        "instagram": "",
+        "registration": "",
+        "recap": ""
+      },
+      "stats": {
+        "rsvp": 0,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 02-44-45.png",
+        "youtube": ""
+      },
+      "tags": ["international", "volunteering", "devcon"]
+    },
+    {
+      "id": "ethereum-cali-opening-2022",
+      "name": "Ethereum cali Opening",
+      "date": "2022-12-26",
+      "type": "Meetup",
+      "category": "Own",
+      "location": {
+        "name": "Discoteca 1060",
+        "address": "Cali",
+        "mapsUrl": "https://maps.app.goo.gl/ojibHKVdbmaRtACy6"
+      },
+      "collaboration": {
+        "name": "@espacio1060",
+        "url": "https://www.instagram.com/espacio1060"
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/CmxVlz6J9Go/",
+        "instagram": "https://www.instagram.com/p/CmxVlz6J9Go/",
+        "registration": "NA",
+        "recap": "https://www.instagram.com/p/CmxVlz6J9Go/"
+      },
+      "stats": {
+        "rsvp": 4,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-03-56.png",
+        "youtube": ""
+      },
+      "tags": ["local", "meetup", "opening"]
+    },
+    {
+      "id": "ethereans-pacifico-1-2023",
+      "name": "Ethereans del Pacifico 1",
+      "date": "2023-02-24",
+      "type": "Meetup",
+      "category": "Own",
+      "location": {
+        "name": "Boulevard del Rio",
+        "address": "Cali",
+        "mapsUrl": "https://g.co/kgs/12YiNw5"
+      },
+      "collaboration": {
+        "name": "",
+        "url": ""
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/CpDRcE6uuGz/",
+        "instagram": "https://www.instagram.com/p/CpDRcE6uuGz/",
+        "registration": "https://www.meetup.com/ethereumcali/events/291777540/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link&utm_version=v2",
+        "recap": "https://www.instagram.com/p/CpFyW8iOJzm/?img_index=1"
+      },
+      "stats": {
+        "rsvp": 3,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-08-37.png",
+        "youtube": ""
+      },
+      "tags": ["local", "meetup", "pacifico"]
+    },
+    {
+      "id": "revolucion-contabilidad-ai-2023",
+      "name": "Revolución de la contabilidad con AI",
+      "date": "2023-03-01",
+      "type": "Conference",
+      "category": "Colab",
+      "location": {
+        "name": "Universidad Santiago",
+        "address": "Cali",
+        "mapsUrl": "https://maps.app.goo.gl/B9XfBb4fCDLPVjhY7"
+      },
+      "collaboration": {
+        "name": "Hispanic tax inc",
+        "url": ""
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/CpPzoeWub9s/",
+        "instagram": "https://www.instagram.com/p/CpPzoeWub9s/",
+        "registration": "https://www.meetup.com/ethereumcali/events/291777701/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link&utm_version=v2",
+        "recap": "https://www.instagram.com/p/CpQshRxpO7E/?img_index=1"
+      },
+      "stats": {
+        "rsvp": 20,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-09-14.png",
+        "youtube": ""
+      },
+      "tags": ["local", "conference", "ai", "accounting"]
+    },
+    {
+      "id": "reinvencion-contador-2023",
+      "name": "Reinvención del contador en el siglo XXI",
+      "date": "2023-03-01",
+      "type": "Conference",
+      "category": "Colab",
+      "location": {
+        "name": "Universidad del Valle",
+        "address": "Cali",
+        "mapsUrl": "https://maps.app.goo.gl/Mta4fT2oWqxUynwq6"
+      },
+      "collaboration": {
+        "name": "Hispanic tax inc",
+        "url": ""
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/CpPzoeWub9s/",
+        "instagram": "https://www.instagram.com/p/CpPzoeWub9s/",
+        "registration": "https://www.meetup.com/ethereumcali/events/291954715/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link&utm_version=v2",
+        "recap": "https://www.instagram.com/p/CpRdGL8tELV/?img_index=1"
+      },
+      "stats": {
+        "rsvp": 20,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-09-55.png",
+        "youtube": ""
+      },
+      "tags": ["local", "conference", "accounting"]
+    },
+    {
+      "id": "ethereum-river-2023",
+      "name": "Ethereum at the River",
+      "date": "2023-03-11",
+      "type": "Meetup",
+      "category": "Own",
+      "location": {
+        "name": "Boulevard del Rio",
+        "address": "Cali",
+        "mapsUrl": "https://g.co/kgs/12YiNw5"
+      },
+      "collaboration": {
+        "name": "",
+        "url": ""
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/CpqXsCsvkI4/",
+        "instagram": "https://www.instagram.com/p/CpqXsCsvkI4/",
+        "registration": "https://www.meetup.com/ethereumcali/events/292144032/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link&utm_version=v2",
+        "recap": "https://www.instagram.com/p/CpsbmR2OxBA/"
+      },
+      "stats": {
+        "rsvp": 7,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-10-30.png",
+        "youtube": ""
+      },
+      "tags": ["local", "meetup", "river"]
+    },
+    {
+      "id": "ethereans-pacifico-2-2023",
+      "name": "Ethereans del Pacifico 2",
+      "date": "2023-04-29",
+      "type": "Meetup",
+      "category": "Own",
+      "location": {
+        "name": "Boulevard del Rio",
+        "address": "Cali",
+        "mapsUrl": "https://g.co/kgs/12YiNw5"
+      },
+      "collaboration": {
+        "name": "",
+        "url": ""
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/CrjHfJepYlD/",
+        "instagram": "https://www.instagram.com/p/CrjHfJepYlD/",
+        "registration": "https://www.meetup.com/ethereumcali/events/293164121/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link&utm_version=v2",
+        "recap": "https://www.instagram.com/p/Crq4mEzJYx7/?img_index=1"
+      },
+      "stats": {
+        "rsvp": 10,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-28-04.png",
+        "youtube": ""
+      },
+      "tags": ["local", "meetup", "pacifico"]
+    },
+    {
+      "id": "global-pizza-party-1-2023",
+      "name": "Global Pizza Party #1",
+      "date": "2023-05-22",
+      "type": "Meetup",
+      "category": "Colab",
+      "location": {
+        "name": "Pizzicleta.com",
+        "address": "Cali",
+        "mapsUrl": "https://maps.app.goo.gl/FzvEwz9wSMGn2Yqn6"
+      },
+      "collaboration": {
+        "name": "@enefty.co",
+        "url": "https://www.instagram.com/enefty.co/"
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/Cs2O02urc0x/?next=%2Freel%2FDJuBYZFuOPX%2F",
+        "instagram": "https://www.instagram.com/p/Cs2O02urc0x/?next=%2Freel%2FDJuBYZFuOPX%2F",
+        "registration": "NA",
+        "recap": "https://www.instagram.com/p/Cs2O02urc0x/"
+      },
+      "stats": {
+        "rsvp": 20,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 02-44-45.png",
+        "youtube": ""
+      },
+      "tags": ["local", "meetup", "pizza-party", "global"]
+    },
+    {
+      "id": "workshop-digital-art-2023",
+      "name": "Workshop: Digital Art Colombia",
+      "date": "2023-06-01",
+      "type": "Workshop",
+      "category": "Colab",
+      "location": {
+        "name": "Bellas Artes",
+        "address": "Cali, Medellín, Bogotá",
+        "mapsUrl": "https://maps.app.goo.gl/z8w3fojn2rn3mHnR9"
+      },
+      "collaboration": {
+        "name": "Bellas Artes",
+        "url": "https://bellasartes.edu.co/"
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/Cs46atlNXMu/?next=%2Freel%2FDJuBYZFuOPX%2F",
+        "instagram": "https://www.instagram.com/p/Cs46atlNXMu/?next=%2Freel%2FDJuBYZFuOPX%2F",
+        "registration": "https://www.meetup.com/es-ES/ethereumcali/events/293777059/?eventOrigin=group_events_list",
+        "recap": "https://www.instagram.com/p/CtUdP_Hp7Dt/?next=%2Freel%2FDJuBYZFuOPX%2F&img_index=1"
+      },
+      "stats": {
+        "rsvp": 10,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-03-56.png",
+        "youtube": "https://www.youtube.com/live/6GyG8ifcTkw?si=MJy9MMv9KeTOtxvg"
+      },
+      "tags": ["local", "workshop", "digital-art", "multi-city"]
+    },
+    {
+      "id": "hashfest-2023",
+      "name": "Hashfest 2023",
+      "date": "2023-07-27",
+      "type": "Event",
+      "category": "Volunteering",
+      "location": {
+        "name": "Hashfest",
+        "address": "Cali",
+        "mapsUrl": "https://maps.app.goo.gl/RKPRbjs8vf3QHWoP7"
+      },
+      "collaboration": {
+        "name": "Hashclub",
+        "url": "https://instagram.com/hashhouse.club/"
+      },
+      "links": {
+        "main": "https://www.instagram.com/hashfest/",
+        "instagram": "https://www.instagram.com/hashfest/",
+        "registration": "NA",
+        "recap": "https://www.instagram.com/hashfest/"
+      },
+      "stats": {
+        "rsvp": 50,
+        "poapCollectors": 0
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-08-37.png",
+        "youtube": ""
+      },
+      "tags": ["local", "event", "volunteering", "hashfest"]
+    },
+    {
+      "id": "ethereum-birthday-2023",
+      "name": "Ethereum Birthday - Empresarios Web3",
+      "date": "2023-08-16",
+      "type": "Meetup",
+      "category": "Own",
+      "location": {
+        "name": "Colectivo Coworking",
+        "address": "Cali",
+        "mapsUrl": "https://maps.app.goo.gl/2kNFWM883z1jCdez7"
+      },
+      "collaboration": {
+        "name": "",
+        "url": ""
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/Cv_LFbMN56U/?img_index=1",
+        "instagram": "https://www.instagram.com/p/Cv_LFbMN56U/?img_index=1",
+        "registration": "https://www.meetup.com/es-ES/ethereumcali/events/294439100/?eventOrigin=group_events_list",
+        "recap": "https://www.instagram.com/p/CwjPLlLtHcc/?img_index=1"
+      },
+      "stats": {
+        "rsvp": 29,
+        "poapCollectors": 13
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-09-14.png",
+        "youtube": "https://youtu.be/cqtfKeaYViM?si=uxbdhvzNl_QO1Z_g"
+      },
+      "tags": ["local", "meetup", "birthday", "web3"]
+    },
+    {
+      "id": "workshop-evm-setup-2023",
+      "name": "Workshop: Set-up en EVM",
+      "date": "2023-08-19",
+      "type": "Workshop",
+      "category": "Colab",
+      "location": {
+        "name": "Universidad Libre",
+        "address": "Cali",
+        "mapsUrl": "https://maps.app.goo.gl/7hfQyZcaDXTnKk7w5"
+      },
+      "collaboration": {
+        "name": "Python Cali",
+        "url": "https://python.org.co/usuarios/python-cali/"
+      },
+      "links": {
+        "main": "https://www.instagram.com/p/CwFzAKruQIb/",
+        "instagram": "https://www.instagram.com/p/CwFzAKruQIb/",
+        "registration": "https://www.meetup.com/es-ES/ethereumcali/events/295522958/?eventOrigin=group_events_list",
+        "recap": "https://www.instagram.com/p/Cwz6uP9u8kS/?img_index=1"
+      },
+      "stats": {
+        "rsvp": 10,
+        "poapCollectors": 20
+      },
+      "media": {
+        "image": "branding/events/Screenshot from 2025-07-30 03-09-55.png",
+        "youtube": ""
+      },
+      "tags": ["local", "workshop", "evm", "python"]
+    }
+  ],
+  "metadata": {
+    "totalEvents": 12,
+    "lastUpdated": "2025-01-30",
+    "version": "1.0"
+  }
+} 

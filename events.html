@@ -9,10 +9,14 @@
     <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
     <title>Eventos | Ethereum Cali</title>
     
+    <!-- CSS Files -->
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="shared-components.css">
     <link rel="stylesheet" href="style_events.css">
+    <link rel="stylesheet" href="css/events-components.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- JavaScript Dependencies -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="navbar.js"></script>
 </head>
@@ -20,6 +24,7 @@
     <div id="navbar-container"></div>
     <div class="cursor"></div>
     <div class="noise-overlay"></div>
+    
     <main class="events-container">
         <!-- Hero Section -->
         <header class="events-hero">
@@ -74,16 +79,18 @@
             </div>
         </section>
 
-        <!-- Filtros de tipo de evento: Internacionales / Locales -->
+        <!-- Event Type Filters -->
         <div class="event-type-filters" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2.5rem; margin-top: 2rem;">
-            <button class="event-type-btn active" data-type="internacional">Internacionales</button>
-            <button class="event-type-btn" data-type="local">Locales</button>
+            <button class="event-type-btn active" data-type="local">Locales</button>
+            <button class="event-type-btn" data-type="international">Internacionales</button>
         </div>
 
         <!-- Events Grid Section -->
         <section class="events-section">
             <div class="container">
-                <div id="events-list" class="events-grid"></div>
+                <div id="events-list" class="events-grid">
+                    <!-- Events will be loaded dynamically here -->
+                </div>
             </div>
         </section>
 
@@ -146,6 +153,9 @@
 
     <div id="footer-container"></div>
 
-    <script src="events.js"></script>
+    <!-- JavaScript Modules -->
+    <script src="js/events-service.js"></script>
+    <script src="js/events-ui.js"></script>
+    <script src="js/events-app.js"></script>
 </body>
-</html>
+</html> 
