@@ -1,39 +1,136 @@
-Links de certificados 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educación Web3 | Ethereum Cali</title>
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/shared-components.css">
+    <link rel="stylesheet" href="css/style_ethcali.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/navbar.js"></script>
+</head>
 
+<body>
+    <div id="navbar-container"></div>
+    <div class="cursor"></div>
+    <div class="noise-overlay"></div>
 
+    <main style="padding: 6rem 0 4rem; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%); min-height: 100vh;">
+        <div class="container">
+            <section style="text-align: center; margin-bottom: 6rem;">
+                <h1 style="font-family: 'Orbitron', sans-serif; font-size: 3.5rem; font-weight: 900; color: #64ffda; margin-bottom: 1rem;">Educación Web3</h1>
+                <p style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.8); max-width: 700px; margin: 0 auto 2rem;">Recursos educativos y certificaciones para convertirte en un desarrollador Web3 profesional</p>
+            </section>
 
+            <!-- Programming Basics -->
+            <section style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 3rem; margin-bottom: 3rem;">
+                <h2 style="color: #64ffda; font-family: 'Orbitron', sans-serif; font-size: 2rem; margin-bottom: 2rem;">
+                    <i class="fas fa-code" style="margin-right: 1rem;"></i>Programación Básica
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 2rem; border-left: 4px solid #64ffda;">
+                        <h3 style="color: #64ffda; margin-bottom: 1rem;">CS50 - Harvard</h3>
+                        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">Introducción a Computer Science</p>
+                        <a href="https://www.edx.org/course/introduction-computer-science-harvardx-cs50x" target="_blank" style="color: #64ffda; text-decoration: none;">Ver Curso →</a>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 2rem; border-left: 4px solid #64ffda;">
+                        <h3 style="color: #64ffda; margin-bottom: 1rem;">Platzi</h3>
+                        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">Programación Básica completa</p>
+                        <a href="https://platzi.com/cursos/programacion-basica/" target="_blank" style="color: #64ffda; text-decoration: none;">Ver Curso →</a>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 2rem; border-left: 4px solid #64ffda;">
+                        <h3 style="color: #64ffda; margin-bottom: 1rem;">IBM Data Science</h3>
+                        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">Certificación profesional</p>
+                        <a href="https://coursera.org/professional-certificates/ibm-data-science" target="_blank" style="color: #64ffda; text-decoration: none;">Ver Certificación →</a>
+                    </div>
+                </div>
+            </section>
 
+            <!-- Programming Languages -->
+            <section style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 3rem; margin-bottom: 3rem;">
+                <h2 style="color: #64ffda; font-family: 'Orbitron', sans-serif; font-size: 2rem; margin-bottom: 2rem;">
+                    <i class="fas fa-laptop-code" style="margin-right: 1rem;"></i>Lenguajes para Web3
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 1.5rem;">
+                        <h4 style="color: #64ffda; margin-bottom: 1rem;">Frontend</h4>
+                        <ul style="color: rgba(255, 255, 255, 0.8); line-height: 2; list-style: none; padding: 0;">
+                            <li>• <a href="https://html.com/" target="_blank" style="color: #64ffda; text-decoration: none;">HTML Tutorial</a></li>
+                            <li>• <a href="https://www.w3schools.com/css/" target="_blank" style="color: #64ffda; text-decoration: none;">CSS Tutorial</a></li>
+                            <li>• <a href="https://www.javascript.com/" target="_blank" style="color: #64ffda; text-decoration: none;">JavaScript Tutorial</a></li>
+                            <li>• <a href="http://react-tutorial.app/" target="_blank" style="color: #64ffda; text-decoration: none;">React Tutorial</a></li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 1.5rem;">
+                        <h4 style="color: #64ffda; margin-bottom: 1rem;">Backend</h4>
+                        <ul style="color: rgba(255, 255, 255, 0.8); line-height: 2; list-style: none; padding: 0;">
+                            <li>• <a href="https://www.python.org/" target="_blank" style="color: #64ffda; text-decoration: none;">Python Tutorial</a></li>
+                            <li>• <a href="https://www.java.com/" target="_blank" style="color: #64ffda; text-decoration: none;">Java Tutorial</a></li>
+                            <li>• <a href="https://www.cprogramming.com/" target="_blank" style="color: #64ffda; text-decoration: none;">C Tutorial</a></li>
+                            <li>• <a href="https://www.cplusplus.com/" target="_blank" style="color: #64ffda; text-decoration: none;">C++ Tutorial</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
+            <!-- Web3 Programming -->
+            <section style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 3rem; margin-bottom: 3rem;">
+                <h2 style="color: #64ffda; font-family: 'Orbitron', sans-serif; font-size: 2rem; margin-bottom: 2rem;">
+                    <i class="fas fa-cube" style="margin-right: 1rem;"></i>Programación Web3
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 2rem; border-left: 4px solid #64ffda;">
+                        <h3 style="color: #64ffda; margin-bottom: 1rem;">UseWeb3</h3>
+                        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">Recursos completos Web3</p>
+                        <a href="https://www.useweb3.xyz/" target="_blank" style="color: #64ffda; text-decoration: none;">Explorar →</a>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 2rem; border-left: 4px solid #64ffda;">
+                        <h3 style="color: #64ffda; margin-bottom: 1rem;">Cyfrin Updraft</h3>
+                        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">Cursos avanzados blockchain</p>
+                        <a href="https://updraft.cyfrin.io/courses" target="_blank" style="color: #64ffda; text-decoration: none;">Ver Cursos →</a>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 2rem; border-left: 4px solid #64ffda;">
+                        <h3 style="color: #64ffda; margin-bottom: 1rem;">Web3 Academy</h3>
+                        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">Certificaciones Web3</p>
+                        <a href="https://academy.useweb3.xyz/" target="_blank" style="color: #64ffda; text-decoration: none;">Certificarse →</a>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 2rem; border-left: 4px solid #64ffda;">
+                        <h3 style="color: #64ffda; margin-bottom: 1rem;">Alchemy University</h3>
+                        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">Universidad blockchain</p>
+                        <a href="https://university.alchemy.com/" target="_blank" style="color: #64ffda; text-decoration: none;">Inscribirse →</a>
+                    </div>
+                </div>
+            </section>
 
+            <!-- Video Tutorial -->
+            <section style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 3rem; text-align: center;">
+                <h2 style="color: #64ffda; font-family: 'Orbitron', sans-serif; font-size: 2rem; margin-bottom: 2rem;">
+                    <i class="fab fa-youtube" style="margin-right: 1rem;"></i>Video Recomendado
+                </h2>
+                <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 2rem; max-width: 600px; margin: 0 auto;">
+                    <h3 style="color: #64ffda; margin-bottom: 1rem;">Curso Completo Blockchain</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem;">Serie completa para aprender desarrollo blockchain</p>
+                    <a href="https://www.youtube.com/watch?v=gMTFa6HOOBc&list=PLCmkMtk-mm-fyCs8IiZ90hXyUm2lBXtuH" target="_blank" style="background: linear-gradient(45deg, #64ffda, #00bcd4); color: #0a0a0a; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fab fa-youtube"></i>
+                        Ver Playlist
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
 
+    <div id="footer-container"></div>
 
-
-
-PROGRAMACION BASICA
-- Introduccion a Computer Science by Harvard University with Coursera : https://www.edx.org/course/introduction-computer-science-harvardx-cs50x 
-- Programacion BAsica Platzi: https://platzi.com/cursos/programacion-basica/
-- Data science by IBM with Coursera: https://coursera.org/professional-certificates/ibm-data-science
-
-
-Lenguajes de programacion ideaes para ser desarrolladores web3:
-
-- HTML Tutorial: https://html.com/
-- CSS Tutorial: https://www.w3schools.com/css/
-- JavaScript Tutorial: https://www.javascript.com/
-- React Tutorial: http://react-tutorial.app/
-- Python Tutorial: https://www.python.org/
-- Java Tutorial: https://www.java.com/
-- C Tutorial: https://www.cprogramming.com/
-- C++ Tutorial: https://www.cplusplus.com/
-
-
-PROGRAMACION EN WEB3
-Te recomendamos los mejores proveedores de educacion en web3 y tambien que puedas certificarte:
-
-- useweb3 https://www.useweb3.xyz/
-- Cyprin Updraft https://updraft.cyfrin.io/courses
-- certificacionts use web3 academy ://academy.useweb3.xyz/
-- Alchemy Universityhttps://university.alchemy.com/
-
-
-https://www.youtube.com/watch?v=gMTFa6HOOBc&list=PLCmkMtk-mm-fyCs8IiZ90hXyUm2lBXtuH
+    <script>
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+    </script>
+</body>
+</html>
