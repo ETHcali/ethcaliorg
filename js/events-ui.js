@@ -79,6 +79,7 @@ class EventsUI {
         const card = document.createElement('div');
         card.className = 'event-card local-event';
         card.setAttribute('data-month', event.month);
+        card.setAttribute('data-year', event.year);
         
         card.innerHTML = `
             <img src="${event.image}" alt="${event.name}" class="event-image" 
@@ -89,12 +90,17 @@ class EventsUI {
                     <i class="fa fa-calendar"></i> 
                     ${event.date}
                 </div>
-                <div class="event-type-badge">${event.typeContent} - ${event.typeEvent}</div>
+                <div class="event-type-badges">
+                    <span class="event-type-content">${event.typeContent}</span>
+                    <span class="event-type-event">${event.typeEvent}</span>
+                </div>
             </div>
             <div class="event-card-body">
                 <div class="event-location">
                     <i class="fa fa-map-marker"></i> 
-                    ${event.location || 'Ubicación no especificada'}
+                    ${event.locationUrl ? 
+                        `<a href="${event.locationUrl}" target="_blank">${event.locationName}</a>` : 
+                        event.locationName}
                 </div>
                 ${event.hostColab ? `
                     <div class="event-collab">
@@ -118,7 +124,7 @@ class EventsUI {
                 
                 <!-- Details Toggle -->
                 <div class="event-details-toggle">
-                    <button class="details-btn" onclick="this.parentElement.nextElementSibling.classList.toggle('expanded')">
+                    <button class="details-btn" onclick="this.closest('.event-card').querySelector('.event-details-expanded').classList.toggle('expanded'); this.querySelector('i').classList.toggle('rotated');">
                         <i class="fa fa-chevron-down"></i> Ver detalles
                     </button>
                 </div>
@@ -224,7 +230,11 @@ class EventsUI {
             </div>
             
             <div class="event-card-footer">
-                ${event.socialMediaPost ? `
+                ${event.registroFotografico && event.registroFotografico !== 'NA' ? `
+                    <a href="${event.registroFotografico}" class="btn-discover" target="_blank">
+                        <i class="fas fa-camera"></i> Registro Fotográfico
+                    </a>
+                ` : event.socialMediaPost ? `
                     <a href="${event.socialMediaPost}" class="btn-discover" target="_blank">Ver más</a>
                 ` : '<span class="btn-discover disabled">Sin enlace</span>'}
             </div>
@@ -260,7 +270,11 @@ class EventsUI {
         if (!container) return;
 
         const typeContentItems = Object.entries(metrics.typeContentCounts)
-            .map(([type, count]) => `<span class="type-badge">${type}: ${count}</span>`)
+            .map(([type, count]) => `<span class="type-badge type-content">${type}: ${count}</span>`)
+            .join('');
+
+        const typeEventItems = Object.entries(metrics.typeEventCounts)
+            .map(([type, count]) => `<span class="type-badge type-event">${type}: ${count}</span>`)
             .join('');
 
         const chainMintsItems = Object.entries(metrics.chainMints)
@@ -282,8 +296,12 @@ class EventsUI {
                     <div class="metric-label">Total Attendees</div>
                 </div>
                 <div class="metric-card wide">
-                    <div class="metric-label">Events by Type</div>
+                    <div class="metric-label">Events by Content Type</div>
                     <div class="type-content-list">${typeContentItems}</div>
+                </div>
+                <div class="metric-card wide">
+                    <div class="metric-label">Events by Type</div>
+                    <div class="type-event-list">${typeEventItems}</div>
                 </div>
                 <div class="metric-card wide">
                     <div class="metric-label">NFT Mints by Chain</div>
@@ -303,11 +321,40 @@ class EventsUI {
                 // Add active class to clicked button
                 btn.classList.add('active');
                 
-                const selectedMonth = btn.getAttribute('data-month');
-                const filteredEvents = this.eventsService.filterEventsByMonth(events, selectedMonth);
-                renderFunction(filteredEvents);
+                this.applyFilters(events, renderFunction);
             });
         });
+    }
+
+    setupYearFilter(events, renderFunction) {
+        const yearBtns = document.querySelectorAll('.year-btn');
+        
+        yearBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                yearBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                this.applyFilters(events, renderFunction);
+            });
+        });
+    }
+
+    applyFilters(events, renderFunction) {
+        const activeYearBtn = document.querySelector('.year-btn.active');
+        const activeMonthBtn = document.querySelector('.month-btn.active');
+        
+        const selectedYear = activeYearBtn ? activeYearBtn.getAttribute('data-year') : 'all';
+        const selectedMonth = activeMonthBtn ? activeMonthBtn.getAttribute('data-month') : 'all';
+        
+        const filteredEvents = this.eventsService.filterEventsByYearAndMonth(events, selectedYear, selectedMonth);
+        renderFunction(filteredEvents);
+    }
+
+    setupFilters(events, renderFunction) {
+        this.setupMonthFilter(events, renderFunction);
+        this.setupYearFilter(events, renderFunction);
     }
 
     formatDateRange(startDate, endDate) {

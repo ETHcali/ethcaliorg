@@ -1,39 +1,127 @@
 /* 
- * Ethereum Cali - Navbar Component CSS
- * Professional styling for the navigation bar
+ * Ethereum Cali - Modular Navbar Component CSS
+ * Professional styling for the navigation bar - BULLETPROOF MODULAR DESIGN
+ * This CSS has higher specificity to prevent conflicts with page-specific styles
  */
 
-/* Navbar Styles */
+/* EPIC CYBER NAVBAR STYLES - BULLETPROOF */
+#navbar-container .navbar,
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(12, 12, 17, 0.95);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(98, 104, 143, 0.2);
-    padding: 1rem 2rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    z-index: 1000;
-    transition: all 0.3s ease;
-    min-height: 70px;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: linear-gradient(135deg, 
+        rgba(0, 8, 18, 0.95) 0%, 
+        rgba(12, 12, 17, 0.98) 50%, 
+        rgba(8, 15, 25, 0.95) 100%) !important;
+    backdrop-filter: blur(25px) saturate(1.8) !important;
+    border-bottom: 2px solid transparent !important;
+    border-image: linear-gradient(90deg, 
+        transparent 0%, 
+        #62688F 25%, 
+        #00ff9d 50%, 
+        #62688F 75%, 
+        transparent 100%) 1 !important;
+    padding: 1rem 2rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 2rem !important;
+    z-index: 1000 !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    min-height: 70px !important;
+    box-sizing: border-box !important;
+    box-shadow: 
+        0 4px 32px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(98, 104, 143, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    position: relative !important;
 }
 
+/* Epic cyber grid overlay */
+#navbar-container .navbar::before,
+.navbar::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="cyber-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(98,104,143,0.08)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23cyber-grid)"/></svg>') repeat !important;
+    opacity: 0.6 !important;
+    pointer-events: none !important;
+    animation: cyber-grid-move 20s linear infinite !important;
+}
+
+@keyframes cyber-grid-move {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-10px, -5px) scale(1.02); }
+    100% { transform: translate(-20px, -10px) scale(1); }
+}
+
+/* Cyber glow effect on scroll */
+#navbar-container .navbar::after,
+.navbar::after {
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 2px !important;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #62688F 25%, 
+        #00ff9d 50%, 
+        #62688F 75%, 
+        transparent 100%) !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+#navbar-container .navbar.scrolled,
 .navbar.scrolled {
-    background-color: rgba(12, 12, 17, 0.98);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, 
+        rgba(0, 8, 18, 0.98) 0%, 
+        rgba(8, 12, 20, 0.99) 50%, 
+        rgba(6, 15, 28, 0.98) 100%) !important;
+    box-shadow: 
+        0 8px 40px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(98, 104, 143, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    border-image: linear-gradient(90deg, 
+        transparent 0%, 
+        #00ff9d 25%, 
+        #62688F 50%, 
+        #00ff9d 75%, 
+        transparent 100%) 1 !important;
 }
 
-/* Navbar Brand Section */
+#navbar-container .navbar.scrolled::after,
+.navbar.scrolled::after {
+    opacity: 1 !important;
+    animation: cyber-pulse 2s ease-in-out infinite !important;
+}
+
+@keyframes cyber-pulse {
+    0%, 100% { 
+        opacity: 0.8; 
+        box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+    }
+    50% { 
+        opacity: 1; 
+        box-shadow: 0 0 30px rgba(0, 255, 157, 0.5);
+    }
+}
+
+/* Navbar Brand Section - BULLETPROOF */
+#navbar-container .navbar-brand,
 .navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    cursor: pointer !important;
 }
 
 .logo {
@@ -92,40 +180,83 @@
     text-shadow: 0 0 15px rgba(98, 104, 143, 0.7);
 }
 
-/* Navbar Center Section */
+/* Navbar Center Section - BULLETPROOF */
+#navbar-container .navbar-center,
 .navbar-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
-/* Navbar Actions Section */
+/* Navbar Actions Section - BULLETPROOF */
+#navbar-container .navbar-actions,
 .navbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    height: 100%;
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    height: 100% !important;
 }
 
-/* Navigation Links */
+/* Navigation Links - BULLETPROOF */
+#navbar-container .nav-links,
 .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    list-style: none;
+    display: flex !important;
+    align-items: center !important;
+    gap: 2rem !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
+#navbar-container .nav-link,
 .nav-link {
-    color: #ffffff;
-    text-decoration: none;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.9rem;
-    font-weight: 400;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 0.5rem 0;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-family: 'Space Mono', monospace !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    position: relative !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 6px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    z-index: 1 !important;
 }
 
+/* Epic cyber hover effects */
+#navbar-container .nav-link::before,
+.nav-link::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: linear-gradient(45deg, 
+        rgba(98, 104, 143, 0.1), 
+        rgba(0, 255, 157, 0.1)) !important;
+    border-radius: 6px !important;
+    opacity: 0 !important;
+    transform: scale(0.8) !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    z-index: -1 !important;
+}
+
+#navbar-container .nav-link:hover::before,
+.nav-link:hover::before {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+}
+
+#navbar-container .nav-link:hover,
+.nav-link:hover {
+    color: #00ff9d !important;
+    text-shadow: 0 0 10px rgba(0, 255, 157, 0.5) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Remove old nav-link styles - replaced with cyber ones above */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -227,40 +358,89 @@
     text-align: center;
 }
 
-/* Wallet Button */
+/* EPIC CYBER WALLET BUTTON */
+#navbar-container .wallet-btn,
 .wallet-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 48px;
-    min-width: 160px;
-    padding: 0.6rem 1.2rem;
-    border-radius: 25px;
-    font-size: 1rem;
-    font-weight: 500;
-    background: linear-gradient(135deg, #62688F, #8A92B2);
-    border: none;
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(98, 104, 143, 0.2);
-    transition: all 0.3s ease;
-    margin: 0;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 48px !important;
+    min-width: 180px !important;
+    padding: 0.7rem 1.5rem !important;
+    border-radius: 30px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    background: linear-gradient(135deg, 
+        #00ff9d 0%, 
+        #62688F 50%, 
+        #00ff9d 100%) !important;
+    border: 2px solid rgba(0, 255, 157, 0.3) !important;
+    color: #000 !important;
+    box-shadow: 
+        0 4px 20px rgba(0, 255, 157, 0.3),
+        0 0 40px rgba(0, 255, 157, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    margin: 0 !important;
+    text-decoration: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-family: 'Space Mono', monospace !important;
 }
 
+#navbar-container .wallet-btn::before,
 .wallet-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    background: linear-gradient(45deg, 
+        transparent 0%, 
+        rgba(0, 255, 157, 0.4) 25%, 
+        transparent 50%, 
+        rgba(98, 104, 143, 0.4) 75%, 
+        transparent 100%) !important;
+    border-radius: 32px !important;
+    z-index: -1 !important;
+    animation: cyber-border-flow 3s linear infinite !important;
+    opacity: 0 !important;
 }
 
+@keyframes cyber-border-flow {
+    0% { transform: rotate(0deg); opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { transform: rotate(360deg); opacity: 0.6; }
+}
+
+#navbar-container .wallet-btn:hover::before,
+.wallet-btn:hover::before {
+    opacity: 1 !important;
+}
+
+#navbar-container .wallet-btn:hover,
 .wallet-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(98, 104, 143, 0.4);
-    background: linear-gradient(135deg, #8A92B2, #62688F);
+    transform: translateY(-3px) scale(1.05) !important;
+    box-shadow: 
+        0 8px 30px rgba(0, 255, 157, 0.6),
+        0 0 60px rgba(0, 255, 157, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    background: linear-gradient(135deg, 
+        #00ff9d 0%, 
+        #ffffff 50%, 
+        #00ff9d 100%) !important;
+    color: #000 !important;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+#navbar-container .wallet-btn i,
+.wallet-btn i {
+    margin-right: 0.5rem !important;
+    font-size: 1rem !important;
 }
 
 .wallet-btn:hover::before {
@@ -279,6 +459,7 @@
 .wallet-btn i {
     font-size: 1rem;
     transition: transform 0.3s ease;
+    margin-right: 0.5rem;
 }
 
 .wallet-btn:hover i {

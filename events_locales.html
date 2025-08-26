@@ -9,10 +9,12 @@
     <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
     <title>Eventos Locales | Ethereum Cali</title>
     
-    <link rel="stylesheet" href="css/navbar.css">
+    <!-- CSS Files - ORDER MATTERS FOR NAVBAR CONSISTENCY -->
     <link rel="stylesheet" href="css/shared-components.css">
     <link rel="stylesheet" href="css/style_events.css">
     <link rel="stylesheet" href="css/events-components.css">
+    <!-- Navbar CSS MUST load LAST to override any conflicts -->
+    <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/navbar.js"></script>
@@ -21,7 +23,7 @@
     <div id="navbar-container"></div>
     <div class="cursor"></div>
     <div class="noise-overlay"></div>
-    <main class="events-container">
+    <main class="home-container">
         <!-- Hero Section -->
         <header class="events-hero">
             <div class="container">
@@ -50,10 +52,37 @@
             </div>
         </header>
 
-        <!-- Month Filter Section -->
-        <section class="month-filter-section">
+                <!-- Metrics Section -->
+                <section class="metrics-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Estadísticas Locales</h2>
+                            <div class="cyber-line"></div>
+                        </div>
+                        <div id="metrics-container" class="metrics-container">
+                            <!-- Metrics will be loaded dynamically here -->
+                        </div>
+                    </div>
+                </section>
+
+        <!-- Year and Month Filter Section -->
+        <section class="filter-section">
             <div class="container">
+                <!-- Year Filter -->
                 <div class="section-header">
+                    <h2 class="section-title">Filtrar por Año</h2>
+                    <div class="cyber-line"></div>
+                </div>
+                <div class="year-filters">
+                    <button class="year-btn active" data-year="all">Todos los Años</button>
+                    <button class="year-btn" data-year="2025">2025</button>
+                    <button class="year-btn" data-year="2024">2024</button>
+                    <button class="year-btn" data-year="2023">2023</button>
+                    <button class="year-btn" data-year="2022">2022</button>
+                </div>
+
+                <!-- Month Filter -->
+                <div class="section-header" style="margin-top: 3rem;">
                     <h2 class="section-title">Filtrar por Mes</h2>
                     <div class="cyber-line"></div>
                 </div>
@@ -75,24 +104,6 @@
             </div>
         </section>
 
-        <!-- Metrics Section -->
-        <section class="metrics-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Estadísticas Locales</h2>
-                    <div class="cyber-line"></div>
-                </div>
-                <div id="metrics-container" class="metrics-container">
-                    <!-- Metrics will be loaded dynamically here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Event Type Filters -->
-        <div class="event-type-filters">
-            <button class="event-type-btn active" data-type="local">Locales</button>
-            <button class="event-type-btn" data-type="international">Internacionales</button>
-        </div>
 
         <!-- Events Grid Section -->
         <section class="events-section">

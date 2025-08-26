@@ -7,12 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let allVenues = [];
 
     function loadVenuesFromCSV() {
-        fetch('venuesethcali.csv')
+        fetch('databases/venuesethcali.csv')
             .then(response => response.text())
             .then(csvText => {
                 const venues = parseCSV(csvText);
                 allVenues = venues;
                 displayVenues(venues);
+                displayStats(venues);
                 setupFilters();
             })
             .catch(error => {
@@ -253,6 +254,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.style.display = 'none';
             }
         });
+    }
+
+    function displayStats(venues) {
+        const statsContainer = document.getElementById('venue-stats');
+        if (!statsContainer) return;
+
+        // Calculate statistics
+        const totalVenues = venues.length;
+        const activatedVenues = venues.filter(v => v.status === 'ACTIVATED').length;
+        const totalActivities = venues.reduce((sum, v) => sum + parseInt(v.activities || 0), 0);
+        
+        // Count by type
+        const typeStats = {};
+        venues.forEach(venue => {
+            const type = venue.type || 'other';
+            typeStats[type] = (typeStats[type] || 0) + 1;
+        });
+
+        // Count by status
+        const statusStats = {};
+        venues.forEach(venue => {
+            const status = venue.status || 'unknown';
+            statusStats[status] = (statusStats[status] || 0) + 1;
+        });
+
+        const statsHTML = `
+            <div class="stats-grid">
+                <div class="stat-card total-stat">
+                    <i class="stat-icon fas fa-building"></i>
+                    <div class="stat-number">${totalVenues}</div>
+                    <div class="stat-label">Total Venues</div>
+                </div>
+                <div class="stat-card">
+                    <i class="stat-icon fas fa-check-circle" style="color: #00ff88;"></i>
+                    <div class="stat-number">${activatedVenues}</div>
+                    <div class="stat-label">Activated</div>
+                </div>
+                <div class="stat-card">
+                    <i class="stat-icon fas fa-calendar-alt" style="color: #62688F;"></i>
+                    <div class="stat-number">${totalActivities}</div>
+                    <div class="stat-label">Total Activities</div>
+                </div>
+                <div class="stat-card">
+                    <i class="stat-icon fas fa-chart-pie" style="color: #5A6FBF;"></i>
+                    <div class="stat-number">${Object.keys(typeStats).length}</div>
+                    <div class="stat-label">Venue Types</div>
+                </div>
+            </div>
+        `;
+
+        statsContainer.innerHTML = statsHTML;
     }
 
     function showError(message) {

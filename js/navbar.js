@@ -21,21 +21,15 @@ function initializeNavbar() {
         $(this).toggleClass('active');
     });
 
-    // Wallet connection (placeholder functionality)
-    $('#wallet-connect').click(function() {
-        const button = $(this);
-        const status = $('#wallet-status');
-        
-        if (button.hasClass('connected')) {
-            // Disconnect wallet
-            button.removeClass('connected');
-            status.text('Conectar Wallet');
-        } else {
-            // Connect wallet (placeholder)
-            button.addClass('connected');
-            status.text('Conectado');
+    // ETHCali Wallet redirect (link functionality)
+    $('#ethcali-wallet').hover(
+        function() {
+            $(this).css('transform', 'translateY(-2px)');
+        },
+        function() {
+            $(this).css('transform', 'translateY(0)');
         }
-    });
+    );
 
     // Navbar scroll effect
     $(window).scroll(function() {

@@ -9,8 +9,11 @@
     <title>Venues | Ethereum Cali</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="navbar.css">
-    <link rel="stylesheet" href="shared-components.css">
+    <!-- CSS Files - ORDER MATTERS FOR NAVBAR CONSISTENCY -->
+    <link rel="stylesheet" href="css/shared-components.css">
+    <link rel="stylesheet" href="css/style_ethcali.css">
+    <!-- Navbar CSS MUST load LAST to override any conflicts -->
+    <link rel="stylesheet" href="css/navbar.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="venues.js"></script>
     <script src="js/navbar.js"></script>
@@ -40,7 +43,6 @@
             font-family: 'Space Mono', monospace;
             line-height: 1.6;
             margin: 0;
-            padding-top: 80px;
             min-height: 100vh;
         }
 
@@ -500,7 +502,9 @@
     <div id="navbar-container"></div>
     <div class="cursor"></div>
     <div class="noise-overlay"></div>
-    <main class="venues-hero">
+    
+    <main class="home-container">
+        <section class="venues-hero">
         <div class="container">
             <div class="hero-content">
                 <div class="hero-icon">🏟️</div>
@@ -509,9 +513,9 @@
                 <div class="cyber-line"></div>
             </div>
         </div>
-    </main>
+        </section>
 
-    <section class="venues-section">
+        <section class="venues-section">
         <div class="container">
             <!-- Venue Statistics -->
             <div class="stats-section">
@@ -546,7 +550,8 @@
                 </div>
             </div>
         </div>
-    </section>
+        </section>
+    </main>
 
     <script>
         // Add fade in animation for dynamic content

@@ -62,8 +62,8 @@ class EventsApp {
         const metrics = this.eventsService.getLocalMetrics(this.events);
         this.eventsUI.renderLocalMetrics(metrics);
         
-        // Setup month filtering
-        this.eventsUI.setupMonthFilter(this.events, (filteredEvents) => {
+        // Setup filtering (year and month)
+        this.eventsUI.setupFilters(this.events, (filteredEvents) => {
             this.eventsUI.renderLocalEvents(filteredEvents);
         });
         

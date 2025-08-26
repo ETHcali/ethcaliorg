@@ -9,11 +9,12 @@
     <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
     <title>Eventos | Ethereum Cali</title>
     
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="css/navbar.css">
+    <!-- CSS Files - ORDER MATTERS FOR NAVBAR CONSISTENCY -->
     <link rel="stylesheet" href="css/shared-components.css">
     <link rel="stylesheet" href="css/style_events.css">
     <link rel="stylesheet" href="css/events-components.css">
+    <!-- Navbar CSS MUST load LAST to override any conflicts -->
+    <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- JavaScript Dependencies -->
@@ -25,7 +26,7 @@
     <div class="cursor"></div>
     <div class="noise-overlay"></div>
     
-    <main class="events-container">
+    <main class="home-container">
         <!-- Hero Section -->
         <header class="events-hero">
             <div class="container">
@@ -54,6 +55,19 @@
             </div>
         </header>
 
+                <!-- Metrics Section -->
+                <section class="metrics-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Estadísticas Globales</h2>
+                            <div class="cyber-line"></div>
+                        </div>
+                        <div id="metrics-container" class="metrics-container">
+                            <!-- Metrics will be loaded dynamically here -->
+                        </div>
+                    </div>
+                </section>
+
         <!-- Month Filter Section -->
         <section class="month-filter-section">
             <div class="container">
@@ -79,24 +93,8 @@
             </div>
         </section>
 
-        <!-- Metrics Section -->
-        <section class="metrics-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Estadísticas Globales</h2>
-                    <div class="cyber-line"></div>
-                </div>
-                <div id="metrics-container" class="metrics-container">
-                    <!-- Metrics will be loaded dynamically here -->
-                </div>
-            </div>
-        </section>
 
-        <!-- Event Type Filters -->
-        <div class="event-type-filters" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2.5rem; margin-top: 2rem;">
-            <button class="event-type-btn active" data-type="international">Internacionales</button>
-            <button class="event-type-btn" data-type="local">Locales</button>
-        </div>
+
 
         <!-- Events Grid Section -->
         <section class="events-section">

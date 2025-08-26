@@ -82,7 +82,7 @@ class TeamManager {
                 status: "Core",
                 image: "./team/cristobal.jpg",
                 linkedin: "https://www.linkedin.com/in/cristobalvalenciaceron",
-                twitter: ""
+                twitter: "https://x.com/DevCristobalvc"
             },
             {
                 name: "Juan David Burgos",
@@ -91,7 +91,17 @@ class TeamManager {
                 status: "Core",
                 image: "./team/juan david burgos.jpg",
                 linkedin: "https://www.linkedin.com/in/juan-david-burgos-giraldo-0000000000",
-                twitter: ""
+                twitter: "https://x.com/JuanBK_ethcali"
+                
+            },
+            {
+                name: "Saeta Florez",
+                role: "DAO and Talent Manager",
+                description: "DAO coordinator desde Mayo 2025. Desarrollador web3 especializado en tecnologías blockchain.",
+                status: "Core",
+                image: "./team/saeta.png",
+                linkedin: "https://www.linkedin.com/in/saeta7/",
+                twitter: "https://x.com/Hortelana_eth"
             },
             // Contributors
             {

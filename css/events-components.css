@@ -2,12 +2,81 @@
  * Events Components CSS - Styling for event cards and components
  */
 
-/* Event Cards Grid */
+/* Essential Events Hero Styling - FIXED NAVBAR PADDING */
+.events-hero {
+    min-height: 45vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, #001122 0%, #000812 70%);
+    z-index: 1;
+    padding: 3rem 0;
+    margin-top: -70px; /* Compensate for home-container padding-top */
+    padding-top: calc(3rem + 70px); /* Add back the navbar space */
+    border-bottom: 1px solid rgba(98, 104, 143, 0.4);
+}
+
+.events-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(98,104,143,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
+    opacity: 0.3;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(10px, 10px); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.hero-title,
+.glitch {
+    font-family: 'Sarun Pro', 'Orbitron', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #62688F;
+    text-shadow: 0 0 20px rgba(98, 104, 143, 0.3);
+}
+
+.hero-subtitle {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: #8892b0;
+    margin: 0 0 1.5rem 0;
+    font-family: 'Sarun Pro', 'Space Mono', monospace;
+    font-weight: 500;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: #8892b0;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+    font-family: 'Sarun Pro', 'Space Mono', monospace;
+}
+
+/* Event Cards Grid - Optimized */
 .events-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
-    padding: 2rem 0;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* Event Card Base Styles */
@@ -105,7 +174,8 @@
 .event-chat a {
     color: #62688F;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
 }
 
 .event-location a:hover,
@@ -113,6 +183,8 @@
 .event-social a:hover,
 .event-chat a:hover {
     color: #8A92B2;
+    border-bottom-color: #8A92B2;
+    transform: translateY(-1px);
 }
 
 /* Event Stats */
@@ -174,7 +246,7 @@
     transition: transform 0.3s ease;
 }
 
-.event-details-expanded.expanded + .event-card-footer .details-btn i {
+.details-btn i.rotated {
     transform: rotate(180deg);
 }
 
@@ -291,9 +363,10 @@
 /* Metrics Section */
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin: 1.5rem auto;
+    max-width: 1200px;
 }
 
 .metric-card {
@@ -333,6 +406,7 @@
 
 /* Type Content List */
 .type-content-list,
+.type-event-list,
 .chain-mints-list {
     display: flex;
     flex-wrap: wrap;
@@ -341,11 +415,24 @@
 }
 
 .type-badge {
-    background: rgba(98, 104, 143, 0.2);
-    color: #CCCCCC;
     padding: 0.25rem 0.75rem;
     border-radius: 12px;
     font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.type-badge.type-content {
+    background: rgba(98, 104, 143, 0.2);
+    color: #8A92B2;
+    border: 1px solid rgba(98, 104, 143, 0.3);
+}
+
+.type-badge.type-event {
+    background: rgba(45, 37, 255, 0.2);
+    color: #6e68ff;
+    border: 1px solid rgba(45, 37, 255, 0.3);
 }
 
 .chain-mint-item {
@@ -386,6 +473,38 @@
     color: #62688F;
 }
 
+/* Year Filters */
+.year-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.year-btn {
+    padding: 0.6rem 1.5rem;
+    border: 2px solid rgba(98, 104, 143, 0.3);
+    background: transparent;
+    color: #CCCCCC;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.year-btn:hover,
+.year-btn.active {
+    border-color: #62688F;
+    background: rgba(98, 104, 143, 0.2);
+    color: #62688F;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(98, 104, 143, 0.2);
+}
+
 /* Month Filters */
 .month-filters {
     display: flex;
@@ -413,17 +532,60 @@
     color: #62688F;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Improved Event Type Badges */
+.event-type-badges {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+}
+
+.event-type-content,
+.event-type-event {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.event-type-content {
+    background: linear-gradient(135deg, rgba(98, 104, 143, 0.2), rgba(138, 146, 178, 0.2));
+    color: #8A92B2;
+    border: 1px solid rgba(98, 104, 143, 0.3);
+}
+
+.event-type-event {
+    background: linear-gradient(135deg, rgba(45, 37, 255, 0.2), rgba(110, 104, 255, 0.2));
+    color: #6e68ff;
+    border: 1px solid rgba(45, 37, 255, 0.3);
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 1200px) {
     .events-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 1rem 0;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.25rem;
     }
     
     .metrics-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        padding: 0.5rem 0;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
+        margin: 1rem auto;
     }
     
     .metric-card.wide {
@@ -433,15 +595,27 @@
     .event-type-filters {
         flex-direction: column;
         align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .year-filters {
+        gap: 0.5rem;
+        justify-content: center;
+    }
+    
+    .year-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
     }
     
     .month-filters {
         gap: 0.5rem;
+        justify-content: center;
     }
     
     .month-btn {
         padding: 0.4rem 0.8rem;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
     
     .details-grid {
@@ -450,6 +624,45 @@
     
     .detail-item {
         gap: 0.25rem;
+    }
+    
+    .event-card-header,
+    .event-card-body {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .events-grid {
+        gap: 1rem;
+        padding: 0.25rem 0;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .year-filters,
+    .month-filters {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+    
+    .year-btn,
+    .month-btn {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.7rem;
+    }
+    
+    .event-card-header,
+    .event-card-body {
+        padding: 1rem;
+    }
+    
+    .event-card-header h3 {
+        font-size: 1rem;
+        line-height: 1.3;
     }
 }
 

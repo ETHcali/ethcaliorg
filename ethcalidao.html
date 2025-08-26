@@ -9,30 +9,147 @@
     <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
     <title>DAO | Ethereum Cali</title>
     
-    <link rel="stylesheet" href="css/navbar.css">
+    <!-- CSS Files - ORDER MATTERS FOR NAVBAR CONSISTENCY -->
     <link rel="stylesheet" href="css/shared-components.css">
     <link rel="stylesheet" href="css/style_events.css">
+    <!-- Navbar CSS MUST load LAST to override any conflicts -->
+    <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/navbar.js"></script>
+    <style>
+        .event-status {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .event-status.active {
+            background: linear-gradient(45deg, #00ff9d, #2d25ff);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+        }
+        .event-status.legacy {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+            border: 1px solid rgba(255, 71, 87, 0.3);
+        }
+        .event-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div id="navbar-container"></div>
     <div class="cursor"></div>
     <div class="noise-overlay"></div>
     
-    <main class="events-container" style="padding-top: 120px;">
+    <main class="home-container">
         <section class="events-hero">
             <div class="container">
                 <div class="hero-content">
                     <h1 class="glitch" data-text="ETHEREUM CALI DAO">ETHEREUM CALI DAO</h1>
                     <h2 class="hero-subtitle">Decentralized Governance & Treasury</h2>
-                    <p class="hero-description">Transparent governance, multi-chain treasury, and community-driven decisions for the Ethereum ecosystem in Colombia</p>
+                    <p class="hero-description">Transparent governance, multi-chain treasury, and community-driven decisions for the Ethereum ecosystem in the Pacific region of Colombia</p>
                 </div>
             </div>
         </section>
 
         <div class="container">
+            <!-- Web3 Identity Section -->
+            <div class="section-header">
+                <h2 class="section-title">Web3 Identity</h2>
+                <div class="cyber-line"></div>
+                <p class="section-subtitle">Our decentralized identity on Ethereum Name Service (ENS)</p>
+            </div>
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-card-header">
+                        <h3><img src="branding/logoethcali.png" style="width: 24px; height: 24px; margin-right: 8px; border-radius: 50%;">ethcali.eth</h3>
+                        <span class="event-status active">CURRENT</span>
+                    </div>
+                    <div class="event-card-body">
+                        <p><strong>Primary ENS Domain</strong></p>
+                        <p>Resolving to our main current multisignature treasury</p>
+                        <div style="margin: 1rem 0;">
+                            <p><strong>Resolves to:</strong><br>
+                            <code style="background: rgba(98,104,143,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.8rem;">0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64</code></p>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                            <a href="https://app.ens.domains/ethcali.eth" target="_blank" class="btn-discover">
+                                <i class="fas fa-external-link-alt"></i> View ENS
+                            </a>
+                            <a href="https://etherscan.io/name-lookup-search?id=ethcali.eth" target="_blank" class="btn-discover" style="background: rgba(255,255,255,0.1);">
+                                <i class="fas fa-search"></i> Etherscan
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-card-header">
+                        <h3><img src="branding/logoethcali.png" style="width: 24px; height: 24px; margin-right: 8px; border-radius: 50%;">ethereumcali.eth</h3>
+                        <span class="event-status legacy">LEGACY</span>
+                    </div>
+                    <div class="event-card-body">
+                        <p><strong>Legacy ENS Domain</strong></p>
+                        <p>Historical domain linked to old multisigs across multiple chains</p>
+                        <div style="margin: 1rem 0;">
+                            <p><strong>Resolves to:</strong><br>
+                            <code style="background: rgba(255,71,87,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.8rem;">0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B</code></p>
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <p><strong>Connected to legacy multisigs on:</strong></p>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; margin: 0.5rem 0;">
+                                <div style="text-align: center; opacity: 0.7;">
+                                    <img src="chains/op mainnet.png" style="width: 24px; height: 24px; border-radius: 50%;">
+                                    <br><small>OP Mainnet</small>
+                                </div>
+                                <div style="text-align: center; opacity: 0.7;">
+                                    <img src="tools/arbitrum.svg" style="width: 24px; height: 24px; border-radius: 50%;">
+                                    <br><small>Arbitrum</small>
+                                </div>
+                                <div style="text-align: center; opacity: 0.7;">
+                                    <img src="chains/base logo.svg" style="width: 24px; height: 24px; border-radius: 50%;">
+                                    <br><small>Base</small>
+                                </div>
+                                <div style="text-align: center; opacity: 0.7;">
+                                    <img src="chains/polygon.png" style="width: 24px; height: 24px; border-radius: 50%;">
+                                    <br><small>Polygon</small>
+                                </div>
+                                <div style="text-align: center; opacity: 0.7;">
+                                    <img src="chains/gnosis.png" style="width: 24px; height: 24px; border-radius: 50%;">
+                                    <br><small>Gnosis</small>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                                <i class="fas fa-info-circle"></i> Legacy multisigs managed via Aragon
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                            <a href="https://app.ens.domains/ethereumcali.eth" target="_blank" class="btn-discover">
+                                <i class="fas fa-external-link-alt"></i> View ENS
+                            </a>
+                            <a href="https://etherscan.io/name-lookup-search?id=ethereumcali.eth" target="_blank" class="btn-discover" style="background: rgba(255,255,255,0.1);">
+                                <i class="fas fa-search"></i> Etherscan
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="section-header">
                 <h2 class="section-title">Governance Structure</h2>
                 <div class="cyber-line"></div>
@@ -40,7 +157,7 @@
             <div class="events-grid">
                 <div class="event-card">
                     <div class="event-card-header">
-                        <h3><img src="tools/snapshot.svg" style="width: 24px; height: 24px; margin-right: 8px;">Snapshot Governance</h3>
+                        <h3><img src="tools/snapshot.png" style="width: 24px; height: 24px; margin-right: 8px;">Snapshot Governance</h3>
                     </div>
                     <div class="event-card-body">
                         <p>Transparent voting platform for community decisions</p>
@@ -82,7 +199,7 @@
                     </div>
                     <div class="event-card-body">
                         <p>5-member multisig treasury deployed across multiple chains</p>
-                        <code style="background: rgba(98,104,143,0.2); padding: 0.25rem; border-radius: 4px;">ethereumcali.eth - 0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64</code>
+                        <code style="background: rgba(98,104,143,0.2); padding: 0.25rem; border-radius: 4px;">0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64</code>
                         <br><br>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 0.5rem; margin: 1rem 0;">
                             <div style="text-align: center;"><img src="chains/ethereum.png" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>Ethereum</small></div>
@@ -104,7 +221,10 @@
                         <h3><img src="tools/aave.svg" style="width: 24px; height: 24px; margin-right: 8px;">Ethereum Strategic Reserve</h3>
                     </div>
                     <div class="event-card-body">
-                        <p>ETH accumulation strategy using Aave for liquidity</p>
+                        <p>We are commited with Ethereum Succesful. <br>
+                        <br>  We are alligned with the ETH accumulation in our treasuries because it gave us a robust posisiton.<br>  
+                        <br> In case we need liquidity, we deposit ETH in <a href="https://aave.com/" target="_blank" class="com">Aave</a> and borrow stablecoins for liquidity</p>
+                        <br>
                         <a href="https://www.strategicethreserve.xyz/" target="_blank" class="btn-discover">Learn More</a>
                     </div>
                 </div>
@@ -115,9 +235,9 @@
                     </div>
                     <div class="event-card-body">
                         <p><strong>Current:</strong><br>
-                        <code style="background: rgba(98,104,143,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.75rem;">0x35b0c64C...970BC6B</code></p>
+                        <code style="background: rgba(98,104,143,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.75rem;">0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B</code> <a href="https://etherscan.io/address/0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B" target="_blank">Etherscan</a></p>
                         <p><strong>Legacy (deprecated):</strong><br>
-                        <code style="background: rgba(255,71,87,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.75rem; opacity: 0.6;">0x55C9fbf0...34F1F8Df0E711d</code></p>
+                        <code style="background: rgba(255,71,87,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.75rem; opacity: 0.6;">0x55C9fbf09c056ACac807CD674e34F1F8Df0E711d</code> <a href="https://etherscan.io/address/0x55C9fbf09c056ACac807CD674e34F1F8Df0E711d" target="_blank">Etherscan</a></p>
                     </div>
                 </div>
             </div>
