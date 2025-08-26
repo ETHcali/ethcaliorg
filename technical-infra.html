@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Infraestructura técnica de Ethereum Cali - Hardware y equipos disponibles para eventos y la comunidad">
+    <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
+    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
+    
+    <title>Infraestructura Técnica | Ethereum Cali</title>
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/shared-components.css">
+    <link rel="stylesheet" href="css/style_ethcali.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .tech-container {
+            padding: 6rem 0 4rem;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            min-height: 100vh;
+        }
+
+        .tech-hero {
+            text-align: center;
+            margin-bottom: 6rem;
+            position: relative;
+        }
+
+        .tech-hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(100, 255, 218, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .tech-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #64ffda;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .tech-hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mission-statement {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 0 auto 6rem;
+            max-width: 900px;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mission-statement h3 {
+            color: #64ffda;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .mission-statement .mission-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a0a0a;
+            font-size: 1.5rem;
+        }
+
+        .mission-goals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .goal-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #64ffda;
+        }
+
+        .goal-item h4 {
+            color: #64ffda;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 0.5rem;
+        }
+
+        .goal-item p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .equipment-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-bottom: 6rem;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            border-color: #64ffda;
+            box-shadow: 0 25px 50px rgba(100, 255, 218, 0.2);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(0, 188, 212, 0.1) 100%);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: #0a0a0a;
+            font-size: 2rem;
+        }
+
+        .category-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin: 0;
+        }
+
+        .equipment-list {
+            padding: 2rem;
+        }
+
+        .equipment-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .equipment-item:last-child {
+            border-bottom: none;
+        }
+
+        .equipment-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .item-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64ffda;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .item-details h4 {
+            color: #ffffff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .item-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .meta-tag {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+        }
+
+        .item-brand {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .request-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            margin-top: 6rem;
+        }
+
+        .request-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .request-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: #64ffda;
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #0a0a0a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step-title {
+            color: #64ffda;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .step-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .telegram-cta {
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #0a0a0a;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .telegram-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(100, 255, 218, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .tech-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .equipment-categories {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .mission-goals {
+                grid-template-columns: 1fr;
+            }
+            
+            .request-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .request-section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+    <div class="cursor"></div>
+    <div class="noise-overlay"></div>
+
+    <main class="tech-container">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="tech-hero">
+                <h1>Infraestructura Técnica</h1>
+                <p>Hardware de alta tecnología disponible para uso gratuito en nuestras actividades y eventos. Democratizando el acceso a tecnología para potenciar el ecosistema Web3 del Pacífico Colombiano.</p>
+            </section>
+
+            <!-- Mission Statement -->
+            <section class="mission-statement">
+                <h3>
+                    <div class="mission-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    Nuestra Misión
+                </h3>
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem;">
+                    Uno de nuestros principales objetivos es adquirir infraestructura técnica de alta calidad que permita a nuestra comunidad acceder gratuitamente a equipos profesionales para eventos, talleres, hackathons y actividades educativas.
+                </p>
+                
+                <div class="mission-goals">
+                    <div class="goal-item">
+                        <h4><i class="fas fa-users"></i> Democratización</h4>
+                        <p>Eliminar barreras económicas para acceder a tecnología de calidad en eventos de la comunidad.</p>
+                    </div>
+                    <div class="goal-item">
+                        <h4><i class="fas fa-graduation-cap"></i> Educación</h4>
+                        <p>Facilitar talleres y workshops con equipos profesionales para mejorar la experiencia de aprendizaje.</p>
+                    </div>
+                    <div class="goal-item">
+                        <h4><i class="fas fa-handshake"></i> Colaboración</h4>
+                        <p>Permitir que otros organizadores y comunidades accedan a nuestros recursos para sus eventos.</p>
+                    </div>
+                    <div class="goal-item">
+                        <h4><i class="fas fa-chart-line"></i> Crecimiento</h4>
+                        <p>Expandir continuamente nuestro inventario para satisfacer las necesidades crecientes del ecosistema.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Equipment Categories -->
+            <section class="equipment-categories">
+                <!-- Media Equipment -->
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h2 class="category-title">Equipos de Media</h2>
+                    </div>
+                    <div class="equipment-list">
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Roll-up ETHColombia</h4>
+                                <p class="item-brand">Stand completo con armado e impresión</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">Branding</span>
+                                    <span class="meta-tag">Portable</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Roll-up ETHCali</h4>
+                                <p class="item-brand">Stand completo con armado e impresión</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">Branding</span>
+                                    <span class="meta-tag">Portable</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Roll-up Base x EthCali</h4>
+                                <p class="item-brand">Colaboración especial con Base</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">Base</span>
+                                    <span class="meta-tag">Limited Edition</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Equipment -->
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h2 class="category-title">Equipos Técnicos</h2>
+                    </div>
+                    <div class="equipment-list">
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Monitor LG 27" IPS Full HD</h4>
+                                <p class="item-brand">LG • 1920 x 1080 • Amazon</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">27"</span>
+                                    <span class="meta-tag">IPS</span>
+                                    <span class="meta-tag">Full HD</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Monitor PHILIPS 22" Full HD</h4>
+                                <p class="item-brand">PHILIPS • 1920 x 1080 • Amazon</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">22"</span>
+                                    <span class="meta-tag">Full HD</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-volume-up"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Torre de Sonido MX-T70</h4>
+                                <p class="item-brand">Samsung • Jumbo Jardín Plaza</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">Samsung</span>
+                                    <span class="meta-tag">High Power</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Mini Proyector WiMiUS</h4>
+                                <p class="item-brand">WiMiUS • 1080P • WiFi + Bluetooth • Amazon</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">1080P</span>
+                                    <span class="meta-tag">WiFi</span>
+                                    <span class="meta-tag">Portable</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Adaptador USB 3.0 a HDMI UHD</h4>
+                                <p class="item-brand">WAVLINK • Dual Display • Amazon</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">USB 3.0</span>
+                                    <span class="meta-tag">UHD</span>
+                                    <span class="meta-tag">Dual</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-tv"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Amazon Fire TV Stick 4K</h4>
+                                <p class="item-brand">Amazon • 4K Streaming • Amazon</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">4K</span>
+                                    <span class="meta-tag">Streaming</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Echo Show 5 (3ª Gen 2023)</h4>
+                                <p class="item-brand">Amazon • Smart Display • Amazon</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">Smart Display</span>
+                                    <span class="meta-tag">2023</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Bombillas LED Inteligentes</h4>
+                                <p class="item-brand">Sengled & Linkind • Smart Lighting • Amazon</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">Smart LED</span>
+                                    <span class="meta-tag">Multi Pack</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Trípode para Cámara</h4>
+                                <p class="item-brand">Varios • Centro de Cali</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">Photography</span>
+                                    <span class="meta-tag">Adjustable</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Extensiones Eléctricas</h4>
+                                <p class="item-brand">3m y 10m • Varios proveedores</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">Power</span>
+                                    <span class="meta-tag">Multiple Lengths</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="item-icon">
+                                <i class="fas fa-cable-car"></i>
+                            </div>
+                            <div class="item-details">
+                                <h4>Cables HDMI</h4>
+                                <p class="item-brand">Incluye Cable 8K 48Gbps • Highwings • Amazon</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag">8K</span>
+                                    <span class="meta-tag">48Gbps</span>
+                                    <span class="meta-tag">Premium</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Request Section -->
+            <section class="request-section">
+                <h2>¿Cómo Solicitar Equipos?</h2>
+                <p style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+                    ¿Necesitas usar nuestra infraestructura para tu evento? El proceso es simple y está diseñado para facilitar el acceso a toda la comunidad.
+                </p>
+
+                <div class="request-steps">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Únete al Telegram</h3>
+                        <p class="step-description">Accede a nuestro grupo público de Telegram donde se coordinan todas las solicitudes de equipos.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Describe tu Evento</h3>
+                        <p class="step-description">Comparte detalles sobre tu evento: fecha, lugar, número de asistentes y equipos específicos que necesitas.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Coordinación</h3>
+                        <p class="step-description">Nuestro equipo coordinará contigo la logística, horarios de recogida y entrega de los equipos.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">¡Disfruta tu Evento!</h3>
+                        <p class="step-description">Usa los equipos en tu evento y comparte la experiencia con la comunidad. Solo pedimos un reporte post-evento.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 2rem; background: rgba(100, 255, 218, 0.1); border-radius: 16px; border: 1px solid rgba(100, 255, 218, 0.3);">
+                    <h4 style="color: #64ffda; font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle"></i> Política de Uso
+                    </h4>
+                    <ul style="color: rgba(255, 255, 255, 0.8); text-align: left; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                        <li>✅ Uso gratuito para eventos educativos y de la comunidad Web3</li>
+                        <li>✅ Prioridad para eventos sin fines de lucro</li>
+                        <li>✅ Disponibilidad sujeta a calendario de eventos ETH Cali</li>
+                        <li>✅ Usuario responsable del cuidado y devolución en buen estado</li>
+                        <li>✅ Reportar cualquier daño o problema inmediatamente</li>
+                    </ul>
+                </div>
+
+                <a href="https://t.me/ethcali" target="_blank" class="telegram-cta">
+                    <i class="fab fa-telegram"></i>
+                    Solicitar Equipos en Telegram
+                </a>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/navbar.js"></script>
+    <script>
+        // Load navbar and footer
+        $(document).ready(function() {
+            $('#navbar-container').load('navbar.html');
+            $('#footer-container').load('footer.html');
+        });
+
+        // Cursor animation
+        const cursor = document.querySelector('.cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+
+        // Equipment item hover effects
+        $('.equipment-item').on('mouseenter', function() {
+            $(this).css('transform', 'translateX(5px)');
+        }).on('mouseleave', function() {
+            $(this).css('transform', 'translateX(0)');
+        });
+
+        // Category card animations
+        $('.category-card').on('mouseenter', function() {
+            $(this).find('.category-icon').css('transform', 'scale(1.1) rotate(5deg)');
+        }).on('mouseleave', function() {
+            $(this).find('.category-icon').css('transform', 'scale(1) rotate(0deg)');
+        });
+    </script>
+</body>
+</html>

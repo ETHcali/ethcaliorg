@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guías de marca y recursos de branding de Ethereum Cali - Descarga logos, tipografías y elementos gráficos oficiales">
+    <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
+    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
+    
+    <title>Brand Guidelines | Ethereum Cali</title>
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/shared-components.css">
+    <link rel="stylesheet" href="css/style_ethcali.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .brand-guidelines-container {
+            padding: 6rem 0 4rem;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            min-height: 100vh;
+        }
+
+        .brand-hero {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .brand-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #64ffda;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
+        }
+
+        .brand-hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .asset-category {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .asset-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #64ffda, #00bcd4);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .asset-category:hover::before {
+            transform: scaleX(1);
+        }
+
+        .asset-category:hover {
+            transform: translateY(-10px);
+            border-color: #64ffda;
+            box-shadow: 0 25px 50px rgba(100, 255, 218, 0.2);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            color: #0a0a0a;
+            font-size: 1.5rem;
+        }
+
+        .category-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin: 0;
+        }
+
+        .assets-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .asset-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .asset-item:last-child {
+            border-bottom: none;
+        }
+
+        .asset-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .asset-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .asset-preview {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            overflow: hidden;
+        }
+
+        .asset-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .asset-preview.pdf-icon {
+            color: #ff4757;
+            font-size: 1.2rem;
+        }
+
+        .asset-preview.svg-icon {
+            color: #64ffda;
+            font-size: 1.2rem;
+        }
+
+        .asset-details h4 {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 0.25rem 0;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .asset-details p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #0a0a0a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.4);
+        }
+
+        .usage-guidelines {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-top: 4rem;
+        }
+
+        .usage-guidelines h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .guideline-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border-left: 4px solid #64ffda;
+        }
+
+        .guideline-card h3 {
+            color: #64ffda;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .guideline-card ul {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            padding-left: 1.5rem;
+        }
+
+        .guideline-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .color-swatch {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .color-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .color-primary { background: #64ffda; }
+        .color-secondary { background: #00bcd4; }
+        .color-dark { background: #0a0a0a; }
+        .color-accent { background: #1a1a2e; }
+
+        .color-name {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .color-hex {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .download-all-btn {
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #0a0a0a;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 3rem auto 0;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: block;
+            width: fit-content;
+        }
+
+        .download-all-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(100, 255, 218, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .brand-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .assets-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .guidelines-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .color-palette {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+    <div class="cursor"></div>
+    <div class="noise-overlay"></div>
+
+    <main class="brand-guidelines-container">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="brand-hero">
+                <h1>Brand Guidelines</h1>
+                <p>Recursos oficiales de marca de Ethereum Cali. Descarga logos, tipografías y elementos gráficos para usar en tus proyectos, siempre respetando nuestras guías de uso.</p>
+            </section>
+
+            <!-- Assets Grid -->
+            <section class="assets-grid">
+                <!-- Logos -->
+                <div class="asset-category">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h2 class="category-title">Logos Principales</h2>
+                    </div>
+                    <ul class="assets-list">
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/logoethcali.png" alt="Logo principal">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Logo Principal</h4>
+                                    <p>PNG • 16KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/logoethcali.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/LogoETHCALI Horizontal - Fondo Blaco.png" alt="Logo horizontal fondo blanco">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Logo Horizontal - Fondo Blanco</h4>
+                                    <p>PNG • 21KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/LogoETHCALI Horizontal - Fondo Blaco.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Logo ETHCALI Horizontal _ fondo Negro.png" alt="Logo horizontal fondo negro">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Logo Horizontal - Fondo Negro</h4>
+                                    <p>PNG • 18KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Logo ETHCALI Horizontal _ fondo Negro.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Logo ETHCALI Vertical Fondo Blanco.png" alt="Logo vertical fondo blanco">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Logo Vertical - Fondo Blanco</h4>
+                                    <p>PNG • 19KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Logo ETHCALI Vertical Fondo Blanco.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Logo ETHCALI Verticla - Fondo Negro.png" alt="Logo vertical fondo negro">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Logo Vertical - Fondo Negro</h4>
+                                    <p>PNG • 20KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Logo ETHCALI Verticla - Fondo Negro.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Iconos y Favicons -->
+                <div class="asset-category">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-icons"></i>
+                        </div>
+                        <h2 class="category-title">Iconos & Favicons</h2>
+                    </div>
+                    <ul class="assets-list">
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview svg-icon">
+                                    <i class="fas fa-vector-square"></i>
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Favicon SVG</h4>
+                                    <p>SVG • 12KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/favicon.svg" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/faviconethcali16x16.png" alt="Favicon 16x16">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Favicon 16x16</h4>
+                                    <p>PNG • 1KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/faviconethcali16x16.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/faviconethcali38x38.png" alt="Favicon 38x38">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Favicon 38x38</h4>
+                                    <p>PNG • 3KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/faviconethcali38x38.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview svg-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Ethereum Events Illustration</h4>
+                                    <p>SVG • 1KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/ethereum-events-illustration.svg" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Banners y Assets Promocionales -->
+                <div class="asset-category">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h2 class="category-title">Banners & Promocionales</h2>
+                    </div>
+                    <ul class="assets-list">
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Banner1200x400.png" alt="Banner 1200x400">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Banner Principal 1200x400</h4>
+                                    <p>PNG • 421KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Banner1200x400.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Banner.jpg" alt="Banner JPG">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Banner JPG</h4>
+                                    <p>JPG • 45KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Banner.jpg" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Open SEA - Ethereum Cali3.png" alt="OpenSea NFT">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>OpenSea NFT Art</h4>
+                                    <p>PNG • 138KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Open SEA - Ethereum Cali3.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Perfil.jpg" alt="Imagen de perfil">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Imagen de Perfil</h4>
+                                    <p>JPG • 80KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Perfil.jpg" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Logos Colaborativos -->
+                <div class="asset-category">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h2 class="category-title">Logos Colaborativos</h2>
+                    </div>
+                    <ul class="assets-list">
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview svg-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Logo Nodo CLO ETH CO</h4>
+                                    <p>PDF • 1.3MB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Logo_Nodo_CLO_ETH_CO.pdf" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview svg-icon">
+                                    <i class="fas fa-vector-square"></i>
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Logo Nodo CLO ETH CO SVG</h4>
+                                    <p>SVG • 577KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Logo_Nodo_CLO_ETH_CO.svg" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Logo_Nodo_CLO_ETH_CO-01.png" alt="Nodo Logo 01">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Nodo Logo Variante 01</h4>
+                                    <p>PNG • 71KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Logo_Nodo_CLO_ETH_CO-01.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Logo_Nodo_CLO_ETH_CO-02.png" alt="Nodo Logo 02">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Nodo Logo Variante 02</h4>
+                                    <p>PNG • 69KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Logo_Nodo_CLO_ETH_CO-02.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                        <li class="asset-item">
+                            <div class="asset-info">
+                                <div class="asset-preview">
+                                    <img src="branding/Logo_Nodo_CLO_ETH_CO-03.png" alt="Nodo Logo 03">
+                                </div>
+                                <div class="asset-details">
+                                    <h4>Nodo Logo Variante 03</h4>
+                                    <p>PNG • 33KB</p>
+                                </div>
+                            </div>
+                            <a href="branding/Logo_Nodo_CLO_ETH_CO-03.png" download class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Usage Guidelines -->
+            <section class="usage-guidelines">
+                <h2>Guías de Uso</h2>
+                
+                <!-- Color Palette -->
+                <div class="guideline-card">
+                    <h3>Paleta de Colores</h3>
+                    <div class="color-palette">
+                        <div class="color-swatch">
+                            <div class="color-circle color-primary"></div>
+                            <div class="color-name">Primary</div>
+                            <div class="color-hex">#64FFDA</div>
+                        </div>
+                        <div class="color-swatch">
+                            <div class="color-circle color-secondary"></div>
+                            <div class="color-name">Secondary</div>
+                            <div class="color-hex">#00BCD4</div>
+                        </div>
+                        <div class="color-swatch">
+                            <div class="color-circle color-dark"></div>
+                            <div class="color-name">Dark</div>
+                            <div class="color-hex">#0A0A0A</div>
+                        </div>
+                        <div class="color-swatch">
+                            <div class="color-circle color-accent"></div>
+                            <div class="color-name">Accent</div>
+                            <div class="color-hex">#1A1A2E</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guidelines-grid">
+                    <div class="guideline-card">
+                        <h3>Uso del Logo</h3>
+                        <ul>
+                            <li>Mantener siempre las proporciones originales</li>
+                            <li>No modificar los colores oficiales</li>
+                            <li>Respetar el área de protección mínima</li>
+                            <li>Usar versiones de alta resolución para impresión</li>
+                            <li>No aplicar efectos o sombras adicionales</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="guideline-card">
+                        <h3>Tipografía</h3>
+                        <ul>
+                            <li>Primaria: Orbitron (títulos y headers)</li>
+                            <li>Secundaria: Space Mono (código y detalles)</li>
+                            <li>Cuerpo: Inter o similar sans-serif</li>
+                            <li>Mantener jerarquía visual clara</li>
+                            <li>Contrastar adecuadamente con el fondo</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="guideline-card">
+                        <h3>Aplicaciones Prohibidas</h3>
+                        <ul>
+                            <li>No usar logos pixelados o de baja calidad</li>
+                            <li>No cambiar la orientación del logo</li>
+                            <li>No usar colores no autorizados</li>
+                            <li>No separar elementos del logo</li>
+                            <li>No usar sobre fondos que comprometan legibilidad</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="guideline-card">
+                        <h3>Contexto de Uso</h3>
+                        <ul>
+                            <li>Eventos y conferencias de Web3</li>
+                            <li>Material educativo sobre blockchain</li>
+                            <li>Comunicaciones oficiales</li>
+                            <li>Redes sociales (con crédito)</li>
+                            <li>Colaboraciones autorizadas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <a href="#" class="download-all-btn" onclick="downloadAllAssets()">
+                        <i class="fas fa-download"></i>
+                        Descargar Todo el Kit de Marca
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/navbar.js"></script>
+    <script>
+        // Load navbar and footer
+        $(document).ready(function() {
+            $('#navbar-container').load('navbar.html');
+            $('#footer-container').load('footer.html');
+        });
+
+        // Function to download all assets (would need server-side implementation)
+        function downloadAllAssets() {
+            alert('Funcionalidad de descarga masiva próximamente disponible. Por ahora, descarga los assets individualmente.');
+        }
+
+        // Cursor animation
+        const cursor = document.querySelector('.cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+    </script>
+</body>
+</html>

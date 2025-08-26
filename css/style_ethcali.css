@@ -1803,6 +1803,366 @@ section:nth-child(odd) {
     }
 }
 
+/* Partner Universities Section */
+.partner-universities {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    position: relative;
+}
+
+.partner-universities::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff10" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+}
+
+.universities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+.university-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.university-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.university-card:hover::before {
+    left: 100%;
+}
+
+.university-card:hover {
+    transform: translateY(-10px);
+    border-color: #64ffda;
+    box-shadow: 0 20px 40px rgba(100, 255, 218, 0.2);
+}
+
+.university-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.university-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.university-card:hover .university-logo img {
+    transform: scale(1.1);
+}
+
+.university-card h3 {
+    color: #64ffda;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.university-card p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Government Support Section */
+.government-support {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+    position: relative;
+}
+
+.government-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    margin-top: 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+.gov-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 3rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.gov-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #64ffda, #00bcd4);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.gov-card:hover::after {
+    transform: scaleX(1);
+}
+
+.gov-card:hover {
+    transform: translateY(-15px);
+    border-color: #64ffda;
+    box-shadow: 0 25px 50px rgba(100, 255, 218, 0.25);
+}
+
+.gov-logo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 2rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.gov-logo::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, #64ffda, transparent);
+    animation: rotate 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gov-card:hover .gov-logo::before {
+    opacity: 0.3;
+}
+
+.gov-logo img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+}
+
+.gov-card h3 {
+    color: #64ffda;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.gov-card p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Location Section */
+.our-location {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    position: relative;
+}
+
+.location-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 4rem;
+    align-items: center;
+}
+
+.location-info {
+    position: relative;
+    z-index: 1;
+}
+
+.location-logo {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 2rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.location-logo::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #64ffda, #00bcd4, #64ffda);
+    border-radius: 50%;
+    z-index: -1;
+    animation: rotate 4s linear infinite;
+}
+
+.location-logo img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.location-info h3 {
+    color: #64ffda;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.location-info > p {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.location-details {
+    margin: 2rem 0;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.detail-item i {
+    color: #64ffda;
+    width: 20px;
+    margin-right: 1rem;
+    font-size: 1.1rem;
+}
+
+.location-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(45deg, #64ffda, #00bcd4);
+    color: #0a0a0a;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.location-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(100, 255, 218, 0.4);
+}
+
+.location-visual {
+    position: relative;
+}
+
+.map-container {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 2rem;
+}
+
+.map-container iframe {
+    filter: grayscale(1) invert(1) contrast(0.8) hue-rotate(200deg);
+}
+
+.zonamerica-info {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.zonamerica-info h4 {
+    color: #64ffda;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.zonamerica-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.zonamerica-info li {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.zonamerica-info li::before {
+    content: '▶';
+    color: #64ffda;
+    position: absolute;
+    left: 0;
+    font-size: 0.8rem;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 @media (max-width: 480px) {
     .metrics-grid {
         grid-template-columns: 1fr;
@@ -1810,5 +2170,22 @@ section:nth-child(odd) {
     
     .chains-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .universities-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .government-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .location-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .location-info h3 {
+        font-size: 1.5rem;
     }
 }

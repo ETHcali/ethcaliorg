@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "description": "Ethereum Cali Community Website",
     "scripts": {
-        "build": "mkdir -p dist && cp -r *.html *.css *.js *.csv team branding 'Sarun Pro' dist/ && cp ethcali.html dist/index.html",
-        "vercel-build": "mkdir -p dist && cp -r *.html *.css *.js *.csv team branding 'Sarun Pro' dist/ && cp ethcali.html dist/index.html",
+        "build": "mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags dist/ && cp ethcali.html dist/index.html",
+        "vercel-build": "mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags dist/ && cp ethcali.html dist/index.html",
         "start": "npx http-server dist -p 8000 -c-1",
         "dev": "npx live-server --port=8000 --no-browser"
     },
