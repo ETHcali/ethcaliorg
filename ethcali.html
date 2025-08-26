@@ -10,15 +10,59 @@
     <link rel="icon" type="image/png" href="/branding/logoethcali.png">
     
     <title>Ethereum Cali | El Jardín Infinito</title>
-    <link rel="stylesheet" href="navbar.css">
-    <link rel="stylesheet" href="shared-components.css">
-    <link rel="stylesheet" href="style_ethcali.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/shared-components.css">
+    <link rel="stylesheet" href="css/style_ethcali.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="navbar.js"></script>
+    <script>
+        // Animated Counter Effect for Metrics
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = Math.floor(start);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            }
+            
+            updateCounter();
+        }
+
+        // Intersection Observer for triggering animations
+        function initMetricsAnimation() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const metricNumbers = entry.target.querySelectorAll('.metric-number');
+                        metricNumbers.forEach(numberEl => {
+                            const target = parseInt(numberEl.getAttribute('data-target'));
+                            animateCounter(numberEl, target, 2500);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            const metricsSection = document.querySelector('.impact-metrics');
+            if (metricsSection) {
+                observer.observe(metricsSection);
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initMetricsAnimation();
+        });
+    </script>
 </head>
 
 <body>
@@ -33,19 +77,7 @@
                 <div class="hero-content">
                     <h1 class="glitch" data-text="El Jardín Infinito">El Jardín Infinito</h1>
                     <h2 class="hero-subtitle">Del Pacífico Colombiano</h2>
-                    <p class="hero-description">Desarrollando tecnológicamente la industria tradicional y potenciando el talento local</p>
-                    <div class="hero-buttons">
-                        <a href="#pillars" class="cyber-btn primary">
-                            <i class="fas fa-rocket"></i>
-                            Descubrir
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                        <a href="https://discord.gg/GvkDmHnDuE" class="cyber-btn secondary" target="_blank">
-                            <i class="fab fa-discord"></i>
-                            Unirse
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
+                    <p class="hero-description">Estamos construyendo alianzas con universidades, empresas y gobierno local para potenciar el ecosistema web3 del pacifico colombiano con tecnologias de ethereum</p>
                 </div>
                 <div class="hero-visual">
                     <div class="eth-symbol">
@@ -66,6 +98,77 @@
             </div>
         </header>
 
+        <!-- Impact Metrics Section -->
+        <section id="impact-metrics" class="impact-metrics">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Impacto </h2>
+                    <div class="cyber-line"></div>
+                    <p class="section-subtitle">desde Devcon VI 2022 hemos construido:</p>
+                </div>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="metric-number" data-target="30">0</div>
+                        <div class="metric-label">Meetups</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="metric-number" data-target="3">0</div>
+                        <div class="metric-label">Hackathons</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="metric-number" data-target="10">0</div>
+                        <div class="metric-label">Workshops</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="metric-number" data-target="15">0</div>
+                        <div class="metric-label">Venues</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="metric-number" data-target="340">0</div>
+                        <div class="metric-label">Usuarios<br>Onboardeados</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="metric-number" data-target="5">0</div>
+                        <div class="metric-label">Universidades</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="metric-number" data-target="100">0</div>
+                        <div class="metric-label">USD value in<br>ETH Faucet</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="metric-number" data-target="300">0</div>
+                        <div class="metric-label">USD value on prizes</div>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Mission Section -->
         <section id="mission" class="mission">
             <div class="container">
@@ -76,14 +179,22 @@
                 <div class="mission-content">
                     <div class="mission-text">
                         <p>
-                            Nuestra misión es proporcionar soluciones innovadoras que mejoren la calidad de vida de las personas. 
-                            Nos comprometemos a trabajar con integridad y a fomentar un ambiente de colaboración y respeto.
+                        Nuestra misión es cultivar, impulsar y potenciar el ecosistema web3 del pacifico colombiano construido sobre ethereum. 
                         </p>
                         <p>
-                            Creemos en la importancia de la sostenibilidad y en el impacto positivo que nuestras acciones pueden tener 
-                            en la comunidad. Nuestro objetivo es ser un referente en el sector, ofreciendo productos y servicios de 
-                            alta calidad que satisfagan las necesidades de nuestros clientes.
+                        Nuestra estrategia se basa en alianzas estrategicas con universidades, empresas y gobierno para co-crear actividades que permitan
                         </p>
+                        <p>
+                        - Educacion para apoyar al publico general, 
+                        </p>
+                        <p>
+                        - Capacitacion el talento de las empresas 
+                        </p>
+                        <p>
+                        - Financiacion para potenciar proyectos web3 locales.
+                        </p>
+                        <p>
+                    
                     </div>
                     <div class="mission-visual">
                         <div class="cyber-hexagon">
@@ -103,7 +214,35 @@
                 </div>
                 <div class="connection-grid">
                     <div class="connection-category">
-                        <h3>Social Media</h3>
+                        <h3>Community Channels</h3>
+                        <div class="connections">
+                            <a href="https://t.me/ethcali" target="_blank" class="connection-item">
+                                <i class="fab fa-telegram"></i>
+                                <span>Telegram</span>
+                            </a>
+                            <a href="https://discord.gg/GvkDmHnDuE" target="_blank" class="connection-item">
+                                <i class="fab fa-discord"></i>
+                                <span>Discord</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="connection-category">
+                        <h3>Events</h3>
+                        <div class="connections">
+                            <a href="https://www.meetup.com/members/378305434/group/36837943/" target="_blank" class="connection-item">
+                                <i class="fab fa-meetup"></i>
+                                <span>Meetup</span>
+                            </a>
+                            <a href="https://lu.ma/ethcali" target="_blank" class="connection-item">
+                                <i class="fas fa-calendar-plus"></i>
+                                <span>Luma</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="connection-category">
+                        <h3>Socials</h3>
                         <div class="connections">
                             <a href="https://twitter.com/ethereum_cali" target="_blank" class="connection-item">
                                 <i class="fab fa-twitter"></i>
@@ -117,47 +256,39 @@
                                 <i class="fab fa-instagram"></i>
                                 <span>Instagram</span>
                             </a>
-                        </div>
-                    </div>
-                    
-                    <div class="connection-category">
-                        <h3>Development</h3>
-                        <div class="connections">
+                            <a href="https://www.youtube.com/@ethereumcali" target="_blank" class="connection-item">
+                                <i class="fab fa-youtube"></i>
+                                <span>Youtube</span>
+                            </a>
                             <a href="https://github.com/ethcali" target="_blank" class="connection-item">
                                 <i class="fab fa-github"></i>
-                                <span>GitHub</span>
+                                <span>Github</span>
                             </a>
                         </div>
                     </div>
                     
                     <div class="connection-category">
-                        <h3>Community</h3>
+                        <h3>Web3 Profiles</h3>
                         <div class="connections">
-                            <a href="https://discord.gg/GvkDmHnDuE" target="_blank" class="connection-item">
-                                <i class="fab fa-discord"></i>
-                                <span>Discord</span>
+                            <a href="https://zora.co/@ethcali" target="_blank" class="connection-item">
+                                <i class="fas fa-palette"></i>
+                                <span>Zora</span>
                             </a>
-                            <a href="https://t.me/ethcali" target="_blank" class="connection-item">
-                                <i class="fab fa-telegram"></i>
-                                <span>Telegram</span>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="connection-category">
-                        <h3>Web3</h3>
-                        <div class="connections">
-                            <a href="https://app.ens.domains/name/ethereumcali.eth/details" target="_blank" class="connection-item">
-                                <i class="fas fa-signature"></i>
-                                <span>ENS</span>
-                            </a>
-                            <a href="https://mirror.xyz/ethereumcali.eth" target="_blank" class="connection-item">
-                                <i class="fas fa-newspaper"></i>
-                                <span>Mirror</span>
+                            <a href="https://farcaster.xyz/ethereumcali" target="_blank" class="connection-item">
+                                <i class="fas fa-broadcast-tower"></i>
+                                <span>Farcaster</span>
                             </a>
                             <a href="https://opensea.io/es/ETHCALI" target="_blank" class="connection-item">
                                 <i class="fas fa-water"></i>
                                 <span>OpenSea</span>
+                            </a>
+                            <a href="https://mirror.xyz/0x55C9fbf09c056ACac807CD674e34F1F8Df0E711d" target="_blank" class="connection-item">
+                                <i class="fas fa-newspaper"></i>
+                                <span>Mirror</span>
+                            </a>
+                            <a href="https://app.ens.domains/name/ethereumcali.eth/details" target="_blank" class="connection-item">
+                                <i class="fas fa-signature"></i>
+                                <span>ENS</span>
                             </a>
                         </div>
                     </div>
@@ -231,214 +362,62 @@
             </div>
         </section>
 
-        <!-- Pillars Section -->
-        <section id="pillars" class="pillars">
+        <!-- Supported Chains Section -->
+        <section id="supported-chains" class="supported-chains">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">¿Cómo Construimos el Jardín Infinito?</h2>
+                    <h2 class="section-title">Chains donde Construimos</h2>
                     <div class="cyber-line"></div>
+                    <p class="section-intro">Desarrollamos y organizamos actividades en múltiples blockchains del ecosistema Ethereum</p>
                 </div>
-                <p class="section-intro">Propiciamos una articulación con los actores del Ecosistema Web3, generando nuevas oportunidades y conectando con los referentes nacionales e internacionales, a través de los siguientes pilares:</p>
-                
-                <div class="pillars-grid">
-                    <div class="pillar-card">
-                        <div class="pillar-icon">
-                            <i class="fas fa-graduation-cap"></i>
+                <div class="chains-grid">
+                    <div class="chain-card">
+                        <div class="chain-logo">
+                            <img src="chains/ethereum.png" alt="Ethereum" />
                         </div>
-                        <h3>Educación</h3>
-                        <p>Formamos a la próxima generación de builders en tecnologías blockchain y Ethereum.</p>
-                        <a href="https://www.notion.so/EDUCACI-N-5ec30a32ff3b408fa849a581e85daf0b?pvs=21" class="cyber-btn" target="_blank">
-                            Conoce más
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                        <h3>Ethereum</h3>
+                        <p>La blockchain principal donde comenzó todo</p>
                     </div>
-                    
-                    <div class="pillar-card">
-                        <div class="pillar-icon">
-                            <i class="fas fa-seedling"></i>
+                    <div class="chain-card">
+                        <div class="chain-logo">
+                            <img src="chains/base logo.svg" alt="Base" />
                         </div>
-                        <h3>El Jardín Infinito</h3>
-                        <p>Cultivamos un ecosistema tecnológico sostenible en el Pacífico Colombiano.</p>
-                        <a href="https://www.notion.so/EL-JARDIN-INFINITO-DEL-PACIFICO-COLOMBIANO-f23cccd98da545a881bbc715c3005089?pvs=21" class="cyber-btn" target="_blank">
-                            Conoce más
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                        <h3>Base</h3>
+                        <p>Layer 2 de Coinbase para aplicaciones escalables</p>
                     </div>
-                    
-                    <div class="pillar-card">
-                        <div class="pillar-icon">
-                            <i class="fas fa-users"></i>
+                    <div class="chain-card">
+                        <div class="chain-logo">
+                            <img src="chains/op mainnet.png" alt="OP Mainnet" />
                         </div>
-                        <h3>Comunidad y Networking</h3>
-                        <p>Conectamos personas y organizaciones para crear un ecosistema más fuerte.</p>
-                        <a href="https://www.notion.so/COMUNIDAD-Y-NETWORKING-924e2fa719b24a7fa434eb7183d8508b?pvs=21" class="cyber-btn" target="_blank">
-                            Conoce más
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                        <h3>OP Mainnet</h3>
+                        <p>Optimistic rollup para transacciones rápidas</p>
                     </div>
-                    
-                    <div class="pillar-card">
-                        <div class="pillar-icon">
-                            <i class="fas fa-trophy"></i>
+                    <div class="chain-card">
+                        <div class="chain-logo">
+                            <img src="chains/unichain.png" alt="Unichain" />
                         </div>
-                        <h3>Logros</h3>
-                        <p>Celebramos nuestro impacto y avances en la región.</p>
-                        <a href="https://www.notion.so/213b85b1d0764ac6bf595d5d093b36e1?pvs=21" class="cyber-btn" target="_blank">
-                            Conoce más
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                        <h3>Unichain</h3>
+                        <p>La nueva L2 de Uniswap para DeFi</p>
+                    </div>
+                    <div class="chain-card">
+                        <div class="chain-logo">
+                            <img src="chains/polygon.png" alt="Polygon" />
+                        </div>
+                        <h3>Polygon</h3>
+                        <p>Red de escalabilidad para Ethereum</p>
+                    </div>
+                    <div class="chain-card">
+                        <div class="chain-logo">
+                            <img src="chains/gnosis.png" alt="Gnosis" />
+                        </div>
+                        <h3>Gnosis</h3>
+                        <p>Blockchain enfocada en pagos y predicciones</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Organization Section -->
-        <section id="organization" class="organization">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">¿Cómo Nos Organizamos?</h2>
-                    <div class="cyber-line"></div>
-                </div>
-                
-                <p class="section-intro">Queremos ser una Organización Autónoma Descentralizada (DAO) que cuida y cultiva con Ethereum el jardín infinito de Cali y el Pacifico Colombiano.</p>
-                
-                <div class="org-section">
-                    <h3 class="org-section-title">Core Members</h3>
-                    <div class="org-cards">
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-users-cog"></i>
-                            </div>
-                            <h4>Core y Contribuidores</h4>
-                            <p>Equipo principal y contribuidores del ecosistema Ethereum Cali.</p>
-                            <a href="https://www.notion.so/0d67f02c48b843429de67bc519ecc2ad?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-handshake"></i>
-                            </div>
-                            <h4>Coordinación e Incentivos</h4>
-                            <p>Coordinación de esfuerzos e incentivos para contribuidores.</p>
-                            <a href="https://www.notion.so/COORDINACI-N-E-INCENTIVOS-fba3060f09814d4baca3b0fb47498404?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-tasks"></i>
-                            </div>
-                            <h4>ETHCore Duties</h4>
-                            <p>Responsabilidades y actividades del equipo core de Ethereum Cali.</p>
-                            <a href="https://www.notion.so/ETHCORE-DUTIES-888ee3592b3f4303a3dde4a9c1bc285a?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="org-section">
-                    <h3 class="org-section-title">WEB3 ARMY</h3>
-                    <div class="org-cards">
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-tools"></i>
-                            </div>
-                            <h4>Tools</h4>
-                            <p>Herramientas utilizadas por nuestra comunidad Web3.</p>
-                            <a href="https://www.notion.so/f158b544bfe24d2eb0cc1bac37d3f96d?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-vote-yea"></i>
-                            </div>
-                            <h4>Toma de Decisiones</h4>
-                            <p>Procesos para la toma de decisiones en nuestra DAO.</p>
-                            <a href="https://www.notion.so/TOMA-DE-DECISIONES-a681bcf56b9e4bbd93c8c70df8926621?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-gavel"></i>
-                            </div>
-                            <h4>Reglas del Juego</h4>
-                            <p>Normas y principios que rigen nuestra comunidad.</p>
-                            <a href="https://www.notion.so/REGLAS-DEL-JUEGO-ae525c230d7240888e8ba8293e0f3db7?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-file-contract"></i>
-                            </div>
-                            <h4>Registro Legal en Colombia</h4>
-                            <p>Información sobre nuestro registro legal como Fundación.</p>
-                            <a href="https://www.notion.so/REGISTRO-LEGAL-EN-COLOMBIA-6fc95f71951e4730be6cac080fc420c1?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="org-section">
-                    <h3 class="org-section-title">COORDINACIÓN</h3>
-                    <div class="org-cards">
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-hand-holding-usd"></i>
-                            </div>
-                            <h4>Fuentes de Financiación</h4>
-                            <p>Estrategias y fuentes de financiación para nuestros proyectos.</p>
-                            <a href="https://www.notion.so/FUENTES-DE-FINANCIACI-N-8fae9514dba148dbaad88642e0110969?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-university"></i>
-                            </div>
-                            <h4>Tesorerías</h4>
-                            <p>Gestión de tesorerías y finanzas de la organización.</p>
-                            <a href="https://www.notion.so/TESORERIAS-33b9c6e7bbd049ea86878ae52672a2bf?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="org-card">
-                            <div class="card-icon">
-                                <i class="fas fa-balance-scale"></i>
-                            </div>
-                            <h4>Modelo de Gobernanza</h4>
-                            <p>Estructura de gobernanza y toma de decisiones colectivas.</p>
-                            <a href="https://www.notion.so/MODELO-DE-GOBERNANZA-7f0371cbe9ba45ea981b6fe4768c3eeb?pvs=21" target="_blank" class="cyber-btn">
-                                Conocer más
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    
 
     <div id="footer-container"></div>
     

@@ -1,260 +1,326 @@
 /**
- * Events UI Components
- * Modular components for rendering event cards and related UI elements
+ * Events UI - Handles rendering of event cards and UI interactions
  */
 
-class EventCard {
-    constructor(event) {
-        this.event = event;
+class EventsUI {
+    constructor(eventsService) {
+        this.eventsService = eventsService;
     }
 
-    // Format date for display
-    formatDate(dateString) {
-        const date = new Date(dateString);
-        const options = { 
-            day: 'numeric', 
-            month: 'short', 
-            year: 'numeric' 
-        };
-        return date.toLocaleDateString('es-ES', options);
-    }
+    renderInternationalEvents(events, containerId = 'events-list') {
+        const container = document.getElementById(containerId);
+        if (!container) return;
 
-    // Get event type badge class
-    getTypeBadgeClass() {
-        const typeMap = {
-            'Event': 'event-badge',
-            'Meetup': 'meetup-badge',
-            'Workshop': 'workshop-badge',
-            'Conference': 'conference-badge',
-            'Hackathon': 'hackathon-badge'
-        };
-        return typeMap[this.event.type] || 'default-badge';
-    }
-
-    // Get category badge class
-    getCategoryBadgeClass() {
-        const categoryMap = {
-            'Own': 'own-badge',
-            'Colab': 'colab-badge',
-            'Volunteering': 'volunteering-badge',
-            'Attendees': 'attendees-badge',
-            'Ethcolombia': 'ethcolombia-badge'
-        };
-        return categoryMap[this.event.category] || 'default-badge';
-    }
-
-    // Render event stats
-    renderStats() {
-        const stats = [];
+        container.innerHTML = '';
         
-        if (this.event.stats.rsvp > 0) {
-            stats.push(`<span class="stat-item"><i class="fa fa-users"></i> RSVP: ${this.event.stats.rsvp}</span>`);
-        }
-        
-        if (this.event.stats.poapCollectors > 0) {
-            stats.push(`<span class="stat-item"><i class="fa fa-gift"></i> POAP: ${this.event.stats.poapCollectors}</span>`);
-        }
-        
-        return stats.length > 0 ? `<div class="event-stats">${stats.join('')}</div>` : '';
-    }
-
-    // Render event links
-    renderLinks() {
-        const links = [];
-        
-        if (this.event.links.instagram) {
-            links.push(`<a href="${this.event.links.instagram}" target="_blank" class="link-item"><i class="fab fa-instagram"></i> Instagram</a>`);
-        }
-        
-        if (this.event.links.registration && this.event.links.registration !== 'NA') {
-            links.push(`<a href="${this.event.links.registration}" target="_blank" class="link-item"><i class="fa fa-calendar-plus"></i> Registration</a>`);
-        }
-        
-        if (this.event.links.recap) {
-            links.push(`<a href="${this.event.links.recap}" target="_blank" class="link-item"><i class="fa fa-play-circle"></i> Recap</a>`);
-        }
-        
-        if (this.event.media.youtube) {
-            links.push(`<a href="${this.event.media.youtube}" target="_blank" class="link-item"><i class="fab fa-youtube"></i> YouTube</a>`);
-        }
-        
-        return links.length > 0 ? `<div class="event-links">${links.join('')}</div>` : '';
-    }
-
-    // Render collaboration info
-    renderCollaboration() {
-        if (!this.event.collaboration.name) return '';
-        
-        const url = this.event.collaboration.url || '#';
-        return `
-            <div class="event-collab">
-                <i class="fa fa-handshake"></i> 
-                <a href="${url}" target="_blank">${this.event.collaboration.name}</a>
-            </div>
-        `;
-    }
-
-    // Render location info
-    renderLocation() {
-        const location = this.event.location;
-        const mapsUrl = location.mapsUrl || '#';
-        
-        return `
-            <div class="event-location">
-                <i class="fa fa-map-marker"></i> 
-                <a href="${mapsUrl}" target="_blank">${location.name}, ${location.address}</a>
-            </div>
-        `;
-    }
-
-    // Get main action link
-    getMainActionLink() {
-        return this.event.links.main || this.event.links.instagram || this.event.links.registration || '#';
-    }
-
-    // Render the complete event card
-    render() {
-        const mainLink = this.getMainActionLink();
-        const hasValidLink = mainLink && mainLink !== '#';
-        
-        return `
-            <div class="event-card" data-event-id="${this.event.id}" data-type="${this.event.tags.includes('international') ? 'international' : 'local'}">
-                <img src="${this.event.media.image}" alt="${this.event.name}" class="event-image">
-                
-                <div class="event-card-header">
-                    <h3>${this.event.name}</h3>
-                    <div class="event-date">
-                        <i class="fa fa-calendar"></i> 
-                        ${this.formatDate(this.event.date)}
-                    </div>
-                    <div class="event-type-badge ${this.getTypeBadgeClass()}">${this.event.type}</div>
-                    <div class="event-category-badge ${this.getCategoryBadgeClass()}">${this.event.category}</div>
-                </div>
-                
-                <div class="event-card-body">
-                    ${this.renderLocation()}
-                    ${this.renderCollaboration()}
-                    ${this.renderStats()}
-                    ${this.renderLinks()}
-                </div>
-                
-                <div class="event-card-footer">
-                    <a href="${mainLink}" class="btn-discover" target="_blank" ${!hasValidLink ? 'style="background: #666; cursor: not-allowed;"' : ''}>
-                        <span>${hasValidLink ? 'Ver más' : 'Coming Soon'}</span>
-                        <i class="fas fa-${hasValidLink ? 'external-link-alt' : 'clock'}"></i>
-                    </a>
-                </div>
-            </div>
-        `;
-    }
-}
-
-// Events Grid Component
-class EventsGrid {
-    constructor(containerId) {
-        this.container = document.getElementById(containerId);
-        this.events = [];
-        this.filteredEvents = [];
-    }
-
-    // Set events data
-    setEvents(events) {
-        this.events = events;
-        this.filteredEvents = [...events];
-    }
-
-    // Filter events by month
-    filterByMonth(month) {
-        if (month === 'all') {
-            this.filteredEvents = [...this.events];
-        } else {
-            this.filteredEvents = this.events.filter(event => {
-                const eventDate = new Date(event.date);
-                return eventDate.getMonth() === parseInt(month);
-            });
-        }
-        this.render();
-    }
-
-    // Filter events by type (local/international)
-    filterByType(type) {
-        if (type === 'all') {
-            this.filteredEvents = [...this.events];
-        } else {
-            this.filteredEvents = this.events.filter(event => {
-                return event.tags.includes(type === 'local' ? 'local' : 'international');
-            });
-        }
-        this.render();
-    }
-
-    // Search events by name or tags
-    searchEvents(query) {
-        if (!query.trim()) {
-            this.filteredEvents = [...this.events];
-        } else {
-            const searchTerm = query.toLowerCase();
-            this.filteredEvents = this.events.filter(event => {
-                return event.name.toLowerCase().includes(searchTerm) ||
-                       event.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
-                       event.type.toLowerCase().includes(searchTerm) ||
-                       event.category.toLowerCase().includes(searchTerm);
-            });
-        }
-        this.render();
-    }
-
-    // Render the events grid
-    render() {
-        if (!this.container) {
-            console.error('Events container not found');
-            return;
-        }
-
-        if (this.filteredEvents.length === 0) {
-            this.container.innerHTML = `
-                <div class="no-events-message">
-                    <h3>No se encontraron eventos</h3>
-                    <p>Intenta con otros filtros o busca algo diferente.</p>
-                </div>
-            `;
-            return;
-        }
-
-        const grid = document.createElement('div');
-        grid.className = 'events-grid';
-
-        this.filteredEvents.forEach(event => {
-            const eventCard = new EventCard(event);
-            grid.innerHTML += eventCard.render();
+        events.forEach(event => {
+            const eventCard = this.createInternationalEventCard(event);
+            container.appendChild(eventCard);
         });
-
-        this.container.innerHTML = '';
-        this.container.appendChild(grid);
     }
 
-    // Get event statistics
-    getStats() {
-        const total = this.events.length;
-        const local = this.events.filter(e => e.tags.includes('local')).length;
-        const international = this.events.filter(e => e.tags.includes('international')).length;
-        const meetups = this.events.filter(e => e.type === 'Meetup').length;
-        const workshops = this.events.filter(e => e.type === 'Workshop').length;
-        const conferences = this.events.filter(e => e.type === 'Conference').length;
-        const events = this.events.filter(e => e.type === 'Event').length;
+    createInternationalEventCard(event) {
+        const card = document.createElement('div');
+        card.className = 'event-card international-event';
+        card.setAttribute('data-month', event.month);
+        
+        card.innerHTML = `
+            <div class="event-card-header">
+                <h3>${event.name}</h3>
+                <div class="event-date">
+                    <i class="fa fa-calendar"></i> 
+                    ${this.formatDateRange(event.startDate, event.endDate)}
+                </div>
+                <div class="event-type-badge">International Event</div>
+            </div>
+            <div class="event-card-body">
+                <div class="event-location">
+                    <i class="fa fa-map-marker"></i> 
+                    ${event.location}
+                </div>
+                ${event.social ? `
+                    <div class="event-social">
+                        <i class="fab fa-twitter"></i> 
+                        <a href="https://twitter.com/${event.social}" target="_blank">@${event.social}</a>
+                    </div>
+                ` : ''}
+                ${event.chat && event.chat !== '-' ? `
+                    <div class="event-chat">
+                        <i class="fab fa-telegram"></i> 
+                        <a href="${event.chat}" target="_blank">Chat</a>
+                    </div>
+                ` : ''}
+            </div>
+            <div class="event-card-footer">
+                ${event.link ? `
+                    <a href="${this.ensureHttps(event.link)}" class="btn-discover" target="_blank">
+                        Ver más
+                    </a>
+                ` : '<span class="btn-discover disabled">Sin enlace</span>'}
+            </div>
+        `;
+        
+        return card;
+    }
 
-        return {
-            total,
-            local,
-            international,
-            meetups,
-            workshops,
-            conferences,
-            events
-        };
+    renderLocalEvents(events, containerId = 'events-list') {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = '';
+        
+        events.forEach(event => {
+            const eventCard = this.createLocalEventCard(event);
+            container.appendChild(eventCard);
+        });
+    }
+
+    createLocalEventCard(event) {
+        const card = document.createElement('div');
+        card.className = 'event-card local-event';
+        card.setAttribute('data-month', event.month);
+        
+        card.innerHTML = `
+            <img src="${event.image}" alt="${event.name}" class="event-image" 
+                 onerror="this.src='branding/logoethcali.png'">
+            <div class="event-card-header">
+                <h3>${event.name}</h3>
+                <div class="event-date">
+                    <i class="fa fa-calendar"></i> 
+                    ${event.date}
+                </div>
+                <div class="event-type-badge">${event.typeContent} - ${event.typeEvent}</div>
+            </div>
+            <div class="event-card-body">
+                <div class="event-location">
+                    <i class="fa fa-map-marker"></i> 
+                    ${event.location || 'Ubicación no especificada'}
+                </div>
+                ${event.hostColab ? `
+                    <div class="event-collab">
+                        <i class="fa fa-handshake"></i> 
+                        ${event.hostColab}
+                    </div>
+                ` : ''}
+                ${event.rsvp ? `
+                    <div class="event-stats">
+                        <span class="stat-item">
+                            <i class="fa fa-users"></i> RSVP: ${event.rsvp}
+                        </span>
+                        ${event.poapLink ? `
+                            <span class="stat-item">
+                                <i class="fa fa-gift"></i> 
+                                <a href="${event.poapLink}" target="_blank">POAP</a>
+                            </span>
+                        ` : ''}
+                    </div>
+                ` : ''}
+                
+                <!-- Details Toggle -->
+                <div class="event-details-toggle">
+                    <button class="details-btn" onclick="this.parentElement.nextElementSibling.classList.toggle('expanded')">
+                        <i class="fa fa-chevron-down"></i> Ver detalles
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Expandable Details Section -->
+            <div class="event-details-expanded">
+                <div class="details-grid">
+                    ${event.socialMediaPost ? `
+                        <div class="detail-item">
+                            <strong>Post Oficial:</strong>
+                            <a href="${event.socialMediaPost}" target="_blank">
+                                <i class="fab fa-instagram"></i> Ver post
+                            </a>
+                        </div>
+                    ` : ''}
+                    
+                    ${event.registrationPage && event.registrationPage !== 'NA' ? `
+                        <div class="detail-item">
+                            <strong>Registro:</strong>
+                            <a href="${event.registrationPage}" target="_blank">
+                                <i class="fa fa-calendar-plus"></i> Registrarse
+                            </a>
+                        </div>
+                    ` : ''}
+                    
+                    ${event.protocolToMint && event.protocolToMint !== 'NA' ? `
+                        <div class="detail-item">
+                            <strong>Protocolo de Mint:</strong>
+                            <span>${event.protocolToMint}</span>
+                        </div>
+                    ` : ''}
+                    
+                    ${event.nftUrl && event.nftUrl !== 'NA' ? `
+                        <div class="detail-item highlight">
+                            <strong>NFT:</strong>
+                            <a href="${event.nftUrl}" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> Ver NFT
+                            </a>
+                        </div>
+                    ` : ''}
+                    
+                    ${event.chainNft && event.chainNft !== 'NA' ? `
+                        <div class="detail-item">
+                            <strong>Chain NFT:</strong>
+                            <div class="chain-info">
+                                <img src="${this.eventsService.getChainLogo(event.chainNft)}" 
+                                     alt="${event.chainNft}" class="chain-logo">
+                                <span>${event.chainNft}</span>
+                                ${event.mintsNft ? `<span class="mint-count">(${event.mintsNft} mints)</span>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${event.poapLink && event.poapLink !== 'NA' ? `
+                        <div class="detail-item highlight">
+                            <strong>POAP:</strong>
+                            <a href="${event.poapLink}" target="_blank">
+                                <i class="fa fa-gift"></i> Ver POAP
+                            </a>
+                            ${event.collectorsPOAP ? `<span class="collectors-count">(${event.collectorsPOAP} collectors)</span>` : ''}
+                        </div>
+                    ` : ''}
+                    
+                    ${event.chainPOAP && event.chainPOAP !== 'NA' ? `
+                        <div class="detail-item highlight">
+                            <strong>Chain POAP:</strong>
+                            <div class="chain-info">
+                                <img src="${this.eventsService.getChainLogo(event.chainPOAP)}" 
+                                     alt="${event.chainPOAP}" class="chain-logo">
+                                <span>${event.chainPOAP}</span>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${event.recapSocialMedia && event.recapSocialMedia !== 'NA' ? `
+                        <div class="detail-item">
+                            <strong>Recap:</strong>
+                            <a href="${event.recapSocialMedia}" target="_blank">
+                                <i class="fa fa-play-circle"></i> Ver recap
+                            </a>
+                        </div>
+                    ` : ''}
+                    
+                    ${event.registroFotografico && event.registroFotografico !== 'NA' ? `
+                        <div class="detail-item highlight">
+                            <strong>Fotos:</strong>
+                            <a href="${event.registroFotografico}" target="_blank">
+                                <i class="fa fa-images"></i> Ver fotos
+                            </a>
+                        </div>
+                    ` : ''}
+                    
+                    ${event.youtubeRecording && event.youtubeRecording !== 'NA' ? `
+                        <div class="detail-item">
+                            <strong>Grabación:</strong>
+                            <a href="${event.youtubeRecording}" target="_blank">
+                                <i class="fab fa-youtube"></i> Ver video
+                            </a>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+            
+            <div class="event-card-footer">
+                ${event.socialMediaPost ? `
+                    <a href="${event.socialMediaPost}" class="btn-discover" target="_blank">Ver más</a>
+                ` : '<span class="btn-discover disabled">Sin enlace</span>'}
+            </div>
+        `;
+        
+        return card;
+    }
+
+    renderInternationalMetrics(metrics, containerId = 'metrics-container') {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = `
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">${metrics.totalEvents}</div>
+                    <div class="metric-label">Total Events</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">${metrics.totalCountries}</div>
+                    <div class="metric-label">Countries</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">2025</div>
+                    <div class="metric-label">Year</div>
+                </div>
+            </div>
+        `;
+    }
+
+    renderLocalMetrics(metrics, containerId = 'metrics-container') {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const typeContentItems = Object.entries(metrics.typeContentCounts)
+            .map(([type, count]) => `<span class="type-badge">${type}: ${count}</span>`)
+            .join('');
+
+        const chainMintsItems = Object.entries(metrics.chainMints)
+            .map(([chain, mints]) => `
+                <div class="chain-mint-item">
+                    <img src="${this.eventsService.getChainLogo(chain)}" alt="${chain}" class="chain-logo-small">
+                    <span>${chain}: ${mints}</span>
+                </div>
+            `).join('');
+
+        container.innerHTML = `
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">${metrics.totalEvents}</div>
+                    <div class="metric-label">Total Events</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">${metrics.totalAttendees}</div>
+                    <div class="metric-label">Total Attendees</div>
+                </div>
+                <div class="metric-card wide">
+                    <div class="metric-label">Events by Type</div>
+                    <div class="type-content-list">${typeContentItems}</div>
+                </div>
+                <div class="metric-card wide">
+                    <div class="metric-label">NFT Mints by Chain</div>
+                    <div class="chain-mints-list">${chainMintsItems}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    setupMonthFilter(events, renderFunction) {
+        const monthBtns = document.querySelectorAll('.month-btn');
+        
+        monthBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                monthBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                const selectedMonth = btn.getAttribute('data-month');
+                const filteredEvents = this.eventsService.filterEventsByMonth(events, selectedMonth);
+                renderFunction(filteredEvents);
+            });
+        });
+    }
+
+    formatDateRange(startDate, endDate) {
+        if (startDate === endDate) return startDate;
+        return `${startDate} - ${endDate}`;
+    }
+
+    ensureHttps(url) {
+        if (!url) return '';
+        if (url.startsWith('http://') || url.startsWith('https://')) return url;
+        return `https://${url}`;
     }
 }
 
 // Export for use in other modules
-window.EventCard = EventCard;
-window.EventsGrid = EventsGrid; 
+window.EventsUI = EventsUI;

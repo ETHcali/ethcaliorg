@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Eventos Locales de Ethereum Cali">
+    <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
+    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
+    <title>Eventos Locales | Ethereum Cali</title>
+    
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/shared-components.css">
+    <link rel="stylesheet" href="css/style_events.css">
+    <link rel="stylesheet" href="css/events-components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/navbar.js"></script>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <div class="cursor"></div>
+    <div class="noise-overlay"></div>
+    <main class="events-container">
+        <!-- Hero Section -->
+        <header class="events-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="glitch" data-text="EVENTOS LOCALES ETHEREUM CALI">EVENTOS LOCALES ETHEREUM CALI</h1>
+                    <h2 class="hero-subtitle">Nuestra Historia en Blockchain</h2>
+                    <p class="hero-description">Explora todos los eventos que hemos organizado desde el inicio de la comunidad Ethereum Cali</p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="hero-total-events">48+</span>
+                            <span class="stat-label">Eventos</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="hero-total-attendees">800+</span>
+                            <span class="stat-label">Asistentes</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">2022</span>
+                            <span class="stat-label">Desde</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="cyber-grid"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Month Filter Section -->
+        <section class="month-filter-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Filtrar por Mes</h2>
+                    <div class="cyber-line"></div>
+                </div>
+                <div class="month-filters">
+                    <button class="month-btn active" data-month="all">Todos</button>
+                    <button class="month-btn" data-month="0">Enero</button>
+                    <button class="month-btn" data-month="1">Febrero</button>
+                    <button class="month-btn" data-month="2">Marzo</button>
+                    <button class="month-btn" data-month="3">Abril</button>
+                    <button class="month-btn" data-month="4">Mayo</button>
+                    <button class="month-btn" data-month="5">Junio</button>
+                    <button class="month-btn" data-month="6">Julio</button>
+                    <button class="month-btn" data-month="7">Agosto</button>
+                    <button class="month-btn" data-month="8">Septiembre</button>
+                    <button class="month-btn" data-month="9">Octubre</button>
+                    <button class="month-btn" data-month="10">Noviembre</button>
+                    <button class="month-btn" data-month="11">Diciembre</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Metrics Section -->
+        <section class="metrics-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Estadísticas Locales</h2>
+                    <div class="cyber-line"></div>
+                </div>
+                <div id="metrics-container" class="metrics-container">
+                    <!-- Metrics will be loaded dynamically here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Type Filters -->
+        <div class="event-type-filters">
+            <button class="event-type-btn active" data-type="local">Locales</button>
+            <button class="event-type-btn" data-type="international">Internacionales</button>
+        </div>
+
+        <!-- Events Grid Section -->
+        <section class="events-section">
+            <div class="container">
+                <div id="events-list" class="events-grid">
+                    <!-- Events will be loaded dynamically here -->
+                    <div class="loading-spinner" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #62688F;"></i>
+                        <p style="margin-top: 1rem; color: #CCCCCC;">Cargando eventos...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Local Events Calendar Section -->
+        <section class="calendar-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Calendario de Eventos Futuros</h2>
+                    <div class="cyber-line"></div>
+                </div>
+                <div class="calendar-container">
+                    <iframe src="https://calendar.google.com/calendar/embed?src=eth.cali.foundation%40gmail.com&ctz=America%2FBogota&mode=WEEK" 
+                            style="border: 0" 
+                            width="800" 
+                            height="600" 
+                            frameborder="0" 
+                            scrolling="no">
+                    </iframe>
+                </div>
+                <div class="calendar-actions">
+                    <a href="https://discord.gg/GvkDmHnDuE" target="_blank" class="cyber-btn">
+                        <i class="fab fa-discord"></i>
+                        Únete a la Comunidad
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Official Events Section -->
+        <section class="official-events-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Descubre Más Eventos</h2>
+                    <div class="cyber-line"></div>
+                </div>
+                <div class="official-events-content">
+                    <div class="official-events-text">
+                        <p>¿Quieres explorar eventos internacionales de Ethereum? Visita nuestra página de eventos internacionales o la página oficial de Ethereum:</p>
+                        <ul>
+                            <li>Eventos comunitarios actualizados</li>
+                            <li>Conferencias internacionales</li>
+                            <li>Meetups globales de Ethereum</li>
+                        </ul>
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                            <a href="events_internationals.html" class="cyber-btn">
+                                <i class="fas fa-globe"></i>
+                                Eventos Internacionales
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="https://ethereum.org/en/community/events/" target="_blank" class="cyber-btn">
+                                <i class="fas fa-rocket"></i>
+                                Página Oficial Ethereum
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="official-events-visual">
+                        <div class="cyber-hexagon">
+                            <i class="fab fa-ethereum"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <!-- JavaScript Modules -->
+    <script src="js/events-service.js"></script>
+    <script src="js/events-ui.js"></script>
+    <script src="js/events-app.js"></script>
+
+    <!-- Loading Cleanup Script -->
+    <script>
+        // Remove loading spinner once events are loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const loadingSpinner = document.querySelector('.loading-spinner');
+                if (loadingSpinner) {
+                    loadingSpinner.style.display = 'none';
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

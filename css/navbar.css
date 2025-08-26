@@ -1,0 +1,392 @@
+/* 
+ * Ethereum Cali - Navbar Component CSS
+ * Professional styling for the navigation bar
+ */
+
+/* Navbar Styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(12, 12, 17, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(98, 104, 143, 0.2);
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    min-height: 70px;
+}
+
+.navbar.scrolled {
+    background-color: rgba(12, 12, 17, 0.98);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Navbar Brand Section */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.logo-img {
+    width: 68px;
+    height: auto;
+    max-height: 68px;
+    object-fit: scale-down;
+    aspect-ratio: unset;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(98, 104, 143, 0.3);
+    border: 2px solid rgba(98, 104, 143, 0.2);
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+.navbar-brand:hover .logo-img {
+    transform: scale(1.05) rotate(5deg);
+    box-shadow: 0 0 30px rgba(98, 104, 143, 0.5);
+    border-color: rgba(98, 104, 143, 0.6);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 0.2rem;
+}
+
+.brand-ethereum {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.brand-cali {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #62688F;
+    text-shadow: 0 0 15px rgba(98, 104, 143, 0.7);
+}
+
+/* Navbar Center Section */
+.navbar-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Navbar Actions Section */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #62688F, #8A92B2);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #62688F;
+    text-shadow: 0 0 8px rgba(98, 104, 143, 0.3);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Dropdown Menu Styles */
+.nav-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.dropdown-icon {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+}
+
+.nav-dropdown:hover .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(12, 12, 17, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(98, 104, 143, 0.2);
+    border-radius: 12px;
+    padding: 0.5rem 0;
+    min-width: 220px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+    margin-top: 0.5rem;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(98, 104, 143, 0.1);
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: rgba(98, 104, 143, 0.1);
+    color: #62688F;
+    transform: translateX(5px);
+}
+
+.dropdown-item i {
+    font-size: 0.9rem;
+    color: #62688F;
+    width: 16px;
+    text-align: center;
+}
+
+/* Wallet Button */
+.wallet-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    min-width: 160px;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    background: linear-gradient(135deg, #62688F, #8A92B2);
+    border: none;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(98, 104, 143, 0.2);
+    transition: all 0.3s ease;
+    margin: 0;
+}
+
+.wallet-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.wallet-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(98, 104, 143, 0.4);
+    background: linear-gradient(135deg, #8A92B2, #62688F);
+}
+
+.wallet-btn:hover::before {
+    left: 100%;
+}
+
+.wallet-btn.connected {
+    background: linear-gradient(135deg, #00ff9d, #2d25ff);
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+}
+
+.wallet-btn.connected:hover {
+    background: linear-gradient(135deg, #2d25ff, #00ff9d);
+}
+
+.wallet-btn i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.wallet-btn:hover i {
+    transform: rotate(10deg);
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+    padding: 0.5rem;
+}
+
+.mobile-menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Navbar Responsive Design */
+@media (max-width: 1024px) {
+    .navbar {
+        flex-direction: row;
+        padding: 1rem 1rem;
+        gap: 1rem;
+    }
+    .nav-links {
+        gap: 1.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        grid-template-columns: 1fr auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    .navbar-center {
+        display: none;
+    }
+    .mobile-menu-toggle {
+        display: flex;
+        justify-self: end;
+    }
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100vw;
+        background: rgba(12, 12, 17, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 2rem 1rem;
+        gap: 1.5rem;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease, display 0.3s ease;
+        border-bottom: 1px solid rgba(98, 104, 143, 0.2);
+        z-index: 999;
+        display: none;
+    }
+    .nav-links.mobile-active {
+        transform: translateX(0);
+        display: flex;
+    }
+    
+    .wallet-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .brand-text {
+        display: flex;
+    }
+
+    .brand-ethereum, .brand-cali {
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+
+    .logo-img {
+        width: 42px;
+        height: auto;
+        max-height: 42px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-text {
+        font-size: 1rem;
+    }
+    
+    .navbar {
+        padding: 0.75rem;
+    }
+}

@@ -1,205 +1,260 @@
 /**
- * Events Service
- * Handles data loading and management for events
+ * Events Service - Handles data processing for both international and local events
  */
 
 class EventsService {
     constructor() {
-        this.events = [];
-        this.metadata = {};
-        this.isLoaded = false;
-    }
-
-    // Load events from JSON file
-    async loadEvents() {
-        try {
-            const response = await fetch('data/events.json');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const data = await response.json();
-            this.events = data.events || [];
-            this.metadata = data.metadata || {};
-            this.isLoaded = true;
-            
-            console.log(`Loaded ${this.events.length} events`);
-            return this.events;
-            
-        } catch (error) {
-            console.error('Error loading events:', error);
-            this.events = [];
-            this.isLoaded = false;
-            throw error;
-        }
-    }
-
-    // Get all events
-    getAllEvents() {
-        return this.events;
-    }
-
-    // Get events by type
-    getEventsByType(type) {
-        return this.events.filter(event => event.type === type);
-    }
-
-    // Get events by category
-    getEventsByCategory(category) {
-        return this.events.filter(event => event.category === category);
-    }
-
-    // Get events by tag
-    getEventsByTag(tag) {
-        return this.events.filter(event => event.tags.includes(tag));
-    }
-
-    // Get events by date range
-    getEventsByDateRange(startDate, endDate) {
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        
-        return this.events.filter(event => {
-            const eventDate = new Date(event.date);
-            return eventDate >= start && eventDate <= end;
-        });
-    }
-
-    // Get events by year
-    getEventsByYear(year) {
-        return this.events.filter(event => {
-            const eventYear = new Date(event.date).getFullYear();
-            return eventYear === year;
-        });
-    }
-
-    // Get events by month
-    getEventsByMonth(month, year = new Date().getFullYear()) {
-        return this.events.filter(event => {
-            const eventDate = new Date(event.date);
-            return eventDate.getMonth() === month && eventDate.getFullYear() === year;
-        });
-    }
-
-    // Search events by text
-    searchEvents(query) {
-        const searchTerm = query.toLowerCase();
-        
-        return this.events.filter(event => {
-            return event.name.toLowerCase().includes(searchTerm) ||
-                   event.location.name.toLowerCase().includes(searchTerm) ||
-                   event.location.address.toLowerCase().includes(searchTerm) ||
-                   event.collaboration.name.toLowerCase().includes(searchTerm) ||
-                   event.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
-                   event.type.toLowerCase().includes(searchTerm) ||
-                   event.category.toLowerCase().includes(searchTerm);
-        });
-    }
-
-    // Get event by ID
-    getEventById(id) {
-        return this.events.find(event => event.id === id);
-    }
-
-    // Get upcoming events
-    getUpcomingEvents() {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        return this.events.filter(event => {
-            const eventDate = new Date(event.date);
-            return eventDate >= today;
-        }).sort((a, b) => new Date(a.date) - new Date(b.date));
-    }
-
-    // Get past events
-    getPastEvents() {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        return this.events.filter(event => {
-            const eventDate = new Date(event.date);
-            return eventDate < today;
-        }).sort((a, b) => new Date(b.date) - new Date(a.date));
-    }
-
-    // Get event statistics
-    getEventStats() {
-        const total = this.events.length;
-        const local = this.events.filter(e => e.tags.includes('local')).length;
-        const international = this.events.filter(e => e.tags.includes('international')).length;
-        
-        const typeStats = {};
-        this.events.forEach(event => {
-            typeStats[event.type] = (typeStats[event.type] || 0) + 1;
-        });
-        
-        const categoryStats = {};
-        this.events.forEach(event => {
-            categoryStats[event.category] = (categoryStats[event.category] || 0) + 1;
-        });
-        
-        const yearStats = {};
-        this.events.forEach(event => {
-            const year = new Date(event.date).getFullYear();
-            yearStats[year] = (yearStats[year] || 0) + 1;
-        });
-        
-        return {
-            total,
-            local,
-            international,
-            byType: typeStats,
-            byCategory: categoryStats,
-            byYear: yearStats
+        this.internationalEvents = [];
+        this.localEvents = [];
+        this.chainLogos = {
+            'Base': 'chains/base logo.svg',
+            'Polygon': 'chains/polygon.png', 
+            'Gnosis': 'chains/gnosis.png',
+            'Ethereum': 'chains/ethereum.png',
+            'Optimism': 'chains/op mainnet.png'
         };
     }
 
-    // Get unique tags
-    getUniqueTags() {
-        const tags = new Set();
-        this.events.forEach(event => {
-            event.tags.forEach(tag => tags.add(tag));
-        });
-        return Array.from(tags).sort();
+    async loadInternationalEvents() {
+        try {
+            const response = await fetch('databases/2025ethereumevents.csv');
+            const csvText = await response.text();
+            this.internationalEvents = this.parseInternationalCSV(csvText);
+            return this.internationalEvents;
+        } catch (error) {
+            console.error('Error loading international events:', error);
+            return [];
+        }
     }
 
-    // Get unique locations
-    getUniqueLocations() {
-        const locations = new Set();
-        this.events.forEach(event => {
-            locations.add(event.location.name);
-        });
-        return Array.from(locations).sort();
+    async loadLocalEvents() {
+        try {
+            const response = await fetch('databases/Eventos historicos ethcali - historic.csv');
+            const csvText = await response.text();
+            this.localEvents = this.parseLocalCSV(csvText);
+            return this.localEvents;
+        } catch (error) {
+            console.error('Error loading local events:', error);
+            return [];
+        }
     }
 
-    // Get unique collaborators
-    getUniqueCollaborators() {
-        const collaborators = new Set();
-        this.events.forEach(event => {
-            if (event.collaboration.name) {
-                collaborators.add(event.collaboration.name);
+    parseInternationalCSV(csvText) {
+        const lines = csvText.split('\n');
+        const events = [];
+        
+        // Find the header row (line with "Event,startDate,endDate...")
+        let headerIndex = -1;
+        for (let i = 0; i < lines.length; i++) {
+            if (lines[i].includes('Event,startDate,endDate')) {
+                headerIndex = i;
+                break;
+            }
+        }
+        
+        if (headerIndex === -1) return events;
+        
+        const headers = lines[headerIndex].split(',');
+        
+        for (let i = headerIndex + 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line || line.startsWith(',,,,') || line.includes('Last update:') || line.includes('*not ethereum-specific')) continue;
+            
+            const values = this.parseCSVLine(line);
+            if (values.length >= 6 && values[1]) { // Must have at least event name
+                const event = {
+                    name: values[1],
+                    startDate: values[2],
+                    endDate: values[3],
+                    location: values[4],
+                    link: values[5],
+                    social: values[6],
+                    chat: values[7],
+                    month: this.getMonthFromDate(values[2]),
+                    country: this.extractCountry(values[4])
+                };
+                events.push(event);
+            }
+        }
+        
+        return events;
+    }
+
+    parseLocalCSV(csvText) {
+        const lines = csvText.split('\n');
+        const events = [];
+        
+        if (lines.length < 2) return events;
+        
+        const headers = lines[0].split(',');
+        
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            
+            const values = this.parseCSVLine(line);
+            if (values.length >= 20 && values[0] && values[1]) { // Must have date and name
+                const event = {
+                    date: values[0],
+                    name: values[1],
+                    typeContent: values[2],
+                    typeEvent: values[3],
+                    hostColab: values[4],
+                    location: values[5],
+                    socialMediaPost: values[6],
+                    registrationPage: values[7],
+                    rsvp: values[8],
+                    protocolToMint: values[9],
+                    nftUrl: values[10],
+                    chainNft: values[11],
+                    mintsNft: values[12],
+                    poapLink: values[13],
+                    collectorsPOAP: values[14],
+                    chainPOAP: values[15],
+                    recapSocialMedia: values[16],
+                    registroFotografico: values[17],
+                    carpetaDelEvento: values[18],
+                    youtubeRecording: values[19],
+                    month: this.getMonthFromDate(values[0]),
+                    image: this.findEventImage(values[0], values[1])
+                };
+                events.push(event);
+            }
+        }
+        
+        return events;
+    }
+
+    parseCSVLine(line) {
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            
+            if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+                values.push(current.trim());
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        
+        values.push(current.trim());
+        return values;
+    }
+
+    getMonthFromDate(dateStr) {
+        if (!dateStr) return -1;
+        
+        // Handle different date formats
+        if (dateStr.includes('/')) {
+            const parts = dateStr.split('/');
+            if (parts.length >= 2) {
+                return parseInt(parts[1]) - 1; // Month is 0-based
+            }
+        } else if (dateStr.includes(' ')) {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+            const parts = dateStr.split(' ');
+            const monthName = parts[0];
+            return monthNames.findIndex(m => m.toLowerCase().startsWith(monthName.toLowerCase()));
+        }
+        
+        return -1;
+    }
+
+    extractCountry(location) {
+        if (!location) return '';
+        const parts = location.split(',');
+        return parts[parts.length - 1].trim();
+    }
+
+    findEventImage(date, name) {
+        if (!date || !name) return 'branding/logoethcali.png';
+        
+        // Convert date format and try to match with image names
+        const dateFormatted = this.formatDateForImage(date);
+        const nameFormatted = this.formatNameForImage(name);
+        
+        // Return a likely image path - in a real implementation, you'd check if file exists
+        return `events/${dateFormatted} ${nameFormatted}.png`;
+    }
+
+    formatDateForImage(date) {
+        if (!date) return '';
+        
+        if (date.includes('/')) {
+            const parts = date.split('/');
+            if (parts.length >= 3) {
+                const day = parts[0].padStart(2, '0');
+                const month = parts[1].padStart(2, '0');
+                const year = parts[2];
+                return `${year} ${month} ${day}`;
+            }
+        }
+        
+        return date;
+    }
+
+    formatNameForImage(name) {
+        return name.replace(/[^a-zA-Z0-9\s]/g, '').trim();
+    }
+
+    filterEventsByMonth(events, month) {
+        if (month === 'all') return events;
+        return events.filter(event => event.month === parseInt(month));
+    }
+
+    getInternationalMetrics(events) {
+        const totalEvents = events.length;
+        const countries = [...new Set(events.map(e => e.country))].filter(c => c);
+        const totalCountries = countries.length;
+        
+        return {
+            totalEvents,
+            totalCountries,
+            countries
+        };
+    }
+
+    getLocalMetrics(events) {
+        const totalEvents = events.length;
+        const typeContentCounts = {};
+        const chainMints = {};
+        const totalAttendees = events.reduce((sum, event) => {
+            const rsvp = parseInt(event.rsvp) || 0;
+            return sum + rsvp;
+        }, 0);
+        
+        events.forEach(event => {
+            // Count by type content
+            if (event.typeContent) {
+                typeContentCounts[event.typeContent] = (typeContentCounts[event.typeContent] || 0) + 1;
+            }
+            
+            // Count mints by chain
+            if (event.chainNft && event.mintsNft) {
+                const mints = parseInt(event.mintsNft) || 0;
+                chainMints[event.chainNft] = (chainMints[event.chainNft] || 0) + mints;
             }
         });
-        return Array.from(collaborators).sort();
+        
+        return {
+            totalEvents,
+            typeContentCounts,
+            chainMints,
+            totalAttendees
+        };
     }
 
-    // Check if data is loaded
-    isDataLoaded() {
-        return this.isLoaded;
-    }
-
-    // Get metadata
-    getMetadata() {
-        return this.metadata;
-    }
-
-    // Reload events (useful for updates)
-    async reloadEvents() {
-        this.isLoaded = false;
-        return await this.loadEvents();
+    getChainLogo(chainName) {
+        return this.chainLogos[chainName] || 'chains/ethereum.png';
     }
 }
 
 // Export for use in other modules
-window.EventsService = EventsService; 
+window.EventsService = EventsService;
