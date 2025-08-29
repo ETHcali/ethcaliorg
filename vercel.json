@@ -1,7 +1,6 @@
 {
   "version": 2,
   "public": true,
-  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/", "destination": "/ethcali.html" },
     { "source": "/index", "destination": "/ethcali.html" },
@@ -26,6 +25,19 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.js$",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
         }
       ]
     }

@@ -218,10 +218,32 @@ function renderAllTeamMembers() {
     console.log(`Successfully rendered ${teamData.length} team members`);
 }
 
-// Multiple ways to ensure this runs
-document.addEventListener('DOMContentLoaded', renderAllTeamMembers);
-if (document.readyState !== 'loading') {
-    renderAllTeamMembers();
+// Multiple ways to ensure this runs - especially for Vercel
+function initTeamRender() {
+    console.log('Attempting to render team...');
+    console.log('Document ready state:', document.readyState);
+    
+    const container = document.getElementById('team-grid');
+    console.log('Container found:', container);
+    
+    if (container) {
+        renderAllTeamMembers();
+    } else {
+        console.log('Container not found, retrying in 100ms');
+        setTimeout(initTeamRender, 100);
+    }
 }
-setTimeout(renderAllTeamMembers, 500);
-setTimeout(renderAllTeamMembers, 1000);
+
+// Try immediately if DOM is already loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTeamRender);
+} else {
+    initTeamRender();
+}
+
+// Additional fallbacks for Vercel
+window.addEventListener('load', initTeamRender);
+setTimeout(initTeamRender, 100);
+setTimeout(initTeamRender, 500);
+setTimeout(initTeamRender, 1000);
+setTimeout(initTeamRender, 2000);
