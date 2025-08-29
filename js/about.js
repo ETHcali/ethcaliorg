@@ -70,7 +70,7 @@ const teamData = [
         image: "team/cristobal.jpg",
         linkedin: "https://www.linkedin.com/in/cristobalvalenciaceron",
         twitter: "https://x.com/DevCristobalvc",
-        github: ""
+        github: "https://github.com/DevCristobalvc"
     },
     {
         name: "Juan David Burgos",
@@ -128,7 +128,7 @@ const teamData = [
         description: "Contribuidor desde Enero 2023. Emprendedor y desarrollador Web3.",
         status: "Contribuidor",
         image: "team/camilosacanamboy.png",
-        linkedin: "",
+        linkedin: "https://www.linkedin.com/in/camilosaka/",
         twitter: "https://twitter.com/camilosaka",
         github: ""
     },
@@ -138,7 +138,7 @@ const teamData = [
         description: "Contribuidor desde Octubre 2022. Emprendedor del ecosistema.",
         status: "Contribuidor",
         image: "team/andresjimenez.png",
-        linkedin: "",
+        linkedin: "https://www.linkedin.com/in/andresfjimenez/",
         twitter: "https://twitter.com/Andresjimenezv",
         github: ""
     },
@@ -148,7 +148,7 @@ const teamData = [
         description: "Contribuidor desde Octubre 2022. Emprendedor y hacker Web3.",
         status: "Contribuidor",
         image: "team/camilotobar.png",
-        linkedin: "",
+        linkedin: "https://www.linkedin.com/in/camilotobarn/",
         twitter: "",
         github: ""
     }
