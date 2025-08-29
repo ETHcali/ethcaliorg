@@ -5,7 +5,15 @@
 
 class TeamManager {
     constructor() {
+        console.log('TeamManager constructor called');
         this.teamContainer = document.getElementById('team-grid');
+        console.log('Team container element:', this.teamContainer);
+        
+        if (!this.teamContainer) {
+            console.error('CRITICAL: team-grid element not found!');
+            return;
+        }
+        
         this.basePath = this.getBasePath();
         this.teamMembers = [
             // Core Team Members
@@ -173,17 +181,25 @@ class TeamManager {
     }
 
     renderTeam() {
+        console.log('renderTeam() called');
+        console.log('Team container:', this.teamContainer);
+        console.log('Team members count:', this.teamMembers ? this.teamMembers.length : 'undefined');
+        
         if (!this.teamContainer) {
-            console.error('Team container not found');
+            console.error('Team container not found in renderTeam');
             return;
         }
 
+        console.log('Clearing container and rendering team...');
         this.teamContainer.innerHTML = '';
 
-        this.teamMembers.forEach(member => {
+        this.teamMembers.forEach((member, index) => {
+            console.log(`Rendering member ${index + 1}: ${member.name}`);
             const teamCard = this.createTeamCard(member);
             this.teamContainer.appendChild(teamCard);
         });
+        
+        console.log(`Finished rendering ${this.teamMembers.length} team members`);
     }
 
     createTeamCard(member) {
@@ -276,10 +292,67 @@ class TeamManager {
     }
 }
 
-// Initialize team manager when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    new TeamManager();
-});
+// Initialize team manager when DOM is loaded - with multiple fallbacks
+function initTeam() {
+    try {
+        console.log('Initializing TeamManager...');
+        new TeamManager();
+        console.log('TeamManager initialized successfully');
+    } catch (error) {
+        console.error('Error initializing TeamManager:', error);
+    }
+}
+
+// Multiple initialization attempts
+document.addEventListener('DOMContentLoaded', initTeam);
+
+// Fallback for when DOM is already loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTeam);
+} else {
+    initTeam();
+}
+
+// Extra fallback with timeout
+setTimeout(initTeam, 1000);
+
+// Emergency fallback - direct HTML injection if all else fails
+setTimeout(() => {
+    const container = document.getElementById('team-grid');
+    if (container && container.children.length === 0) {
+        console.log('Emergency fallback: injecting team HTML directly');
+        container.innerHTML = `
+            <div class="cyber-card">
+                <div class="status-badge core">Core</div>
+                <div class="card-header">
+                    <div class="card-avatar">
+                        <img src="team/william.png" alt="William Martinez" loading="lazy" style="opacity:1;" />
+                    </div>
+                    <div class="card-info">
+                        <h3>William Martinez</h3>
+                        <div class="card-role">Economist, Project Manager, Web3 Hacker</div>
+                    </div>
+                </div>
+                <p class="card-description">Core member desde Octubre 2022. Visionario y líder del ecosistema Ethereum Cali.</p>
+                <div class="card-social">
+                    <a href="https://www.linkedin.com/in/williammartinez8/" target="_blank" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://twitter.com/0xwmb" target="_blank" class="social-link twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://github.com/wmb81321" target="_blank" class="social-link github">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            <div style="text-align: center; padding: 2rem; color: #62688F;">
+                <p>Team loading issue detected. Please refresh the page.</p>
+                <button onclick="location.reload()" style="background: #62688F; color: white; border: none; padding: 1rem 2rem; border-radius: 5px; cursor: pointer;">Refresh Page</button>
+            </div>
+        `;
+    }
+}, 3000);
 
 // Example function to update team data from external source
 function loadTeamFromNotion(teamData) {
