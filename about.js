@@ -200,6 +200,11 @@ class TeamManager {
             const teamCard = this.createTeamCard(member);
             this.teamContainer.appendChild(teamCard);
         });
+
+        // Add a visible indicator that the team has been rendered
+        if (this.teamMembers.length > 0) {
+            console.log(`Successfully rendered ${this.teamMembers.length} team members`);
+        }
     }
 
     createTeamCard(member) {
@@ -293,7 +298,7 @@ class TeamManager {
 }
 
 // Initialize team manager when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
+$(document).ready(function() {
     const teamManager = new TeamManager();
     
     // Make teamManager globally available for external data updates

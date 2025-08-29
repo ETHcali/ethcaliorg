@@ -48,12 +48,18 @@
                         const metricNumbers = entry.target.querySelectorAll('.metric-number');
                         metricNumbers.forEach(numberEl => {
                             const target = parseInt(numberEl.getAttribute('data-target'));
-                            animateCounter(numberEl, target, 2500);
+                            // Add a small delay to ensure smooth animation on mobile
+                            setTimeout(() => {
+                                animateCounter(numberEl, target, 2500);
+                            }, 100);
                         });
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.5 });
+            }, { 
+                threshold: 0.3, // Lower threshold for better mobile detection
+                rootMargin: '0px 0px -50px 0px' // Trigger earlier on mobile
+            });
 
             const metricsSection = document.querySelector('.impact-metrics');
             if (metricsSection) {
@@ -448,7 +454,7 @@
                         <div class="location-details">
                             <div class="detail-item">
                                 <i class="fas fa-map-marker-alt"></i>
-                                <span>Cali, Valle del Cauca, Colombia</span>
+                                <span>Calle 36#128-321, Auto. Cali - Jamundi #760030</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-building"></i>
@@ -459,7 +465,7 @@
                                 <span>Hub de Innovación Tecnológica</span>
                             </div>
                         </div>
-                        <a href="https://maps.app.goo.gl/CHis3jzE2mh5f1W39" target="_blank" class="location-btn">
+                        <a href="https://www.google.com/maps/place/Calle+36%23128-321,+Auto.+Cali+-+Jamundi+%23760030,+Cali,+Valle+del+Cauca,+Colombia" target="_blank" class="location-btn">
                             <i class="fas fa-external-link-alt"></i>
                             Ver en Google Maps
                         </a>
@@ -467,7 +473,7 @@
                     <div class="location-visual">
                         <div class="map-container">
                             <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.6234567890123!2d-76.5!3d3.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwMjQnMDAuMCJOIDc2wrAzMCcwMC4wIlc!5e0!3m2!1sen!2sco!4v1234567890123!5m2!1sen!2sco" 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.8!2d-76.5392!3d3.4197!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e30a1b5e5e5e5e5%3A0x5e5e5e5e5e5e5e5e!2sCalle%2036%23128-321%2C%20Auto.%20Cali%20-%20Jamundi%20%23760030%2C%20Cali%2C%20Valle%20del%20Cauca%2C%20Colombia!5e0!3m2!1sen!2sco!4v1640995200000!5m2!1sen!2sco" 
                                 width="100%" 
                                 height="300" 
                                 style="border:0;" 
