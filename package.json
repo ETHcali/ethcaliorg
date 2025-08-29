@@ -3,10 +3,12 @@
     "version": "1.0.0",
     "description": "Ethereum Cali Community Website",
     "scripts": {
-        "build": "mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags dist/ && cp ethcali.html dist/index.html",
-        "vercel-build": "mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags dist/ && cp ethcali.html dist/index.html",
+        "clean": "rm -rf dist",
+        "build": "npm run clean && mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags dist/ && cp ethcali.html dist/index.html",
+        "vercel-build": "npm run clean && mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags dist/ && cp ethcali.html dist/index.html",
         "start": "npx http-server dist -p 8000 -c-1",
-        "dev": "npx live-server --port=8000 --no-browser"
+        "dev": "npx live-server --port=8000 --no-browser",
+        "local": "python3 -m http.server 8000"
     },
     "repository": {
         "type": "git",
@@ -23,6 +25,5 @@
     "devDependencies": {
         "http-server": "^14.1.1",
         "live-server": "^1.2.2"
-    },
-    "outputDirectory": "dist"
+    }
 }

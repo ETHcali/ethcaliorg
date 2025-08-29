@@ -1,13 +1,17 @@
 {
-  "version": 2,
-  "public": true,
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/", "destination": "/ethcali.html" },
-    { "source": "/index", "destination": "/ethcali.html" },
-    { "source": "/home", "destination": "/ethcali.html" },
-    { "source": "/events", "destination": "/events.html" },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/home", "destination": "/index.html" },
     { "source": "/about", "destination": "/about.html" },
-    { "source": "/venues", "destination": "/ethcalivenues.html" }
+    { "source": "/events", "destination": "/events.html" },
+    { "source": "/venues", "destination": "/ethcalivenues.html" },
+    { "source": "/education", "destination": "/education.html" },
+    { "source": "/dao", "destination": "/ethcalidao.html" },
+    { "source": "/swag", "destination": "/swag.html" },
+    { "source": "/technical-infra", "destination": "/technical-infra.html" },
+    { "source": "/brand-guidelines", "destination": "/brand_guidelines.html" }
   ],
   "headers": [
     {
@@ -33,11 +37,24 @@
       "headers": [
         {
           "key": "Content-Type",
-          "value": "application/javascript"
+          "value": "application/javascript; charset=utf-8"
         },
         {
           "key": "Cache-Control",
           "value": "public, max-age=3600"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.css$",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
         }
       ]
     }
