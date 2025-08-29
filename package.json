@@ -1,6 +1,6 @@
 {
     "name": "ethcaliorg",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Ethereum Cali Community Website",
     "scripts": {
         "clean": "rm -rf dist",
