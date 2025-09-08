@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hackathon Destino Devconnect - Tech en Cali - Ethereum Cali">
+    <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
+    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
+    <title>Hackathon Destino Devconnect | Ethereum Cali</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/shared-components.css">
+    <link rel="stylesheet" href="css/hackathon.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- JavaScript Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/navbar.js"></script>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <div class="cursor"></div>
+    <div class="noise-overlay"></div>
+    
+    <main class="hackathon-container">
+        <!-- Hero Section -->
+        <header class="hackathon-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Hackathon Destino Devconnect</h1>
+                    <h2 class="hero-subtitle">Tech en Cali</h2>
+                    <div class="hero-date">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>18-19 de Octubre, 2025</span>
+                    </div>
+                    <a href="#register" class="hero-cta">
+                        <i class="fas fa-rocket"></i>
+                        Registrarse Ahora
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- About Section -->
+        <section class="info-section">
+            <div class="container">
+                <h2 class="section-title">Acerca del Hackathon</h2>
+                <div class="section-content">
+                    <p class="section-description">
+                        ¡Prepárate para el evento más grande del año! Hackathon Destino Devconnect 
+                        te preparará para participar en ETHGlobal Buenos Aires con más de $450,000 
+                        en premios. Construiremos en el Superchain con Base.org, Optimism y Unichain.
+                    </p>
+                    <div class="countdown-container">
+                        <h3 class="countdown-title">¡Faltan solo días!</h3>
+                        <div class="countdown-timer">
+                            <div class="countdown-item">
+                                <span class="countdown-number" id="days">00</span>
+                                <span class="countdown-label">Días</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number" id="hours">00</span>
+                                <span class="countdown-label">Horas</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number" id="minutes">00</span>
+                                <span class="countdown-label">Minutos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Details -->
+        <section class="info-section">
+            <div class="container">
+                <h2 class="section-title">Detalles del Evento</h2>
+                <div class="section-content">
+                    <div class="prizes-grid">
+                        <div class="prize-card">
+                            <div class="prize-position">📅</div>
+                            <div class="prize-title">Fechas</div>
+                            <div class="prize-amount">18-19 Oct</div>
+                            <div class="prize-details">Sábado y Domingo</div>
+                        </div>
+                        <div class="prize-card">
+                            <div class="prize-position">📍</div>
+                            <div class="prize-title">Venue</div>
+                            <div class="prize-amount">Zona América</div>
+                            <div class="prize-details">
+                                <a href="https://zonamerica.com" target="_blank" style="color: var(--cyber-accent);">
+                                    zonamerica.com
+                                </a>
+                            </div>
+                        </div>
+                        <div class="prize-card">
+                            <div class="prize-position">👥</div>
+                            <div class="prize-title">Equipos</div>
+                            <div class="prize-amount">≤ 5</div>
+                            <div class="prize-details">Miembros por equipo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Superchain Focus -->
+        <section class="info-section">
+            <div class="container">
+                <h2 class="section-title">Build in the Superchain</h2>
+                <div class="section-content">
+                    <p class="section-description">
+                        Construye aplicaciones innovadoras usando las tecnologías más avanzadas del ecosistema Ethereum.
+                    </p>
+                    <div class="sponsors-grid">
+                        <div class="sponsor-item">
+                            <img src="chains/base logo.svg" alt="Base" class="sponsor-logo">
+                            <div class="sponsor-name">Base.org</div>
+                        </div>
+                        <div class="sponsor-item">
+                            <img src="chains/op mainnet.png" alt="Optimism" class="sponsor-logo">
+                            <div class="sponsor-name">Optimism</div>
+                        </div>
+                        <div class="sponsor-item">
+                            <img src="chains/unichain.png" alt="Unichain" class="sponsor-logo">
+                            <div class="sponsor-name">Unichain</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule -->
+        <section class="info-section">
+            <div class="container">
+                <h2 class="section-title">Agenda del Evento</h2>
+                <div class="section-content">
+                    <div class="schedule-grid">
+                        <div class="day-schedule">
+                            <h3 class="day-title">Día 1 - Sábado 18</h3>
+                            <div class="schedule-item">
+                                <div class="schedule-time">9:00</div>
+                                <div class="schedule-event">
+                                    <div class="schedule-event-title">Check-in + Coffee</div>
+                                    <div class="schedule-event-desc">Registro y networking</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">10:00</div>
+                                <div class="schedule-event">
+                                    <div class="schedule-event-title">Opening + Base Build Workshop</div>
+                                    <div class="schedule-event-desc">Introducción y workshop técnico</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">11:00</div>
+                                <div class="schedule-event">
+                                    <div class="schedule-event-title">Scaffold ETH Beginners</div>
+                                    <div class="schedule-event-desc">Tutorial para principiantes</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">12:00</div>
+                                <div class="schedule-event">
+                                    <div class="schedule-event-title">Hacking Begins</div>
+                                    <div class="schedule-event-desc">Inicio del desarrollo</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">14:00</div>
+                                <div class="schedule-event">
+                                    <div class="schedule-event-title">Mentorship Rounds</div>
+                                    <div class="schedule-event-desc">Sesiones de mentoría</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="day-schedule">
+                            <h3 class="day-title">Día 2 - Domingo 19</h3>
+                            <div class="schedule-item">
+                                <div class="schedule-time">12:00</div>
+                                <div class="schedule-event">
+                                    <div class="schedule-event-title">Hackathon Close</div>
+                                    <div class="schedule-event-desc">Cierre del desarrollo</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">14:00</div>
+                                <div class="schedule-event">
+                                    <div class="schedule-event-title">Pitches</div>
+                                    <div class="schedule-event-desc">Presentaciones de 10 minutos (5 min pitch + 5 min Q&A)</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">17:00</div>
+                                <div class="schedule-event">
+                                    <div class="schedule-event-title">Entrega de Premios</div>
+                                    <div class="schedule-event-desc">Ceremonia de premiación</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prizes Section -->
+        <section class="info-section">
+            <div class="container">
+                <h2 class="section-title">Premios & Incentivos</h2>
+                <div class="section-content">
+                    <p class="section-description">
+                        Prepárate para ETHGlobal Buenos Aires con increíbles premios y oportunidades.
+                    </p>
+                    <div class="prizes-grid">
+                        <div class="prize-card">
+                            <div class="prize-position">🥇</div>
+                            <div class="prize-title">Primer Lugar</div>
+                            <div class="prize-amount">0.05 ETH</div>
+                            <div class="prize-details">+ 3 tickets 75% off Devconnect + Mentorship</div>
+                        </div>
+                        <div class="prize-card">
+                            <div class="prize-position">🥈</div>
+                            <div class="prize-title">Segundo Lugar</div>
+                            <div class="prize-amount">0.01 ETH</div>
+                            <div class="prize-details">+ 3 tickets 75% off Devconnect + Mentorship</div>
+                        </div>
+                        <div class="prize-card">
+                            <div class="prize-position">🥉</div>
+                            <div class="prize-title">Tercer Lugar</div>
+                            <div class="prize-amount">4 Tickets</div>
+                            <div class="prize-details">75% off Devconnect + Mentorship</div>
+                        </div>
+                    </div>
+                    <p class="section-description" style="margin-top: 2rem;">
+                        Todos los ganadores tendrán acceso a 2 horas de mentoría y oportunidades 
+                        de showcase dentro de NIDO y el ecosistema.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Requirements -->
+        <section class="info-section">
+            <div class="container">
+                <h2 class="section-title">Reglas & Requisitos</h2>
+                <div class="section-content">
+                    <ul class="rules-list">
+                        <li>Debe usar al menos una herramienta de Base.org/build o Scaffold ETH</li>
+                        <li>Solución deployada en Optimism, Base, o Unichain</li>
+                        <li>Equipos de máximo 5 miembros</li>
+                        <li>Abierto a desarrolladores, estudiantes, emprendedores y diseñadores</li>
+                        <li>No se requiere experiencia previa en blockchain</li>
+                        <li>Mentores disponibles para guiar a principiantes</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mentors & Judges -->
+        <section class="info-section">
+            <div class="container">
+                <h2 class="section-title">Mentores & Jueces</h2>
+                <div class="section-content">
+                    <div class="mentors-grid">
+                        <div class="mentor-card">
+                            <img src="team/william.png" alt="William Martinez" class="mentor-avatar">
+                            <div class="mentor-name">William Martinez</div>
+                            <div class="mentor-role">ETHCali Team</div>
+                        </div>
+                        <div class="mentor-card">
+                            <i class="fas fa-user-tie mentor-avatar" style="font-size: 3rem; color: var(--cyber-accent); width: auto; height: auto; border: none;"></i>
+                            <div class="mentor-name">Sweetman</div>
+                            <div class="mentor-role">Base</div>
+                        </div>
+                        <div class="mentor-card">
+                            <i class="fas fa-user-graduate mentor-avatar" style="font-size: 3rem; color: var(--cyber-primary); width: auto; height: auto; border: none;"></i>
+                            <div class="mentor-name">Nicolas Perez</div>
+                            <div class="mentor-role">NIDO</div>
+                        </div>
+                    </div>
+                    <p class="section-description" style="margin-top: 2rem;">
+                        Más mentores y jueces serán anunciados próximamente.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sponsors -->
+        <section class="info-section">
+            <div class="container">
+                <h2 class="section-title">Sponsors & Partners</h2>
+                <div class="section-content">
+                    <div class="sponsors-grid">
+                        <div class="sponsor-item">
+                            <img src="branding/logoethcali.png" alt="ETHCali" class="sponsor-logo">
+                            <div class="sponsor-name">Ethcali.org</div>
+                        </div>
+                        <div class="sponsor-item">
+                            <i class="fas fa-ethereum sponsor-logo" style="font-size: 3rem; color: var(--cyber-accent);"></i>
+                            <div class="sponsor-name">Ethereum Support Program</div>
+                        </div>
+                        <div class="sponsor-item">
+                            <img src="chains/base logo.svg" alt="Base" class="sponsor-logo">
+                            <div class="sponsor-name">Base.org</div>
+                        </div>
+                        <div class="sponsor-item">
+                            <img src="gov/gov_valle.png" alt="Gobernación del Valle" class="sponsor-logo">
+                            <div class="sponsor-name">Gobernación del Valle del Cauca</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="info-section">
+            <div class="container">
+                <h2 class="section-title">Preguntas Frecuentes</h2>
+                <div class="section-content">
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                ¿Es gratis participar?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                Sí, la participación es completamente gratuita. Incluye comida, bebidas y acceso a todos los workshops.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                ¿Necesito experiencia previa en blockchain?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                No es necesario. Tendremos mentores disponibles y workshops para principiantes.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                ¿Necesito formar un equipo antes del evento?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                No es obligatorio. Puedes venir solo y formar equipo durante el evento, o traer tu propio equipo.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                ¿Qué debo traer?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                Laptop, cargador y documento de identidad. Nosotros nos encargamos del resto.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Section -->
+        <section class="info-section" id="register">
+            <div class="container">
+                <h2 class="section-title">¡Regístrate Ahora!</h2>
+                <div class="section-content">
+                    <p class="section-description">
+                        No pierdas la oportunidad de ser parte del hackathon más importante del año. 
+                        Prepárate para ETHGlobal Buenos Aires y construye el futuro de Web3.
+                    </p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                        <a href="#" class="hero-cta" onclick="alert('¡Próximamente! El registro abrirá en las próximas semanas.')">
+                            <i class="fas fa-rocket"></i>
+                            Registrarse
+                        </a>
+                        <a href="https://ethglobal.com/events/buenosaires" target="_blank" class="hero-cta" style="background: linear-gradient(135deg, var(--cyber-primary), var(--cyber-secondary));">
+                            <i class="fas fa-external-link-alt"></i>
+                            ETHGlobal Buenos Aires
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const eventDate = new Date('2025-10-18T09:00:00-05:00').getTime();
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            } else {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+            }
+        }
+
+        // Update countdown every minute
+        updateCountdown();
+        setInterval(updateCountdown, 60000);
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const answer = item.querySelector('.faq-answer');
+                const icon = question.querySelector('i');
+                
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    // Close all other answers
+                    document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
+                    document.querySelectorAll('.faq-question i').forEach(i => i.style.transform = 'rotate(0deg)');
+                    
+                    // Open this answer
+                    answer.style.display = 'block';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
