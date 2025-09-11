@@ -413,6 +413,48 @@ body {
 .mentor-role {
     color: var(--cyber-text-dim);
     font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.mentor-socials {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(98, 104, 143, 0.1);
+    border: 1px solid var(--cyber-border);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 6px;
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: rgba(98, 104, 143, 0.3);
+    border-color: var(--cyber-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(98, 104, 143, 0.3);
+}
+
+.social-link:hover .social-icon {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 /* FAQ Section */
