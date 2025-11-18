@@ -22,55 +22,76 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/navbar.js"></script>
     <script>
-        // Animated Counter Effect for Metrics
-        function animateCounter(element, target, duration = 2000) {
-            let start = 0;
-            const increment = target / (duration / 16);
-            
-            function updateCounter() {
-                start += increment;
-                if (start < target) {
-                    element.textContent = Math.floor(start);
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    element.textContent = target;
+        function animateCounter(element, target, duration = 2200) {
+            const startValue = Number(element.textContent.replace(/\D/g, '')) || 0;
+            const startTime = performance.now();
+            const eased = (t) => 1 - Math.pow(1 - t, 3);
+
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const value = Math.round(startValue + (target - startValue) * eased(progress));
+                element.textContent = value.toLocaleString('es-CO');
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
                 }
             }
-            
-            updateCounter();
+
+            requestAnimationFrame(update);
         }
 
-        // Intersection Observer for triggering animations
-        function initMetricsAnimation() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const metricNumbers = entry.target.querySelectorAll('.metric-number');
-                        metricNumbers.forEach(numberEl => {
-                            const target = parseInt(numberEl.getAttribute('data-target'));
-                            // Add a small delay to ensure smooth animation on mobile
-                            setTimeout(() => {
-                                animateCounter(numberEl, target, 2500);
-                            }, 100);
-                        });
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { 
-                threshold: 0.3, // Lower threshold for better mobile detection
-                rootMargin: '0px 0px -50px 0px' // Trigger earlier on mobile
-            });
-
-            const metricsSection = document.querySelector('.impact-metrics');
-            if (metricsSection) {
-                observer.observe(metricsSection);
+        function triggerMetricAnimation(numberEl) {
+            const target = Number(numberEl.dataset.target);
+            if (Number.isFinite(target) && !numberEl.dataset.animated) {
+                numberEl.dataset.animated = 'true';
+                // Delay helps Safari/iOS finish layout before animating
+                setTimeout(() => animateCounter(numberEl, target), 120);
             }
         }
 
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            initMetricsAnimation();
-        });
+        function initMetricsAnimation() {
+            const metricNumbers = document.querySelectorAll('.metric-number');
+            if (!metricNumbers.length) return;
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            triggerMetricAnimation(entry.target);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.2,
+                    rootMargin: '0px 0px -20% 0px'
+                });
+
+                metricNumbers.forEach((numberEl) => observer.observe(numberEl));
+            } else {
+                let pending = metricNumbers.length;
+                // Fallback for older mobile browsers
+                const checkVisibility = () => {
+                    metricNumbers.forEach((numberEl) => {
+                        const rect = numberEl.getBoundingClientRect();
+                        if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
+                            if (!numberEl.dataset.animated) {
+                                triggerMetricAnimation(numberEl);
+                                pending -= 1;
+                                if (pending === 0) {
+                                    window.removeEventListener('scroll', checkVisibility);
+                                }
+                            }
+                        }
+                    });
+                };
+
+                checkVisibility();
+                window.addEventListener('scroll', checkVisibility, { passive: true });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initMetricsAnimation);
     </script>
 </head>
 
