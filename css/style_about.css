@@ -1,3 +1,29 @@
+/* Team Role Color Badges */
+.status-badge.founder {
+    background: linear-gradient(90deg, #4B006E, #2D0036);
+    color: #fff;
+    border: 1px solid #4B006E;
+}
+.status-badge.core {
+    background: linear-gradient(90deg, #001aff, #001040);
+    color: #fff;
+    border: 1px solid #001aff;
+}
+.status-badge.contributor {
+    background: linear-gradient(90deg, #00C9A7, #00BFAE);
+    color: #fff;
+    border: 1px solid #00C9A7;
+}
+.status-badge.volunteer {
+    background: linear-gradient(90deg, #B3E5FC, #0288D1);
+    color: #222;
+    border: 1px solid #B3E5FC
+}
+.status-badge.former-core {
+    background: linear-gradient(90deg, #B0B0B0, #62688F);
+    color: #222;
+    border: 1px solid #B0B0B0;
+}
 /* About Us Page Styles */
 
 :root {
