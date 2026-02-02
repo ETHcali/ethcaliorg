@@ -92,6 +92,34 @@
         }
 
         document.addEventListener('DOMContentLoaded', initMetricsAnimation);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            function initDropdown(btnId, dropdownId) {
+                const btn = document.getElementById(btnId);
+                const dropdown = document.getElementById(dropdownId);
+                if (!btn || !dropdown) return;
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    document.querySelectorAll('.hero-cta-dropdown.is-open').forEach(d => {
+                        if (d !== dropdown) { d.classList.remove('is-open'); d.previousElementSibling?.setAttribute('aria-expanded', 'false'); }
+                    });
+                    const expanded = btn.getAttribute('aria-expanded') === 'true';
+                    btn.setAttribute('aria-expanded', !expanded);
+                    dropdown.setAttribute('aria-hidden', expanded);
+                    dropdown.classList.toggle('is-open', !expanded);
+                });
+                dropdown.addEventListener('click', function(e) { e.stopPropagation(); });
+            }
+            initDropdown('join-us-btn', 'join-dropdown');
+            initDropdown('activities-btn', 'activities-dropdown');
+            document.addEventListener('click', function() {
+                document.querySelectorAll('.hero-cta-dropdown').forEach(d => {
+                    d.classList.remove('is-open');
+                    d.setAttribute('aria-hidden', 'true');
+                });
+                document.querySelectorAll('.hero-cta-main').forEach(b => b.setAttribute('aria-expanded', 'false'));
+            });
+        });
     </script>
 </head>
 
@@ -107,7 +135,39 @@
                 <div class="hero-content">
                     <h1 class="glitch" data-text="El Jardín Infinito">El Jardín Infinito</h1>
                     <h2 class="hero-subtitle">Del Pacífico Colombiano</h2>
-                    <p class="hero-description">Estamos construyendo alianzas con universidades, empresas y gobierno local para potenciar el ecosistema web3 del pacifico colombiano con tecnologias de ethereum</p>
+                    <p class="hero-description">Coordinamos alianzas legitimas con el ecosistema ethereum
+                         para construir el futuro de nuestra region</p>
+                    <div class="hero-actions">
+                        <div class="hero-cta-group">
+                            <button class="btn btn-primary hero-cta-main" type="button" aria-expanded="false" aria-controls="join-dropdown" id="join-us-btn">
+                                Join us <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="hero-cta-dropdown" id="join-dropdown" role="menu" aria-hidden="true">
+                                <a href="https://t.me/ethcali" target="_blank" rel="noopener noreferrer" class="hero-cta-expanded" role="menuitem">
+                                    <i class="fab fa-telegram"></i> Telegram
+                                </a>
+                                <a href="https://discord.gg/GvkDmHnDuE" target="_blank" rel="noopener noreferrer" class="hero-cta-expanded" role="menuitem">
+                                    <i class="fab fa-discord"></i> Discord
+                                </a>
+                            </div>
+                        </div>
+                        <div class="hero-cta-group">
+                            <button class="btn btn-secondary hero-cta-main" type="button" aria-expanded="false" aria-controls="activities-dropdown" id="activities-btn">
+                                Our Activities <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="hero-cta-dropdown" id="activities-dropdown" role="menu" aria-hidden="true">
+                                <a href="https://lu.ma/ethcali" target="_blank" rel="noopener noreferrer" class="hero-cta-expanded" role="menuitem">
+                                    <i class="fas fa-calendar-plus"></i> Luma
+                                </a>
+                                <a href="https://www.meetup.com/ethereumcali/" target="_blank" rel="noopener noreferrer" class="hero-cta-expanded" role="menuitem">
+                                    <i class="fab fa-meetup"></i> Meetups
+                                </a>
+                            </div>
+                        </div>
+                        <a href="https://ethcaliog.notion.site/2e844439d84e8068a4bde16e8e5a6877?v=2f044439d84e801dbc74000cc3523d6e&source=copy_link" target="_blank" rel="noopener noreferrer" class="btn btn-secondary hero-roadmap-btn">
+                            ROADMAP 2026 <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
                 </div>
                 <div class="hero-visual">
                     <div class="eth-symbol">
@@ -136,12 +196,39 @@
                     <div class="cyber-line"></div>
                     <p class="section-subtitle">desde Devcon VI 2022 hemos construido:</p>
                 </div>
+                <div class="metrics-cta-wrap">
+                    <a href="https://dune.com/ethcali/onchain-metrics-by-users-onboarded-by-ethcali" target="_blank" rel="noopener noreferrer" class="metrics-onchain-btn cyber-btn primary">
+                        <i class="fas fa-chart-line"></i> Check the onchain metrics of our users
+                    </a>
+                </div>
+
                 <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="metric-number" data-target="400">0</div>
+                        <div class="metric-label">Usuarios<br>Onboardeados</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="metric-number" data-target="100">0</div>
+                        <div class="metric-label">Developers web2<br>alcanzados</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="metric-number" data-target="10">0</div>
+                        <div class="metric-label">ETH value<br>de transacciones <br>en EVM</div>
+                    </div>
                     <div class="metric-card">
                         <div class="metric-icon">
                             <i class="fas fa-calendar-alt"></i>
                         </div>
-                        <div class="metric-number" data-target="30">0</div>
+                        <div class="metric-number" data-target="40">0</div>
                         <div class="metric-label">Meetups</div>
                     </div>
                     <div class="metric-card">
@@ -162,22 +249,8 @@
                         <div class="metric-icon">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
-                        <div class="metric-number" data-target="15">0</div>
+                        <div class="metric-number" data-target="20">0</div>
                         <div class="metric-label">Venues</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="metric-number" data-target="340">0</div>
-                        <div class="metric-label">Usuarios<br>Onboardeados</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="metric-number" data-target="100">0</div>
-                        <div class="metric-label">Developers web2<br>onboardeados</div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-icon">
@@ -186,145 +259,70 @@
                         <div class="metric-number" data-target="5">0</div>
                         <div class="metric-label">Universidades</div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">
-                            <i class="fas fa-university"></i>
-                        </div>
-                        <div class="metric-number" data-target="1">0</div>
-                        <div class="metric-label">ETH value<br>en Volumen por nuestros usuarios</div>
+
                     </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Official Hosts Section -->
+        <section id="official-hosts" class="official-hosts">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Official Cohost For</h2>
+                    <div class="cyber-line"></div>
+                </div>
+                <div class="hosts-marquee-wrapper">
+                    <div class="hosts-marquee">
+                        <div class="hosts-track">
+                            <div class="host-item"><img src="cohost/base_logo.png" alt="Base" /></div>
+                            <div class="host-item"><img src="cohost/Uniswap_horizontallogo_pink.png" alt="Uniswap" /></div>
+                            <div class="host-item"><img src="cohost/ethglobalwhite.png" alt="ETH Global" /></div>
+                            <div class="host-item host-soon">More soon...</div>
+                            <div class="host-item"><img src="cohost/base_logo.png" alt="Base" /></div>
+                            <div class="host-item"><img src="cohost/Uniswap_horizontallogo_pink.png" alt="Uniswap" /></div>
+                            <div class="host-item"><img src="cohost/ethglobalwhite.png" alt="ETH Global" /></div>
+                            <div class="host-item host-soon">More soon...</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Mission Section -->
+        <!-- Mission & Vision Section -->
         <section id="mission" class="mission">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Nuestra Misión</h2>
+                    <h2 class="section-title">Misión y Visión</h2>
                     <div class="cyber-line"></div>
                 </div>
-                <div class="mission-content">
-                    <div class="mission-text">
+                <div class="mission-vision-grid">
+                    <div class="mission-block">
+                        <h3 class="mission-subtitle">Nuestra Misión</h3>
                         <p>
-                        Nuestra misión es cultivar, impulsar y potenciar el ecosistema web3 del pacifico colombiano construido sobre ethereum. 
+                        Nuestra misión es construir el futuro de nuestra región con tecnologías de Ethereum, estableciendo alianzas estratégicas con universidades, empresas y gobierno para co-crear actividades que permitan:
                         </p>
-                        <p>
-                        Nuestra estrategia se basa en alianzas estrategicas con universidades, empresas y gobierno para co-crear actividades que permitan
-                        </p>
-                        <p>
-                        - Educacion para apoyar al publico general, 
-                        </p>
-                        <p>
-                        - Capacitacion el talento de las empresas 
-                        </p>
-                        <p>
-                        - Financiacion para potenciar proyectos web3 locales.
-                        </p>
-                        <p>
-                    
+                        <ul class="mission-list">
+                            <li><strong>Educación</strong> — Apoyar al público general con conocimientos sobre Web3 y blockchain</li>
+                            <li><strong>Capacitación</strong> — Formar el talento de las empresas en tecnologías descentralizadas</li>
+                            <li><strong>Financiación</strong> — Potenciar proyectos web3 locales mediante fondos cuadráticos y apoyos</li>
+                        </ul>
                     </div>
-                    <div class="mission-visual">
-                        <div class="cyber-hexagon">
-                            <i class="fas fa-seedling"></i>
+                    <div class="vision-block">
+                        <h3 class="mission-subtitle">Nuestra Visión</h3>
+                        <p>
+                        Ser el nodo referente del ecosistema Ethereum en el Pacífico Colombiano: un jardín infinito donde cada persona pueda aprender, construir y conectarse con el futuro descentralizado. Queremos que Cali y la región sean reconocidas como un hub de innovación Web3 en Latinoamérica.
+                        </p>
+                        <div class="mission-visual">
+                            <div class="cyber-hexagon">
+                                <i class="fas fa-seedling"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Connect Matrix Section -->
-        <section id="connect-matrix" class="connect-matrix">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Conecta con Nosotros</h2>
-                    <div class="cyber-line"></div>
-                </div>
-                <div class="connection-grid">
-                    <div class="connection-category">
-                        <h3>Community Channels</h3>
-                        <div class="connections">
-                            <a href="https://t.me/ethcali" target="_blank" class="connection-item">
-                                <i class="fab fa-telegram"></i>
-                                <span>Telegram</span>
-                            </a>
-                            <a href="https://discord.gg/GvkDmHnDuE" target="_blank" class="connection-item">
-                                <i class="fab fa-discord"></i>
-                                <span>Discord</span>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="connection-category">
-                        <h3>Events</h3>
-                        <div class="connections">
-                            <a href="https://www.meetup.com/members/378305434/group/36837943/" target="_blank" class="connection-item">
-                                <i class="fab fa-meetup"></i>
-                                <span>Meetup</span>
-                            </a>
-                            <a href="https://lu.ma/ethcali" target="_blank" class="connection-item">
-                                <i class="fas fa-calendar-plus"></i>
-                                <span>Luma</span>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="connection-category">
-                        <h3>Socials</h3>
-                        <div class="connections">
-                            <a href="https://twitter.com/ethereum_cali" target="_blank" class="connection-item">
-                                <i class="fab fa-twitter"></i>
-                                <span>Twitter</span>
-                            </a>
-                            <a href="https://www.linkedin.com/company/ethereum-cali/" target="_blank" class="connection-item">
-                                <i class="fab fa-linkedin"></i>
-                                <span>LinkedIn</span>
-                            </a>
-                            <a href="https://instagram.com/ethereumcali.eth" target="_blank" class="connection-item">
-                                <i class="fab fa-instagram"></i>
-                                <span>Instagram</span>
-                            </a>
-                            <a href="https://www.youtube.com/@ethereumcali" target="_blank" class="connection-item">
-                                <i class="fab fa-youtube"></i>
-                                <span>Youtube</span>
-                            </a>
-                            <a href="https://github.com/ethcali" target="_blank" class="connection-item">
-                                <i class="fab fa-github"></i>
-                                <span>Github</span>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="connection-category">
-                        <h3>Web3 Profiles</h3>
-                        <div class="connections">
-                            <a href="https://zora.co/@ethcali" target="_blank" class="connection-item">
-                                <i class="fas fa-palette"></i>
-                                <span>Zora</span>
-                            </a>
-                            <a href="https://farcaster.xyz/ethereumcali" target="_blank" class="connection-item">
-                                <i class="fas fa-broadcast-tower"></i>
-                                <span>Farcaster</span>
-                            </a>
-                            <a href="https://opensea.io/es/ETHCALI" target="_blank" class="connection-item">
-                                <i class="fas fa-water"></i>
-                                <span>OpenSea</span>
-                            </a>
-                            <a href="https://mirror.xyz/0x55C9fbf09c056ACac807CD674e34F1F8Df0E711d" target="_blank" class="connection-item">
-                                <i class="fas fa-newspaper"></i>
-                                <span>Mirror</span>
-                            </a>
-                            <a href="https://app.ens.domains/name/ethereumcali.eth/details" target="_blank" class="connection-item">
-                                <i class="fas fa-signature"></i>
-                                <span>ENS</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
 
         <!-- Supported Chains Section -->
         <section id="supported-chains" class="supported-chains">
@@ -351,17 +349,17 @@
                     </div>
                     <div class="chain-card">
                         <div class="chain-logo">
-                            <img src="chains/op mainnet.png" alt="OP Mainnet" />
-                        </div>
-                        <h3>OP Mainnet</h3>
-                        <p>Optimistic rollup para transacciones rápidas</p>
-                    </div>
-                    <div class="chain-card">
-                        <div class="chain-logo">
                             <img src="chains/unichain.png" alt="Unichain" />
                         </div>
                         <h3>Unichain</h3>
                         <p>La nueva L2 de Uniswap para DeFi</p>
+                    </div>
+                    <div class="chain-card">
+                        <div class="chain-logo">
+                            <img src="chains/op mainnet.png" alt="OP Mainnet" />
+                        </div>
+                        <h3>OP Mainnet</h3>
+                        <p>Optimistic rollup para transacciones rápidas</p>
                     </div>
                     <div class="chain-card">
                         <div class="chain-logo">
@@ -399,10 +397,24 @@
                     </div>
                     <div class="university-card">
                         <div class="university-logo">
+                            <img src="universities/usb_cali.png" alt="Universidad San Buenaventura Cali" />
+                        </div>
+                        <h3>Universidad San Buenaventura (USB)</h3>
+                        <p>Open House y Curso DeFi oficial para estudiantes de finanzas</p>
+                    </div>
+                    <div class="university-card">
+                        <div class="university-logo">
                             <img src="universities/Logo-uao.png" alt="Universidad Autónoma de Occidente" />
                         </div>
-                        <h3>UAO</h3>
-                        <p>Universidad Autónoma de Occidente - Programas de innovación</p>
+                        <h3>Universidad Autónoma de Occidente (UAO)</h3>
+                        <p>- Programas de innovación</p>
+                    </div>
+                    <div class="university-card">
+                        <div class="university-logo">
+                            <img src="universities/usc.png" alt="Universidad Santiago de Cali" />
+                        </div>
+                        <h3>Universidad Santiago de Cali (USC)</h3>
+                        <p>Alianza con el grupo de IEEE para el desarrollo de proyectos web3</p>
                     </div>
                     <div class="university-card">
                         <div class="university-logo">
@@ -413,25 +425,10 @@
                     </div>
                     <div class="university-card">
                         <div class="university-logo">
-                            <img src="universities/usb_cali.png" alt="Universidad San Buenaventura Cali" />
-                        </div>
-                        <h3>USB Cali</h3>
-                        <p>Universidad San Buenaventura - Open House y eventos</p>
-                    </div>
-                    <div class="university-card">
-                        <div class="university-logo">
                             <img src="universities/bellas_artes.svg" alt="Instituto de Bellas Artes" />
                         </div>
                         <h3>Bellas Artes</h3>
                         <p>Instituto de Bellas Artes - Arte digital y NFTs</p>
-                    </div>
-
-                    <div class="university-card">
-                        <div class="university-logo">
-                            <img src="universities/usc.png" alt="Universidad Santiago de Cali" />
-                        </div>
-                        <h3>Universidad Santiago de Cali</h3>
-                        <p>Alianza con el grupo de IEEE para el desarrollo de proyectos web3</p>
                     </div>
                 </div>
             </div>
@@ -443,7 +440,7 @@
                 <div class="section-header">
                     <h2 class="section-title">Apoyo Institucional</h2>
                     <div class="cyber-line"></div>
-                    <p class="section-intro">Trabajamos en colaboración con entidades gubernamentales para impulsar la adopción de tecnologías Web3</p>
+                    <p class="section-intro">Hemos recibido apoyo no financiero por entidades gubernamentales para impulsar la adopción de tecnologías Web3</p>
                 </div>
                 <div class="government-grid">
                     <div class="gov-card">
@@ -478,7 +475,8 @@
                             <img src="gov/nido_logo.png" alt="Nido Zonamerica" />
                         </div>
                         <h3>Zonamerica Colombia</h3>
-                        <p>Estamos ubicados en el ecosistema de innovación más importante del suroccidente colombiano, donde convergen startups, empresas tecnológicas y centros de investigación.</p>
+                        <p>Es una Zona Economica Especial, y busca ser un ecosistema de innovación más importante del suroccidente colombiano, 
+                            donde convergen startups, empresas tecnológicas y centros de investigación.</p>
                         <div class="location-details">
                             <div class="detail-item">
                                 <i class="fas fa-map-marker-alt"></i>
@@ -513,10 +511,10 @@
                         <div class="zonamerica-info">
                             <h4>¿Por qué Zonamerica?</h4>
                             <ul>
-                                <li>Ecosistema de innovación consolidado</li>
+                                <li>Zona Economica Especial</li>
                                 <li>Conectividad internacional</li>
                                 <li>Beneficios tributarios para empresas tech</li>
-                                <li>Comunidad de emprendedores activa</li>
+                                <li>Comunidad de emprendedores activos</li>
                             </ul>
                         </div>
                     </div>
