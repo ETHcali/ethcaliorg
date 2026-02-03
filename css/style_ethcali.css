@@ -77,6 +77,10 @@ body {
   position: relative;
 }
 
+main {
+  overflow-x: hidden;
+}
+
 /* Scrollbar Styling - updated with brand blue */
 ::-webkit-scrollbar {
   width: 8px;
@@ -245,7 +249,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: clamp(2rem, 8vw, 4rem);
   background: var(--gradient-primary);
   -webkit-background-clip: text;
   background-clip: text;
@@ -379,11 +383,19 @@ a:hover:after {
 }
 
 .hero-description {
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-size: clamp(0.95rem, 2.5vw, 1.2rem);
   max-width: 500px;
   margin-bottom: 2rem;
   color: var(--text-secondary);
   line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .hero-description {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 /* Hero CTA & Activities */
@@ -754,6 +766,8 @@ a:hover:after {
 /* Main Container */
 .home-container {
   padding-top: 70px; /* Account for fixed navbar */
+  overflow-x: hidden;
+  min-width: 0;
 }
 
 /* Section Styles */
@@ -811,10 +825,23 @@ a:hover:after {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.75rem;
+  }
 }
 
 section {
-  padding: 6rem 0;
+  padding: clamp(3rem, 8vw, 6rem) 0;
   position: relative;
 }
 
@@ -1460,16 +1487,37 @@ section:nth-child(odd) {
     text-align: center;
     gap: 2rem;
   }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   
   .mission-vision-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
     text-align: center;
   }
+
+  .vision-block .mission-visual {
+    margin-top: 1.5rem;
+  }
   
   .cyber-line::before,
   .cyber-line::after {
     display: none;
+  }
+
+  .impact-metrics {
+    padding: 4rem 0;
+  }
+
+  .supported-chains,
+  .partner-universities,
+  .government-support,
+  .our-location {
+    padding: 4rem 0;
   }
 }
 
@@ -1479,17 +1527,35 @@ section:nth-child(odd) {
   }
   
   .hero {
-    padding: 60px 0;
-    min-height: 80vh;
+    padding: 3rem 0 4rem;
+    min-height: auto;
+  }
+
+  .hero .container {
+    padding: 0 1rem;
   }
   
   .hero-buttons,
   .hero-actions {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-cta-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
   }
 
+  .hero-cta-main,
+  .hero-roadmap-btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
 
   .hero-cta-dropdown {
     left: 50%;
@@ -1501,18 +1567,109 @@ section:nth-child(odd) {
   }
   
   .cyber-btn {
-    width: 200px;
+    width: 100%;
+    max-width: 280px;
     justify-content: center;
+    text-align: center;
   }
-  
+
+  .metrics-onchain-btn {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .metrics-cta-wrap {
+    margin-top: 1.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .mission-vision-grid {
+    padding: 0 0.5rem;
+  }
+
+  .mission-list {
+    padding-left: 1.25rem;
+    text-align: left;
+  }
+
   .mission-block p,
   .vision-block p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  .vision-block p {
+    text-align: center;
+  }
+
+  .mission-block .mission-list {
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+  }
+
+  .vision-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .eth-symbol {
-    width: 200px;
+    width: 180px;
+    height: 180px;
+  }
+
+  .hero-visual {
     height: 200px;
+  }
+
+  .chains-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .chain-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .chain-card p {
+    font-size: 0.9rem;
+  }
+
+  .location-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .location-info {
+    text-align: center;
+  }
+
+  .location-details {
+    text-align: left;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .host-item {
+    padding: 0.75rem 1.25rem;
+    min-height: 60px;
+  }
+
+  .host-item img {
+    height: 28px;
+    max-width: 100px;
+  }
+
+  .host-item.host-soon {
+    font-size: 0.9rem;
   }
   
   .connection-grid {
@@ -1530,30 +1687,94 @@ section:nth-child(odd) {
 
 @media (max-width: 480px) {
   .section-title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+  }
+
+  .section-header .section-subtitle,
+  .section-intro {
+    font-size: 0.95rem;
   }
   
   .mission-block p,
   .vision-block p {
     font-size: 0.9rem;
   }
+
+  .hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+  }
   
   .hero-visual {
-    height: 250px;
+    height: 160px;
   }
   
   .eth-symbol {
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
+  }
+
+  .hero-cta-main,
+  .hero-roadmap-btn {
+    max-width: 100%;
+    font-size: 0.85rem;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .metric-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .metric-number {
+    font-size: 2.5rem;
+  }
+
+  .metric-icon {
+    font-size: 2rem;
+  }
+
+  .metric-label {
+    font-size: 0.85rem;
+  }
+
+  .chains-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .universities-grid,
+  .government-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .official-hosts {
+    padding: 3rem 0;
+  }
+
+  .host-item {
+    padding: 0.6rem 1rem;
+    min-height: 50px;
+  }
+
+  .host-item img {
+    height: 24px;
+    max-width: 80px;
   }
   
   .cyber-hexagon {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
   
   .cyber-hexagon i {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 }
 
