@@ -3,166 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Hackathon WEB3 Ethcolombia 2023 - Ethereum Cali">
+    <title>Hackathon Web3 ETH Colombia 2023 | ETH Cali</title>
+    <meta name="description" content="El primer hackathon Web3 de ETH Colombia, en Ramada Cafe, Cali — noviembre de 2023.">
+
     <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
-    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
-    <title>Hackathon WEB3 Ethcolombia 2023 | Ethereum Cali</title>
-    
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="css/shared-components.css">
-    <link rel="stylesheet" href="css/hackathon.css">
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- JavaScript Dependencies -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/navbar.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali38x38.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Hackathon Web3 ETH Colombia 2023 | ETH Cali">
+    <meta property="og:description" content="El primer hackathon Web3 de ETH Colombia, en Ramada Cafe, Cali — noviembre de 2023.">
+    <meta property="og:image" content="https://ethcali.org/branding/Banner1200x400.png">
+    <meta property="og:url" content="https://ethcali.org/hackathon-ethcolombia-2023">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="branding/fonts/web/SarunPro-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="branding/fonts/web/SarunPro-Book.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/navbar.js" defer></script>
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <div class="cursor"></div>
-    <div class="noise-overlay"></div>
-    
-    <main class="hackathon-container">
-        <!-- Hero Section -->
-        <header class="hackathon-hero">
+
+    <main>
+        <header class="hero hero-compact">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="hero-title">Hackathon WEB3 Ethcolombia</h1>
-                    <h2 class="hero-subtitle">Building the Future of Web3</h2>
-                    <div class="hero-date">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>27 de Noviembre, 2023</span>
+                    <span class="eyebrow">Hackathon · 2023</span>
+                    <h1>Hackathon Web3 ETH Colombia</h1>
+                    <p class="hero-subtitle" style="font-size: clamp(1.3rem, 2.4vw, 1.9rem);">el primero de todos</p>
+                    <p class="event-meta" style="font-size:14px; margin-top:16px">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        <span>27 de noviembre de 2023</span>
+                    </p>
+                    <p class="hero-description">Desarrolladores, diseñadoras y emprendedores construyendo aplicaciones descentralizadas durante una jornada completa en Ramada Cafe.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="https://www.instagram.com/p/C0MsMz6g4So/?img_index=1" target="_blank" rel="noopener">Ver el evento <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        <a class="btn btn-secondary" href="events_locales.html">Ver más eventos</a>
                     </div>
-                    <a href="https://www.instagram.com/p/C0MsMz6g4So/?img_index=1" target="_blank" class="hero-cta">
-                        <i class="fab fa-instagram"></i>
-                        Ver Evento
-                    </a>
                 </div>
             </div>
         </header>
 
-        <!-- About Section -->
-        <section class="info-section">
+        <section id="about">
             <div class="container">
-                <h2 class="section-title">Acerca del Hackathon</h2>
-                <div class="section-content">
-                    <p class="section-description">
-                        El primer Hackathon WEB3 de Ethcolombia fue un evento histórico que reunió a desarrolladores, 
-                        diseñadores y emprendedores para construir el futuro de las aplicaciones descentralizadas. 
-                        Durante una intensa jornada en Ramada Cafe, los participantes trabajaron en proyectos innovadores 
-                        que aprovecharon las tecnologías blockchain más avanzadas.
+                <div class="section-header">
+                    <span class="eyebrow">Qué pasó</span>
+                    <h2>Sobre el hackathon</h2>
+                </div>
+                <div class="card">
+                    <p>
+                        El primer hackathon Web3 de ETH Colombia reunió a desarrolladores, diseñadoras
+                        y emprendedores para construir el futuro de las aplicaciones descentralizadas.
+                        Durante una jornada completa en Ramada Cafe, los participantes trabajaron en
+                        proyectos que aprovecharon las tecnologías blockchain más recientes.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- Event Details -->
-        <section class="info-section">
+        <section id="details">
             <div class="container">
-                <h2 class="section-title">Detalles del Evento</h2>
-                <div class="section-content">
-                    <div class="prizes-grid">
-                        <div class="prize-card">
-                            <div class="prize-position">📅</div>
-                            <div class="prize-title">Fecha</div>
-                            <div class="prize-amount">27 Nov 2023</div>
-                            <div class="prize-details">Lunes completo</div>
-                        </div>
-                        <div class="prize-card">
-                            <div class="prize-position">📍</div>
-                            <div class="prize-title">Venue</div>
-                            <div class="prize-amount">Ramada Cafe</div>
-                            <div class="prize-details">
-                                <a href="https://www.instagram.com/ramadacafeco/" target="_blank" style="color: var(--cyber-accent);">
-                                    @ramadacafeco
-                                </a>
-                            </div>
-                        </div>
-                        <div class="prize-card">
-                            <div class="prize-position">🏆</div>
-                            <div class="prize-title">Tipo</div>
-                            <div class="prize-amount">Hackathon</div>
-                            <div class="prize-details">Colaborativo Ethcolombia</div>
-                        </div>
+                <div class="section-header">
+                    <span class="eyebrow">Los datos</span>
+                    <h2>Detalles del evento</h2>
+                </div>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <span class="addr-label">Fecha</span>
+                        <p class="fact-value">27 nov 2023</p>
+                        <p class="fact-note">Lunes completo</p>
+                    </div>
+                    <div class="card">
+                        <span class="addr-label">Venue</span>
+                        <p class="fact-value">Ramada Cafe</p>
+                        <p class="fact-note">@ramadacafeco</p>
+                    </div>
+                    <div class="card">
+                        <span class="addr-label">Tipo</span>
+                        <p class="fact-value">Hackathon</p>
+                        <p class="fact-note">Colaborativo con ETH Colombia</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Highlights Section -->
-        <section class="info-section">
+        <section id="highlights">
             <div class="container">
-                <h2 class="section-title">Momentos Destacados</h2>
-                <div class="section-content">
-                    <p class="section-description">
-                        Este hackathon marcó el inicio de una nueva era para la comunidad Web3 en Colombia. 
-                        Los participantes tuvieron la oportunidad de:
-                    </p>
-                    <ul class="rules-list">
-                        <li>Construir aplicaciones descentralizadas innovadoras</li>
-                        <li>Colaborar con desarrolladores experimentados</li>
-                        <li>Aprender sobre las últimas tecnologías blockchain</li>
-                        <li>Conectar con la comunidad Ethereum en Colombia</li>
-                        <li>Participar en workshops y sesiones de mentoring</li>
+                <div class="section-header">
+                    <span class="eyebrow">Momentos</span>
+                    <h2>Lo que hicimos</h2>
+                </div>
+                <div class="card">
+                    <ul class="mission-list">
+                        <li>Construir aplicaciones descentralizadas.</li>
+                        <li>Colaborar con desarrolladores con experiencia.</li>
+                        <li>Aprender las tecnologías blockchain más recientes.</li>
+                        <li>Conectar con la comunidad Ethereum en Colombia.</li>
+                        <li>Participar en workshops y sesiones de mentoría.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- Resources Section -->
-        <section class="info-section">
+        <section id="resources">
             <div class="container">
-                <h2 class="section-title">Recursos y Enlaces</h2>
-                <div class="section-content">
-                    <div class="sponsors-grid">
-                        <div class="sponsor-item">
-                            <i class="fab fa-instagram sponsor-logo" style="font-size: 3rem; color: var(--cyber-accent);"></i>
-                            <div class="sponsor-name">
-                                <a href="https://www.instagram.com/p/C0MsMz6g4So/?img_index=1" target="_blank" style="color: var(--cyber-text); text-decoration: none;">
-                                    Fotos del Evento
-                                </a>
-                            </div>
-                        </div>
-                        <div class="sponsor-item">
-                            <i class="fab fa-instagram sponsor-logo" style="font-size: 3rem; color: var(--cyber-primary);"></i>
-                            <div class="sponsor-name">
-                                <a href="https://www.instagram.com/p/C0wee_lssGZ/?img_index=1" target="_blank" style="color: var(--cyber-text); text-decoration: none;">
-                                    Resultados
-                                </a>
-                            </div>
-                        </div>
-                        <div class="sponsor-item">
-                            <i class="fas fa-folder sponsor-logo" style="font-size: 3rem; color: var(--cyber-secondary);"></i>
-                            <div class="sponsor-name">
-                                <a href="https://drive.google.com/drive/u/5/folders/1sRj-6rS-5fdaLZxASRXSgu8c68uFDQCT" target="_blank" style="color: var(--cyber-text); text-decoration: none;">
-                                    Archivos del Evento
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                <div class="section-header">
+                    <span class="eyebrow">Material</span>
+                    <h2>Recursos y enlaces</h2>
                 </div>
-            </div>
-        </section>
-
-        <!-- Legacy Section -->
-        <section class="info-section">
-            <div class="container">
-                <h2 class="section-title">Legado del Evento</h2>
-                <div class="section-content">
-                    <p class="section-description">
-                        El Hackathon WEB3 Ethcolombia 2023 sentó las bases para futuros eventos de la comunidad 
-                        Ethereum en Colombia. Este evento histórico demostró el potencial y la pasión de los 
-                        desarrolladores colombianos por las tecnologías blockchain y descentralizadas.
-                    </p>
-                    <a href="events_locales.html" class="hero-cta" style="margin-top: 2rem;">
-                        <i class="fas fa-arrow-left"></i>
-                        Ver Más Eventos
+                <div class="grid grid-3">
+                    <a class="card card-interactive" href="https://www.instagram.com/p/C0MsMz6g4So/?img_index=1" target="_blank" rel="noopener">
+                        <h3>Fotos del evento</h3>
+                        <p>El registro fotográfico completo.</p>
+                        <span class="card-cta">Abrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                    </a>
+                    <a class="card card-interactive" href="https://www.instagram.com/p/C0wee_lssGZ/?img_index=1" target="_blank" rel="noopener">
+                        <h3>Resultados</h3>
+                        <p>Los proyectos que salieron del hackathon.</p>
+                        <span class="card-cta">Abrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                    </a>
+                    <a class="card card-interactive" href="https://drive.google.com/drive/u/5/folders/1sRj-6rS-5fdaLZxASRXSgu8c68uFDQCT" target="_blank" rel="noopener">
+                        <h3>Archivos</h3>
+                        <p>La carpeta con todo el material del evento.</p>
+                        <span class="card-cta">Abrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
                     </a>
                 </div>
             </div>
         </section>
+
     </main>
 
     <div id="footer-container"></div>

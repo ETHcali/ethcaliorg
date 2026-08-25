@@ -3,274 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ethereum Cali DAO - Governance, Treasury and Organization">
+    <title>DAO | ETH Cali</title>
+    <meta name="description" content="La gobernanza de ETH Cali: ENS, Snapshot, la tesorería multifirma y la fundación legal.">
+
     <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
-    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
-    <title>DAO | Ethereum Cali</title>
-    
-    <!-- CSS Files - ORDER MATTERS FOR NAVBAR CONSISTENCY -->
-    <link rel="stylesheet" href="css/shared-components.css">
-    <link rel="stylesheet" href="css/style_events.css">
-    <!-- Navbar CSS MUST load LAST to override any conflicts -->
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/navbar.js"></script>
-    <style>
-        .event-status {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .event-status.active {
-            background: linear-gradient(45deg, #00ff9d, #2d25ff);
-            color: #fff;
-            box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
-        }
-        .event-status.legacy {
-            background: rgba(255, 71, 87, 0.2);
-            color: #ff4757;
-            border: 1px solid rgba(255, 71, 87, 0.3);
-        }
-        .event-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .section-subtitle {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.1rem;
-            margin-top: 0.5rem;
-            text-align: center;
-        }
-    </style>
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali38x38.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DAO | ETH Cali">
+    <meta property="og:description" content="La gobernanza de ETH Cali: ENS, Snapshot, la tesorería multifirma y la fundación legal.">
+    <meta property="og:image" content="https://ethcali.org/branding/Banner1200x400.png">
+    <meta property="og:url" content="https://ethcali.org/dao">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="branding/fonts/web/SarunPro-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="branding/fonts/web/SarunPro-Book.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/navbar.js" defer></script>
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <div class="cursor"></div>
-    <div class="noise-overlay"></div>
-    
-    <main class="home-container">
-        <section class="events-hero">
+
+    <main>
+        <header class="hero hero-compact">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="glitch" data-text="ETHEREUM CALI DAO">ETHEREUM CALI DAO</h1>
-                    <h2 class="hero-subtitle">Decentralized Governance & Treasury</h2>
-                    <p class="hero-description">Transparent governance, multi-chain treasury, and community-driven decisions for the Ethereum ecosystem in the Pacific region of Colombia</p>
+                    <span class="eyebrow">Gobernanza</span>
+                    <h1>ETH Cali DAO</h1>
+                    <p class="hero-description">
+                        Cómo se toman las decisiones y dónde vive la tesorería. Todo verificable
+                        en cadena: cada dirección de esta página enlaza a su explorador.
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <section id="identity">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Identidad</span>
+                    <h2>Nuestros nombres en ENS</h2>
+                    <p>La identidad de la organización en Ethereum Name Service.</p>
+                </div>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-head">
+                            <img src="branding/logoethcali.png" alt="">
+                            <h3 class="mono">ethcali.eth</h3>
+                            <span class="pill pill-confirmed">Vigente</span>
+                        </div>
+                        <p>Dominio principal. Resuelve a la tesorería multifirma actual.</p>
+                        <div class="addr-row">
+                            <span class="addr-label">Resuelve a</span>
+                            <a class="address" href="https://etherscan.io/address/0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64" target="_blank" rel="noopener" title="0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64">0xB6BD…da64 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        </div>
+                        <a class="card-cta" href="https://app.ens.domains/ethcali.eth" target="_blank" rel="noopener">Ver en ENS <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-head">
+                            <img src="branding/logoethcali.png" alt="">
+                            <h3 class="mono">ethereumcali.eth</h3>
+                            <span class="pill pill-pending">Histórico</span>
+                        </div>
+                        <p>Dominio histórico, ligado a las multifirmas antiguas gestionadas con Aragon.</p>
+                        <div class="addr-row">
+                            <span class="addr-label">Resuelve a</span>
+                            <a class="address" href="https://etherscan.io/address/0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B" target="_blank" rel="noopener" title="0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B">0x35b0…BC6B <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        </div>
+                        <div class="chain-strip">
+                            <span class="chip"><img src="chains/op mainnet.png" alt=""><span class="chain-name">OP Mainnet</span></span>
+                            <span class="chip"><img src="tools/arbitrum.svg" alt=""><span class="chain-name">Arbitrum</span></span>
+                            <span class="chip"><img src="chains/base logo.svg" alt=""><span class="chain-name">Base</span></span>
+                            <span class="chip"><img src="chains/polygon.png" alt=""><span class="chain-name">Polygon</span></span>
+                            <span class="chip"><img src="chains/gnosis.png" alt=""><span class="chain-name">Gnosis</span></span>
+                        </div>
+                        <a class="card-cta" href="https://app.ens.domains/ethereumcali.eth" target="_blank" rel="noopener">Ver en ENS <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <div class="container">
-            <!-- Web3 Identity Section -->
-            <div class="section-header">
-                <h2 class="section-title">Web3 Identity</h2>
-                <div class="cyber-line"></div>
-                <p class="section-subtitle">Our decentralized identity on Ethereum Name Service (ENS)</p>
-            </div>
-            <div class="events-grid">
-                <div class="event-card">
-                    <div class="event-card-header">
-                        <h3><img src="branding/logoethcali.png" style="width: 24px; height: 24px; margin-right: 8px; border-radius: 50%;">ethcali.eth</h3>
-                        <span class="event-status active">CURRENT</span>
-                    </div>
-                    <div class="event-card-body">
-                        <p><strong>Primary ENS Domain</strong></p>
-                        <p>Resolving to our main current multisignature treasury</p>
-                        <div style="margin: 1rem 0;">
-                            <p><strong>Resolves to:</strong><br>
-                            <code style="background: rgba(98,104,143,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.8rem;">0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64</code></p>
-                        </div>
-                        <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
-                            <a href="https://app.ens.domains/ethcali.eth" target="_blank" class="btn-discover">
-                                <i class="fas fa-external-link-alt"></i> View ENS
-                            </a>
-                            <a href="https://etherscan.io/name-lookup-search?id=ethcali.eth" target="_blank" class="btn-discover" style="background: rgba(255,255,255,0.1);">
-                                <i class="fas fa-search"></i> Etherscan
-                            </a>
-                        </div>
-                    </div>
+        <section id="governance">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Cómo decidimos</span>
+                    <h2>Estructura de gobernanza</h2>
                 </div>
-                
-                <div class="event-card">
-                    <div class="event-card-header">
-                        <h3><img src="branding/logoethcali.png" style="width: 24px; height: 24px; margin-right: 8px; border-radius: 50%;">ethereumcali.eth</h3>
-                        <span class="event-status legacy">LEGACY</span>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <div class="card-head"><img src="tools/snapshot.jpeg" alt=""><h3>Snapshot</h3></div>
+                        <p>Votación transparente para las decisiones de la comunidad.</p>
+                        <a class="card-cta" href="https://snapshot.box/#/s:ethereumcali.eth" target="_blank" rel="noopener">Ir a Snapshot <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                     </div>
-                    <div class="event-card-body">
-                        <p><strong>Legacy ENS Domain</strong></p>
-                        <p>Historical domain linked to old multisigs across multiple chains</p>
-                        <div style="margin: 1rem 0;">
-                            <p><strong>Resolves to:</strong><br>
-                            <code style="background: rgba(255,71,87,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.8rem;">0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B</code></p>
-                        </div>
-                        <div style="margin: 1rem 0;">
-                            <p><strong>Connected to legacy multisigs on:</strong></p>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; margin: 0.5rem 0;">
-                                <div style="text-align: center; opacity: 0.7;">
-                                    <img src="chains/op mainnet.png" style="width: 24px; height: 24px; border-radius: 50%;">
-                                    <br><small>OP Mainnet</small>
-                                </div>
-                                <div style="text-align: center; opacity: 0.7;">
-                                    <img src="tools/arbitrum.svg" style="width: 24px; height: 24px; border-radius: 50%;">
-                                    <br><small>Arbitrum</small>
-                                </div>
-                                <div style="text-align: center; opacity: 0.7;">
-                                    <img src="chains/base logo.svg" style="width: 24px; height: 24px; border-radius: 50%;">
-                                    <br><small>Base</small>
-                                </div>
-                                <div style="text-align: center; opacity: 0.7;">
-                                    <img src="chains/polygon.png" style="width: 24px; height: 24px; border-radius: 50%;">
-                                    <br><small>Polygon</small>
-                                </div>
-                                <div style="text-align: center; opacity: 0.7;">
-                                    <img src="chains/gnosis.png" style="width: 24px; height: 24px; border-radius: 50%;">
-                                    <br><small>Gnosis</small>
-                                </div>
-                            </div>
-                            <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">
-                                <i class="fas fa-info-circle"></i> Legacy multisigs managed via Aragon
-                            </p>
-                        </div>
-                        <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
-                            <a href="https://app.ens.domains/ethereumcali.eth" target="_blank" class="btn-discover">
-                                <i class="fas fa-external-link-alt"></i> View ENS
-                            </a>
-                            <a href="https://etherscan.io/name-lookup-search?id=ethereumcali.eth" target="_blank" class="btn-discover" style="background: rgba(255,255,255,0.1);">
-                                <i class="fas fa-search"></i> Etherscan
-                            </a>
-                        </div>
+                    <div class="card">
+                        <div class="card-head"><img src="tools/google-docs.svg" alt=""><h3>Community Covenant</h3></div>
+                        <p>Las reglas de gobernanza, escritas y públicas.</p>
+                        <a class="card-cta" href="https://docs.google.com/document/d/12bMgtTRQklg08t2Ju_CkMJHBQCgf7CbgqzczRi8qAjw/edit" target="_blank" rel="noopener">Leer el covenant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><img src="chains/op mainnet.png" alt=""><h3>Core NFT</h3></div>
+                        <p>Derechos de voto basados en un NFT, en OP Mainnet.</p>
+                        <a class="card-cta" href="https://opensea.io/collection/eth-cali-core" target="_blank" rel="noopener">Ver la colección <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="section-header">
-                <h2 class="section-title">Governance Structure</h2>
-                <div class="cyber-line"></div>
-            </div>
-            <div class="events-grid">
-                <div class="event-card">
-                    <div class="event-card-header">
-                        <h3><img src="tools/snapshot.png" style="width: 24px; height: 24px; margin-right: 8px;">Snapshot Governance</h3>
-                    </div>
-                    <div class="event-card-body">
-                        <p>Transparent voting platform for community decisions</p>
-                        <a href="https://snapshot.box/#/s:ethereumcali.eth" target="_blank" class="btn-discover">Visit Snapshot</a>
-                    </div>
+        <section id="treasury">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Tesorería</span>
+                    <h2>Dónde están los fondos</h2>
+                    <p>Una multifirma de 5 miembros, con la misma dirección en nueve redes.</p>
                 </div>
-                
-                <div class="event-card">
-                    <div class="event-card-header">
-                        <h3><img src="tools/google-docs.svg" style="width: 24px; height: 24px; margin-right: 8px;">Community Covenant</h3>
-                    </div>
-                    <div class="event-card-body">
-                        <p>Clear governance rules and guidelines</p>
-                        <a href="https://docs.google.com/document/d/12bMgtTRQklg08t2Ju_CkMJHBQCgf7CbgqzczRi8qAjw/edit" target="_blank" class="btn-discover">Read Covenant</a>
-                    </div>
-                </div>
-                
-                <div class="event-card">
-                    <div class="event-card-header">
-                        <h3><img src="chains/op mainnet.png" style="width: 24px; height: 24px; margin-right: 8px;">Core NFT Voting</h3>
-                    </div>
-                    <div class="event-card-body">
-                        <p>NFT-based voting rights on OP Mainnet</p>
-                        <code style="background: rgba(98,104,143,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.8rem;">0xCf7ff2...ab38F749</code>
-                        <br><br>
-                        <a href="https://opensea.io/collection/eth-cali-core" target="_blank" class="btn-discover">View Collection</a>
-                    </div>
-                </div>
-            </div>
 
-            <div class="section-header">
-                <h2 class="section-title">Treasury & Finance</h2>
-                <div class="cyber-line"></div>
-            </div>
-            <div class="events-grid">
-                <div class="event-card" style="grid-column: 1 / -1;">
-                    <div class="event-card-header">
-                        <h3><img src="tools/safe.svg" style="width: 24px; height: 24px; margin-right: 8px;">Multi-Signature Treasury</h3>
-                    </div>
-                    <div class="event-card-body">
-                        <p>5-member multisig treasury deployed across multiple chains</p>
-                        <code style="background: rgba(98,104,143,0.2); padding: 0.25rem; border-radius: 4px;">0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64</code>
-                        <br><br>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 0.5rem; margin: 1rem 0;">
-                            <div style="text-align: center;"><img src="chains/ethereum.png" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>Ethereum</small></div>
-                            <div style="text-align: center;"><img src="chains/base logo.svg" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>Base</small></div>
-                            <div style="text-align: center;"><img src="chains/op mainnet.png" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>OP Mainnet</small></div>
-                            <div style="text-align: center;"><img src="tools/arbitrum.svg" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>Arbitrum</small></div>
-                            <div style="text-align: center;"><img src="chains/gnosis.png" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>Gnosis</small></div>
-                            <div style="text-align: center;"><img src="chains/polygon.png" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>Polygon</small></div>
-                            <div style="text-align: center;"><img src="tools/polygon-zkevm.svg" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>zkEVM</small></div>
-                            <div style="text-align: center;"><img src="chains/unichain.png" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>Unichain</small></div>
-                            <div style="text-align: center;"><img src="tools/celo.svg" style="width: 32px; height: 32px; border-radius: 50%;"><br><small>Celo</small></div>
+                <div class="card card-emphasis">
+                    <div class="card-head"><img src="tools/safe.svg" alt=""><h3>Tesorería multifirma</h3></div>
+                    <p>Safe de 5 miembros, desplegado con la misma dirección en todas las redes donde operamos.</p>
+                    <div class="addr-row">
+                            <a class="address" href="https://etherscan.io/address/0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64" target="_blank" rel="noopener" title="0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64">0xB6BD…da64 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                         </div>
-                        <a href="https://app.safe.global/home?safe=eth:0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64" target="_blank" class="btn-discover">View Treasury</a>
-                    </div>
+                    <div class="chain-strip">
+                            <span class="chip"><img src="chains/ethereum.png" alt=""><span class="chain-name">Ethereum</span></span>
+                            <span class="chip"><img src="chains/base logo.svg" alt=""><span class="chain-name">Base</span></span>
+                            <span class="chip"><img src="chains/op mainnet.png" alt=""><span class="chain-name">OP Mainnet</span></span>
+                            <span class="chip"><img src="tools/arbitrum.svg" alt=""><span class="chain-name">Arbitrum</span></span>
+                            <span class="chip"><img src="chains/gnosis.png" alt=""><span class="chain-name">Gnosis</span></span>
+                            <span class="chip"><img src="chains/polygon.png" alt=""><span class="chain-name">Polygon</span></span>
+                            <span class="chip"><img src="tools/polygon-zkevm.svg" alt=""><span class="chain-name">zkEVM</span></span>
+                            <span class="chip"><img src="chains/unichain.png" alt=""><span class="chain-name">Unichain</span></span>
+                            <span class="chip"><img src="tools/celo.svg" alt=""><span class="chain-name">Celo</span></span>
+                        </div>
+                    <a class="card-cta" href="https://app.safe.global/home?safe=eth:0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64" target="_blank" rel="noopener">Ver la tesorería <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
-                
-                <div class="event-card">
-                    <div class="event-card-header">
-                        <h3><img src="tools/aave.svg" style="width: 24px; height: 24px; margin-right: 8px;">Ethereum Strategic Reserve</h3>
-                    </div>
-                    <div class="event-card-body">
-                        <p>We are commited with Ethereum Succesful. <br>
-                        <br>  We are alligned with the ETH accumulation in our treasuries because it gave us a robust posisiton.<br>  
-                        <br> In case we need liquidity, we deposit ETH in <a href="https://aave.com/" target="_blank" class="com">Aave</a> and borrow stablecoins for liquidity</p>
-                        <br>
-                        <a href="https://www.strategicethreserve.xyz/" target="_blank" class="btn-discover">Learn More</a>
-                    </div>
-                </div>
-                
-                <div class="event-card">
-                    <div class="event-card-header">
-                        <h3>Admin Wallets</h3>
-                    </div>
-                    <div class="event-card-body">
-                        <p><strong>Current:</strong><br>
-                        <code style="background: rgba(98,104,143,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.75rem;">0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B</code> <a href="https://etherscan.io/address/0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B" target="_blank">Etherscan</a></p>
-                        <p><strong>Legacy (deprecated):</strong><br>
-                        <code style="background: rgba(255,71,87,0.2); padding: 0.25rem; border-radius: 4px; font-size: 0.75rem; opacity: 0.6;">0x55C9fbf09c056ACac807CD674e34F1F8Df0E711d</code> <a href="https://etherscan.io/address/0x55C9fbf09c056ACac807CD674e34F1F8Df0E711d" target="_blank">Etherscan</a></p>
-                    </div>
-                </div>
-            </div>
 
-            <div class="section-header">
-                <h2 class="section-title">Legal & Contact</h2>
-                <div class="cyber-line"></div>
-            </div>
-            <div class="events-grid">
-                <div class="event-card">
-                    <div class="event-card-header">
-                        <h3>Legal Foundation</h3>
+                <div class="grid grid-2" style="margin-top: 16px;">
+                    <div class="card">
+                        <div class="card-head"><img src="tools/aave.svg" alt=""><h3>Reserva estratégica de ETH</h3></div>
+                        <p>
+                            Acumulamos ETH en la tesorería porque nos da una posición sólida y
+                            nos alinea con el éxito de Ethereum. Cuando necesitamos liquidez,
+                            depositamos ETH en <a href="https://aave.com/" target="_blank" rel="noopener">Aave</a>
+                            y tomamos prestadas stablecoins en lugar de vender.
+                        </p>
+                        <a class="card-cta" href="https://www.strategicethreserve.xyz/" target="_blank" rel="noopener">Conocer más <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                     </div>
-                    <div class="event-card-body">
-                        <p>Non-profit foundation incorporated in Colombia</p>
-                        <p><strong>Registry:</strong> 901936975-1</p>
-                        <a href="https://www.ccc.org.co/" target="_blank" class="btn-discover">Cámara de Comercio</a>
-                    </div>
-                </div>
-                
-                <div class="event-card">
-                    <div class="event-card-header">
-                        <h3>Contact Information</h3>
-                    </div>
-                    <div class="event-card-body">
-                        <p>For partnerships and collaboration</p>
-                        <a href="mailto:eth.cali.foundation@gmail.com" class="btn-discover">
-                            <i class="fas fa-envelope"></i> Contact Us
-                        </a>
+                    <div class="card">
+                        <div class="card-head"><h3>Wallets de administración</h3></div>
+                        <div class="addr-row">
+                            <span class="addr-label">Actual</span>
+                            <a class="address" href="https://etherscan.io/address/0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B" target="_blank" rel="noopener" title="0x35b0c64CeDC2fD1a7298984CBa5C7E402970BC6B">0x35b0…BC6B <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        </div>
+                        <div class="addr-row">
+                            <span class="addr-label">Antigua</span>
+                            <a class="address is-legacy" href="https://etherscan.io/address/0x55C9fbf09c056ACac807CD674e34F1F8Df0E711d" target="_blank" rel="noopener" title="0x55C9fbf09c056ACac807CD674e34F1F8Df0E711d">0x55C9…711d <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        </div>
+                        <p style="margin-top: 14px; font-size: 14px;">La antigua está deprecada y no debe usarse.</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section id="legal">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Legal</span>
+                    <h2>Fundación y contacto</h2>
+                </div>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-head"><h3>Fundación legal</h3></div>
+                        <p>Fundación sin ánimo de lucro constituida en Colombia.</p>
+                        <div class="addr-row">
+                            <span class="addr-label">NIT</span>
+                            <span class="mono">901936975-1</span>
+                        </div>
+                        <a class="card-cta" href="https://www.ccc.org.co/" target="_blank" rel="noopener">Cámara de Comercio de Cali <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Contacto</h3></div>
+                        <p>Para alianzas y colaboraciones.</p>
+                        <a class="btn btn-secondary" style="margin-top: 16px;" href="mailto:eth.cali.foundation@gmail.com">Escríbenos</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <div id="footer-container"></div>

@@ -3,203 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Eventos Locales de Ethereum Cali">
+    <title>Eventos locales | ETH Cali</title>
+    <meta name="description" content="Todos los eventos que ETH Cali ha organizado en Cali y la región desde 2022.">
+
     <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
-    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
-    <title>Eventos Locales | Ethereum Cali</title>
-    
-    <!-- CSS Files - ORDER MATTERS FOR NAVBAR CONSISTENCY -->
-    <link rel="stylesheet" href="css/shared-components.css">
-    <link rel="stylesheet" href="css/style_events.css">
-    <link rel="stylesheet" href="css/events-components.css">
-    <!-- Navbar CSS MUST load LAST to override any conflicts -->
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/navbar.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali38x38.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Eventos locales | ETH Cali">
+    <meta property="og:description" content="Todos los eventos que ETH Cali ha organizado en Cali y la región desde 2022.">
+    <meta property="og:image" content="https://ethcali.org/branding/Banner1200x400.png">
+    <meta property="og:url" content="https://ethcali.org/events">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="branding/fonts/web/SarunPro-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="branding/fonts/web/SarunPro-Book.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/navbar.js" defer></script>
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <div class="cursor"></div>
-    <div class="noise-overlay"></div>
-    <main class="home-container">
-        <!-- Hero Section -->
-        <header class="events-hero">
+
+    <main>
+        <header class="hero hero-compact">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="glitch" data-text="EVENTOS LOCALES ETHEREUM CALI">EVENTOS LOCALES ETHEREUM CALI</h1>
-                    <h2 class="hero-subtitle">Nuestra Historia en Blockchain</h2>
-                    <p class="hero-description">Explora todos los eventos que hemos organizado desde el inicio de la comunidad Ethereum Cali</p>
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <span class="stat-number" id="hero-total-events">48+</span>
-                            <span class="stat-label">Eventos</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number" id="hero-total-attendees">800+</span>
-                            <span class="stat-label">Asistentes</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">2022</span>
-                            <span class="stat-label">Desde</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="cyber-grid"></div>
+                    <span class="eyebrow">Eventos locales</span>
+                    <h1>Nuestra historia</h1>
+                    <p class="hero-subtitle" style="font-size: clamp(1.3rem, 2.4vw, 1.9rem);">en Cali y la región</p>
+                    <p class="hero-description">Cada meetup, workshop y hackathon que hemos organizado desde que empezó la comunidad.</p>
                 </div>
             </div>
         </header>
 
-                <!-- Metrics Section -->
-                <section class="metrics-section">
-                    <div class="container">
-                        <div class="section-header">
-                            <h2 class="section-title">Estadísticas Locales</h2>
-                            <div class="cyber-line"></div>
-                        </div>
-                        <div id="metrics-container" class="metrics-container">
-                            <!-- Metrics will be loaded dynamically here -->
-                        </div>
-                    </div>
-                </section>
-
-        <!-- Year and Month Filter Section -->
-        <section class="filter-section">
-            <div class="container">
-                <!-- Year Filter -->
-                <div class="section-header">
-                    <h2 class="section-title">Filtrar por Año</h2>
-                    <div class="cyber-line"></div>
-                </div>
-                <div class="year-filters">
-                    <button class="year-btn active" data-year="all">Todos los Años</button>
-                    <button class="year-btn" data-year="2025">2025</button>
-                    <button class="year-btn" data-year="2024">2024</button>
-                    <button class="year-btn" data-year="2023">2023</button>
-                    <button class="year-btn" data-year="2022">2022</button>
-                </div>
-
-                <!-- Month Filter -->
-                <div class="section-header" style="margin-top: 3rem;">
-                    <h2 class="section-title">Filtrar por Mes</h2>
-                    <div class="cyber-line"></div>
-                </div>
-                <div class="month-filters">
-                    <button class="month-btn active" data-month="all">Todos</button>
-                    <button class="month-btn" data-month="0">Enero</button>
-                    <button class="month-btn" data-month="1">Febrero</button>
-                    <button class="month-btn" data-month="2">Marzo</button>
-                    <button class="month-btn" data-month="3">Abril</button>
-                    <button class="month-btn" data-month="4">Mayo</button>
-                    <button class="month-btn" data-month="5">Junio</button>
-                    <button class="month-btn" data-month="6">Julio</button>
-                    <button class="month-btn" data-month="7">Agosto</button>
-                    <button class="month-btn" data-month="8">Septiembre</button>
-                    <button class="month-btn" data-month="9">Octubre</button>
-                    <button class="month-btn" data-month="10">Noviembre</button>
-                    <button class="month-btn" data-month="11">Diciembre</button>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Events Grid Section -->
-        <section class="events-section">
-            <div class="container">
-                <div id="events-list" class="events-grid">
-                    <!-- Events will be loaded dynamically here -->
-                    <div class="loading-spinner" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #62688F;"></i>
-                        <p style="margin-top: 1rem; color: #CCCCCC;">Cargando eventos...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Local Events Calendar Section -->
-        <section class="calendar-section">
+        <section id="metrics">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Calendario de Eventos Futuros</h2>
-                    <div class="cyber-line"></div>
+                    <span class="eyebrow">Números</span>
+                    <h2>En cifras</h2>
                 </div>
-                <div class="calendar-container">
-                    <iframe src="https://calendar.google.com/calendar/embed?src=eth.cali.foundation%40gmail.com&ctz=America%2FBogota&mode=WEEK" 
-                            style="border: 0" 
-                            width="800" 
-                            height="600" 
-                            frameborder="0" 
-                            scrolling="no">
-                    </iframe>
-                </div>
-                <div class="calendar-actions">
-                    <a href="https://discord.gg/GvkDmHnDuE" target="_blank" class="cyber-btn">
-                        <i class="fab fa-discord"></i>
-                        Únete a la Comunidad
-                        <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </div>
+                <!-- Filled by js/events-ui.js from events.json. -->
+                <div id="metrics-container"></div>
             </div>
         </section>
 
-        <!-- Official Events Section -->
-        <section class="official-events-section">
+        <section id="list">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Descubre Más Eventos</h2>
-                    <div class="cyber-line"></div>
+                    <span class="eyebrow">Historial</span>
+                    <h2>Los eventos</h2>
+                    <p>Filtra por fecha, o mira <a href="events_internationals.html">los internacionales</a>.</p>
                 </div>
-                <div class="official-events-content">
-                    <div class="official-events-text">
-                        <p>¿Quieres explorar eventos internacionales de Ethereum? Visita nuestra página de eventos internacionales o la página oficial de Ethereum:</p>
-                        <ul>
-                            <li>Eventos comunitarios actualizados</li>
-                            <li>Conferencias internacionales</li>
-                            <li>Meetups globales de Ethereum</li>
-                        </ul>
-                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                            <a href="events_internationals.html" class="cyber-btn">
-                                <i class="fas fa-globe"></i>
-                                Eventos Internacionales
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                            <a href="https://ethereum.org/en/community/events/" target="_blank" class="cyber-btn">
-                                <i class="fas fa-rocket"></i>
-                                Página Oficial Ethereum
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="official-events-visual">
-                        <div class="cyber-hexagon">
-                            <i class="fab fa-ethereum"></i>
-                        </div>
-                    </div>
+
+
+                <div class="filter-row" role="group" aria-label="Filtrar por año">
+                    <button class="year-btn active" type="button" data-year="all" aria-pressed="true">Todos</button>
+                    <button class="year-btn" type="button" data-year="2025" aria-pressed="false">2025</button>
+                    <button class="year-btn" type="button" data-year="2024" aria-pressed="false">2024</button>
+                    <button class="year-btn" type="button" data-year="2023" aria-pressed="false">2023</button>
+                    <button class="year-btn" type="button" data-year="2022" aria-pressed="false">2022</button>
                 </div>
+
+                <div class="filter-row" role="group" aria-label="Filtrar por mes">
+                    <button class="month-btn active" type="button" data-month="all" aria-pressed="true">Todos</button>
+                    <button class="month-btn" type="button" data-month="0" aria-pressed="false">Enero</button>
+                    <button class="month-btn" type="button" data-month="1" aria-pressed="false">Febrero</button>
+                    <button class="month-btn" type="button" data-month="2" aria-pressed="false">Marzo</button>
+                    <button class="month-btn" type="button" data-month="3" aria-pressed="false">Abril</button>
+                    <button class="month-btn" type="button" data-month="4" aria-pressed="false">Mayo</button>
+                    <button class="month-btn" type="button" data-month="5" aria-pressed="false">Junio</button>
+                    <button class="month-btn" type="button" data-month="6" aria-pressed="false">Julio</button>
+                    <button class="month-btn" type="button" data-month="7" aria-pressed="false">Agosto</button>
+                    <button class="month-btn" type="button" data-month="8" aria-pressed="false">Septiembre</button>
+                    <button class="month-btn" type="button" data-month="9" aria-pressed="false">Octubre</button>
+                    <button class="month-btn" type="button" data-month="10" aria-pressed="false">Noviembre</button>
+                    <button class="month-btn" type="button" data-month="11" aria-pressed="false">Diciembre</button>
+                </div>
+
+                <!-- Filled by js/events-ui.js. -->
+                <div id="events-list" class="events-grid"></div>
             </div>
         </section>
+
     </main>
 
     <div id="footer-container"></div>
 
-    <!-- JavaScript Modules -->
-    <script src="js/events-service.js"></script>
-    <script src="js/events-ui.js"></script>
-    <script src="js/events-app.js"></script>
-
-    <!-- Loading Cleanup Script -->
-    <script>
-        // Remove loading spinner once events are loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                const loadingSpinner = document.querySelector('.loading-spinner');
-                if (loadingSpinner) {
-                    loadingSpinner.style.display = 'none';
-                }
-            }, 2000);
-        });
-    </script>
+    <script src="js/events-service.js" defer></script>
+    <script src="js/events-ui.js" defer></script>
+    <script src="js/events-app.js" defer></script>
 </body>
 </html>

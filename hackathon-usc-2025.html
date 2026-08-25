@@ -3,254 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Hackathon USC 2025 - Universidad Santiago de Cali - Ethereum Cali">
+    <title>Hackathon USC 2025 | ETH Cali</title>
+    <meta name="description" content="Hackathon USC 2025: la alianza de ETH Cali con la Universidad Santiago de Cali, sobre Optimism.">
+
     <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
-    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
-    <title>Hackathon USC 2025 | Ethereum Cali</title>
-    
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="css/shared-components.css">
-    <link rel="stylesheet" href="css/hackathon.css">
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- JavaScript Dependencies -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/navbar.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali38x38.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Hackathon USC 2025 | ETH Cali">
+    <meta property="og:description" content="Hackathon USC 2025: la alianza de ETH Cali con la Universidad Santiago de Cali, sobre Optimism.">
+    <meta property="og:image" content="https://ethcali.org/branding/Banner1200x400.png">
+    <meta property="og:url" content="https://ethcali.org/hackathon-usc-2025">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="branding/fonts/web/SarunPro-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="branding/fonts/web/SarunPro-Book.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/navbar.js" defer></script>
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <div class="cursor"></div>
-    <div class="noise-overlay"></div>
-    
-    <main class="hackathon-container">
-        <!-- Hero Section -->
-        <header class="hackathon-hero">
+
+    <main>
+        <header class="hero hero-compact">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="hero-title">Hackathon USC</h1>
-                    <h2 class="hero-subtitle">Universidad Santiago de Cali</h2>
-                    <div class="hero-date">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>19 de Julio, 2025</span>
+                    <span class="eyebrow">Hackathon · 2025</span>
+                    <h1>Hackathon USC</h1>
+                    <p class="hero-subtitle" style="font-size: clamp(1.3rem, 2.4vw, 1.9rem);">con la Universidad Santiago de Cali</p>
+                    <p class="event-meta" style="font-size:14px; margin-top:16px">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        <span>19 de julio de 2025</span>
+                    </p>
+                    <p class="hero-description">Estudiantes, profesores y desarrolladores explorando blockchain en un entorno universitario. La primera alianza de este tipo en Cali.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="https://www.instagram.com/p/DLkXR9Ei7pD/" target="_blank" rel="noopener">Ver el anuncio <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        <a class="btn btn-secondary" href="events_locales.html">Ver más eventos</a>
                     </div>
-                    <a href="https://www.usc.edu.co/" target="_blank" class="hero-cta">
-                        <i class="fas fa-university"></i>
-                        Conocer USC
-                    </a>
                 </div>
             </div>
         </header>
 
-        <!-- About Section -->
-        <section class="info-section">
+        <section id="details">
             <div class="container">
-                <h2 class="section-title">Acerca del Hackathon</h2>
-                <div class="section-content">
-                    <p class="section-description">
-                        El Hackathon USC 2025 marca una alianza histórica entre Ethereum Cali y la Universidad 
-                        Santiago de Cali. Este evento académico-tecnológico reunirá a estudiantes, profesores 
-                        y desarrolladores para explorar las fronteras de la tecnología blockchain en un 
-                        entorno universitario de primer nivel.
-                    </p>
+                <div class="section-header">
+                    <span class="eyebrow">Los datos</span>
+                    <h2>Detalles del evento</h2>
                 </div>
-            </div>
-        </section>
-
-        <!-- Event Details -->
-        <section class="info-section">
-            <div class="container">
-                <h2 class="section-title">Detalles del Evento</h2>
-                <div class="section-content">
-                    <div class="prizes-grid">
-                        <div class="prize-card">
-                            <div class="prize-position">📅</div>
-                            <div class="prize-title">Fecha</div>
-                            <div class="prize-amount">19 Jul 2025</div>
-                            <div class="prize-details">Sábado completo</div>
-                        </div>
-                        <div class="prize-card">
-                            <div class="prize-position">🏫</div>
-                            <div class="prize-title">Universidad</div>
-                            <div class="prize-amount">USC</div>
-                            <div class="prize-details">
-                                <a href="https://www.google.com/maps?sca_esv=656b10c93ec889a4&output=search&q=universidad+santiago+de+cali&source=lnms&fbs=AIIjpHx4nJjfGojPVHhEACUHPiMQ888Yp7kQAgn2suUAOWN4gr_S9GlBEYq0W4Xv3oU6cItbNYt_EA4ieM518BbxPk_13C3Iq0fG4vIbC5nrT71tiwngSc6BD4iYF9lWq2HkxIRqne67bU4bB4AhwuBuRp8ONH4Hwux-lsLZyIkNYarmIbMTEq3kKMsvoXkxcGWv9ZpQnIxOtq3PfswQLaRvo2je7pj23g&entry=mc&ved=1t:200715&ictx=111" target="_blank" style="color: var(--cyber-accent);">
-                                    Ver Ubicación
-                                </a>
-                            </div>
-                        </div>
-                        <div class="prize-card">
-                            <div class="prize-position">🎯</div>
-                            <div class="prize-title">Enfoque</div>
-                            <div class="prize-amount">Académico</div>
-                            <div class="prize-details">Estudiantes & Profesores</div>
-                        </div>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <span class="addr-label">Fecha</span>
+                        <p class="fact-value">19 jul 2025</p>
+                        <p class="fact-note">Sábado completo</p>
+                    </div>
+                    <div class="card">
+                        <span class="addr-label">Universidad</span>
+                        <p class="fact-value">USC</p>
+                        <p class="fact-note">Universidad Santiago de Cali</p>
+                    </div>
+                    <div class="card">
+                        <span class="addr-label">Enfoque</span>
+                        <p class="fact-value">Académico</p>
+                        <p class="fact-note">Estudiantes y profesores</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Blockchain Technology -->
-        <section class="info-section">
+        <section id="tech">
             <div class="container">
-                <h2 class="section-title">Tecnología Blockchain</h2>
-                <div class="section-content">
-                    <div class="sponsors-grid">
-                        <div class="sponsor-item">
-                            <img src="chains/op mainnet.png" alt="Optimism" class="sponsor-logo">
-                            <div class="sponsor-name">Optimism Network</div>
-                        </div>
-                        <div class="sponsor-item">
-                            <i class="fas fa-lock sponsor-logo" style="font-size: 3rem; color: var(--cyber-accent);"></i>
-                            <div class="sponsor-name">Unlock Protocol</div>
-                        </div>
-                        <div class="sponsor-item">
-                            <i class="fas fa-coins sponsor-logo" style="font-size: 3rem; color: var(--cyber-primary);"></i>
-                            <div class="sponsor-name">
-                                <a href="https://optimistic.etherscan.io/token/0xdf3bed18e02daeb29e2bbc39c04773578d0fd1c8" target="_blank" style="color: var(--cyber-text); text-decoration: none;">
-                                    Token Contract
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="section-description">
-                        Los participantes trabajarán en Optimism Network, una solución de Layer 2 
-                        que ofrece transacciones rápidas y económicas, perfecta para proyectos académicos 
-                        y aplicaciones educativas.
-                    </p>
+                <div class="section-header">
+                    <span class="eyebrow">Tecnología</span>
+                    <h2>Sobre qué se construyó</h2>
+                    <p>Los participantes trabajaron en Optimism, una L2 con transacciones rápidas y baratas, adecuada para proyectos académicos.</p>
+                </div>
+                <div class="grid grid-3">
+                    <a class="card card-interactive" href="https://optimism.io" target="_blank" rel="noopener">
+                        <h3>Optimism Network</h3>
+                        <p>La L2 donde se desplegaron los proyectos.</p>
+                        <span class="card-cta">Abrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                    </a>
+                    <a class="card card-interactive" href="https://unlock-protocol.com" target="_blank" rel="noopener">
+                        <h3>Unlock Protocol</h3>
+                        <p>Gestión de accesos onchain.</p>
+                        <span class="card-cta">Abrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                    </a>
+                    <a class="card card-interactive" href="https://optimistic.etherscan.io/token/0xdf3bed18e02daeb29e2bbc39c04773578d0fd1c8" target="_blank" rel="noopener">
+                        <h3>Contrato del token</h3>
+                        <p>El token del evento, en el explorador de Optimism.</p>
+                        <span class="card-cta">Abrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- Academic Focus -->
-        <section class="info-section">
+        <section id="academic">
             <div class="container">
-                <h2 class="section-title">Enfoque Académico</h2>
-                <div class="section-content">
-                    <ul class="rules-list">
-                        <li>Proyectos orientados a la investigación y desarrollo</li>
-                        <li>Colaboración entre estudiantes de diferentes carreras</li>
-                        <li>Mentoría de profesores y expertos en blockchain</li>
-                        <li>Integración de blockchain en proyectos académicos</li>
-                        <li>Desarrollo de casos de uso educativos</li>
-                        <li>Creación de herramientas para el aprendizaje</li>
+                <div class="section-header">
+                    <span class="eyebrow">Enfoque</span>
+                    <h2>Qué hace distinto a este</h2>
+                </div>
+                <div class="card">
+                    <ul class="mission-list">
+                        <li>Proyectos orientados a investigación y desarrollo.</li>
+                        <li>Colaboración entre estudiantes de distintas carreras.</li>
+                        <li>Mentoría de profesores y de gente del ecosistema.</li>
+                        <li>Integración de blockchain en proyectos académicos.</li>
+                        <li>Casos de uso educativos.</li>
+                        <li>Herramientas para el aprendizaje.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- University Partnership -->
-        <section class="info-section">
+        <section id="learn">
             <div class="container">
-                <h2 class="section-title">Alianza Universitaria</h2>
-                <div class="section-content">
-                    <div class="sponsors-grid">
-                        <div class="sponsor-item">
-                            <i class="fas fa-university sponsor-logo" style="font-size: 3rem; color: var(--cyber-accent);"></i>
-                            <div class="sponsor-name">
-                                <a href="https://www.usc.edu.co/" target="_blank" style="color: var(--cyber-text); text-decoration: none;">
-                                    Universidad Santiago de Cali
-                                </a>
-                            </div>
-                        </div>
-                        <div class="sponsor-item">
-                            <img src="branding/logoethcali.png" alt="ETHCali" class="sponsor-logo">
-                            <div class="sponsor-name">Ethereum Cali</div>
-                        </div>
-                    </div>
-                    <p class="section-description">
-                        Esta colaboración representa un hito en la educación blockchain en Colombia, 
-                        integrando la experiencia académica de USC con el conocimiento técnico de Ethereum Cali.
-                    </p>
+                <div class="section-header">
+                    <span class="eyebrow">Qué se aprende</span>
+                    <h2>Los temas</h2>
+                </div>
+                <div class="grid grid-3">
+                    <div class="card"><h3>Smart contracts</h3><p>Desarrollo en Solidity.</p></div>
+                    <div class="card"><h3>Layer 2</h3><p>Optimism y escalabilidad.</p></div>
+                    <div class="card"><h3>dApps</h3><p>Aplicaciones descentralizadas.</p></div>
                 </div>
             </div>
         </section>
 
-        <!-- What Students Will Learn -->
-        <section class="info-section">
+        <section id="resources">
             <div class="container">
-                <h2 class="section-title">¿Qué Aprenderán los Estudiantes?</h2>
-                <div class="section-content">
-                    <div class="mentors-grid">
-                        <div class="mentor-card">
-                            <i class="fas fa-code mentor-avatar" style="font-size: 3rem; color: var(--cyber-accent); width: auto; height: auto; border: none;"></i>
-                            <div class="mentor-name">Smart Contracts</div>
-                            <div class="mentor-role">Desarrollo en Solidity</div>
-                        </div>
-                        <div class="mentor-card">
-                            <i class="fas fa-layer-group mentor-avatar" style="font-size: 3rem; color: var(--cyber-primary); width: auto; height: auto; border: none;"></i>
-                            <div class="mentor-name">Layer 2</div>
-                            <div class="mentor-role">Optimism & Scaling</div>
-                        </div>
-                        <div class="mentor-card">
-                            <i class="fas fa-users mentor-avatar" style="font-size: 3rem; color: var(--cyber-secondary); width: auto; height: auto; border: none;"></i>
-                            <div class="mentor-name">DApps</div>
-                            <div class="mentor-role">Aplicaciones Descentralizadas</div>
-                        </div>
-                    </div>
+                <div class="section-header">
+                    <span class="eyebrow">Material</span>
+                    <h2>Recursos y enlaces</h2>
+                </div>
+                <div class="grid grid-3">
+                    <a class="card card-interactive" href="https://www.instagram.com/p/DLkXR9Ei7pD/" target="_blank" rel="noopener">
+                        <h3>Anuncio</h3>
+                        <p>La publicación del evento.</p>
+                        <span class="card-cta">Abrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                    </a>
+                    <a class="card card-interactive" href="https://www.google.com/maps?q=universidad+santiago+de+cali" target="_blank" rel="noopener">
+                        <h3>Ubicación</h3>
+                        <p>La USC en Google Maps.</p>
+                        <span class="card-cta">Abrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                    </a>
+                    <a class="card card-interactive" href="https://drive.google.com/drive/u/5/folders/1Xa5vDvcQj_3CBTcMG6mfaA3OBSZB-x3k" target="_blank" rel="noopener">
+                        <h3>Recursos</h3>
+                        <p>La carpeta con el material del evento.</p>
+                        <span class="card-cta">Abrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- Resources Section -->
-        <section class="info-section">
-            <div class="container">
-                <h2 class="section-title">Recursos y Enlaces</h2>
-                <div class="section-content">
-                    <div class="sponsors-grid">
-                        <div class="sponsor-item">
-                            <i class="fab fa-instagram sponsor-logo" style="font-size: 3rem; color: var(--cyber-accent);"></i>
-                            <div class="sponsor-name">
-                                <a href="https://www.instagram.com/p/DLkXR9Ei7pD/" target="_blank" style="color: var(--cyber-text); text-decoration: none;">
-                                    Ver Anuncio
-                                </a>
-                            </div>
-                        </div>
-                        <div class="sponsor-item">
-                            <i class="fab fa-twitter sponsor-logo" style="font-size: 3rem; color: var(--cyber-primary);"></i>
-                            <div class="sponsor-name">
-                                <a href="https://x.com/ethereum_cali/status/1946696290424984051" target="_blank" style="color: var(--cyber-text); text-decoration: none;">
-                                    Anuncio Twitter
-                                </a>
-                            </div>
-                        </div>
-                        <div class="sponsor-item">
-                            <i class="fas fa-folder sponsor-logo" style="font-size: 3rem; color: var(--cyber-secondary);"></i>
-                            <div class="sponsor-name">
-                                <a href="https://drive.google.com/drive/u/5/folders/1Xa5vDvcQj_3CBTcMG6mfaA3OBSZB-x3k" target="_blank" style="color: var(--cyber-text); text-decoration: none;">
-                                    Recursos
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Call to Action -->
-        <section class="info-section">
-            <div class="container">
-                <h2 class="section-title">Únete a la Revolución Académica</h2>
-                <div class="section-content">
-                    <p class="section-description">
-                        Sé parte de la primera experiencia blockchain universitaria en Cali. 
-                        Estudiantes, profesores y desarrolladores están invitados a participar 
-                        en este evento histórico.
-                    </p>
-                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                        <a href="https://www.usc.edu.co/" target="_blank" class="hero-cta">
-                            <i class="fas fa-university"></i>
-                            Conocer USC
-                        </a>
-                        <a href="events_locales.html" class="hero-cta" style="background: linear-gradient(135deg, var(--cyber-primary), var(--cyber-secondary));">
-                            <i class="fas fa-arrow-left"></i>
-                            Ver Más Eventos
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <div id="footer-container"></div>

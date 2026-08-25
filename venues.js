@@ -1,320 +1,144 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const venuesContainer = document.getElementById('venues-container');
-    if (!venuesContainer) {
-        console.error('Venues container not found');
-        return;
-    }
-    let allVenues = [];
+/**
+ * Venues page — reads databases/venuesethcali.csv and renders the grid, the
+ * per-type counts, and the type filter.
+ *
+ * Rewritten onto the brand system. The previous version used emoji as venue
+ * icons (🏟️, 🍸, 🔄) — the brand forbids emoji in UI, so types are labelled in
+ * mono text and the loading state is the standard spinner.
+ */
 
-    function loadVenuesFromCSV() {
-        fetch('databases/venuesethcali.csv')
-            .then(response => response.text())
-            .then(csvText => {
-                const venues = parseCSV(csvText);
-                allVenues = venues;
-                displayVenues(venues);
-                displayStats(venues);
-                setupFilters();
-            })
-            .catch(error => {
-                console.error('Error loading CSV:', error);
-                showError('Could not load venues data');
-            });
-    }
+const VENUES_CSV = 'databases/venuesethcali.csv';
 
-    function parseCSV(csvText) {
-        const lines = csvText.split('\n');
-        const venues = [];
-        for (let i = 1; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (!line) continue;
-            const fields = parseCSVLine(line);
-            if (fields.length >= 4 && fields[0] && fields[0].trim() !== '') {
-                const venue = {
-                    name: cleanField(fields[0]),
-                    type: cleanField(fields[1]),
-                    status: cleanField(fields[2]),
-                    activities: cleanField(fields[3]) || '0',
-                    url: cleanField(fields[4]) || ''
-                };
-                if (venue.name && venue.name !== 'Name') {
-                    venues.push(venue);
-                }
-            }
-        }
-        return venues;
-    }
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-    function parseCSVLine(line) {
-        const fields = [];
-        let current = '';
-        let inQuotes = false;
-        for (let i = 0; i < line.length; i++) {
-            const char = line[i];
-            if (char === '"') {
-                inQuotes = !inQuotes;
-            } else if (char === ',' && !inQuotes) {
-                fields.push(current);
-                current = '';
-            } else {
-                current += char;
-            }
-        }
-        fields.push(current);
-        return fields;
-    }
+/** "Club Music" → "club-music", so a type can be a data-filter value. */
+const slug = (s) => String(s).toLowerCase().trim().replace(/\s+/g, '-');
 
-    function cleanField(field) {
-        if (!field) return '';
-        return field.trim().replace(/^"|"$/g, '');
-    }
+function parseCsvLine(line) {
+  const out = [];
+  let cur = '', quoted = false;
+  for (const ch of line) {
+    if (ch === '"') quoted = !quoted;
+    else if (ch === ',' && !quoted) { out.push(cur); cur = ''; }
+    else cur += ch;
+  }
+  out.push(cur);
+  return out.map((f) => f.trim().replace(/^"|"$/g, ''));
+}
 
-    function displayVenues(venues) {
-        venuesContainer.innerHTML = '';
-        if (venues.length === 0) {
-            showError('No venues found');
-            return;
-        }
-        venues.forEach(venue => {
-            const card = createVenueCard(venue);
-            venuesContainer.appendChild(card);
-        });
-        updateVenueStats(venues);
-    }
+function parseVenues(text) {
+  // The file is saved with a UTF-8 BOM, which otherwise ends up glued to the
+  // first header cell and makes the "Name" check fail.
+  return text.replace(/^﻿/, '').split('\n').slice(1)
+    .map((l) => l.trim()).filter(Boolean)
+    .map(parseCsvLine)
+    .filter((f) => f.length >= 4 && f[0] && f[0] !== 'Name')
+    .map((f) => ({
+      name: f[0],
+      type: f[1] || 'Otro',
+      status: f[2] || '',
+      activities: Number(f[3]) || 0,
+      url: f[4] || '',
+    }));
+}
 
-    function updateVenueStats(venues) {
-        const stats = calculateVenueStats(venues);
-        const statsContainer = document.getElementById('venue-stats');
-        if (statsContainer) {
-            statsContainer.innerHTML = createStatsHTML(stats);
-            setupStatCardFiltering();
-        }
-    }
+function venueCard(v) {
+  const isActive = v.status.toUpperCase() === 'ACTIVATED';
+  return `
+    <article class="logo-card venue-card" data-type="${esc(slug(v.type))}">
+      <div class="card-head">
+        <h3>${esc(v.name)}</h3>
+        <span class="pill ${isActive ? 'pill-confirmed' : 'pill-pending'}">${isActive ? 'Activo' : 'En pausa'}</span>
+      </div>
+      <span class="label">${esc(v.type)}</span>
+      <div class="event-meta" style="margin-top:12px">
+        <span>${v.activities} ${v.activities === 1 ? 'actividad' : 'actividades'}</span>
+      </div>
+      ${v.url ? `<a class="card-cta" href="${esc(v.url)}" target="_blank" rel="noopener">Ver en el mapa
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>` : ''}
+    </article>`;
+}
 
-    function setupStatCardFiltering() {
-        const statCards = document.querySelectorAll('.stat-card');
-        statCards.forEach(card => {
-            card.addEventListener('click', function() {
-                const type = this.getAttribute('data-type');
-                const filterBtns = document.querySelectorAll('.filter-btn');
-                filterBtns.forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.getAttribute('data-filter') === (type || 'all')) {
-                        btn.classList.add('active');
-                    }
-                });
-                filterVenues(type || 'all');
-            });
-        });
-    }
+function statsHtml(venues) {
+  const byType = venues.reduce((acc, v) => (acc[v.type] = (acc[v.type] || 0) + 1, acc), {});
+  const cards = Object.entries(byType)
+    .sort((a, b) => b[1] - a[1])
+    .map(([type, n]) => `
+      <button class="metric-card stat-card" type="button" data-type="${esc(slug(type))}">
+        <div class="metric-number">${n}</div>
+        <div class="metric-label">${esc(type)}</div>
+      </button>`).join('');
 
-    function calculateVenueStats(venues) {
-        const typeStats = {};
-        let totalVenues = venues.length;
-        venues.forEach(venue => {
-            const type = venue.type;
-            if (typeStats[type]) {
-                typeStats[type]++;
-            } else {
-                typeStats[type] = 1;
-            }
-        });
-        return {
-            total: totalVenues,
-            byType: typeStats
-        };
-    }
+  return `
+    <div class="metrics-grid">
+      <button class="metric-card stat-card" type="button" data-type="all">
+        <div class="metric-number">${venues.length}</div>
+        <div class="metric-label">Venues en total</div>
+      </button>
+      ${cards}
+    </div>`;
+}
 
-    function createStatsHTML(stats) {
-        let html = `
-            <div class="stats-grid">
-                <div class="stat-card total-stat">
-                    <div class="stat-icon">🏟️</div>
-                    <div class="stat-number">${stats.total}</div>
-                    <div class="stat-label">Total Venues</div>
-                </div>
-        `;
-        Object.entries(stats.byType).forEach(([type, count]) => {
-            const icon = getVenueIcon(type);
-            html += `
-                <div class="stat-card type-stat" data-type="${formatTypeForFilter(type)}">
-                    <div class="stat-icon">${icon}</div>
-                    <div class="stat-number">${count}</div>
-                    <div class="stat-label">${type}</div>
-                </div>
-            `;
-        });
-        html += '</div>';
-        return html;
-    }
+function filterHtml(venues) {
+  const types = [...new Set(venues.map((v) => v.type))].sort();
+  const btn = (value, label, active) =>
+    `<button class="month-btn filter-btn${active ? ' active' : ''}" type="button"
+             data-filter="${esc(value)}" aria-pressed="${active}">${esc(label)}</button>`;
+  return btn('all', 'Todos', true) + types.map((t) => btn(slug(t), t, false)).join('');
+}
 
-    function createVenueCard(venue) {
-        const card = document.createElement('div');
-        card.className = 'venue-card';
-        card.setAttribute('data-type', formatTypeForFilter(venue.type));
-        const icon = getVenueIcon(venue.type);
-        const typeClass = formatTypeForClass(venue.type);
-        const statusClass = formatStatusForClass(venue.status);
-        const statusDisplay = venue.status.toUpperCase();
-        const activitiesCount = venue.activities || '0';
-        const activitiesText = activitiesCount === '1' ? 'Actividad' : 'Actividades';
-        card.innerHTML = `
-            <div class="venue-header">
-                <h3 class="venue-name">
-                    <span class="venue-icon">${icon}</span>
-                    ${venue.name}
-                </h3>
-                <span class="venue-type ${typeClass}">${venue.type}</span>
-                <div class="venue-status ${statusClass}">
-                    <div class="status-dot"></div>
-                    <span>${statusDisplay}</span>
-                </div>
-            </div>
-            <div class="venue-body">
-                <div class="venue-stats">
-                    <div class="activities-count">
-                        <i class="fas fa-calendar"></i>
-                        <span>${activitiesCount} ${activitiesText}</span>
-                    </div>
-                    ${venue.url ? `
-                        <a href="${venue.url}" class="venue-link" target="_blank">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Ver Ubicación
-                        </a>
-                    ` : `
-                        <span class="venue-link" style="color: #666; cursor: not-allowed;">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Sin ubicación
-                        </span>
-                    `}
-                </div>
-            </div>
-        `;
-        return card;
-    }
+function applyFilter(type) {
+  document.querySelectorAll('.venue-card').forEach((card) => {
+    card.hidden = type !== 'all' && card.dataset.type !== type;
+  });
+}
 
-    function getVenueIcon(type) {
-        const iconMap = {
-            'GastroBar': '🍹',
-            'Club Music': '💿',
-            'Coworking': '👨🏼‍💻',
-            'University': '🎓',
-            'Restaurant': '🍽️',
-            'Office Partner': '🏢',
-            'Bar Open Air': '🍺'
-        };
-        return iconMap[type] || '🏢';
-    }
+function selectFilter(type) {
+  document.querySelectorAll('.filter-btn').forEach((b) => {
+    const on = b.dataset.filter === type;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
+  applyFilter(type);
+}
 
-    function formatTypeForClass(type) {
-        const classMap = {
-            'GastroBar': 'gastrobar',
-            'Club Music': 'club-music',
-            'Coworking': 'coworking',
-            'University': 'university',
-            'Restaurant': 'restaurant',
-            'Office Partner': 'office-partner',
-            'Bar Open Air': 'bar-open-air'
-        };
-        return classMap[type] || 'other';
-    }
+document.addEventListener('DOMContentLoaded', async () => {
+  const grid = document.getElementById('venues-container');
+  if (!grid) return;
 
-    function formatTypeForFilter(type) {
-        return formatTypeForClass(type);
-    }
+  let venues;
+  try {
+    const res = await fetch(VENUES_CSV);
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    venues = parseVenues(await res.text());
+  } catch (err) {
+    console.error(`Could not load ${VENUES_CSV}:`, err);
+    grid.innerHTML = `<div class="empty-state"><strong>No pudimos cargar los venues.</strong>
+      Recarga la página o escríbenos por Telegram.</div>`;
+    return;
+  }
 
-    function formatStatusForClass(status) {
-        const statusMap = {
-            'ACTIVATED': 'status-activated',
-            'OPENING': 'status-opening',
-            'TO TALK': 'status-to-talk'
-        };
-        return statusMap[status] || 'status-to-talk';
-    }
+  if (!venues.length) {
+    grid.innerHTML = `<div class="empty-state"><strong>Nada por aquí todavía.</strong>
+      Los venues aparecerán aquí cuando se activen.</div>`;
+    return;
+  }
 
-    function setupFilters() {
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                const filter = this.getAttribute('data-filter');
-                filterVenues(filter);
-            });
-        });
-    }
+  grid.innerHTML = venues.map(venueCard).join('');
 
-    function filterVenues(filter) {
-        const venueCards = document.querySelectorAll('.venue-card');
-        venueCards.forEach(card => {
-            if (filter === 'all' || card.getAttribute('data-type') === filter) {
-                card.style.display = 'block';
-                card.style.animation = 'fadeInUp 0.5s ease forwards';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
+  const stats = document.getElementById('venue-stats');
+  if (stats) stats.innerHTML = statsHtml(venues);
 
-    function displayStats(venues) {
-        const statsContainer = document.getElementById('venue-stats');
-        if (!statsContainer) return;
+  const filters = document.getElementById('venue-filters');
+  if (filters) filters.innerHTML = filterHtml(venues);
 
-        // Calculate statistics
-        const totalVenues = venues.length;
-        const activatedVenues = venues.filter(v => v.status === 'ACTIVATED').length;
-        const totalActivities = venues.reduce((sum, v) => sum + parseInt(v.activities || 0), 0);
-        
-        // Count by type
-        const typeStats = {};
-        venues.forEach(venue => {
-            const type = venue.type || 'other';
-            typeStats[type] = (typeStats[type] || 0) + 1;
-        });
-
-        // Count by status
-        const statusStats = {};
-        venues.forEach(venue => {
-            const status = venue.status || 'unknown';
-            statusStats[status] = (statusStats[status] || 0) + 1;
-        });
-
-        const statsHTML = `
-            <div class="stats-grid">
-                <div class="stat-card total-stat">
-                    <i class="stat-icon fas fa-building"></i>
-                    <div class="stat-number">${totalVenues}</div>
-                    <div class="stat-label">Total Venues</div>
-                </div>
-                <div class="stat-card">
-                    <i class="stat-icon fas fa-check-circle" style="color: #00ff88;"></i>
-                    <div class="stat-number">${activatedVenues}</div>
-                    <div class="stat-label">Activated</div>
-                </div>
-                <div class="stat-card">
-                    <i class="stat-icon fas fa-calendar-alt" style="color: #62688F;"></i>
-                    <div class="stat-number">${totalActivities}</div>
-                    <div class="stat-label">Total Activities</div>
-                </div>
-                <div class="stat-card">
-                    <i class="stat-icon fas fa-chart-pie" style="color: #5A6FBF;"></i>
-                    <div class="stat-number">${Object.keys(typeStats).length}</div>
-                    <div class="stat-label">Venue Types</div>
-                </div>
-            </div>
-        `;
-
-        statsContainer.innerHTML = statsHTML;
-    }
-
-    function showError(message) {
-        venuesContainer.innerHTML = `
-            <div style="text-align: center; padding: 2rem; color: #ccc;">
-                <h3>⚠️ ${message}</h3>
-                <p>Please try again later</p>
-            </div>
-        `;
-    }
-
-    loadVenuesFromCSV();
+  // A stat card and a filter chip do the same thing, so both route through
+  // selectFilter and the two stay in sync.
+  document.querySelectorAll('.stat-card, .filter-btn').forEach((el) => {
+    el.addEventListener('click', () => selectFilter(el.dataset.type ?? el.dataset.filter));
+  });
 });

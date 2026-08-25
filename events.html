@@ -2,13 +2,66 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=events_internationals.html">
-    <title>Redirecting to Events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos | ETH Cali</title>
+    <meta name="description" content="Los eventos de ETH Cali: locales en Cali y la región, e internacionales.">
+
+    <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali38x38.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Eventos | ETH Cali">
+    <meta property="og:description" content="Los eventos de ETH Cali: locales en Cali y la región, e internacionales.">
+    <meta property="og:image" content="https://ethcali.org/branding/Banner1200x400.png">
+    <meta property="og:url" content="https://ethcali.org/events">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="branding/fonts/web/SarunPro-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="branding/fonts/web/SarunPro-Book.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/navbar.js" defer></script>
 </head>
+
 <body>
-    <p>Redirecting to events page...</p>
-    <script>
-        window.location.href = 'events_internationals.html';
-    </script>
+    <div id="navbar-container"></div>
+
+    <main>
+        <header class="hero hero-compact">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="eyebrow">Eventos</span>
+                    <h1>Dónde hemos estado</h1>
+                    <p class="hero-description">
+                        Meetups, workshops y hackathons en Cali y la región, y los eventos
+                        internacionales del ecosistema en los que participamos.
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <section id="pick">
+            <div class="container">
+                <div class="grid grid-2">
+                    <a class="card card-interactive" href="events_locales.html">
+                        <h3>Eventos locales</h3>
+                        <p>Todo lo que hemos organizado en Cali y la región desde 2022.</p>
+                        <span class="card-cta">Ver la lista</span>
+                    </a>
+                    <a class="card card-interactive" href="events_internationals.html">
+                        <h3>Eventos internacionales</h3>
+                        <p>Los eventos del ecosistema Ethereum donde estuvimos.</p>
+                        <span class="card-cta">Ver la lista</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="footer-container"></div>
 </body>
 </html>

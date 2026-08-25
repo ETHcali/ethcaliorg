@@ -3,118 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sobre Ethereum Cali">
+    <title>Nosotros | ETH Cali</title>
+    <meta name="description" content="El equipo que construye ETH Cali: fundadores, core, contributors y voluntarios del nodo Ethereum del Pacífico Colombiano.">
+
     <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
-    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
-    <link rel="icon" type="image/png" href="/branding/logoethcali.png">
-    <title>Sobre Nosotros | Ethereum Cali</title>
-    
-    <!-- CSS Files - ORDER MATTERS FOR NAVBAR CONSISTENCY -->
-    <link rel="stylesheet" href="css/shared-components.css">
-    <link rel="stylesheet" href="css/style_ethcali.css">
-    <link rel="stylesheet" href="css/style_about.css">
-    <!-- Navbar CSS MUST load LAST to override any conflicts -->
-    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali38x38.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nosotros | ETH Cali">
+    <meta property="og:description" content="El equipo que construye el nodo Ethereum del Pacífico Colombiano.">
+    <meta property="og:image" content="https://ethcali.org/branding/Banner1200x400.png">
+    <meta property="og:url" content="https://ethcali.org/about">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/navbar.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="branding/fonts/web/SarunPro-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="branding/fonts/web/SarunPro-Book.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/navbar.js" defer></script>
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <div class="cursor"></div>
-    <div class="noise-overlay"></div>
 
-    <main class="about-container">
-        <!-- Hero Section -->
-        <header class="about-hero">
+    <main>
+        <header class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="glitch" data-text="CORE TEAM">CORE TEAM</h1>
-                    <h2 class="hero-subtitle">Los Builders del Jardín Infinito</h2>
-                    <p class="hero-description">Conoce al equipo apasionado que está construyendo el ecosistema tecnológico del Pacífico Colombiano</p>
+                    <h1>Core team</h1>
+                    <p class="hero-subtitle">los builders del jardín</p>
+                    <p class="hero-description">
+                        Conoce al equipo que está construyendo el ecosistema tecnológico
+                        del Pacífico Colombiano.
+                    </p>
+
                     <div class="hero-stats">
                         <div class="stat">
-                            <span class="stat-number">5</span>
-                            <span class="stat-label">Core</span>
+                            <span class="stat-number" id="stat-core">—</span>
+                            <span class="stat-label">Fundadores y core</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-number">2</span>
+                            <span class="stat-number" id="stat-contributors">—</span>
                             <span class="stat-label">Contributors</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-number">7</span>
-                            <span class="stat-label">Volunteers</span>
+                            <span class="stat-number" id="stat-volunteers">—</span>
+                            <span class="stat-label">Voluntarios</span>
                         </div>
                         <div class="stat">
                             <span class="stat-number">2022</span>
-                            <span class="stat-label">Since <p>DEVCON VI</p></span>
+                            <span class="stat-label">Desde Devcon VI</span>
                         </div>
                     </div>
                 </div>
+
                 <div class="hero-visual">
-                    <div class="cyber-grid"></div>
+                    <img src="branding/Logo ETHCALI Verticla - Fondo Negro.png" alt="" aria-hidden="true">
                 </div>
             </div>
         </header>
 
-        <!-- Team Grid Section -->
-        <section class="team-section">
+        <section id="team">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Nuestro Equipo</h2>
-                    <div class="cyber-line"></div>
+                    <span class="eyebrow">Quiénes somos</span>
+                    <h2>Nuestro equipo</h2>
+                    <p>Fundadores, core, contributors y voluntarios. Todos empezaron como asistentes a un meetup.</p>
                 </div>
-                
-                <!-- Team Grid -->
-                <div class="team-grid" id="team-grid">
-                    <!-- Team members will be populated by JavaScript -->
-                </div>
+                <!-- Filled from databases/teamaboutus.csv by js/about.js. -->
+                <div id="team-grid"></div>
             </div>
         </section>
 
-        <!-- Mission Section -->
-        <section class="mission-section">
+        <section id="mission">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Nuestra Misión</h2>
-                    <div class="cyber-line"></div>
+                    <span class="eyebrow">Qué nos mueve</span>
+                    <h2>Nuestra misión</h2>
                 </div>
-                
-                <div class="mission-grid">
-                    <div class="mission-card">
-                        <div class="card-icon">
-                            <i class="fas fa-rocket"></i>
+                <div class="logo-grid">
+                    <div class="logo-card">
+                        <div class="logo-plate">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--eth-blue-text)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91 0z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
                         </div>
-                        <h3>Innovación Tecnológica</h3>
-                        <p>Pioneros en tecnología blockchain y Web3 en el Pacífico Colombiano, construyendo el futuro descentralizado.</p>
+                        <h3>Innovación tecnológica</h3>
+                        <p>Construimos con Ethereum en el Pacífico Colombiano, donde antes no había con qué.</p>
                     </div>
-                    
-                    <div class="mission-card">
-                        <div class="card-icon">
-                            <i class="fas fa-users"></i>
+                    <div class="logo-card">
+                        <div class="logo-plate">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--eth-blue-text)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         </div>
                         <h3>Comunidad</h3>
-                        <p>Construimos juntos, crecemos juntos. Fomentamos la colaboración y el intercambio de conocimiento.</p>
+                        <p>Construimos juntos. El conocimiento se comparte, no se acumula.</p>
                     </div>
-                    
-                    <div class="mission-card">
-                        <div class="card-icon">
-                            <i class="fas fa-graduation-cap"></i>
+                    <div class="logo-card">
+                        <div class="logo-plate">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--eth-blue-text)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
                         </div>
                         <h3>Educación Web3</h3>
-                        <p>Empoderamos a través del conocimiento, democratizando el acceso a las tecnologías del futuro.</p>
+                        <p>Democratizamos el acceso a las tecnologías descentralizadas.</p>
                     </div>
-                    
-                    <div class="mission-card">
-                        <div class="card-icon">
-                            <i class="fas fa-globe-americas"></i>
+                    <div class="logo-card">
+                        <div class="logo-plate">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--eth-blue-text)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                         </div>
-                        <h3>Impacto Regional</h3>
-                        <p>Transformamos el Pacífico Colombiano en un hub tecnológico de referencia mundial.</p>
+                        <h3>Impacto regional</h3>
+                        <p>Que Cali y la región sean un hub tecnológico de referencia.</p>
                     </div>
                 </div>
             </div>
@@ -122,7 +119,7 @@
     </main>
 
     <div id="footer-container"></div>
-    
-    <script src="js/about.js"></script>
+
+    <script src="js/about.js" defer></script>
 </body>
 </html>

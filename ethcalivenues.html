@@ -3,572 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Venues de Ethereum Cali">
-    <link rel="icon" type="image/png" href="/branding/logoethcali.png">
-    
-    <title>Venues | Ethereum Cali</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- CSS Files - ORDER MATTERS FOR NAVBAR CONSISTENCY -->
-    <link rel="stylesheet" href="css/shared-components.css">
-    <link rel="stylesheet" href="css/style_ethcali.css">
-    <!-- Navbar CSS MUST load LAST to override any conflicts -->
-    <link rel="stylesheet" href="css/navbar.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="venues.js"></script>
-    <script src="js/navbar.js"></script>
-    <style>
-        /* Cyber Venues Page Styles */
-        :root {
-            --cyber-primary: #62688F;
-            --cyber-secondary: #5A6FBF;
-            --cyber-accent: #ff0066;
-            --cyber-dark: #000812;
-            --cyber-dark-alt: #001122;
-            --cyber-grid: rgba(98, 104, 143, 0.1);
-            --cyber-glow: rgba(98, 104, 143, 0.3);
-            --cyber-border: rgba(98, 104, 143, 0.4);
-            --cyber-text: #ffffff;
-            --cyber-text-dim: #8892b0;
-            --cyber-bg-card: rgba(20, 20, 30, 0.8);
-        }
+    <title>Venues | ETH Cali</title>
+    <meta name="description" content="Los lugares de Cali donde ETH Cali ha organizado meetups, workshops y hackathons.">
 
-        * {
-            box-sizing: border-box;
-        }
+    <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali38x38.png">
 
-        body {
-            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-dark-alt) 100%);
-            color: var(--cyber-text);
-            font-family: 'Space Mono', monospace;
-            line-height: 1.6;
-            margin: 0;
-            min-height: 100vh;
-        }
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Venues | ETH Cali">
+    <meta property="og:description" content="Los lugares de Cali donde ETH Cali ha organizado meetups, workshops y hackathons.">
+    <meta property="og:image" content="https://ethcali.org/branding/Banner1200x400.png">
+    <meta property="og:url" content="https://ethcali.org/venues">
+    <meta name="twitter:card" content="summary_large_image">
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="branding/fonts/web/SarunPro-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="branding/fonts/web/SarunPro-Book.woff2" as="font" type="font/woff2" crossorigin>
 
-        /* Hero Section */
-        .venues-hero {
-            padding: 4rem 0;
-            text-align: center;
-            background: radial-gradient(ellipse at center, var(--cyber-dark-alt) 0%, var(--cyber-dark) 70%);
-            border-bottom: 1px solid var(--cyber-border);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .venues-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(98,104,143,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
-            opacity: 0.3;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(10px, 10px); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-icon {
-            font-size: 4rem;
-            color: var(--cyber-primary);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 30px var(--cyber-glow);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .page-title {
-            font-family: 'Orbitron', monospace;
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 900;
-            margin: 0 0 1rem 0;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--cyber-primary);
-            text-shadow: 0 0 20px var(--cyber-glow);
-        }
-
-        .page-description {
-            font-size: 1.2rem;
-            color: var(--cyber-text-dim);
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            line-height: 1.6;
-        }
-
-        .cyber-line {
-            width: 150px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--cyber-primary), var(--cyber-secondary));
-            margin: 0 auto;
-            border-radius: 2px;
-            box-shadow: 0 0 20px var(--cyber-glow);
-        }
-
-        /* Venues Section */
-        .venues-section {
-            padding: 4rem 0;
-        }
-
-        .venues-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        /* Venue Cards */
-        .venue-card {
-            background: var(--cyber-bg-card);
-            border: 1px solid var(--cyber-border);
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .venue-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(98, 104, 143, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .venue-card:hover::before {
-            left: 100%;
-        }
-
-        .venue-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--cyber-primary);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.3),
-                0 0 30px var(--cyber-glow);
-        }
-
-        .venue-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--cyber-border);
-        }
-
-        .venue-name {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--cyber-primary);
-            margin: 0 0 0.5rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .venue-icon {
-            font-size: 1.2rem;
-        }
-
-        .venue-type {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        .venue-type.gastrobar {
-            background: linear-gradient(135deg, #8B4513, #A0522D);
-            color: white;
-        }
-
-        .venue-type.club-music {
-            background: linear-gradient(135deg, #FF1493, #FF69B4);
-            color: white;
-        }
-
-        .venue-type.coworking {
-            background: linear-gradient(135deg, #4169E1, #6495ED);
-            color: white;
-        }
-
-        .venue-type.university {
-            background: linear-gradient(135deg, #DC143C, #FF6347);
-            color: white;
-        }
-
-        .venue-type.restaurant {
-            background: linear-gradient(135deg, #9370DB, #BA55D3);
-            color: white;
-        }
-
-        .venue-type.office-partner {
-            background: linear-gradient(135deg, #32CD32, #98FB98);
-            color: #000;
-        }
-
-        .venue-type.bar-open-air {
-            background: linear-gradient(135deg, #696969, #A9A9A9);
-            color: white;
-        }
-
-        .venue-type.other {
-            background: linear-gradient(135deg, #2F4F4F, #708090);
-            color: white;
-        }
-
-        .venue-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: statusPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes statusPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .status-activated .status-dot {
-            background: #00ff88;
-            box-shadow: 0 0 10px #00ff88;
-        }
-
-        .status-opening .status-dot {
-            background: #0088ff;
-            box-shadow: 0 0 10px #0088ff;
-        }
-
-        .status-to-talk .status-dot {
-            background: #ff4444;
-            box-shadow: 0 0 10px #ff4444;
-        }
-
-        .venue-body {
-            padding: 1.5rem;
-        }
-
-        .venue-stats {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .activities-count {
-            background: linear-gradient(135deg, var(--cyber-primary), var(--cyber-secondary));
-            color: var(--cyber-dark);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .venue-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--cyber-primary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .venue-link:hover {
-            color: var(--cyber-secondary);
-            transform: translateX(5px);
-        }
-
-        /* Stats Section */
-        .stats-section {
-            margin-bottom: 3rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .stat-card {
-            background: var(--cyber-bg-card);
-            border: 1px solid var(--cyber-border);
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--cyber-primary);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 20px var(--cyber-glow);
-        }
-
-        .stat-card.total-stat {
-            border-color: var(--cyber-primary);
-            background: linear-gradient(135deg, rgba(98, 104, 143, 0.1) 0%, rgba(90, 111, 191, 0.1) 100%);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(98, 104, 143, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .stat-card:hover::before {
-            left: 100%;
-        }
-
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .stat-number {
-            font-family: 'Orbitron', monospace;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--cyber-primary);
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 10px var(--cyber-glow);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--cyber-text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 500;
-        }
-
-        /* Filter Section */
-        .filter-section {
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .filter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-
-        .filter-btn {
-            padding: 0.7rem 1.5rem;
-            background: transparent;
-            border: 1px solid var(--cyber-border);
-            border-radius: 25px;
-            color: var(--cyber-text-dim);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .filter-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, var(--cyber-primary), transparent);
-            transition: left 0.3s ease;
-        }
-
-        .filter-btn:hover::before,
-        .filter-btn.active::before {
-            left: 100%;
-        }
-
-        .filter-btn:hover,
-        .filter-btn.active {
-            border-color: var(--cyber-primary);
-            color: var(--cyber-primary);
-            box-shadow: 0 0 15px var(--cyber-glow);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-
-            .stat-card {
-                padding: 1rem;
-            }
-
-            .stat-number {
-                font-size: 1.5rem;
-            }
-            
-            .venues-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .venue-card {
-                margin: 0;
-            }
-            
-            .filter-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .filter-btn {
-                width: 200px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .venues-hero {
-                padding: 2rem 0;
-            }
-            
-            .page-title {
-                font-size: 2rem;
-            }
-            
-            .venue-header {
-                padding: 1rem;
-            }
-            
-            .venue-body {
-                padding: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/navbar.js" defer></script>
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <div class="cursor"></div>
-    <div class="noise-overlay"></div>
-    
-    <main class="home-container">
-        <section class="venues-hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-icon">🏟️</div>
-                <h1 class="page-title">ETH CALI VENUES</h1>
-                <p class="page-description">Estas son las venues habilitadas para nuestros eventos y meetups en Cali</p>
-                <div class="cyber-line"></div>
+
+    <main>
+        <header class="hero hero-compact">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="eyebrow">Dónde nos vemos</span>
+                    <h1>Venues</h1>
+                    <p class="hero-description">
+                        Los lugares de Cali que nos han abierto sus puertas: gastrobares,
+                        coworkings, universidades y oficinas aliadas.
+                    </p>
+                </div>
             </div>
-        </div>
+        </header>
+
+        <section id="venues">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Por tipo</span>
+                    <h2>El mapa de la comunidad</h2>
+                    <p>Toca un tipo para filtrar la lista.</p>
+                </div>
+
+                <!-- Both filled by venues.js from databases/venuesethcali.csv. -->
+                <div id="venue-stats"></div>
+                <div class="filter-row" id="venue-filters" role="group" aria-label="Filtrar por tipo" style="margin-top:28px"></div>
+
+                <div class="logo-grid" id="venues-container">
+                    <div class="empty-state"><span class="spinner center"></span></div>
+                </div>
+            </div>
         </section>
 
-        <section class="venues-section">
-        <div class="container">
-            <!-- Venue Statistics -->
-            <div class="stats-section">
-                <h2 style="font-family: 'Orbitron', monospace; color: var(--cyber-primary); text-align: center; margin-bottom: 2rem;">Estadísticas de Venues</h2>
-                <div id="venue-stats">
-                    <!-- Dynamic stats will be loaded here -->
-                    <div style="text-align: center; color: var(--cyber-text-dim);">
-                        <p>Loading statistics...</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-section">
-                <h2 style="font-family: 'Orbitron', monospace; color: var(--cyber-primary); text-align: center; margin-bottom: 1rem;">Filtrar por Tipo</h2>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter="all">Todos</button>
-                    <button class="filter-btn" data-filter="gastrobar">GastroBar</button>
-                    <button class="filter-btn" data-filter="club-music">Club Music</button>
-                    <button class="filter-btn" data-filter="coworking">Coworking</button>
-                    <button class="filter-btn" data-filter="university">University</button>
-                    <button class="filter-btn" data-filter="restaurant">Restaurant</button>
-                    <button class="filter-btn" data-filter="office-partner">Office Partner</button>
-                    <button class="filter-btn" data-filter="bar-open-air">Bar Open Air</button>
-                </div>
-            </div>
-
-            <div class="venues-grid" id="venues-container">
-                <!-- Dynamic content will be loaded here by venues.js -->
-                <div style="text-align: center; padding: 2rem; color: #ccc; width: 100%;">
-                    <h3>🔄 Loading venues...</h3>
-                    <p>Please wait while we load venue data</p>
-                </div>
-            </div>
-        </div>
-        </section>
     </main>
 
-    <script>
-        // Add fade in animation for dynamic content
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
+    <div id="footer-container"></div>
+
+    <script src="venues.js" defer></script>
 </body>
-</html> 
+</html>

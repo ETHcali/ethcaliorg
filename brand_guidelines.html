@@ -3,788 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Guías de marca y recursos de branding de Ethereum Cali - Descarga logos, tipografías y elementos gráficos oficiales">
+    <title>Guía de marca | ETH Cali</title>
+    <meta name="description" content="La identidad visual de ETH Cali: la marca, el color, la tipografía y la voz.">
+
     <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali16x16.png">
-    <link rel="icon" type="image/png" sizes="38x38" href="/branding/faviconethcali38x38.png">
-    
-    <title>Brand Guidelines | Ethereum Cali</title>
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/shared-components.css">
-    <link rel="stylesheet" href="css/style_ethcali.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali38x38.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Guía de marca | ETH Cali">
+    <meta property="og:description" content="La identidad visual de ETH Cali: la marca, el color, la tipografía y la voz.">
+    <meta property="og:image" content="https://ethcali.org/branding/Banner1200x400.png">
+    <meta property="og:url" content="https://ethcali.org/brand-guidelines">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/navbar.js"></script>
-    <style>
-        .brand-guidelines-container {
-            padding: 6rem 0 4rem;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-            min-height: 100vh;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="branding/fonts/web/SarunPro-Black.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="branding/fonts/web/SarunPro-Book.woff2" as="font" type="font/woff2" crossorigin>
 
-        .brand-hero {
-            text-align: center;
-            margin-bottom: 6rem;
-        }
-
-        .brand-hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: #64ffda;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
-        }
-
-        .brand-hero p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .assets-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
-            margin-bottom: 4rem;
-        }
-
-        .asset-category {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 2.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .asset-category::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #64ffda, #00bcd4);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .asset-category:hover::before {
-            transform: scaleX(1);
-        }
-
-        .asset-category:hover {
-            transform: translateY(-10px);
-            border-color: #64ffda;
-            box-shadow: 0 25px 50px rgba(100, 255, 218, 0.2);
-        }
-
-        .category-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .category-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #64ffda, #00bcd4);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1.5rem;
-            color: #0a0a0a;
-            font-size: 1.5rem;
-        }
-
-        .category-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #64ffda;
-            margin: 0;
-        }
-
-        .assets-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .asset-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .asset-item:last-child {
-            border-bottom: none;
-        }
-
-        .asset-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            margin: 0 -1rem;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            border-radius: 8px;
-        }
-
-        .asset-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .asset-preview {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            overflow: hidden;
-        }
-
-        .asset-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .asset-preview.pdf-icon {
-            color: #ff4757;
-            font-size: 1.2rem;
-        }
-
-        .asset-preview.svg-icon {
-            color: #64ffda;
-            font-size: 1.2rem;
-        }
-
-        .asset-details h4 {
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 600;
-            margin: 0 0 0.25rem 0;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .asset-details p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.85rem;
-            margin: 0;
-        }
-
-        .download-btn {
-            background: linear-gradient(45deg, #64ffda, #00bcd4);
-            color: #0a0a0a;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.4);
-        }
-
-        .usage-guidelines {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 3rem;
-            margin-top: 4rem;
-        }
-
-        .usage-guidelines h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #64ffda;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .guidelines-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .guideline-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 2rem;
-            border-left: 4px solid #64ffda;
-        }
-
-        .guideline-card h3 {
-            color: #64ffda;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .guideline-card ul {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
-            padding-left: 1.5rem;
-        }
-
-        .guideline-card li {
-            margin-bottom: 0.5rem;
-        }
-
-        .color-palette {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .color-swatch {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .color-circle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .color-primary { background: #64ffda; }
-        .color-secondary { background: #00bcd4; }
-        .color-dark { background: #0a0a0a; }
-        .color-accent { background: #1a1a2e; }
-
-        .color-name {
-            color: #ffffff;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .color-hex {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.85rem;
-            font-family: 'Space Mono', monospace;
-        }
-
-        .download-all-btn {
-            background: linear-gradient(45deg, #64ffda, #00bcd4);
-            color: #0a0a0a;
-            padding: 1.5rem 3rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            font-family: 'Orbitron', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 3rem auto 0;
-            transition: all 0.3s ease;
-            text-align: center;
-            display: block;
-            width: fit-content;
-        }
-
-        .download-all-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(100, 255, 218, 0.4);
-        }
-
-        @media (max-width: 768px) {
-            .brand-hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .assets-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .guidelines-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .color-palette {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/navbar.js" defer></script>
 </head>
 
 <body>
     <div id="navbar-container"></div>
-    <div class="cursor"></div>
-    <div class="noise-overlay"></div>
 
-    <main class="brand-guidelines-container">
-        <div class="container">
-            <!-- Hero Section -->
-            <section class="brand-hero">
-                <h1>Brand Guidelines</h1>
-                <p>Recursos oficiales de marca de Ethereum Cali. Descarga logos, tipografías y elementos gráficos para usar en tus proyectos, siempre respetando nuestras guías de uso.</p>
-            </section>
+    <main>
+        <header class="hero hero-compact">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="eyebrow">Sistema</span>
+                    <h1>Guía de marca</h1>
+                    <p class="hero-description">
+                        La identidad de ETH Cali en una página. Un azul, cuatro grises, tres señales,
+                        dos tipografías. Esta misma página está construida con el sistema que describe.
+                    </p>
+                </div>
+            </div>
+        </header>
 
-            <!-- Assets Grid -->
-            <section class="assets-grid">
-                <!-- Logos -->
-                <div class="asset-category">
-                    <div class="category-header">
-                        <div class="category-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h2 class="category-title">Logos Principales</h2>
+        <section id="mark">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">La marca</span>
+                    <h2>El doble diamante</h2>
+                    <p>Un doble diamante dibujado en una sola línea ultramarina: el octaedro de
+                       Ethereum reconstruido como herrería en filigrana.</p>
+                </div>
+                <div class="grid grid-2">
+                    <div class="card mark-card">
+                        <img src="branding/Logo ETHCALI Horizontal _ fondo Negro.png" alt="Lockup horizontal">
+                        <span class="addr-label">Horizontal · principal</span>
+                        <p>Barras de navegación, encabezados y pies de página.</p>
                     </div>
-                    <ul class="assets-list">
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/logoethcali.png" alt="Logo principal">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Logo Principal</h4>
-                                    <p>PNG • 16KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/logoethcali.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/LogoETHCALI Horizontal - Fondo Blaco.png" alt="Logo horizontal fondo blanco">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Logo Horizontal - Fondo Blanco</h4>
-                                    <p>PNG • 21KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/LogoETHCALI Horizontal - Fondo Blaco.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Logo ETHCALI Horizontal _ fondo Negro.png" alt="Logo horizontal fondo negro">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Logo Horizontal - Fondo Negro</h4>
-                                    <p>PNG • 18KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Logo ETHCALI Horizontal _ fondo Negro.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Logo ETHCALI Vertical Fondo Blanco.png" alt="Logo vertical fondo blanco">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Logo Vertical - Fondo Blanco</h4>
-                                    <p>PNG • 19KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Logo ETHCALI Vertical Fondo Blanco.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Logo ETHCALI Verticla - Fondo Negro.png" alt="Logo vertical fondo negro">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Logo Vertical - Fondo Negro</h4>
-                                    <p>PNG • 20KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Logo ETHCALI Verticla - Fondo Negro.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
+                    <div class="card mark-card">
+                        <img src="branding/Logo ETHCALI Verticla - Fondo Negro.png" alt="Lockup vertical">
+                        <span class="addr-label">Vertical</span>
+                        <p>Pósters, merch y heros.</p>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:16px">
+                    <h3>Nunca</h3>
+                    <ul class="mission-list">
+                        <li>Recolorear la línea. Es <span class="mono">#2B23EF</span> o blanca, nada más.</li>
+                        <li>Estirarla, condensarla, rotarla o curvarla.</li>
+                        <li>Ponerla sobre un fondo cargado o con degradado.</li>
+                        <li>Añadirle glow, bisel o sombra.</li>
+                        <li>Usarla por debajo de 32&nbsp;px en pantalla o 10&nbsp;mm en impresión.</li>
                     </ul>
                 </div>
+            </div>
+        </section>
 
-                <!-- Iconos y Favicons -->
-                <div class="asset-category">
-                    <div class="category-header">
-                        <div class="category-icon">
-                            <i class="fas fa-icons"></i>
-                        </div>
-                        <h2 class="category-title">Iconos & Favicons</h2>
-                    </div>
-                    <ul class="assets-list">
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview svg-icon">
-                                    <i class="fas fa-vector-square"></i>
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Favicon SVG</h4>
-                                    <p>SVG • 12KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/favicon.svg" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/faviconethcali16x16.png" alt="Favicon 16x16">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Favicon 16x16</h4>
-                                    <p>PNG • 1KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/faviconethcali16x16.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/faviconethcali38x38.png" alt="Favicon 38x38">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Favicon 38x38</h4>
-                                    <p>PNG • 3KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/faviconethcali38x38.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview svg-icon">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Ethereum Events Illustration</h4>
-                                    <p>SVG • 1KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/ethereum-events-illustration.svg" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                    </ul>
+        <section id="color">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Color</span>
+                    <h2>Un azul, cuatro grises, tres señales</h2>
+                    <p>El ultramarino <span class="mono">#2B23EF</span> está muestreado de la marca y es
+                       el único color cromático. Las señales nunca son decorativas: si no pasó nada,
+                       nada se colorea.</p>
                 </div>
-
-                <!-- Banners y Assets Promocionales -->
-                <div class="asset-category">
-                    <div class="category-header">
-                        <div class="category-icon">
-                            <i class="fas fa-image"></i>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3>Marca</h3>
+                        <div class="swatch-list">
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--eth-blue)"></span>
+                            <div>
+                                <p class="mono swatch-token">--eth-blue</p>
+                                <p class="mono faint" style="font-size:12px">#2B23EF</p>
+                                <p class="swatch-use">El único color cromático de la marca.</p>
+                            </div>
                         </div>
-                        <h2 class="category-title">Banners & Promocionales</h2>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--eth-blue-lift)"></span>
+                            <div>
+                                <p class="mono swatch-token">--eth-blue-lift</p>
+                                <p class="mono faint" style="font-size:12px">#4F49FF</p>
+                                <p class="swatch-use">Hover.</p>
+                            </div>
+                        </div>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--eth-blue-deep)"></span>
+                            <div>
+                                <p class="mono swatch-token">--eth-blue-deep</p>
+                                <p class="mono faint" style="font-size:12px">#1811A6</p>
+                                <p class="swatch-use">Pressed.</p>
+                            </div>
+                        </div>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--eth-blue-text)"></span>
+                            <div>
+                                <p class="mono swatch-token">--eth-blue-text</p>
+                                <p class="mono faint" style="font-size:12px">#9A96FF</p>
+                                <p class="swatch-use">Enlaces y datos sobre fondo oscuro.</p>
+                            </div>
+                        </div>
+                        </div>
                     </div>
-                    <ul class="assets-list">
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Banner1200x400.png" alt="Banner 1200x400">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Banner Principal 1200x400</h4>
-                                    <p>PNG • 421KB</p>
-                                </div>
+                    <div class="card">
+                        <h3>Superficies</h3>
+                        <div class="swatch-list">
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--surface-void)"></span>
+                            <div>
+                                <p class="mono swatch-token">--surface-void</p>
+                                <p class="mono faint" style="font-size:12px">#06060B</p>
+                                <p class="swatch-use">La página.</p>
                             </div>
-                            <a href="branding/Banner1200x400.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Banner.jpg" alt="Banner JPG">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Banner JPG</h4>
-                                    <p>JPG • 45KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Banner.jpg" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Open SEA - Ethereum Cali3.png" alt="OpenSea NFT">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>OpenSea NFT Art</h4>
-                                    <p>PNG • 138KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Open SEA - Ethereum Cali3.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Perfil.jpg" alt="Imagen de perfil">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Imagen de Perfil</h4>
-                                    <p>JPG • 80KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Perfil.jpg" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Logos Colaborativos -->
-                <div class="asset-category">
-                    <div class="category-header">
-                        <div class="category-icon">
-                            <i class="fas fa-handshake"></i>
                         </div>
-                        <h2 class="category-title">Logos Colaborativos</h2>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--surface-slab)"></span>
+                            <div>
+                                <p class="mono swatch-token">--surface-slab</p>
+                                <p class="mono faint" style="font-size:12px">#0C0D16</p>
+                                <p class="swatch-use">Las tarjetas.</p>
+                            </div>
+                        </div>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--surface-inset)"></span>
+                            <div>
+                                <p class="mono swatch-token">--surface-inset</p>
+                                <p class="mono faint" style="font-size:12px">#131624</p>
+                                <p class="swatch-use">Inputs y elementos anidados.</p>
+                            </div>
+                        </div>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--surface-ridge)"></span>
+                            <div>
+                                <p class="mono swatch-token">--surface-ridge</p>
+                                <p class="mono faint" style="font-size:12px">#1E2233</p>
+                                <p class="swatch-use">Controles elevados.</p>
+                            </div>
+                        </div>
+                        </div>
                     </div>
-                    <ul class="assets-list">
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview svg-icon">
-                                    <i class="fas fa-file-pdf"></i>
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Logo Nodo CLO ETH CO</h4>
-                                    <p>PDF • 1.3MB</p>
-                                </div>
+                    <div class="card">
+                        <h3>Texto</h3>
+                        <div class="swatch-list">
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--text-primary)"></span>
+                            <div>
+                                <p class="mono swatch-token">--text-primary</p>
+                                <p class="mono faint" style="font-size:12px">#F2F3F7</p>
+                                <p class="swatch-use">Títulos.</p>
                             </div>
-                            <a href="branding/Logo_Nodo_CLO_ETH_CO.pdf" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview svg-icon">
-                                    <i class="fas fa-vector-square"></i>
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Logo Nodo CLO ETH CO SVG</h4>
-                                    <p>SVG • 577KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Logo_Nodo_CLO_ETH_CO.svg" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Logo_Nodo_CLO_ETH_CO-01.png" alt="Nodo Logo 01">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Nodo Logo Variante 01</h4>
-                                    <p>PNG • 71KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Logo_Nodo_CLO_ETH_CO-01.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Logo_Nodo_CLO_ETH_CO-02.png" alt="Nodo Logo 02">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Nodo Logo Variante 02</h4>
-                                    <p>PNG • 69KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Logo_Nodo_CLO_ETH_CO-02.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                        <li class="asset-item">
-                            <div class="asset-info">
-                                <div class="asset-preview">
-                                    <img src="branding/Logo_Nodo_CLO_ETH_CO-03.png" alt="Nodo Logo 03">
-                                </div>
-                                <div class="asset-details">
-                                    <h4>Nodo Logo Variante 03</h4>
-                                    <p>PNG • 33KB</p>
-                                </div>
-                            </div>
-                            <a href="branding/Logo_Nodo_CLO_ETH_CO-03.png" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Descargar
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Usage Guidelines -->
-            <section class="usage-guidelines">
-                <h2>Guías de Uso</h2>
-                
-                <!-- Color Palette -->
-                <div class="guideline-card">
-                    <h3>Paleta de Colores</h3>
-                    <div class="color-palette">
-                        <div class="color-swatch">
-                            <div class="color-circle color-primary"></div>
-                            <div class="color-name">Primary</div>
-                            <div class="color-hex">#64FFDA</div>
                         </div>
-                        <div class="color-swatch">
-                            <div class="color-circle color-secondary"></div>
-                            <div class="color-name">Secondary</div>
-                            <div class="color-hex">#00BCD4</div>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--text-secondary)"></span>
+                            <div>
+                                <p class="mono swatch-token">--text-secondary</p>
+                                <p class="mono faint" style="font-size:12px">#C9CCD8</p>
+                                <p class="swatch-use">Cuerpo.</p>
+                            </div>
                         </div>
-                        <div class="color-swatch">
-                            <div class="color-circle color-dark"></div>
-                            <div class="color-name">Dark</div>
-                            <div class="color-hex">#0A0A0A</div>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--text-muted)"></span>
+                            <div>
+                                <p class="mono swatch-token">--text-muted</p>
+                                <p class="mono faint" style="font-size:12px">#9A9DAE</p>
+                                <p class="swatch-use">Secundario.</p>
+                            </div>
                         </div>
-                        <div class="color-swatch">
-                            <div class="color-circle color-accent"></div>
-                            <div class="color-name">Accent</div>
-                            <div class="color-hex">#1A1A2E</div>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--text-faint)"></span>
+                            <div>
+                                <p class="mono swatch-token">--text-faint</p>
+                                <p class="mono faint" style="font-size:12px">#5F6377</p>
+                                <p class="swatch-use">Metadatos.</p>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Señales</h3>
+                        <div class="swatch-list">
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--signal-confirmed)"></span>
+                            <div>
+                                <p class="mono swatch-token">--signal-confirmed</p>
+                                <p class="mono faint" style="font-size:12px">#00D68F</p>
+                                <p class="swatch-use">Algo se confirmó en cadena.</p>
+                            </div>
+                        </div>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--signal-pending)"></span>
+                            <div>
+                                <p class="mono swatch-token">--signal-pending</p>
+                                <p class="mono faint" style="font-size:12px">#FFB020</p>
+                                <p class="swatch-use">Pendiente.</p>
+                            </div>
+                        </div>
+                        <div class="swatch">
+                            <span class="swatch-chip" style="background: var(--signal-reverted)"></span>
+                            <div>
+                                <p class="mono swatch-token">--signal-reverted</p>
+                                <p class="mono faint" style="font-size:12px">#FF4D4D</p>
+                                <p class="swatch-use">Falló.</p>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="guidelines-grid">
-                    <div class="guideline-card">
-                        <h3>Uso del Logo</h3>
-                        <ul>
-                            <li>Mantener siempre las proporciones originales</li>
-                            <li>No modificar los colores oficiales</li>
-                            <li>Respetar el área de protección mínima</li>
-                            <li>Usar versiones de alta resolución para impresión</li>
-                            <li>No aplicar efectos o sombras adicionales</li>
-                        </ul>
+        <section id="type">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Tipografía</span>
+                    <h2>Dos tipografías, sin excepción</h2>
+                    <p>Sarun Pro para todo lo que escribió una persona. JetBrains Mono para todo lo
+                       que produjo una cadena: direcciones, hashes, montos, nombres de red.
+                       La división es absoluta — es como la interfaz separa lo editorial del dato.</p>
+                </div>
+                <div class="card">
+                    <div class="specimen">
+                        <span class="addr-label">Sarun Pro Book · 300</span>
+                        <p style="font-weight:300">El Jardín Infinito del Pacífico Colombiano</p>
                     </div>
-                    
-                    <div class="guideline-card">
-                        <h3>Tipografía</h3>
-                        <ul>
-                            <li>Primaria: Orbitron (títulos y headers)</li>
-                            <li>Secundaria: Space Mono (código y detalles)</li>
-                            <li>Cuerpo: Inter o similar sans-serif</li>
-                            <li>Mantener jerarquía visual clara</li>
-                            <li>Contrastar adecuadamente con el fondo</li>
-                        </ul>
+                    <div class="specimen">
+                        <span class="addr-label">Sarun Pro Regular · 400</span>
+                        <p style="font-weight:400">El Jardín Infinito del Pacífico Colombiano</p>
                     </div>
-                    
-                    <div class="guideline-card">
-                        <h3>Aplicaciones Prohibidas</h3>
-                        <ul>
-                            <li>No usar logos pixelados o de baja calidad</li>
-                            <li>No cambiar la orientación del logo</li>
-                            <li>No usar colores no autorizados</li>
-                            <li>No separar elementos del logo</li>
-                            <li>No usar sobre fondos que comprometan legibilidad</li>
-                        </ul>
+                    <div class="specimen">
+                        <span class="addr-label">Sarun Pro Medium · 500</span>
+                        <p style="font-weight:500">El Jardín Infinito del Pacífico Colombiano</p>
                     </div>
-                    
-                    <div class="guideline-card">
-                        <h3>Contexto de Uso</h3>
-                        <ul>
-                            <li>Eventos y conferencias de Web3</li>
-                            <li>Material educativo sobre blockchain</li>
-                            <li>Comunicaciones oficiales</li>
-                            <li>Redes sociales (con crédito)</li>
-                            <li>Colaboraciones autorizadas</li>
-                        </ul>
+                    <div class="specimen">
+                        <span class="addr-label">Sarun Pro Bold · 700</span>
+                        <p style="font-weight:700">El Jardín Infinito del Pacífico Colombiano</p>
+                    </div>
+                    <div class="specimen">
+                        <span class="addr-label">Sarun Pro Black · 900</span>
+                        <p style="font-weight:900">El Jardín Infinito del Pacífico Colombiano</p>
+                    </div>
+                    <div class="specimen">
+                        <span class="addr-label">JetBrains Mono · dato</span>
+                        <p class="mono">0xB6BDe4…da64 · 120.00 USDC · ethcali.eth</p>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div style="text-align: center;">
-                    <a href="#" class="download-all-btn" onclick="downloadAllAssets()">
-                        <i class="fas fa-download"></i>
-                        Descargar Todo el Kit de Marca
-                    </a>
+        <section id="voice">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Voz</span>
+                    <h2>Cómo escribimos</h2>
+                    <p>Español y inglés llanos, en sentence case, sin jerga que un recién llegado
+                       tenga que buscar. Sin emoji. Glifos permitidos: … → ⟠</p>
                 </div>
-            </section>
-        </div>
+                <div class="card" style="overflow-x:auto">
+                    <table class="voice-table">
+                        <thead>
+                            <tr><th>Escribimos</th><th>No escribimos</th></tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="voice-good">La wallet está lista.</td>
+                            <td class="voice-bad">INITIALIZING_WALLET…</td>
+                        </tr>
+                        <tr>
+                            <td class="voice-good">Sin comisión — nosotros cubrimos el gas en esta red.</td>
+                            <td class="voice-bad">Universal transaction sponsorship enabled</td>
+                        </tr>
+                        <tr>
+                            <td class="voice-good">El envío falló. No salió nada de tu wallet.</td>
+                            <td class="voice-bad">Oops! Algo salió mal 😅</td>
+                        </tr>
+                        <tr>
+                            <td class="voice-good">Verifícate una vez para usar el faucet.</td>
+                            <td class="voice-bad">Sybil-resistance requirement not met</td>
+                        </tr>
+                        <tr>
+                            <td class="voice-good">Nada por aquí todavía.</td>
+                            <td class="voice-bad">NO_DATA_FOUND</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="tagline center" style="margin-top:32px">El Jardín Infinito del Pacífico Colombiano</p>
+                <p class="faint center" style="font-size:13px">Nunca se traduce. Nunca por debajo de 16&nbsp;px.</p>
+            </div>
+        </section>
+
+        <section id="components">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Componentes</span>
+                    <h2>Las piezas</h2>
+                </div>
+                <div class="card">
+                    <span class="addr-label">Botones</span>
+                    <div class="row" style="margin:14px 0 28px">
+                        <button class="btn btn-primary" type="button">Primario</button>
+                        <button class="btn btn-secondary" type="button">Secundario</button>
+                        <button class="btn btn-primary" type="button" disabled>Deshabilitado</button>
+                    </div>
+
+                    <span class="addr-label">Señales</span>
+                    <div class="row" style="margin:14px 0 28px">
+                        <span class="pill pill-confirmed">Confirmado</span>
+                        <span class="pill pill-pending">Pendiente</span>
+                        <span class="pill pill-reverted">Revertido</span>
+                    </div>
+
+                    <span class="addr-label">Direcciones y redes</span>
+                    <div class="row" style="margin:14px 0 28px">
+                        <a class="address" href="https://etherscan.io/address/0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64"
+                           target="_blank" rel="noopener" title="0xB6BDe4fB6dFBad5488Fa31Edf0F3730D9D86da64">0xB6BDe4…da64</a>
+                        <span class="chip"><img src="chains/base logo.svg" alt=""><span class="chain-name">Base</span></span>
+                        <span class="label">Etiqueta</span>
+                    </div>
+
+                    <span class="addr-label">Estado vacío</span>
+                    <div class="empty-state" style="margin-top:14px">
+                        <strong>Nada por aquí todavía.</strong>
+                        Aquí aparecerá lo que se vaya publicando.
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <div id="footer-container"></div>
-
-    <script>
-        // Function to download all assets (would need server-side implementation)
-        function downloadAllAssets() {
-            alert('Funcionalidad de descarga masiva próximamente disponible. Por ahora, descarga los assets individualmente.');
-        }
-
-        // Cursor animation
-        const cursor = document.querySelector('.cursor');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
-        });
-
-        document.addEventListener('mouseup', () => {
-            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-        });
-    </script>
 </body>
 </html>
