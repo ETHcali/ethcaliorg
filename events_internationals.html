@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eventos internacionales | ETH Cali</title>
-    <meta name="description" content="Los eventos internacionales del ecosistema Ethereum en los que ETH Cali ha participado.">
+    <title>Calendario global | ETH Cali</title>
+    <meta name="description" content="El calendario de eventos Ethereum en el mundo, recopilado por ETH Cali para la comunidad.">
 
     <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/branding/faviconethcali38x38.png">
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Eventos internacionales | ETH Cali">
-    <meta property="og:description" content="Los eventos internacionales del ecosistema Ethereum en los que ETH Cali ha participado.">
+    <meta property="og:title" content="Calendario global | ETH Cali">
+    <meta property="og:description" content="El calendario de eventos Ethereum en el mundo, recopilado por ETH Cali para la comunidad.">
     <meta property="og:image" content="https://ethcali.org/branding/Banner1200x400.png">
     <meta property="og:url" content="https://ethcali.org/events">
     <meta name="twitter:card" content="summary_large_image">
@@ -34,9 +34,9 @@
             <div class="container">
                 <div class="hero-content">
                     <span class="eyebrow">Eventos internacionales</span>
-                    <h1>Fuera de casa</h1>
-                    <p class="hero-subtitle" style="font-size: clamp(1.3rem, 2.4vw, 1.9rem);">donde también estuvimos</p>
-                    <p class="hero-description">Los eventos del ecosistema Ethereum en los que hemos participado como comunidad.</p>
+                    <h1>Calendario global</h1>
+                    <p class="hero-subtitle" style="font-size: clamp(1.3rem, 2.4vw, 1.9rem);">eventos Ethereum en el mundo</p>
+                    <p class="hero-description">El calendario de eventos Ethereum en el mundo, para que sepas qué se viene. No son eventos nuestros: es una lista pública que mantenemos a mano para la comunidad.</p>
                 </div>
             </div>
         </header>
@@ -45,7 +45,7 @@
             <div class="container">
                 <div class="section-header">
                     <span class="eyebrow">Números</span>
-                    <h2>En cifras</h2>
+                    <h2>El tamaño de la agenda</h2>
                 </div>
                 <!-- Filled by js/events-ui.js from the CSVs in databases/. -->
                 <div id="metrics-container"></div>
@@ -55,8 +55,8 @@
         <section id="list">
             <div class="container">
                 <div class="section-header">
-                    <span class="eyebrow">Historial</span>
-                    <h2>Los eventos</h2>
+                    <span class="eyebrow">Agenda</span>
+                    <h2>El calendario</h2>
                     <p>Filtra por fecha, o mira <a href="events_locales.html">los locales</a>.</p>
                 </div>
 
@@ -77,8 +77,14 @@
                     <button class="month-btn" type="button" data-month="11" aria-pressed="false">Diciembre</button>
                 </div>
 
-                <!-- Filled by js/events-ui.js. -->
-                <div id="events-list" class="events-grid"></div>
+                <!-- Filled by js/events-ui.js from databases/2025ethereumevents.csv. -->
+                <div id="events-list"></div>
+
+                <p class="faint" style="font-size:13px; margin-top:20px">
+                    Lista recopilada por
+                    <a href="https://x.com/NathanSexer" target="_blank" rel="noopener">@NathanSexer</a>.
+                    ¿Falta alguno? Escríbenos.
+                </p>
             </div>
         </section>
 

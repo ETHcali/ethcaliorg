@@ -1,5 +1,5 @@
 /**
- * Events UI — renders event cards and metrics on the brand system.
+ * Events UI — a paginated data grid with a detail modal.
  *
  * Public API is unchanged, because js/events-app.js drives it:
  *   renderInternationalEvents · renderLocalEvents
@@ -7,160 +7,275 @@
  *   setupMonthFilter · setupYearFilter · setupFilters
  *   formatDateRange · ensureHttps
  *
- * Design rules this file has to hold on its own, since it writes markup at
- * runtime: mono for dates, counts, chain names and POAP/NFT figures; Sarun for
- * names and descriptions; inline stroke SVG instead of Font Awesome; an
+ * Was a wall of cards, which buried the numbers: RSVP, NFT mints and POAP
+ * collectors are the interesting part of an event record and a card shows one
+ * of them at a time. A grid puts them in columns you can scan down, and the
+ * long tail of links moves into a modal instead of an inline <details>.
+ *
+ * Design rules this file holds on its own, since it writes markup at runtime:
+ * mono for every fact (dates, counts, chains, hosts); Sarun for names and
+ * descriptions; inline stroke SVG, never Font Awesome or emoji; an
  * .empty-state rather than a blank grid.
  */
 
-/* 1.6px stroke icons, sized by CSS. */
+const PAGE_SIZE = 12;
+
 const ICON = {
-  calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
-  pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
-  users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>',
-  handshake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.9-3.9a2 2 0 0 1 0-2.8L17 5.4a2 2 0 0 1 2.8 0L22 7.6"/><path d="m21 3-3 3M2 7.6 4.2 5.4a2 2 0 0 1 2.8 0L9.4 7.8a2 2 0 0 1 0 2.8L5.5 14.5a1 1 0 1 0 3 3L11 15"/><path d="m3 3 3 3"/></svg>',
-  chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
   ext: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+  close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  prev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+  next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
 };
 
-/** "NA" and "-" are how the source data spells an absent value. */
-const has = (v) => Boolean(v) && v !== 'NA' && v !== '-';
+/** "NA" and "-" are how the source spreadsheets spell an absent value. */
+const has = (v) => {
+  const s = String(v ?? '').trim();
+  return Boolean(s) && !['na', '-', 'n/a', 'no tiene'].includes(s.toLowerCase());
+};
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
+const num = (v) => {
+  const n = Number(String(v ?? '').replace(/[^\d.-]/g, ''));
+  return Number.isFinite(n) && n > 0 ? n : null;
+};
+
+/** A value is only linkable if it really is an http(s) URL. */
+function isUrl(v) {
+  const s = String(v ?? '').trim();
+  if (!/^https?:\/\//i.test(s)) return false;
+  try { new URL(s); return true; } catch { return false; }
+}
+
+/** Host only, for the link chips — the URL itself is never printed raw. */
+function hostOf(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ''); }
+  catch { return url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]; }
+}
+
+/**
+ * The links attached to one event, in the order a reader wants them.
+ * Each entry is [label, url]; the chip shows the label and the host, which is
+ * as much of a preview as a static site can honestly give. A real OG card
+ * needs something server-side to fetch and cache the target's metadata.
+ */
+function linksFor(e) {
+  const candidates = [
+    ['Post oficial', e.socialMediaPost],
+    ['Registro', e.registrationPage],
+    ['NFT', e.nftUrl],
+    ['POAP', e.poapLink],
+    ['Recap', e.recapSocialMedia],
+    ['Fotos', e.registroFotografico],
+    ['Grabación', e.youtubeRecording],
+    ['Ubicación', e.locationUrl],
+    ['Sitio', e.link],
+    ['Chat', e.chat],
+  ];
+  // Only a real http(s) URL becomes a chip. "Carpeta del Evento" holds a Drive
+  // folder *name* ("2022 11 14 Devcon VI") in all 46 populated rows — rendering
+  // it as a link produced a chip whose host was the folder name punycoded, and
+  // an internal archive label means nothing to a visitor anyway. It is left out
+  // entirely rather than shown as a dead link.
+  return candidates
+    .filter(([, u]) => has(u) && isUrl(u))
+    .map(([l, u]) => [l, String(u).trim()]);
+}
+
 class EventsUI {
   constructor(eventsService) {
     this.eventsService = eventsService;
+    this.state = { local: { rows: [], page: 1 }, international: { rows: [], page: 1 } };
+    this.modal = null;
   }
 
-  // ── shared pieces ───────────────────────────────────────────────────────
-
-  /** A labelled fact line: icon + mono value. */
-  static meta(icon, value, href) {
-    if (!has(value)) return '';
-    const inner = href
-      ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(value)}</a>`
-      : esc(value);
-    return `<div class="event-meta">${icon}<span>${inner}</span></div>`;
-  }
-
-  static detail(label, body) {
-    return body ? `<div class="detail-item"><span class="addr-label">${esc(label)}</span>${body}</div>` : '';
-  }
-
-  /**
-   * hostColab arrives from the CSV as either a plain name or "Name: https://…".
-   * Rendering the cell verbatim printed the whole URL into the card body, which
-   * is both ugly and against the rule that a link never shows as a raw string.
-   */
-  static collab(raw) {
-    if (!has(raw)) return '';
-    const m = /^(.*?):\s*(https?:\/\/\S+)$/s.exec(String(raw).trim());
-    if (!m) return EventsUI.meta(ICON.handshake, raw);
-    const [, name, url] = m;
-    return EventsUI.meta(ICON.handshake, name.trim() || url, url);
-  }
-
-  static linkOut(href, text) {
-    return has(href)
-      ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(text)} ${ICON.ext}</a>`
-      : '';
-  }
-
-  chainLine(chain, suffix) {
-    if (!has(chain)) return '';
-    const logo = this.eventsService.getChainLogo(chain);
-    return `<span class="chip"><img src="${esc(logo)}" alt=""><span class="chain-name">${esc(chain)}</span>${
-      suffix ? `<span class="faint mono">${esc(suffix)}</span>` : ''}</span>`;
-  }
-
-  static renderInto(containerId, html, emptyMessage) {
-    const container = document.getElementById(containerId);
-    if (!container) return null;
-    container.innerHTML = html || `
-      <div class="empty-state">
-        <strong>Nada por aquí todavía.</strong>${esc(emptyMessage)}
-      </div>`;
-    return container;
-  }
-
-  // ── international ───────────────────────────────────────────────────────
-
-  renderInternationalEvents(events, containerId = 'events-list') {
-    const html = (events || []).map((e) => this.internationalCard(e)).join('');
-    EventsUI.renderInto(containerId, html, ' Los próximos eventos internacionales aparecerán aquí.');
-  }
-
-  internationalCard(event) {
-    const cta = has(event.link)
-      ? `<a class="card-cta" href="${esc(this.ensureHttps(event.link))}" target="_blank" rel="noopener">Ver el evento ${ICON.ext}</a>`
-      : '<span class="card-cta faint">Sin enlace todavía</span>';
-
-    return `
-      <article class="event-card" data-month="${esc(event.month)}">
-        <div class="event-card-body">
-          <span class="eyebrow">Internacional</span>
-          <h3>${esc(event.name)}</h3>
-          ${EventsUI.meta(ICON.calendar, this.formatDateRange(event.startDate, event.endDate))}
-          ${EventsUI.meta(ICON.pin, event.location)}
-          ${has(event.social) ? EventsUI.meta(ICON.users, `@${event.social}`, `https://twitter.com/${event.social}`) : ''}
-          ${cta}
-        </div>
-      </article>`;
-  }
-
-  // ── local ───────────────────────────────────────────────────────────────
+  // ── grid ────────────────────────────────────────────────────────────────
 
   renderLocalEvents(events, containerId = 'events-list') {
-    const html = (events || []).map((e) => this.localCard(e)).join('');
-    EventsUI.renderInto(containerId, html, ' Ajusta los filtros o vuelve más tarde.');
+    this.state.local.rows = events || [];
+    this.state.local.page = 1;
+    this.paint('local', containerId);
   }
 
-  localCard(event) {
-    const details = [
-      EventsUI.detail('Post oficial', EventsUI.linkOut(event.socialMediaPost, 'Ver el post')),
-      EventsUI.detail('Registro', EventsUI.linkOut(event.registrationPage, 'Página de registro')),
-      EventsUI.detail('NFT', EventsUI.linkOut(event.nftUrl, 'Ver el NFT')),
-      EventsUI.detail('Protocolo de mint', has(event.protocolToMint) ? `<span class="mono">${esc(event.protocolToMint)}</span>` : ''),
-      EventsUI.detail('Chain del NFT', this.chainLine(event.chainNft, has(event.mintsNft) ? `${event.mintsNft} mints` : '')),
-      EventsUI.detail('POAP', EventsUI.linkOut(event.poapLink, 'Ver el POAP')),
-      EventsUI.detail('Chain del POAP', this.chainLine(event.chainPOAP)),
-      EventsUI.detail('Recap', EventsUI.linkOut(event.recapSocialMedia, 'Ver el recap')),
-      EventsUI.detail('Fotos', EventsUI.linkOut(event.registroFotografico, 'Registro fotográfico')),
-      EventsUI.detail('Grabación', EventsUI.linkOut(event.youtubeRecording, 'Ver el video')),
-    ].filter(Boolean).join('');
+  renderInternationalEvents(events, containerId = 'events-list') {
+    this.state.international.rows = events || [];
+    this.state.international.page = 1;
+    this.paint('international', containerId);
+  }
 
-    const tags = [event.typeContent, event.typeEvent]
-      .filter(has)
-      .map((t) => `<span class="label">${esc(t)}</span>`)
-      .join('');
+  paint(kind, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const { rows, page } = this.state[kind];
 
-    const cta = has(event.registroFotografico)
-      ? `<a class="card-cta" href="${esc(event.registroFotografico)}" target="_blank" rel="noopener">Registro fotográfico ${ICON.ext}</a>`
-      : has(event.socialMediaPost)
-        ? `<a class="card-cta" href="${esc(event.socialMediaPost)}" target="_blank" rel="noopener">Ver el post ${ICON.ext}</a>`
-        : '<span class="card-cta faint">Sin enlace todavía</span>';
+    if (!rows.length) {
+      container.innerHTML = `<div class="empty-state">
+        <strong>Nada por aquí todavía.</strong>
+        Ajusta los filtros o vuelve más tarde.</div>`;
+      return;
+    }
 
+    const pages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+    const current = Math.min(page, pages);
+    const slice = rows.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
+
+    container.innerHTML = `
+      <div class="grid-scroll">
+        <table class="data-grid">
+          <thead>${kind === 'local' ? EventsUI.localHead() : EventsUI.intlHead()}</thead>
+          <tbody>${slice.map((e, i) =>
+            (kind === 'local' ? this.localRow(e, i) : this.intlRow(e, i))).join('')}</tbody>
+        </table>
+      </div>
+      ${EventsUI.pager(current, pages, rows.length)}`;
+
+    // Rows are buttons in spirit: click or Enter opens the detail modal.
+    container.querySelectorAll('tr[data-index]').forEach((tr) => {
+      const open = () => this.openModal(kind, slice[Number(tr.dataset.index)]);
+      tr.addEventListener('click', open);
+      tr.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); open(); }
+      });
+    });
+
+    container.querySelectorAll('[data-page]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        this.state[kind].page = Number(btn.dataset.page);
+        this.paint(kind, containerId);
+        container.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      });
+    });
+  }
+
+  static localHead() {
+    return `<tr>
+      <th>Fecha</th><th>Evento</th><th>Tipo</th><th>Lugar</th>
+      <th class="right">RSVP</th><th class="right">Mints</th><th class="right">POAP</th><th>Enlaces</th>
+    </tr>`;
+  }
+
+  static intlHead() {
+    return `<tr><th>Fechas</th><th>Evento</th><th>Dónde</th><th>Enlaces</th></tr>`;
+  }
+
+  localRow(e, i) {
+    const mints = num(e.mintsNft);
+    const poap = num(e.collectorsPOAP);
+    const rsvp = num(e.rsvp);
+    const links = linksFor(e).length;
+    return `<tr data-index="${i}" tabindex="0" role="button" aria-label="Ver detalles de ${esc(e.name)}">
+      <td class="mono nowrap">${esc(e.date)}</td>
+      <td class="cell-name">${esc(e.name)}</td>
+      <td>${has(e.typeContent) ? `<span class="label">${esc(e.typeContent)}</span>` : ''}</td>
+      <td class="cell-muted">${esc(e.locationName || '')}</td>
+      <td class="right mono">${rsvp ?? '<span class="faint">—</span>'}</td>
+      <td class="right mono">${mints ?? '<span class="faint">—</span>'}</td>
+      <td class="right mono">${poap ?? '<span class="faint">—</span>'}</td>
+      <td class="mono faint nowrap">${links || '—'}</td>
+    </tr>`;
+  }
+
+  intlRow(e, i) {
+    const links = linksFor(e).length;
+    return `<tr data-index="${i}" tabindex="0" role="button" aria-label="Ver detalles de ${esc(e.name)}">
+      <td class="mono nowrap">${esc(this.formatDateRange(e.startDate, e.endDate))}</td>
+      <td class="cell-name">${esc(e.name)}</td>
+      <td class="cell-muted">${esc(e.location || '')}</td>
+      <td class="mono faint nowrap">${links || '—'}</td>
+    </tr>`;
+  }
+
+  static pager(current, pages, total) {
+    if (pages < 2) return `<p class="pager-count mono">${total} eventos</p>`;
+    const btn = (p, label, disabled, extra = '') =>
+      `<button class="pager-btn${extra}" type="button" ${disabled ? 'disabled' : `data-page="${p}"`}>${label}</button>`;
+
+    // A window of pages around the current one, so 40 pages never becomes 40
+    // buttons. First and last are always reachable.
+    const win = new Set([1, pages, current, current - 1, current + 1]);
+    const nums = [...win].filter((p) => p >= 1 && p <= pages).sort((a, b) => a - b);
+    let out = '', last = 0;
+    for (const p of nums) {
+      if (p - last > 1) out += '<span class="pager-gap mono">…</span>';
+      out += btn(p, String(p), false, p === current ? ' is-current' : '');
+      last = p;
+    }
     return `
-      <article class="event-card" data-month="${esc(event.month)}" data-year="${esc(event.year)}">
-        ${has(event.image) ? `<div class="event-photo"><img src="${esc(event.image)}" alt="" loading="lazy"
-             onerror="this.closest('.event-photo').remove()"></div>` : ''}
-        <div class="event-card-body">
-          <h3>${esc(event.name)}</h3>
-          ${EventsUI.meta(ICON.calendar, event.date)}
-          ${EventsUI.meta(ICON.pin, event.locationName, has(event.locationUrl) ? event.locationUrl : null)}
-          ${EventsUI.collab(event.hostColab)}
-          ${has(event.rsvp) ? EventsUI.meta(ICON.users, `${event.rsvp} RSVP`) : ''}
-          ${tags ? `<div class="row" style="margin-top:12px">${tags}</div>` : ''}
-          ${details ? `
-            <details class="event-details">
-              <summary>Ver detalles ${ICON.chevron}</summary>
-              <div class="details-grid">${details}</div>
-            </details>` : ''}
-          ${cta}
+      <nav class="pager" aria-label="Paginación">
+        ${btn(current - 1, ICON.prev, current === 1)}
+        ${out}
+        ${btn(current + 1, ICON.next, current === pages)}
+        <span class="pager-count mono">${total} eventos</span>
+      </nav>`;
+  }
+
+  // ── modal ───────────────────────────────────────────────────────────────
+
+  openModal(kind, e) {
+    this.closeModal();
+
+    const facts = kind === 'local' ? [
+      ['Fecha', e.date],
+      ['Tipo de contenido', e.typeContent],
+      ['Tipo de evento', e.typeEvent],
+      ['Lugar', e.locationName],
+      ['Host / colaboración', e.hostColab],
+      ['RSVP', e.rsvp],
+      ['Protocolo de mint', e.protocolToMint],
+      ['Chain del NFT', e.chainNft],
+      ['Mints', e.mintsNft],
+      ['Chain del POAP', e.chainPOAP],
+      ['Collectors POAP', e.collectorsPOAP],
+    ] : [
+      ['Fechas', this.formatDateRange(e.startDate, e.endDate)],
+      ['Dónde', e.location],
+      ['Social', has(e.social) ? `@${e.social}` : ''],
+    ];
+
+    const rows = facts.filter(([, v]) => has(v)).map(([k, v]) =>
+      `<div class="modal-fact"><dt>${esc(k)}</dt><dd class="mono">${esc(v)}</dd></div>`).join('');
+
+    const links = linksFor(e).map(([label, url]) => `
+      <a class="link-chip" href="${esc(this.ensureHttps(url))}" target="_blank" rel="noopener">
+        <span class="link-chip-label">${esc(label)}</span>
+        <span class="link-chip-host mono">${esc(hostOf(this.ensureHttps(url)))}</span>
+        ${ICON.ext}
+      </a>`).join('');
+
+    const wrap = document.createElement('div');
+    wrap.className = 'modal-backdrop';
+    wrap.innerHTML = `
+      <div class="modal" role="dialog" aria-modal="true" aria-label="${esc(e.name)}">
+        <button class="modal-close" type="button" aria-label="Cerrar">${ICON.close}</button>
+        ${has(e.image) ? `<div class="modal-photo"><img src="${esc(e.image)}" alt=""
+             onerror="this.closest('.modal-photo').remove()"></div>` : ''}
+        <div class="modal-body">
+          <h3>${esc(e.name)}</h3>
+          <dl class="modal-facts">${rows}</dl>
+          ${links ? `<h4 class="modal-subhead">Enlaces</h4><div class="link-chips">${links}</div>`
+                  : '<p class="faint" style="margin-top:16px">Este evento no tiene enlaces registrados.</p>'}
         </div>
-      </article>`;
+      </div>`;
+
+    const close = () => this.closeModal();
+    wrap.addEventListener('click', (ev) => { if (ev.target === wrap) close(); });
+    wrap.querySelector('.modal-close').addEventListener('click', close);
+    this.escHandler = (ev) => { if (ev.key === 'Escape') close(); };
+    document.addEventListener('keydown', this.escHandler);
+
+    document.body.appendChild(wrap);
+    document.body.style.overflow = 'hidden';   // stop the page scrolling behind
+    wrap.querySelector('.modal-close').focus();
+    this.modal = wrap;
+  }
+
+  closeModal() {
+    if (!this.modal) return;
+    this.modal.remove();
+    this.modal = null;
+    document.body.style.overflow = '';
+    if (this.escHandler) document.removeEventListener('keydown', this.escHandler);
   }
 
   // ── metrics ─────────────────────────────────────────────────────────────
@@ -169,76 +284,64 @@ class EventsUI {
     return `<div class="metric-card"><div class="metric-number">${esc(value)}</div><div class="metric-label">${esc(label)}</div></div>`;
   }
 
-  renderInternationalMetrics(metrics, containerId = 'metrics-container') {
-    EventsUI.renderInto(containerId, `
-      <div class="metrics-grid">
-        ${EventsUI.metricCard(metrics.totalEvents, 'Eventos')}
-        ${EventsUI.metricCard(metrics.totalCountries, 'Países')}
-      </div>`);
+  static into(id, html) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
   }
 
-  renderLocalMetrics(metrics, containerId = 'metrics-container') {
+  renderInternationalMetrics(m, containerId = 'metrics-container') {
+    EventsUI.into(containerId, `<div class="metrics-grid">
+      ${EventsUI.metricCard(m.totalEvents, 'Eventos en el calendario')}
+      ${EventsUI.metricCard(m.totalCountries, 'Ciudades y países')}
+    </div>`);
+  }
+
+  renderLocalMetrics(m, containerId = 'metrics-container') {
     const badges = (obj) => Object.entries(obj || {})
+      .sort((a, b) => b[1] - a[1])
       .map(([k, v]) => `<span class="label">${esc(k)} · ${esc(v)}</span>`).join('');
+    const chains = Object.entries(m.chainMints || {})
+      .map(([c, n]) => `<span class="chip"><img src="${esc(this.eventsService.getChainLogo(c))}" alt="">
+        <span class="chain-name">${esc(c)}</span><span class="faint mono">${esc(n)}</span></span>`).join('');
 
-    const chains = Object.entries(metrics.chainMints || {})
-      .map(([chain, mints]) => this.chainLine(chain, `${mints} mints`)).join('');
-
-    EventsUI.renderInto(containerId, `
+    EventsUI.into(containerId, `
       <div class="metrics-grid">
-        ${EventsUI.metricCard(metrics.totalEvents, 'Eventos')}
-        ${EventsUI.metricCard(metrics.totalAttendees, 'Asistentes')}
+        ${EventsUI.metricCard(m.totalEvents, 'Eventos')}
+        ${EventsUI.metricCard(m.totalAttendees, 'Asistentes')}
       </div>
       <div class="grid grid-3" style="margin-top:12px">
-        <div class="card"><h4>Por tipo de contenido</h4><div class="row" style="margin-top:12px">${badges(metrics.typeContentCounts)}</div></div>
-        <div class="card"><h4>Por tipo de evento</h4><div class="row" style="margin-top:12px">${badges(metrics.typeEventCounts)}</div></div>
+        <div class="card"><h4>Por tipo de contenido</h4><div class="row" style="margin-top:12px">${badges(m.typeContentCounts)}</div></div>
+        <div class="card"><h4>Por tipo de evento</h4><div class="row" style="margin-top:12px">${badges(m.typeEventCounts)}</div></div>
         <div class="card"><h4>Mints de NFT por chain</h4><div class="row" style="margin-top:12px">${chains}</div></div>
       </div>`);
   }
 
   // ── filters ─────────────────────────────────────────────────────────────
 
-  setupMonthFilter(events, renderFunction) {
-    this.bindFilterGroup('.month-btn', events, renderFunction);
-  }
+  setupMonthFilter(events, render) { this.bind('.month-btn', events, render); }
+  setupYearFilter(events, render) { this.bind('.year-btn', events, render); }
+  setupFilters(events, render) { this.setupMonthFilter(events, render); this.setupYearFilter(events, render); }
 
-  setupYearFilter(events, renderFunction) {
-    this.bindFilterGroup('.year-btn', events, renderFunction);
-  }
-
-  setupFilters(events, renderFunction) {
-    this.setupMonthFilter(events, renderFunction);
-    this.setupYearFilter(events, renderFunction);
-  }
-
-  bindFilterGroup(selector, events, renderFunction) {
+  bind(selector, events, render) {
     const btns = document.querySelectorAll(selector);
-    btns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        btns.forEach((b) => {
-          b.classList.remove('active');
-          b.setAttribute('aria-pressed', 'false');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-pressed', 'true');
-        this.applyFilters(events, renderFunction);
-      });
-    });
+    btns.forEach((btn) => btn.addEventListener('click', () => {
+      btns.forEach((b) => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      this.applyFilters(events, render);
+    }));
   }
 
-  applyFilters(events, renderFunction) {
-    const value = (sel, attr) => document.querySelector(sel)?.getAttribute(attr) ?? 'all';
-    renderFunction(this.eventsService.filterEventsByYearAndMonth(
-      events,
-      value('.year-btn.active', 'data-year'),
-      value('.month-btn.active', 'data-month'),
-    ));
+  applyFilters(events, render) {
+    const val = (sel, attr) => document.querySelector(sel)?.getAttribute(attr) ?? 'all';
+    render(this.eventsService.filterEventsByYearAndMonth(
+      events, val('.year-btn.active', 'data-year'), val('.month-btn.active', 'data-month')));
   }
 
   // ── helpers ─────────────────────────────────────────────────────────────
 
   formatDateRange(startDate, endDate) {
-    if (!has(endDate) || startDate === endDate) return startDate;
+    if (!has(endDate) || startDate === endDate) return startDate || '';
     return `${startDate} – ${endDate}`;
   }
 
@@ -248,5 +351,4 @@ class EventsUI {
   }
 }
 
-// Export for use in other modules
 window.EventsUI = EventsUI;

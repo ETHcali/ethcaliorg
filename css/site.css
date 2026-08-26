@@ -589,55 +589,126 @@ a.address.is-legacy { color: var(--text-muted); }
 .card-head .pill { margin-left: auto; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   EVENTS (events_locales.html, events_internationals.html)
+   EVENTS — data grid, pagination, detail modal
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.events-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
-
-.event-card {
-  display: flex; flex-direction: column;
+/* The grid is the only thing on the site allowed to scroll sideways, and it
+   does so inside its own box — the page body never scrolls horizontally. */
+.grid-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-card);
   background: var(--surface-slab);
-  border: 1px solid var(--line-hairline); border-radius: var(--radius-card);
-  overflow: hidden;
-  transition: border-color var(--t-base) var(--ease), transform var(--t-base) var(--ease);
 }
-.event-card:hover { border-color: var(--line-brand); transform: translateY(-2px); }
-.event-photo { aspect-ratio: 16 / 9; background: var(--surface-inset); }
-.event-photo img { width: 100%; height: 100%; object-fit: cover; }
-.event-card-body { display: flex; flex-direction: column; padding: 22px; flex: 1; }
-.event-card-body > .eyebrow { display: block; margin-bottom: 8px; }
-.event-card-body h3 { font-size: 1.06rem; margin-bottom: 14px; }
-/* The CTA sits on the bottom edge so cards of different heights line up. */
-.event-card-body > .card-cta { margin-top: auto; padding-top: 16px; }
 
-/* A date, a headcount, a venue — facts, so mono. */
-.event-meta {
-  display: flex; align-items: flex-start; gap: 9px;
-  margin-top: 7px;
-  font-family: var(--font-mono); font-size: 12.5px; color: var(--text-muted);
+.data-grid { width: 100%; border-collapse: collapse; font-size: 14px; }
+.data-grid th {
+  position: sticky; top: 0; z-index: 1;
+  padding: 14px 16px; text-align: left; white-space: nowrap;
+  background: var(--surface-inset);
+  border-bottom: 1px solid var(--line-hairline);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint);
 }
-.event-meta svg { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; color: var(--text-faint); }
-.event-meta a { color: var(--eth-blue-text); }
+.data-grid td { padding: 14px 16px; border-top: 1px solid var(--line-hairline); vertical-align: middle; }
+.data-grid tbody tr:first-child td { border-top: none; }
+.data-grid .right { text-align: right; }
+.data-grid .nowrap { white-space: nowrap; }
+.data-grid .cell-name { color: var(--text-primary); font-weight: 500; min-width: 200px; }
+.data-grid .cell-muted { color: var(--text-muted); }
 
-/* <details> rather than a JS class toggle: keyboard and screen readers get the
-   open/closed state for free, and the old inline onclick is gone. */
-.event-details { margin-top: 16px; border-top: 1px solid var(--line-hairline); padding-top: 14px; }
-.event-details summary {
-  display: flex; align-items: center; gap: 7px;
-  min-height: 36px; cursor: pointer; list-style: none;
-  font-size: 14px; color: var(--eth-blue-text);
+/* A row opens the detail modal, so it has to read and behave as a control. */
+.data-grid tbody tr { cursor: pointer; transition: background var(--t-fast) var(--ease); }
+.data-grid tbody tr:hover { background: rgba(43, 35, 239, .06); }
+.data-grid tbody tr:hover .cell-name { color: var(--eth-blue-text); }
+.data-grid tbody tr:focus-visible { outline: none; background: var(--eth-blue-wash); box-shadow: inset 0 0 0 1px var(--line-brand); }
+
+/* ── pagination ───────────────────────────────────────────────────────────── */
+.pager { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 20px; }
+.pager-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 40px; height: 40px; padding: 0 12px;
+  background: transparent;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-chip);
+  font-family: var(--font-mono); font-size: 13px; color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color var(--t-base) var(--ease), color var(--t-base) var(--ease),
+              background var(--t-base) var(--ease);
 }
-.event-details summary::-webkit-details-marker { display: none; }
-.event-details summary svg { width: 14px; height: 14px; transition: transform var(--t-base) var(--ease); }
-.event-details[open] summary svg { transform: rotate(180deg); }
-.details-grid { display: grid; gap: 12px; margin-top: 14px; }
-.detail-item { display: flex; flex-direction: column; gap: 5px; font-size: 14px; }
-.detail-item a { display: inline-flex; align-items: center; gap: 6px; }
-.detail-item svg { width: 12px; height: 12px; }
+.pager-btn:hover:not([disabled]) { border-color: var(--line-brand); color: var(--text-primary); }
+.pager-btn.is-current { background: var(--eth-blue-wash); border-color: var(--line-brand); color: var(--eth-blue-text); }
+.pager-btn[disabled] { opacity: .35; cursor: not-allowed; }
+.pager-btn svg { width: 15px; height: 15px; }
+.pager-gap { color: var(--text-faint); padding: 0 2px; }
+.pager-count { margin-left: auto; font-size: 12px; color: var(--text-faint); }
 
-/* Filter chips. Only one in a group is active at a time. */
-.filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-.month-btn, .year-btn, .event-type-btn {
+/* ── detail modal ─────────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 200;
+  display: grid; place-items: center;
+  padding: 20px;
+  background: rgba(6, 6, 11, .78);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  animation: modal-in var(--t-base) var(--ease);
+}
+@keyframes modal-in { from { opacity: 0 } to { opacity: 1 } }
+
+.modal {
+  position: relative;
+  width: min(620px, 100%); max-height: min(86vh, 780px);
+  overflow-y: auto;
+  background: var(--surface-slab);
+  border: 1px solid var(--line-brand); border-radius: var(--radius-card);
+  box-shadow: 0 0 32px rgba(43, 35, 239, .20);   /* the one permitted glow */
+}
+.modal-close {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  display: grid; place-items: center;
+  width: 40px; height: 40px;
+  background: rgba(6, 6, 11, .7);
+  border: 1px solid var(--line-hairline); border-radius: var(--radius-chip);
+  color: var(--text-muted); cursor: pointer;
+  transition: color var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
+}
+.modal-close:hover { color: var(--text-primary); border-color: var(--line-brand); }
+.modal-close svg { width: 17px; height: 17px; }
+
+.modal-photo { aspect-ratio: 16 / 9; background: var(--surface-inset); }
+.modal-photo img { width: 100%; height: 100%; object-fit: cover; }
+.modal-body { padding: 26px; }
+.modal-body h3 { font-size: 1.3rem; margin-bottom: 20px; padding-right: 44px; }
+.modal-subhead {
+  margin: 26px 0 12px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint);
+}
+
+.modal-facts { display: grid; gap: 1px; background: var(--line-hairline); border-radius: var(--radius-control); overflow: hidden; }
+.modal-fact { display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: space-between;
+              padding: 11px 14px; background: var(--surface-slab); }
+.modal-fact dt { font-size: 13px; color: var(--text-muted); }
+.modal-fact dd { font-size: 13px; color: var(--text-primary); text-align: right; }
+
+/* Link chips. The label says what it is, the host says where it goes — that is
+   as much of a preview as a static site can honestly render. A real OG card
+   needs something server-side to fetch and cache the target's metadata. */
+.link-chips { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+.link-chip {
+  display: flex; align-items: center; gap: 10px;
+  min-height: var(--tap-min); padding: 8px 14px;
+  background: var(--surface-inset);
+  border: 1px solid var(--line-hairline); border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  transition: border-color var(--t-base) var(--ease), background var(--t-base) var(--ease);
+}
+.link-chip:hover { border-color: var(--line-brand); background: var(--eth-blue-wash); color: var(--text-primary); }
+.link-chip-label { font-size: 14px; font-weight: 500; }
+.link-chip-host { margin-left: auto; font-size: 11px; color: var(--text-faint); }
+.link-chip svg { width: 13px; height: 13px; flex-shrink: 0; opacity: .6; }
+
+/* ── filter chips ─────────────────────────────────────────────────────────── */
+.filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.month-btn, .year-btn, .filter-btn {
   min-height: 40px; padding: 0 16px;
   background: transparent;
   border: 1px solid var(--line-strong); border-radius: var(--radius-full);
@@ -646,72 +717,10 @@ a.address.is-legacy { color: var(--text-muted); }
   transition: border-color var(--t-base) var(--ease), color var(--t-base) var(--ease),
               background var(--t-base) var(--ease);
 }
-.month-btn:hover, .year-btn:hover, .event-type-btn:hover { border-color: var(--line-brand); color: var(--text-primary); }
-.month-btn.active, .year-btn.active, .event-type-btn.active {
+.month-btn:hover, .year-btn:hover, .filter-btn:hover { border-color: var(--line-brand); color: var(--text-primary); }
+.month-btn.active, .year-btn.active, .filter-btn.active {
   background: var(--eth-blue-wash); border-color: var(--line-brand); color: var(--eth-blue-text);
 }
-
-/* ── venues ───────────────────────────────────────────────────────────────── */
-/* Stat cards double as filters, so they are <button>s that must not look like
-   buttons — reset the UA chrome and keep the metric-card face. */
-.stat-card { display: block; width: 100%; border: 1px solid var(--line-hairline); cursor: pointer; text-align: center;
-             transition: border-color var(--t-base) var(--ease); }
-.stat-card:hover { border-color: var(--line-brand); }
-.stat-card.active { background: var(--eth-blue-wash); border-color: var(--line-brand); }
-.venue-card[hidden] { display: none; }
-.venue-card .card-head { align-items: flex-start; }
-
-/* ── equipment inventory (technical-infra) ────────────────────────────────── */
-.equipment-list { margin-top: 18px; }
-.equipment-item {
-  display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
-  gap: 10px 16px;
-  padding: 14px 0;
-  border-top: 1px solid var(--line-hairline);
-}
-.equipment-item h4 { font-size: 15px; font-weight: 500; }
-/* Make, model and where it came from — a spec, so mono. */
-.item-brand { margin-top: 3px; font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); }
-
-/* ── hackathon fact cards ─────────────────────────────────────────────────── */
-.fact-value {
-  margin-top: 6px;
-  font-family: var(--font-mono); font-size: 1.35rem; font-weight: 500;
-  color: var(--text-primary);
-}
-.fact-note { margin-top: 4px; font-size: 13px; color: var(--text-muted); }
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   BRAND GUIDELINES (brand_guidelines.html)
-   The page is its own specimen — it must use the tokens, not describe them.
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-.mark-card { display: grid; place-items: start; }
-.mark-card img { max-height: 120px; width: auto; margin-bottom: 18px; }
-
-.swatch-list { margin-top: 18px; }
-.swatch { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-top: 1px solid var(--line-hairline); }
-.swatch-chip {
-  flex-shrink: 0; width: 42px; height: 42px;
-  border-radius: var(--radius-chip); border: 1px solid var(--line-hairline);
-}
-.swatch-token { font-size: 12.5px; color: var(--text-primary); }
-.swatch-use { margin-top: 3px; font-size: 13px; color: var(--text-muted); }
-
-.specimen { padding: 18px 0; border-top: 1px solid var(--line-hairline); }
-.specimen:first-child { border-top: none; padding-top: 0; }
-.specimen p { margin-top: 8px; font-size: clamp(1.1rem, 2.2vw, 1.6rem); color: var(--text-primary); letter-spacing: -0.02em; }
-
-.voice-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-.voice-table th {
-  padding: 0 16px 12px 0; text-align: left;
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--text-faint); font-weight: 500;
-}
-.voice-table td { padding: 12px 16px 12px 0; border-top: 1px solid var(--line-hairline); vertical-align: top; }
-.voice-good { color: var(--text-primary); }
-/* The wrong column is dimmed, not struck through — it still has to be readable. */
-.voice-bad { color: var(--text-faint); }
 
 /* ── venue map ────────────────────────────────────────────────────────────────
    Leaflet, on CARTO's dark basemap. Everything Leaflet paints in its own colours
