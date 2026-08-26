@@ -1,19 +1,19 @@
-﻿Name,TYPE,Status,ACTIVIDADES,URL
-Binaural,GastroBar,ACTIVATED,3,https://maps.app.goo.gl/oRua2cYx5jzkt7bk6
-Albahaca Terraza,GastroBar,ACTIVATED,2,https://maps.app.goo.gl/X2BAQxsmdaZxdcrd6
-La Pergola,GastroBar,TO TALK,0,https://maps.app.goo.gl/JfDhKGyZ9jHjgWoW8
-Bengala Bandolero,Club Music,OPENING,0,https://maps.app.goo.gl/Fh8gYrTUwJZ3ZdDQ7
-Discoteca 1060,Club Music,ACTIVATED,3,https://maps.app.goo.gl/AaDxC247DFEue3kh9
-Colectivo Coworking,Coworking,ACTIVATED,1,https://maps.app.goo.gl/WaXtVbq51WyYJwxo8
-RAMADA CAFE,Coworking,ACTIVATED,4,https://maps.app.goo.gl/4R99Qru9UKBzWpGr8
-Universidad USB - Laboratorio Financiero,University,ACTIVATED,1,
-Universidad ICESI -  Laboratorio Financiero,University,ACTIVATED,7,https://maps.app.goo.gl/ToW59gW56w4TxwoeA
-Universidad UAO,University,ACTIVATED,1,https://maps.app.goo.gl/djcuzzJCp375FqnMA
-Universidad Santiago de Cali (USC),University,ACTIVATED,1,https://maps.app.goo.gl/3hH8vgLzbJYxpjF2A
-Universidad del Valle,University,ACTIVATED,1,https://maps.app.goo.gl/ZyYV65dG2MrarX777
-La Pizzicleta,Restaurant,ACTIVATED,1,https://maps.app.goo.gl/JZKcachS6L1zKzUJ6
-El Pizzaron,Restaurant,ACTIVATED,2,https://maps.app.goo.gl/NCtDGHFeLfRgziw37
-La galería de la Plaza,Restaurant,ACTIVATED,1,https://maps.app.goo.gl/39dY3XbwBvYFX8Wx7
-TDT Novena,Restaurant,ACTIVATED,1,
-Zona america - NIDO: Distrito de Innovacion,Office Partner,ACTIVATED,3,https://maps.app.goo.gl/Mb1RVAhBoaWDVte96
-Torre de Cali Piso 40,Office Partner,ACTIVATED,1,https://maps.app.goo.gl/4RrNkT1dWUGvsovH9
+Name,TYPE,Status,ACTIVIDADES,URL,LAT,LNG
+Binaural,GastroBar,ACTIVATED,3,https://maps.app.goo.gl/oRua2cYx5jzkt7bk6,3.450686,-76.544001
+Albahaca Terraza,GastroBar,ACTIVATED,2,https://maps.app.goo.gl/X2BAQxsmdaZxdcrd6,3.454630,-76.525842
+La Pergola,GastroBar,TO TALK,0,https://maps.app.goo.gl/JfDhKGyZ9jHjgWoW8,3.454622,-76.531496
+Bengala Bandolero,Club Music,OPENING,0,https://maps.app.goo.gl/Fh8gYrTUwJZ3ZdDQ7,3.435016,-76.541801
+Discoteca 1060,Club Music,ACTIVATED,3,https://maps.app.goo.gl/AaDxC247DFEue3kh9,3.446899,-76.532015
+Colectivo Coworking,Coworking,ACTIVATED,1,https://maps.app.goo.gl/WaXtVbq51WyYJwxo8,3.411830,-76.539123
+RAMADA CAFE,Coworking,ACTIVATED,4,https://maps.app.goo.gl/4R99Qru9UKBzWpGr8,3.376856,-76.545655
+Universidad USB - Laboratorio Financiero,University,ACTIVATED,1,,,
+Universidad ICESI -  Laboratorio Financiero,University,ACTIVATED,7,https://maps.app.goo.gl/ToW59gW56w4TxwoeA,3.341895,-76.530602
+Universidad UAO,University,ACTIVATED,1,https://maps.app.goo.gl/djcuzzJCp375FqnMA,3.353653,-76.522986
+Universidad Santiago de Cali (USC),University,ACTIVATED,1,https://maps.app.goo.gl/3hH8vgLzbJYxpjF2A,3.403396,-76.547065
+Universidad del Valle,University,ACTIVATED,1,https://maps.app.goo.gl/ZyYV65dG2MrarX777,3.431567,-76.546745
+La Pizzicleta,Restaurant,ACTIVATED,1,https://maps.app.goo.gl/JZKcachS6L1zKzUJ6,3.452534,-76.534725
+El Pizzaron,Restaurant,ACTIVATED,2,https://maps.app.goo.gl/NCtDGHFeLfRgziw37,3.453389,-76.532994
+La galería de la Plaza,Restaurant,ACTIVATED,1,https://maps.app.goo.gl/39dY3XbwBvYFX8Wx7,3.455141,-76.535353
+TDT Novena,Restaurant,ACTIVATED,1,,,
+Zona america - NIDO: Distrito de Innovacion,Office Partner,ACTIVATED,3,https://maps.app.goo.gl/Mb1RVAhBoaWDVte96,3.327976,-76.521277
+Torre de Cali Piso 40,Office Partner,ACTIVATED,1,https://maps.app.goo.gl/4RrNkT1dWUGvsovH9,3.458398,-76.528742

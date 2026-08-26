@@ -40,7 +40,81 @@ function parseVenues(text) {
       status: f[2] || '',
       activities: Number(f[3]) || 0,
       url: f[4] || '',
+      // Resolved once from the Google Maps shortlink in column 5 and stored in
+      // the CSV, so the page never has to follow a redirect at runtime. Two
+      // venues have no shortlink and therefore no pin; they still list.
+      lat: Number(f[5]) || null,
+      lng: Number(f[6]) || null,
     }));
+}
+
+/* Cali. Used as the fallback centre when no venue has coordinates. */
+const CALI = [3.4205, -76.5320];
+
+/** Colour a pin by venue status, using the signal tokens — never decoratively. */
+function pinColor(status) {
+  return status.toUpperCase() === 'ACTIVATED' ? 'var(--signal-confirmed)' : 'var(--signal-pending)';
+}
+
+/**
+ * Draws the venue map.
+ *
+ * CARTO's dark basemap rather than standard OSM tiles: the site is dark-only and
+ * filtering light tiles to match never looks right. Leaflet is vendored in
+ * js/vendor/ so the page does not depend on a CDN for its code — only on the
+ * tile server for imagery, which is inherent to any slippy map.
+ */
+function renderMap(venues) {
+  const el = document.getElementById('venues-map');
+  if (!el) return;
+
+  if (typeof L === 'undefined') {
+    // Leaflet failed to load. The list below is the real content, so drop the
+    // map rather than leaving an empty grey box.
+    el.remove();
+    return;
+  }
+
+  const located = venues.filter((v) => v.lat && v.lng);
+  if (!located.length) { el.remove(); return; }
+
+  const map = L.map(el, { scrollWheelZoom: false, attributionControl: true });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19,
+  }).addTo(map);
+
+  const markers = located.map((v) => {
+    const marker = L.marker([v.lat, v.lng], {
+      icon: L.divIcon({
+        className: 'venue-pin-wrap',
+        html: `<span class="venue-pin" style="--pin:${pinColor(v.status)}"></span>`,
+        iconSize: [16, 16],
+        iconAnchor: [8, 8],
+      }),
+      title: v.name,
+      alt: v.name,
+    });
+    marker.bindPopup(`
+      <strong>${esc(v.name)}</strong>
+      <span class="venue-pop-type">${esc(v.type)}</span>
+      <span class="venue-pop-count">${v.activities} ${v.activities === 1 ? 'actividad' : 'actividades'}</span>
+      ${v.url ? `<a href="${esc(v.url)}" target="_blank" rel="noopener">Ver en Google Maps</a>` : ''}`);
+    marker._venueType = slug(v.type);
+    return marker;
+  });
+
+  const group = L.featureGroup(markers).addTo(map);
+  map.fitBounds(group.getBounds(), { padding: [28, 28], maxZoom: 16 });
+
+  // Scroll-wheel zoom stays off so the page keeps scrolling past the map; a
+  // click hands the wheel to the map, and leaving it takes the wheel back.
+  map.on('click', () => map.scrollWheelZoom.enable());
+  map.on('mouseout', () => map.scrollWheelZoom.disable());
+
+  return { map, group, markers };
 }
 
 function venueCard(v) {
@@ -91,10 +165,26 @@ function filterHtml(venues) {
   return btn('all', 'Todos', true) + types.map((t) => btn(slug(t), t, false)).join('');
 }
 
+/** Set by the DOMContentLoaded handler once the map exists. */
+let mapView = null;
+
 function applyFilter(type) {
   document.querySelectorAll('.venue-card').forEach((card) => {
     card.hidden = type !== 'all' && card.dataset.type !== type;
   });
+
+  // The map follows the same filter as the list. Showing every pin while the
+  // list is filtered to four venues reads as a bug.
+  if (!mapView) return;
+  const shown = [];
+  mapView.markers.forEach((m) => {
+    const visible = type === 'all' || m._venueType === type;
+    if (visible) { m.addTo(mapView.map); shown.push(m); }
+    else { mapView.map.removeLayer(m); }
+  });
+  if (shown.length) {
+    mapView.map.fitBounds(L.featureGroup(shown).getBounds(), { padding: [28, 28], maxZoom: 16 });
+  }
 }
 
 function selectFilter(type) {
@@ -129,6 +219,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   grid.innerHTML = venues.map(venueCard).join('');
+  mapView = renderMap(venues) ?? null;
+
+  const located = venues.filter((v) => v.lat && v.lng).length;
+  const note = document.getElementById('map-note');
+  if (note && located < venues.length) {
+    note.textContent = `${located} de ${venues.length} venues están en el mapa. `
+      + 'Los demás todavía no tienen ubicación registrada.';
+  }
 
   const stats = document.getElementById('venue-stats');
   if (stats) stats.innerHTML = statsHtml(venues);

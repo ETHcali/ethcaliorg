@@ -712,3 +712,107 @@ a.address.is-legacy { color: var(--text-muted); }
 .voice-good { color: var(--text-primary); }
 /* The wrong column is dimmed, not struck through — it still has to be readable. */
 .voice-bad { color: var(--text-faint); }
+
+/* ── venue map ────────────────────────────────────────────────────────────────
+   Leaflet, on CARTO's dark basemap. Everything Leaflet paints in its own colours
+   is overridden here so the map reads as part of the page rather than an embed. */
+.venues-map {
+  height: clamp(380px, 64vh, 660px);   /* tall enough that fitBounds picks a useful zoom */
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-card);
+  background: var(--surface-inset);
+  z-index: 0;                      /* keep tiles under the sticky navbar */
+}
+
+/* A pin is a dot in the venue's status colour — the same green/amber the list
+   pills use, so the two readings agree. */
+.venue-pin {
+  display: block; width: 14px; height: 14px;
+  border-radius: var(--radius-full);
+  background: var(--pin);
+  border: 2px solid var(--surface-void);
+  box-shadow: 0 0 0 1px var(--pin);
+  transition: transform var(--t-fast) var(--ease);
+}
+.venue-pin-wrap:hover .venue-pin { transform: scale(1.35); }
+
+.leaflet-container { font-family: var(--font-sans); background: var(--surface-inset); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: var(--surface-slab);
+  border: 1px solid var(--line-hairline);
+  color: var(--text-secondary);
+  border-radius: var(--radius-control);
+  box-shadow: none;
+}
+.leaflet-popup-content { margin: 14px 16px; font-size: 14px; line-height: 1.5; }
+.leaflet-popup-content strong { display: block; color: var(--text-primary); font-weight: 500; }
+.leaflet-popup-content .venue-pop-type,
+.leaflet-popup-content .venue-pop-count {
+  display: block; margin-top: 3px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
+}
+.leaflet-popup-content .venue-pop-type { text-transform: uppercase; letter-spacing: .06em; }
+.leaflet-popup-content a { display: inline-block; margin-top: 10px; font-size: 13px; }
+.leaflet-container a.leaflet-popup-close-button { color: var(--text-faint); }
+.leaflet-container a.leaflet-popup-close-button:hover { color: var(--text-primary); }
+
+.leaflet-control-zoom a {
+  background: var(--surface-slab);
+  border-color: var(--line-hairline) !important;
+  color: var(--text-secondary);
+}
+.leaflet-control-zoom a:hover { background: var(--surface-ridge); color: var(--text-primary); }
+.leaflet-control-attribution {
+  background: rgba(6, 6, 11, .78) !important;
+  color: var(--text-faint);
+  font-family: var(--font-mono); font-size: 10px;
+}
+.leaflet-control-attribution a { color: var(--text-muted); }
+
+/* ── supporters wall (home) ───────────────────────────────────────────────────
+   A logo wall, not a card grid: the marks carry the meaning, so the plates are
+   quiet and evenly sized and nothing competes with them. */
+.supporter-group {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 18px;
+}
+.supporter-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 760px) { .supporter-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.supporter-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  min-height: 132px;          /* keeps logo cards and wordmark cards the same size */
+  padding: 24px 18px;
+  background: var(--surface-slab);
+  border: 1px solid var(--line-hairline); border-radius: var(--radius-card);
+  transition: border-color var(--t-base) var(--ease);
+}
+.supporter-card:hover { border-color: var(--line-brand); }
+
+.supporter-plate {
+  display: grid; place-items: center;
+  flex: 1;
+  width: 100%; min-height: 56px;
+}
+/* Partner marks keep their own colours — they are other organisations' identity,
+   not decoration of ours. Held back at rest, full strength on hover. */
+.supporter-plate img {
+  max-width: 100%; max-height: 52px; width: auto; object-fit: contain;
+  opacity: .72; transition: opacity var(--t-base) var(--ease);
+}
+.supporter-card:hover .supporter-plate img { opacity: 1; }
+
+/* Stand-in until the real logo file lands. */
+.supporter-wordmark {
+  font-family: var(--font-sans); font-weight: 700; font-size: 16px;
+  line-height: 1.2; letter-spacing: -0.01em;
+  color: var(--text-muted);
+  text-wrap: balance;
+}
+.supporter-card:hover .supporter-wordmark { color: var(--text-secondary); }
+
+.supporter-name { margin-top: 14px; font-size: 13.5px; color: var(--text-secondary); }
+.supporter-note { margin-top: 4px; font-size: 12px; color: var(--text-faint); }

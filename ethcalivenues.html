@@ -22,6 +22,9 @@
     <link rel="preload" href="branding/fonts/web/SarunPro-Black.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="branding/fonts/web/SarunPro-Book.woff2" as="font" type="font/woff2" crossorigin>
 
+    <!-- Leaflet is vendored in js/vendor/ rather than pulled from a CDN. Its CSS
+         loads before site.css so the brand overrides win the cascade. -->
+    <link rel="stylesheet" href="js/vendor/leaflet.css">
     <link rel="stylesheet" href="css/site.css">
     <script src="js/navbar.js" defer></script>
 </head>
@@ -51,8 +54,11 @@
                     <p>Toca un tipo para filtrar la lista.</p>
                 </div>
 
-                <!-- Both filled by venues.js from databases/venuesethcali.csv. -->
-                <div id="venue-stats"></div>
+                <div id="venues-map" class="venues-map"></div>
+                <p class="faint" id="map-note" style="font-size:13px; margin-top:10px"></p>
+
+                <!-- All filled by venues.js from databases/venuesethcali.csv. -->
+                <div id="venue-stats" style="margin-top:32px"></div>
                 <div class="filter-row" id="venue-filters" role="group" aria-label="Filtrar por tipo" style="margin-top:28px"></div>
 
                 <div class="logo-grid" id="venues-container">
@@ -65,6 +71,7 @@
 
     <div id="footer-container"></div>
 
+    <script src="js/vendor/leaflet.js" defer></script>
     <script src="venues.js" defer></script>
 </body>
 </html>
