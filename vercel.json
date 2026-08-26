@@ -2,16 +2,22 @@
   "buildCommand": "npm run vercel-build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/home", "destination": "/index.html" },
-    { "source": "/about", "destination": "/about.html" },
-    { "source": "/events", "destination": "/events.html" },
-    { "source": "/venues", "destination": "/ethcalivenues.html" },
-    { "source": "/education", "destination": "/education.html" },
-    { "source": "/dao", "destination": "/ethcalidao.html" },
-    { "source": "/swag", "destination": "/swag.html" },
-    { "source": "/technical-infra", "destination": "/technical-infra.html" },
-    { "source": "/brand-guidelines", "destination": "/brand_guidelines.html" }
+    {
+      "source": "/home",
+      "destination": "/"
+    },
+    {
+      "source": "/venues",
+      "destination": "/ethcalivenues"
+    },
+    {
+      "source": "/dao",
+      "destination": "/ethcalidao"
+    },
+    {
+      "source": "/brand-guidelines",
+      "destination": "/brand_guidelines"
+    }
   ],
   "headers": [
     {
