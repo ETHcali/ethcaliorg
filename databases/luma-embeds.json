@@ -1,0 +1,11 @@
+{
+  "_comment": "lu.ma slug -> Luma api_id, for the embeddable /embed/event/<api_id>/simple URL. Regenerate with `npm run luma-ids` when new lu.ma links land in the events CSV; resolving needs network so the result is committed.",
+  "b8xns9iz": "evt-7M30N2NyR86Nn3b",
+  "kil2sxsa": "evt-0cNRMSYnzEJlRaf",
+  "gmx03hiy": "evt-5cjf2LHA5iJrZM1",
+  "8waabg4p": "evt-E7pMOsPjuheDI0D",
+  "fd6wh1ny": "evt-96ItZFevrq3yWki",
+  "v4eotmg0": "evt-PReTansmYsGxgxI",
+  "kl71zv1d": "evt-8lv3RUo48RbQw0F",
+  "ozlqxrph": "evt-Tmz6EiocaWLpk9J"
+}

@@ -272,6 +272,14 @@ a.card:hover h3 { color: var(--eth-blue-text); }
   display: grid; gap: 40px;
   grid-template-columns: minmax(240px, 1.6fr) repeat(auto-fit, minmax(140px, 1fr));
 }
+/* Those floors add up to more than a phone has: 240 + 140 + the 40px gap needs
+   420px, and a 390px viewport leaves 342px inside the container. auto-fit cannot
+   help — it has already collapsed to one repeat track — so the grid overflowed
+   and took every page on the site into a horizontal scroll with it. Below the
+   width where two columns fit, stack. */
+@media (max-width: 640px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+}
 .footer-logo-img { height: 68px; width: auto; margin-bottom: 16px; }
 .footer-brand p { color: var(--text-muted); max-width: 34ch; }
 .footer-links-group h3 {
@@ -705,6 +713,40 @@ a.address.is-legacy { color: var(--text-muted); }
 .link-chip-label { font-size: 14px; font-weight: 500; }
 .link-chip-host { margin-left: auto; font-size: 11px; color: var(--text-faint); }
 .link-chip svg { width: 13px; height: 13px; flex-shrink: 0; opacity: .6; }
+
+/* The live Luma calendar. Height is fixed because the iframe is cross-origin —
+   it cannot report its content height, and there is no postMessage contract for
+   it, so the box has to be tall enough for a few events and scroll inside. */
+.luma-calendar {
+  border: 1px solid var(--line-hairline); border-radius: var(--radius-card);
+  background: var(--surface-slab); overflow: hidden;
+}
+.luma-calendar iframe { display: block; width: 100%; height: 420px; border: 0; }
+.calendar-note { margin-top: 14px; font-size: 14px; color: var(--text-muted); }
+
+/* The Enlaces cell: a glyph so the number reads as "links", not as another
+   metric in a table full of metrics. */
+.link-count { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); }
+.link-count svg { width: 14px; height: 14px; opacity: .7; }
+.link-count .mono { font-size: 13px; }
+
+/* Luma is the only host whose page can be framed, and its embed is slow to
+   paint, so it sits behind a click. */
+.luma-open {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; min-height: var(--tap-min); padding: 8px 14px;
+  background: var(--surface-inset);
+  border: 1px solid var(--line-hairline); border-radius: var(--radius-control);
+  font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+  color: var(--text-secondary); text-align: left; cursor: pointer;
+  transition: border-color var(--t-base) var(--ease), background var(--t-base) var(--ease);
+}
+.luma-open:hover { border-color: var(--line-brand); background: var(--eth-blue-wash); color: var(--text-primary); }
+.luma-open .faint { margin-left: auto; font-size: 11px; }
+.luma-frame {
+  display: block; width: 100%; height: 480px; border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-control); background: var(--surface-inset);
+}
 
 /* ── filter chips ─────────────────────────────────────────────────────────── */
 .filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }

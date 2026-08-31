@@ -25,7 +25,22 @@ const ICON = {
   close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
   prev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
   next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+  link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
 };
+
+/**
+ * The sheet's own vocabulary, in the page's language. The columns are filled in
+ * by hand and mix English, Spanish and a typo ("Voluntering"), which the grid was
+ * printing verbatim as COLAB / OWN / VOLUNTERING on a Spanish page. Anything not
+ * listed falls through unchanged, so a new value in the sheet still shows up.
+ */
+const LABEL = {
+  Event: 'Evento', Meetup: 'Meetup', Workshop: 'Taller', Hackathon: 'Hackathon',
+  Conference: 'Conferencia', Proyecto: 'Proyecto',
+  Colab: 'Colaboración', own: 'Propio', Attendees: 'Asistentes',
+  Voluntering: 'Voluntariado', Ethcolombia: 'ETHColombia',
+};
+const label = (v) => LABEL[String(v ?? '').trim()] ?? v;
 
 /** "NA" and "-" are how the source spreadsheets spell an absent value. */
 const has = (v) => {
@@ -41,11 +56,25 @@ const num = (v) => {
   return Number.isFinite(n) && n > 0 ? n : null;
 };
 
-/** A value is only linkable if it really is an http(s) URL. */
-function isUrl(v) {
+/**
+ * A value becomes a link only if it really addresses somewhere, and it is
+ * normalised to an absolute URL on the way.
+ *
+ * The scheme test used to run *before* anything added a missing "https://", and
+ * the global calendar CSV writes bare hosts — "zugrama.org/", "buidleurope.com".
+ * So 75 of the 84 populated Link cells and 60 of the 65 Chat cells were thrown
+ * away, and 73 of 85 events rendered "—" in Enlaces and claimed in the modal
+ * that they had no links at all. Every one of them has a website.
+ */
+function toUrl(v) {
   const s = String(v ?? '').trim();
-  if (!/^https?:\/\//i.test(s)) return false;
-  try { new URL(s); return true; } catch { return false; }
+  if (!s) return null;
+  // A bare host still has to look like one, or a stray note becomes a link.
+  const candidate = /^https?:\/\//i.test(s) ? s
+    : /^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}([/?#]|$)/i.test(s) ? `https://${s}`
+    : null;
+  if (!candidate) return null;
+  try { return new URL(candidate).href; } catch { return null; }
 }
 
 /** Host only, for the link chips — the URL itself is never printed raw. */
@@ -70,6 +99,7 @@ function linksFor(e) {
     ['Fotos', e.registroFotografico],
     ['Grabación', e.youtubeRecording],
     ['Ubicación', e.locationUrl],
+    ['Host', e.hostColabUrl],
     ['Sitio', e.link],
     ['Chat', e.chat],
   ];
@@ -79,8 +109,8 @@ function linksFor(e) {
   // an internal archive label means nothing to a visitor anyway. It is left out
   // entirely rather than shown as a dead link.
   return candidates
-    .filter(([, u]) => has(u) && isUrl(u))
-    .map(([l, u]) => [l, String(u).trim()]);
+    .map(([label, raw]) => [label, has(raw) ? toUrl(raw) : null])
+    .filter(([, url]) => url);
 }
 
 class EventsUI {
@@ -167,13 +197,21 @@ class EventsUI {
     return `<tr data-index="${i}" tabindex="0" role="button" aria-label="Ver detalles de ${esc(e.name)}">
       <td class="mono nowrap">${esc(e.date)}</td>
       <td class="cell-name">${esc(e.name)}</td>
-      <td>${has(e.typeContent) ? `<span class="label">${esc(e.typeContent)}</span>` : ''}</td>
+      <td>${has(e.typeContent) ? `<span class="label">${esc(label(e.typeContent))}</span>` : ''}</td>
       <td class="cell-muted">${esc(e.locationName || '')}</td>
       <td class="right mono">${rsvp ?? '<span class="faint">—</span>'}</td>
       <td class="right mono">${mints ?? '<span class="faint">—</span>'}</td>
       <td class="right mono">${poap ?? '<span class="faint">—</span>'}</td>
-      <td class="mono faint nowrap">${links || '—'}</td>
+      <td class="nowrap">${EventsUI.linkCount(links)}</td>
     </tr>`;
+  }
+
+  /** A count on its own read as a stray number in a numeric table; the glyph
+   *  says what is being counted. */
+  static linkCount(n) {
+    return n
+      ? `<span class="link-count">${ICON.link}<span class="mono">${n}</span></span>`
+      : '<span class="faint">—</span>';
   }
 
   intlRow(e, i) {
@@ -182,7 +220,7 @@ class EventsUI {
       <td class="mono nowrap">${esc(this.formatDateRange(e.startDate, e.endDate))}</td>
       <td class="cell-name">${esc(e.name)}</td>
       <td class="cell-muted">${esc(e.location || '')}</td>
-      <td class="mono faint nowrap">${links || '—'}</td>
+      <td class="nowrap">${EventsUI.linkCount(links)}</td>
     </tr>`;
   }
 
@@ -217,10 +255,13 @@ class EventsUI {
 
     const facts = kind === 'local' ? [
       ['Fecha', e.date],
-      ['Tipo de contenido', e.typeContent],
-      ['Tipo de evento', e.typeEvent],
+      ['Tipo de contenido', label(e.typeContent)],
+      ['Tipo de evento', label(e.typeEvent)],
       ['Lugar', e.locationName],
-      ['Host / colaboración', e.hostColab],
+      // The name only. This row used to print the whole cell, so an event whose
+      // host cell read "Devcon: https://archive.devcon.org/watch/?event=…" put a
+      // raw query string in the modal. The URL is a chip below instead.
+      ['Host / colaboración', e.hostColabName || e.hostColab],
       ['RSVP', e.rsvp],
       ['Protocolo de mint', e.protocolToMint],
       ['Chain del NFT', e.chainNft],
@@ -236,10 +277,10 @@ class EventsUI {
     const rows = facts.filter(([, v]) => has(v)).map(([k, v]) =>
       `<div class="modal-fact"><dt>${esc(k)}</dt><dd class="mono">${esc(v)}</dd></div>`).join('');
 
-    const links = linksFor(e).map(([label, url]) => `
-      <a class="link-chip" href="${esc(this.ensureHttps(url))}" target="_blank" rel="noopener">
-        <span class="link-chip-label">${esc(label)}</span>
-        <span class="link-chip-host mono">${esc(hostOf(this.ensureHttps(url)))}</span>
+    const links = linksFor(e).map(([text, url]) => `
+      <a class="link-chip" href="${esc(url)}" target="_blank" rel="noopener">
+        <span class="link-chip-label">${esc(text)}</span>
+        <span class="link-chip-host mono">${esc(hostOf(url))}</span>
         ${ICON.ext}
       </a>`).join('');
 
@@ -255,8 +296,20 @@ class EventsUI {
           <dl class="modal-facts">${rows}</dl>
           ${links ? `<h4 class="modal-subhead">Enlaces</h4><div class="link-chips">${links}</div>`
                   : '<p class="faint" style="margin-top:16px">Este evento no tiene enlaces registrados.</p>'}
+          ${EventsUI.lumaBlock(e)}
         </div>
       </div>`;
+
+    const luma = wrap.querySelector('[data-luma]');
+    if (luma) luma.addEventListener('click', () => {
+      const frame = document.createElement('iframe');
+      frame.className = 'luma-frame';
+      frame.src = `https://luma.com/embed/event/${luma.dataset.luma}/simple`;
+      frame.loading = 'lazy';
+      frame.title = 'Página del evento en Luma';
+      frame.allow = 'fullscreen';
+      luma.replaceWith(frame);
+    });
 
     const close = () => this.closeModal();
     wrap.addEventListener('click', (ev) => { if (ev.target === wrap) close(); });
@@ -268,6 +321,29 @@ class EventsUI {
     document.body.style.overflow = 'hidden';   // stop the page scrolling behind
     wrap.querySelector('.modal-close').focus();
     this.modal = wrap;
+  }
+
+  /**
+   * Luma's own event page, embedded on request.
+   *
+   * Only Luma allows this. Its /embed/event/<api_id>/simple response carries no
+   * X-Frame-Options and no frame-ancestors, while the plain lu.ma page sends
+   * `sameorigin` and Meetup sends CSP `frame-ancestors 'self'` — Chrome refuses
+   * both outright, and neither has a widget or oEmbed endpoint that gets around
+   * it. So 8 of the 47 local events can show this and the rest cannot; the link
+   * chips remain the common path.
+   *
+   * It loads behind a click rather than with the modal because the embed pulls
+   * Luma's whole app and took several seconds to paint in testing — long enough
+   * to make every modal feel broken if it were opened eagerly.
+   */
+  static lumaBlock(e) {
+    if (!e.lumaEmbedId) return '';
+    return `<h4 class="modal-subhead">Luma</h4>
+      <button class="luma-open" type="button" data-luma="${esc(e.lumaEmbedId)}">
+        Cargar la página del evento
+        <span class="faint mono">luma.com</span>
+      </button>`;
   }
 
   closeModal() {

@@ -4,11 +4,13 @@
     "description": "Ethereum Cali Community Website",
     "scripts": {
         "clean": "rm -rf dist",
-        "build": "npm run clean && mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags cohost dist/ && cp ethcali.html dist/index.html && find dist/branding/fonts -maxdepth 1 -type f ! -name '*.woff2' -delete",
-        "vercel-build": "npm run clean && mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags cohost dist/ && cp ethcali.html dist/index.html && find dist/branding/fonts -maxdepth 1 -type f ! -name '*.woff2' -delete",
+        "build": "npm run clean && npm run manifest && mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags cohost dist/ && cp ethcali.html dist/index.html && find dist/branding/fonts -maxdepth 1 -type f ! -name '*.woff2' -delete",
+        "vercel-build": "npm run clean && npm run manifest && mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags cohost dist/ && cp ethcali.html dist/index.html && find dist/branding/fonts -maxdepth 1 -type f ! -name '*.woff2' -delete",
         "start": "npx http-server dist -p 8000 -c-1",
         "dev": "npx live-server --port=8000 --no-browser",
-        "local": "python3 -m http.server 8000"
+        "local": "python3 -m http.server 8000",
+        "manifest": "node scripts/build-events-manifest.mjs",
+        "luma-ids": "node scripts/resolve-luma-ids.mjs"
     },
     "repository": {
         "type": "git",

@@ -41,6 +41,29 @@
             </div>
         </header>
 
+        <!-- The live calendar from luma.com/ethcali. Luma's /embed/calendar
+             response carries no X-Frame-Options and no frame-ancestors, so it is
+             the one source here that can be framed; Meetup sends CSP
+             frame-ancestors 'self' and cannot. loading="lazy" keeps Luma's app
+             off the critical path — it takes several seconds to paint. -->
+        <section id="proximos">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Lo que viene</span>
+                    <h2>Próximos eventos</h2>
+                    <p>En vivo desde nuestro calendario de Luma. Suscríbete ahí y te llegan los avisos.</p>
+                </div>
+                <div class="luma-calendar">
+                    <iframe src="https://luma.com/embed/calendar/cal-SHi9BvGf1wYr6eK/events?lt=dark"
+                            title="Calendario de eventos de ETH Cali en Luma"
+                            loading="lazy" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <p class="calendar-note">
+                    <a href="https://luma.com/ethcali" target="_blank" rel="noopener">Ver el calendario completo en Luma</a>
+                </p>
+            </div>
+        </section>
+
         <section id="metrics">
             <div class="container">
                 <div class="section-header">

@@ -5,6 +5,8 @@
 class EventsService {
     constructor() {
         this.internationalEvents = [];
+        this.posters = null;
+        this.lumaIds = {};
         this.localEvents = [];
         this.chainLogos = {
             'Base': 'chains/base logo.svg',
@@ -29,9 +31,13 @@ class EventsService {
 
     async loadLocalEvents() {
         try {
-            const response = await fetch('databases/Eventos historicos ethcali - historic.csv');
+            const [response] = await Promise.all([
+                fetch('databases/Eventos historicos ethcali - historic.csv'),
+                this.loadPosterManifest(),
+                this.loadLumaIds(),
+            ]);
             const csvText = await response.text();
-            this.localEvents = this.parseLocalCSV(csvText);
+            this.localEvents = this.assignPosters(this.parseLocalCSV(csvText));
             return this.localEvents;
         } catch (error) {
             console.error('Error loading local events:', error);
@@ -117,9 +123,14 @@ class EventsService {
                     youtubeRecording: values[19],
                     month: this.getMonthFromDate(values[0]),
                     year: this.getYearFromDate(values[0]),
-                    image: this.findEventImagePrecise(values[0], values[1]),
                     locationName: this.extractLocationName(values[5]),
-                    locationUrl: this.extractLocationUrl(values[5])
+                    locationUrl: this.extractLocationUrl(values[5]),
+                    // "host/colab" carries the same "Name: https://url" shape as
+                    // Location, and the modal was printing the whole cell — URL
+                    // and all — into a fact row.
+                    hostColabName: this.extractLocationName(values[4]),
+                    hostColabUrl: this.extractLocationUrl(values[4]),
+                    lumaEmbedId: this.lumaEmbedId(values[7])
                 };
                 events.push(event);
             }
@@ -222,134 +233,148 @@ class EventsService {
         return '';
     }
 
-    findEventImage(date, name) {
-        if (!date || !name) return 'branding/logoethcali.png';
-        
-        // Convert date format and try to match with image names
-        const dateFormatted = this.formatDateForImage(date);
-        const nameFormatted = this.formatNameForImage(name);
-        
-        // Return a likely image path - in a real implementation, you'd check if file exists
-        return `events/${dateFormatted} ${nameFormatted}.png`;
+    /**
+     * Poster matching.
+     *
+     * This used to be a hardcoded array of 39 filenames plus a keyword fallback,
+     * and it went wrong in three ways at once. The array drifted from the folder,
+     * so two events pointed at files that no longer existed and one real poster
+     * was never reachable. The date had to match to the day, so a CSV date that
+     * disagreed with the filename by a few days (QF ETHColombia, Devcon VII)
+     * dropped the event to the fallback. And that fallback looped over images on
+     * the outside and keywords on the inside, so the FIRST image containing a
+     * generic word won every time: six events, including "Ethereum cali Opening"
+     * from 2022, were showing the 2025 ETHEREUM NYC poster.
+     *
+     * Now: the file list comes from events/manifest.json, which is generated
+     * from the folder, and matching is a scored one-to-one assignment. A poster
+     * is never used twice, the date is a bonus rather than a gate, and anything
+     * below the confidence bar gets no image at all — a wrong poster is worse
+     * than none.
+     */
+
+    async loadPosterManifest() {
+        if (this.posters) return this.posters;
+        let files = [];
+        try {
+            files = await (await fetch('events/manifest.json')).json();
+        } catch (error) {
+            console.error('Error loading events/manifest.json:', error);
+        }
+        this.posters = files.map((file) => {
+            const m = file.match(/^(\d{4})\s+(\d{1,2})\s+(\d{1,2})\s+(.*?)\.[a-z0-9]+$/i);
+            return {
+                file,
+                ymd: m ? `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}` : null,
+                tokens: EventsService.tokenize(m ? m[4] : file.replace(/\.[a-z0-9]+$/i, '')),
+            };
+        });
+        return this.posters;
     }
 
-    findEventImagePrecise(date, name) {
-        if (!date || !name) return 'branding/logoethcali.png';
-        
-        // List of actual images from the events folder
-        const availableImages = [
-            '2025 08 11 ETHEREUM NYC next fin summit.avif',
-            '2025 07 28 Uniswap On the Ground.png',
-            '2025 08 09 Destino Devconnect - La Sucursal del Cielo + Ethereum Birthday 2025 10Y.jpg',
-            '2025 06 13 Hackathon WEB3 Cali.png',
-            '2025 07 19 Hackathon USC.png',
-            '2025 06 08 Papayogin.png',
-            '2025 05 22 Global Pizza Party 2025.png',
-            '2025 05 17 Open House USB.png',
-            '2025 05 09 Hacksession Base Batch LATAM_ Zonamerica Colombia.png',
-            '2025 05 09 Base Community Meetup #3_ Build Digital Portfolios with DeFi & Ethereum.png',
-            '2024 11 14 Devcon VII Thailandia.png',
-            '2024 11 12 Base Community Meetup #2_ Onchain Education with ICESI.png',
-            '2024 07 28 BASE Community Meetup #1 + Ethereum Birthday 2024.png',
-            '2024 09 20 Financiando tus bienes publicos con Giveth.png',
-            '2024 06 21 Drumcode Cali.jpeg',
-            '2024 05 25 Road to Drumcode Pizza Party.png',
-            '2024 05 22 Road to Drumcode_ Global Pizza Party 2024.png',
-            '2024 05 25  Road to Drumcode_ Discoteca 1060.png',
-            '2024 03 24 QF ETHColombia Meetup Cali.png',
-            '2023 12 16 Proof-of-Stake en Ramada Cafe.png',
-            '2023 11 27 Hackathon WEB3 Ethcolombia.png',
-            '2023 11 18 Taller Programacion Solidity.png',
-            '2023 11 04 Ramada Cafe Opening.png',
-            '2023 11 03 Data Day UAO.png',
-            '2023 10 7 ETHColombia Day.png',
-            '2023 10 23 Pyday Cali.png',
-            '2023 10 04 BSL 2023 Voluntariado.png',
-            '2023 08 24 a 10 23 Ethereum Starter Pack .png',
-            '2023 08 19 Setup EVM Universidad Libre.png',
-            '2023 08 16 Ethereum Birthday 2023 - Empresarios Web3  .png',
-            '2023 05 19 workshop digital art.png',
-            '2023 05 22 Global Pizza Party 2023.png',
-            '2023 07 27 Hashfest.png',
-            '2023 04 29 Ethereans del Pacifico 2 1000x1000.png',
-            '2023 03 11 Ethereum at the River.png',
-            '2023 03 01 Revolucion de la Contabilidad.png',
-            '2023 03 01 Reinvencion del Contador.png',
-            '2023 02 23 Ethereans del Pacifico.png',
-            '2022 11 14 Devcon VI.png'
-        ];
-        
-        // Format the date from the data (DD/MM/YYYY to YYYY MM DD)
-        const dateFormatted = this.formatDateForImagePrecise(date);
-        
-        // Try to find an exact match or closest match by date and name similarity
-        for (const image of availableImages) {
-            if (image.startsWith(dateFormatted)) {
-                const imageName = image.replace(dateFormatted, '').toLowerCase();
-                const eventName = name.toLowerCase();
-                
-                // Check for key words in the event name
-                const keyWords = eventName.split(' ').filter(word => word.length > 3);
-                const matchingWords = keyWords.filter(word => imageName.includes(word));
-                
-                if (matchingWords.length > 0) {
-                    return `events/${image}`;
-                }
+    /**
+     * Luma is the only event host in this data that can be embedded: its
+     * /embed/event/<api_id>/simple URL sends no X-Frame-Options, while the plain
+     * lu.ma page sends `sameorigin` and Meetup sends CSP `frame-ancestors 'self'`.
+     * The api_id is not derivable from the slug and CORS blocks reading it at
+     * runtime, so the map is resolved by scripts/resolve-luma-ids.mjs and committed.
+     */
+    async loadLumaIds() {
+        try { this.lumaIds = await (await fetch('databases/luma-embeds.json')).json(); }
+        catch (error) { console.error('Error loading databases/luma-embeds.json:', error); }
+        return this.lumaIds;
+    }
+
+    lumaEmbedId(registrationUrl) {
+        const slug = String(registrationUrl ?? '').match(/^https?:\/\/(?:www\.)?lu\.ma\/([A-Za-z0-9]+)/)?.[1];
+        return (slug && this.lumaIds[slug]) || null;
+    }
+
+    /** Accent- and punctuation-insensitive word set. Digits are kept: they are
+     *  what separates "Global Pizza Party 2023" from the 2025 one. */
+    static tokenize(text) {
+        const STOP = new Set(['de', 'del', 'la', 'el', 'los', 'las', 'en', 'y', 'con',
+                              'un', 'una', 'the', 'of', 'and', 'for', 'a']);
+        return new Set(String(text ?? '')
+            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9]+/g, ' ')
+            .trim()
+            .split(' ')
+            .filter((w) => w.length > 1 && !STOP.has(w)));
+    }
+
+    /** DD/MM/YYYY → YYYY-MM-DD, the shape the poster filenames parse to. */
+    static isoDate(date) {
+        const parts = String(date ?? '').split('/');
+        if (parts.length < 3) return null;
+        const [d, m, y] = parts;
+        return `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+    }
+
+    /**
+     * Overlap of the two word sets, plus a bonus for agreeing on the date.
+     * Returns null when the pair is not good enough to show.
+     */
+    static score(event, poster) {
+        if (!poster.tokens.size || !event.tokens.size) return null;
+        let shared = 0;
+        for (const t of event.tokens) if (poster.tokens.has(t)) shared += 1;
+        if (!shared) return null;
+
+        const overlap = shared / Math.min(event.tokens.size, poster.tokens.size);
+        if (overlap < 0.5) return null;
+
+        const exact = Boolean(event.ymd && poster.ymd && event.ymd === poster.ymd);
+        const sameMonth = Boolean(event.ymd && poster.ymd && event.ymd.slice(0, 7) === poster.ymd.slice(0, 7));
+
+        // A near-perfect name match stands on its own — that is what rescues the
+        // rows whose CSV date disagrees with the filename. Anything weaker has to
+        // be corroborated by the date, or it is not shown.
+        if (!exact && !sameMonth && overlap < 0.85) return null;
+
+        return overlap + (exact ? 1 : sameMonth ? 0.15 : 0);
+    }
+
+    /**
+     * Best-first one-to-one assignment. Greedy over every (event, poster) pair
+     * sorted by score, which is what stops one generic poster from being handed
+     * to six different events.
+     */
+    assignPosters(events) {
+        const rows = events.map((e) => ({
+            event: e,
+            ymd: EventsService.isoDate(e.date),
+            tokens: EventsService.tokenize(e.name),
+        }));
+
+        const pairs = [];
+        for (const row of rows) {
+            for (const poster of this.posters) {
+                const score = EventsService.score(row, poster);
+                if (score !== null) pairs.push({ row, poster, score });
             }
         }
-        
-        // Try to find by event name keywords only
-        for (const image of availableImages) {
-            const imageName = image.toLowerCase();
-            const eventName = name.toLowerCase();
-            
-            if (eventName.includes('devcon') && imageName.includes('devcon')) return `events/${image}`;
-            if (eventName.includes('pizza') && imageName.includes('pizza')) return `events/${image}`;
-            if (eventName.includes('hackathon') && imageName.includes('hackathon')) return `events/${image}`;
-            if (eventName.includes('base') && imageName.includes('base')) return `events/${image}`;
-            if (eventName.includes('birthday') && imageName.includes('birthday')) return `events/${image}`;
-            if (eventName.includes('drumcode') && imageName.includes('drumcode')) return `events/${image}`;
-            if (eventName.includes('ethereum') && imageName.includes('ethereum')) return `events/${image}`;
+        pairs.sort((a, b) => b.score - a.score);
+
+        const takenEvent = new Set(), takenPoster = new Set();
+        for (const { row, poster } of pairs) {
+            if (takenEvent.has(row.event) || takenPoster.has(poster.file)) continue;
+            takenEvent.add(row.event);
+            takenPoster.add(poster.file);
+            row.event.image = EventsService.posterUrl(poster.file);
         }
-        
-        // Fallback to default image
-        return 'branding/logoethcali.png';
+        return events;
     }
 
-    formatDateForImagePrecise(date) {
-        if (!date) return '';
-        
-        if (date.includes('/')) {
-            const parts = date.split('/');
-            if (parts.length >= 3) {
-                const day = parts[0].padStart(2, '0');
-                const month = parts[1].padStart(2, '0');
-                const year = parts[2];
-                return `${year} ${month} ${day}`;
-            }
-        }
-        
-        return date;
-    }
-
-    formatDateForImage(date) {
-        if (!date) return '';
-        
-        if (date.includes('/')) {
-            const parts = date.split('/');
-            if (parts.length >= 3) {
-                const day = parts[0].padStart(2, '0');
-                const month = parts[1].padStart(2, '0');
-                const year = parts[2];
-                return `${year} ${month} ${day}`;
-            }
-        }
-        
-        return date;
-    }
-
-    formatNameForImage(name) {
-        return name.replace(/[^a-zA-Z0-9\s]/g, '').trim();
+    /**
+     * The filename is one path segment and several contain "#" — which the
+     * browser reads as the start of a fragment, so "…Meetup #1 + Ethereum
+     * Birthday 2024.png" was requested as "…Meetup " and 404'd. Encoding the
+     * segment fixes that, and the spaces and "&" along with it.
+     */
+    static posterUrl(file) {
+        return `events/${encodeURIComponent(file)}`;
     }
 
     filterEventsByMonth(events, month) {
@@ -388,6 +413,14 @@ class EventsService {
         };
     }
 
+    /** The spreadsheets spell "no value" as NA or a dash. Counting those as if
+     *  they were data put an "NA · 9" chip, wearing an Ethereum logo, in the
+     *  "Mints de NFT por chain" card. */
+    static present(value) {
+        const s = String(value ?? '').trim();
+        return Boolean(s) && !['na', '-', 'n/a', 'no tiene'].includes(s.toLowerCase());
+    }
+
     getLocalMetrics(events) {
         const totalEvents = events.length;
         const typeContentCounts = {};
@@ -397,25 +430,23 @@ class EventsService {
             const rsvp = parseInt(event.rsvp) || 0;
             return sum + rsvp;
         }, 0);
-        
+
         events.forEach(event => {
-            // Count by type content
-            if (event.typeContent) {
+            if (EventsService.present(event.typeContent)) {
                 typeContentCounts[event.typeContent] = (typeContentCounts[event.typeContent] || 0) + 1;
             }
-            
-            // Count by type event
-            if (event.typeEvent) {
+
+            if (EventsService.present(event.typeEvent)) {
                 typeEventCounts[event.typeEvent] = (typeEventCounts[event.typeEvent] || 0) + 1;
             }
-            
-            // Count mints by chain
-            if (event.chainNft && event.mintsNft) {
+
+            // A mint only belongs to a chain if the row actually names one.
+            if (EventsService.present(event.chainNft) && EventsService.present(event.mintsNft)) {
                 const mints = parseInt(event.mintsNft) || 0;
-                chainMints[event.chainNft] = (chainMints[event.chainNft] || 0) + mints;
+                if (mints > 0) chainMints[event.chainNft] = (chainMints[event.chainNft] || 0) + mints;
             }
         });
-        
+
         return {
             totalEvents,
             typeContentCounts,

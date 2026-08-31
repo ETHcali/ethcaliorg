@@ -5,9 +5,8 @@
  * existed and could not be cached. Vanilla — jQuery is gone from the site.
  */
 
-/** Counts an element up to its data-target. Respects reduced-motion. */
-function animateCounter(el, target, duration = 2200) {
-  const start = Number(el.textContent.replace(/\D/g, '')) || 0;
+/** Counts an element from `start` up to its data-target. Respects reduced-motion. */
+function animateCounter(el, target, start = 0, duration = 2200) {
   const t0 = performance.now();
   const eased = (t) => 1 - Math.pow(1 - t, 3);
 
@@ -30,12 +29,13 @@ function initMetrics() {
     const target = Number(el.dataset.target);
     if (!Number.isFinite(target) || el.dataset.animated) return;
     el.dataset.animated = 'true';
-    if (reduced) {
-      el.textContent = target.toLocaleString('es-CO');
-      return;
-    }
+    // The markup already holds the real figure, so reduced-motion and a failed
+    // script both leave a true number on screen. Only an animation that is
+    // definitely about to run may reset it to zero.
+    if (reduced) return;
+    el.textContent = '0';
     // A beat of delay lets Safari/iOS finish layout before the count starts.
-    setTimeout(() => animateCounter(el, target), 120);
+    setTimeout(() => animateCounter(el, target, 0), 120);
   };
 
   if (!('IntersectionObserver' in window)) {
