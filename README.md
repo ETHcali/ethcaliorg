@@ -1,102 +1,69 @@
-# Ethereum Cali Website
+# ethcali.org
 
-Official website for Ethereum Cali community - El Jardín Infinito del Pacífico Colombiano.
+The ETH Cali community site. Next.js, bilingual, content from Supabase.
 
-## 🚀 Quick Start
+Deploys to the Vercel project `ethcaliorg` → https://www.ethcali.org
 
-### Local Development
+## Run it
+
 ```bash
-# Clone the repository
-git clone https://github.com/ETHcali/ethcaliorg.git
-cd ethcaliorg
-
-# Install dependencies
 npm install
-
-# Start local development server
-npm run local
-# or
+cp .env.example .env.local   # fill in the Supabase URL and anon key
 npm run dev
-
-# Open http://localhost:8000
 ```
 
-### Build for Production
-```bash
-# Clean and build
-npm run build
+| Command | Does |
+|---|---|
+| `npm run dev` | Local dev server |
+| `npm run build` | Production build — generates every event page for both locales |
+| `npm run typecheck` | `tsc --noEmit`, strict |
+| `npm run check` | Date and locale helper assertions |
 
-# Serve built files
-npm start
+## How it is put together
+
+**Content lives in Supabase**, not in this repo. Events, venues, team and partners
+are read at build time with the anon key and re-fetched every 60s via ISR, so an
+edit in the CMS appears without a deploy.
+
+There is **no service-role key here and no write path**. Every content table grants
+`anon` SELECT on published rows and nothing else. Editing happens in the wallet app
+at `/admin/content`, behind a check of `ADMIN_ROLE` on chain.
+
+**The design system is `@ethcali/design-tokens`** (github.com/ETHcali/design-tokens,
+pinned `#v1`), shared with the wallet app. `tokens.css` is imported once in
+`pages/_app.tsx`; `tailwind.config.js` loads the preset and extends nothing. Never
+put a raw hex or a stock Tailwind colour in a component.
+
+**Spanish is the default locale and carries no URL prefix** — `/events` is the
+Spanish page, `/en/events` the English one. That keeps every URL the old site
+published working. A missing English string falls back to Spanish rather than
+rendering blank.
+
+```
+content/     Reference data that belongs in git, not the CMS: the Builders Tour
+             campaign, the hardware inventory
+lib/         Supabase client (anon only), content queries, i18n helpers
+pages/       Routes. [slug] pages are SSG with fallback:'blocking'
+public/      Posters, team photos, branding, sponsor logos
+databases/   The original CSVs. No longer read at runtime — kept as the
+             provenance for the one-time Supabase import
 ```
 
-## 📁 Project Structure
+## Things that will bite you
 
-```
-ethcaliorg/
-├── css/                    # Stylesheets
-├── js/                     # JavaScript files
-├── team/                   # Team member photos
-├── branding/              # Logos and brand assets
-├── events/                # Event images
-├── databases/             # CSV data files
-├── chains/                # Blockchain logos
-├── tools/                 # Tool logos
-├── universities/          # University logos
-├── gov/                   # Government logos
-├── swags/                 # Merchandise images
-├── *.html                 # HTML pages
-├── package.json           # Node.js configuration
-├── vercel.json           # Vercel deployment config
-└── README.md             # This file
-```
+- **Slugs are permanent.** They are the URL and they go in `og:url`. Change one in
+  the CMS only if you accept that every shared link to it breaks.
+- **Dates are formatted in UTC from a bare `YYYY-MM-DD`.** Parsing as UTC then
+  formatting in local time slides an event back a day anywhere west of Greenwich,
+  which is every reader in Colombia. `npm run check` covers it.
+- **Hackathons live at `/hackathons/<slug>`, not `/events/<slug>`.** The events
+  route excludes them and 308s any that arrive, so one event never has two
+  canonical URLs.
+- **Do not add a redirect in `next.config.js` for a page that does not exist yet.**
+  A 308 to a 404 is worse than the URL it replaced.
 
-## 🛠 Available Scripts
+## Still to port from the old static site
 
-- `npm run clean` - Remove build directory
-- `npm run build` - Build for production
-- `npm run vercel-build` - Build for Vercel deployment
-- `npm run start` - Serve built files
-- `npm run dev` - Development server with live reload
-- `npm run local` - Simple Python HTTP server
-
-## 🌐 Pages
-
-- `/` - Home (ethcali.html)
-- `/about` - Team page
-- `/events` - Events page
-- `/venues` - Venues page
-- `/education` - Education page
-- `/dao` - DAO page
-- `/swag` - Merchandise page
-- `/technical-infra` - Technical infrastructure
-- `/brand-guidelines` - Brand guidelines
-
-## 🚀 Deployment
-
-The site is automatically deployed to Vercel when changes are pushed to the main branch.
-
-### Manual Deployment
-1. Push changes to GitHub
-2. Vercel will automatically build and deploy
-3. Check deployment status at [Vercel Dashboard](https://vercel.com/dashboard)
-
-## 🎨 Team Data
-
-Team member data is stored in `databases/team about us.csv` and dynamically loaded by `js/about.js`.
-
-## 📝 License
-
-ISC License - see package.json for details.
-
-## 👥 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test locally
-5. Submit a pull request
-
----
-
-Built with ❤️ by the Ethereum Cali community
+`/dao`, `/about`, `/education`, `/swag`, `/technical-infra`, `/brand-guidelines`.
+They are deliberately absent from the nav and from the redirect list until they
+exist. The old markup is in this repo's history if you need the copy.
