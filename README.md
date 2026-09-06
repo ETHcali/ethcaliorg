@@ -49,6 +49,20 @@ databases/   The original CSVs. No longer read at runtime — kept as the
              provenance for the one-time Supabase import
 ```
 
+## vercel.json
+
+It contains one line, `"framework": "nextjs"`, and it is load-bearing.
+
+The Vercel project predates this rebuild and its Framework Preset is still
+**Other**, which resolves Output Directory to *"`public` if it exists, or `.`"*.
+This repo now has a `public/`, so Vercel served the raw asset folder and every
+route 404'd — while the build log showed all 110 pages generating correctly. A
+green build and a dead site.
+
+Declaring the framework in the repo overrides that. Fixing the dashboard preset
+would work too, but then the setting lives somewhere no one reads and nothing
+in the repo explains why the site broke.
+
 ## Things that will bite you
 
 - **Slugs are permanent.** They are the URL and they go in `og:url`. Change one in

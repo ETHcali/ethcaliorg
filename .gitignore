@@ -10,3 +10,5 @@ tsconfig.tsbuildinfo
 # Foundation records: legal, financial and identity documents. Never tracked.
 admin/
 *.xlsx
+.vercel
+.env*
