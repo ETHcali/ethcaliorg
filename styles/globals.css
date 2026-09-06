@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Dark-first and dark-only, matching the brand system. The token values come
+     from @ethcali/design-tokens, imported in _app.tsx before this file. */
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--surface-void);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Sarun Pro steps Medium 500 → Bold 700 with no 600 in between. Headings ask
+     for 700 explicitly so the browser never synthesises a weight. */
+  h1, h2, h3, h4 {
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  /* Anything monospaced is data — an address, a hash, a count. */
+  code, .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Keyboard focus must stay visible: the nav and the event grid are both
+     entirely links, and without this they are unnavigable without a mouse. */
+  :focus-visible {
+    outline: 2px solid var(--eth-blue-lift);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}

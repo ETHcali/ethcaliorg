@@ -1,31 +1,35 @@
 {
-    "name": "ethcaliorg",
-    "version": "1.0.1",
-    "description": "Ethereum Cali Community Website",
-    "scripts": {
-        "clean": "rm -rf dist",
-        "build": "npm run clean && npm run manifest && mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags cohost dist/ && cp ethcali.html dist/index.html && find dist/branding/fonts -maxdepth 1 -type f ! -name '*.woff2' -delete",
-        "vercel-build": "npm run clean && npm run manifest && mkdir -p dist && cp -r *.html *.json venues.js css js databases team branding events chains tools universities gov swags cohost dist/ && cp ethcali.html dist/index.html && find dist/branding/fonts -maxdepth 1 -type f ! -name '*.woff2' -delete",
-        "start": "npx http-server dist -p 8000 -c-1",
-        "dev": "npx live-server --port=8000 --no-browser",
-        "local": "python3 -m http.server 8000",
-        "manifest": "node scripts/build-events-manifest.mjs",
-        "luma-ids": "node scripts/resolve-luma-ids.mjs"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/wmb81321/ethcaliorg.git"
-    },
-    "keywords": [
-        "ethereum",
-        "cali",
-        "community",
-        "web3"
-    ],
-    "author": "William Martinez",
-    "license": "ISC",
-    "devDependencies": {
-        "http-server": "^14.1.1",
-        "live-server": "^1.2.2"
-    }
+  "name": "ethcaliorg",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ethcali.org — the ETH Cali community site",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint",
+    "check": "tsx scripts/helpers.check.mts"
+  },
+  "dependencies": {
+    "@ethcali/design-tokens": "github:ETHcali/design-tokens#v1",
+    "@supabase/supabase-js": "2.58.0",
+    "next": "16.1.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.0",
+    "@types/react": "18.2.48",
+    "@types/react-dom": "18.2.18",
+    "autoprefixer": "10.4.21",
+    "postcss": "8.5.3",
+    "tailwindcss": "3.4.17",
+    "tsx": "^4.23.13",
+    "typescript": "5.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ETHcali/ethcaliorg.git"
+  }
 }

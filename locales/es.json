@@ -1,0 +1,51 @@
+{
+  "nav": { "tour": "Builders Tour", "events": "Eventos", "hackathons": "Hackathons", "venues": "Lugares", "about": "Nosotros", "dao": "DAO" },
+  "events": {
+    "title": "Eventos",
+    "heading": "Dónde hemos estado",
+    "lead": "Meetups, workshops y hackathons en Cali y la región, y los eventos internacionales del ecosistema en los que participamos.",
+    "local": "Eventos locales",
+    "localLead": "Todo lo que hemos organizado en Cali y la región desde 2022.",
+    "international": "Eventos internacionales",
+    "internationalLead": "Los eventos del ecosistema Ethereum donde estuvimos.",
+    "empty": "Todavía no hay eventos publicados.",
+    "all": "Todos",
+    "back": "Volver a eventos",
+    "links": "Enlaces",
+    "venue": "Lugar",
+    "date": "Fecha",
+    "role": "Nuestro rol",
+    "attendees": "Asistentes",
+    "register": "Registro",
+    "recap": "Resumen",
+    "photos": "Fotos",
+    "video": "Video",
+    "social": "Publicación",
+    "poaps": "POAPs",
+    "nfts": "NFTs",
+    "collectors": "coleccionistas",
+    "mints": "mints"
+  },
+  "hackathons": {
+    "title": "Hackathons",
+    "heading": "Lo que hemos construido",
+    "lead": "Cada hackathon y hacker house que hemos organizado, co-organizado o en el que hemos participado.",
+    "prizePool": "Premios",
+    "participants": "Participantes",
+    "projects": "Proyectos",
+    "tracks": "Tracks",
+    "sponsors": "Patrocinadores",
+    "winners": "Ganadores",
+    "partner": "En alianza con",
+    "empty": "Todavía no hay hackathons publicados."
+  },
+  "kind": {
+    "meetup": "Meetup", "workshop": "Workshop", "hackathon": "Hackathon",
+    "conference": "Conferencia", "hacker_house": "Hacker house",
+    "volunteering": "Voluntariado", "other": "Evento"
+  },
+  "role": {
+    "host": "Organizadores", "cohost": "Co-organizadores", "colab": "En colaboración",
+    "participant": "Participantes", "volunteering": "Voluntariado"
+  }
+}
