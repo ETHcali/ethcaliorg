@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { EventRecord } from '../../types/content';
 import { localized } from '../../types/content';
 import { formatDateRange, type Locale, translator } from '../../lib/i18n';
+import { posterSrc, GRID_SIZES } from '../../lib/images';
 
 /**
  * One event in a grid. The whole card is the link — this is the thing the old
@@ -10,6 +12,7 @@ import { formatDateRange, type Locale, translator } from '../../lib/i18n';
 export default function EventCard({ event, locale }: { event: EventRecord; locale: Locale }) {
   const t = translator(locale);
   const name = localized(event as unknown as Record<string, unknown>, 'name', locale) ?? event.slug;
+  const poster = posterSrc(event.poster_path);
   const summary = localized(event as unknown as Record<string, unknown>, 'summary', locale);
 
   // Hackathons and hacker houses have a richer page of their own.
@@ -22,14 +25,14 @@ export default function EventCard({ event, locale }: { event: EventRecord; local
     >
       {/* Fixed aspect ratio so a missing poster leaves a tidy block rather than
           collapsing the card and making the grid jump. */}
-      <div className="aspect-[4/3] overflow-hidden bg-surface-inset">
-        {event.poster_path ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={event.poster_path}
+      <div className="relative aspect-[4/3] overflow-hidden bg-surface-inset">
+        {poster ? (
+          <Image
+            src={poster}
             alt=""
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-slow group-hover:scale-[1.03]"
+            fill
+            sizes={GRID_SIZES}
+            className="object-cover transition-transform duration-slow group-hover:scale-[1.03]"
           />
         ) : (
           <div className="flex h-full items-center justify-center">

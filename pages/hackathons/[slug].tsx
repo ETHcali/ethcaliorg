@@ -1,10 +1,12 @@
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import Layout from '../../components/layout/Layout';
 import Seo from '../../components/layout/Seo';
 import { getEvent, getEventSlugs } from '../../lib/content';
 import type { EventDetail } from '../../types/content';
 import { localized } from '../../types/content';
+import { posterSrc, DETAIL_SIZES } from '../../lib/images';
 import { asLocale, formatDateRange, translator, type Locale } from '../../lib/i18n';
 
 interface Props {
@@ -59,6 +61,7 @@ export default function HackathonPage({ event, locale }: Props) {
   const name = localized(row, 'name', locale) ?? event.slug;
   const summary = localized(row, 'summary', locale);
   const body = localized(row, 'body', locale);
+  const poster = posterSrc(event.poster_path);
   const h = event.hackathon;
 
   const stats = [
@@ -132,12 +135,14 @@ export default function HackathonPage({ event, locale }: Props) {
             )}
           </div>
 
-          {event.poster_path && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={event.poster_path}
+          {poster && (
+            <Image
+              src={poster}
               alt=""
-              className="w-full rounded-card border border-line-hairline"
+              width={640}
+              height={640}
+              sizes={DETAIL_SIZES}
+              className="h-auto w-full rounded-card border border-line-hairline"
             />
           )}
         </header>

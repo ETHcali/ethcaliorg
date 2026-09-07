@@ -1,4 +1,5 @@
 import type { GetStaticProps } from 'next';
+import Image from 'next/image';
 import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
 import {
@@ -13,6 +14,7 @@ import {
   type Slot,
 } from '../content/builders-tour';
 import { asLocale, formatDate, formatDateRange, type Locale } from '../lib/i18n';
+import { DETAIL_SIZES } from '../lib/images';
 
 interface Props {
   locale: Locale;
@@ -370,11 +372,13 @@ export default function BuildersTour({ locale }: Props) {
             </a>
           </div>
 
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={SHANHAIWOO.poster}
             alt={`${SHANHAIWOO.name} 2026`}
-            className="w-full rounded-card border border-line-hairline"
+            width={1200}
+            height={675}
+            sizes={DETAIL_SIZES}
+            className="h-auto w-full rounded-card border border-line-hairline"
           />
         </div>
       </Section>
@@ -430,10 +434,12 @@ export default function BuildersTour({ locale }: Props) {
               >
                 <div className="flex h-12 items-center justify-center">
                   {s.logo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={s.logo}
                       alt={s.name}
+                      width={s.wide ? 180 : 110}
+                      height={48}
+                      sizes={s.wide ? '180px' : '110px'}
                       className={`max-h-12 w-auto object-contain ${s.wide ? 'max-w-[180px]' : 'max-w-[110px]'}`}
                     />
                   ) : (
