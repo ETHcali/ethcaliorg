@@ -21,9 +21,8 @@ module.exports = {
       ['/events_locales', '/events/local'],
       ['/events_internationals', '/events/international'],
       ['/ethcalivenues', '/venues'],
-      // NOT YET PORTED — do not add a redirect until the target page exists,
-      // or these become 308s to a 404, which is worse than the old page:
-      //   /ethcalidao /about /education /swag /technical-infra /brand_guidelines
+      ['/ethcalidao', '/dao'],
+      ['/brand_guidelines', '/brand-guidelines'],
       ['/hackathon-ethcolombia-2023', '/hackathons/hackathon-web3-ethcolombia'],
       ['/hackathon-web3-cali-2025', '/hackathons/hackathon-web3-cali'],
       ['/hackathon-usc-2025', '/hackathons/hackathon-usc'],

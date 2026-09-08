@@ -82,7 +82,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <p className="mt-1 max-w-prose text-sm text-content-muted">
             Fundación Innovación del Pacífico · Cali, Colombia
           </p>
-          <p className="mt-4 text-xs text-content-faint">
+          <nav className="mt-6 flex flex-wrap gap-x-5 gap-y-2" aria-label="Secundaria">
+            {[
+              ['/education', 'nav.education'],
+              ['/swag', 'nav.swag'],
+              ['/technical-infra', 'nav.infra'],
+              ['/brand-guidelines', 'nav.brand'],
+            ].map(([href, key]) => (
+              <Link
+                key={href}
+                href={href}
+                className="text-sm text-content-muted transition-colors hover:text-content-primary"
+              >
+                {t(key)}
+              </Link>
+            ))}
+          </nav>
+
+          <p className="mt-6 text-xs text-content-faint">
             © {new Date().getFullYear()} ETH Cali
           </p>
         </div>

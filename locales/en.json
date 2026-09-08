@@ -1,5 +1,16 @@
 {
-  "nav": { "tour": "Builders Tour", "events": "Events", "hackathons": "Hackathons", "venues": "Venues", "about": "About", "dao": "DAO" },
+  "nav": {
+    "tour": "Builders Tour",
+    "events": "Events",
+    "hackathons": "Hackathons",
+    "venues": "Venues",
+    "about": "About",
+    "dao": "DAO",
+    "education": "Education",
+    "swag": "Swag",
+    "infra": "Hardware",
+    "brand": "Brand"
+  },
   "events": {
     "title": "Events",
     "heading": "Where we have been",
@@ -40,12 +51,19 @@
     "empty": "No published hackathons yet."
   },
   "kind": {
-    "meetup": "Meetup", "workshop": "Workshop", "hackathon": "Hackathon",
-    "conference": "Conference", "hacker_house": "Hacker house",
-    "volunteering": "Volunteering", "other": "Event"
+    "meetup": "Meetup",
+    "workshop": "Workshop",
+    "hackathon": "Hackathon",
+    "conference": "Conference",
+    "hacker_house": "Hacker house",
+    "volunteering": "Volunteering",
+    "other": "Event"
   },
   "role": {
-    "host": "Hosts", "cohost": "Co-hosts", "colab": "In collaboration",
-    "participant": "Attendees", "volunteering": "Volunteering"
+    "host": "Hosts",
+    "cohost": "Co-hosts",
+    "colab": "In collaboration",
+    "participant": "Attendees",
+    "volunteering": "Volunteering"
   }
 }
