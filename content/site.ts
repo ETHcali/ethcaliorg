@@ -329,3 +329,19 @@ export const SWAG_WAYS: readonly { title: Bilingual; detail: Bilingual }[] = [
     },
   },
 ];
+
+// ── chains ──────────────────────────────────────────────────────────────────
+
+/**
+ * Where we deploy. Logos live in public/chains, all URL-safe filenames.
+ * This is a reference list, not a registry — contract addresses belong in the
+ * wallet app, verified on-chain, never in site copy.
+ */
+export const CHAINS: readonly { name: string; logo: string }[] = [
+  { name: 'Ethereum', logo: '/chains/ethereum.png' },
+  { name: 'Base', logo: '/chains/base.svg' },
+  { name: 'Unichain', logo: '/chains/unichain.png' },
+  { name: 'OP Mainnet', logo: '/chains/op-mainnet.png' },
+  { name: 'Polygon', logo: '/chains/polygon.png' },
+  { name: 'Gnosis', logo: '/chains/gnosis.png' },
+];

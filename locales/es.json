@@ -9,7 +9,11 @@
     "education": "Educación",
     "swag": "Swag",
     "infra": "Equipos",
-    "brand": "Marca"
+    "brand": "Marca",
+    "eventsLocal": "Locales",
+    "eventsIntl": "Internacionales",
+    "hackathonsAll": "Todos los hackathons",
+    "hackerHouses": "Hacker houses"
   },
   "events": {
     "title": "Eventos",
