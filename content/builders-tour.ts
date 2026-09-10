@@ -164,13 +164,14 @@ export interface PrizeTrack {
   /** Site-relative image that gives the prize a face rather than a number. */
   image: string;
   /**
-   * Show the image whole on a light ground instead of cropping it to fill.
+   * Which part of the image to keep when it is cropped to the card's 16:9 box.
    *
-   * EAG's banner is a 3:1 lockup on white; a 16:9 cover-crop keeps the middle
-   * 59% of its width and the logo sits at 65-95%, so covering it would cut the
-   * brand off entirely. Devcon's Mumbai art is already 16:9 and covers cleanly.
+   * All three cards crop identically so they read as one row — a contained
+   * image on its own plate looked larger and heavier than its neighbours. EAG's
+   * banner is 3:1 with the lockup at 65-95% of its width, so a centred crop
+   * would cut the brand off; anchoring right keeps it whole.
    */
-  containOnLight?: boolean;
+  focus?: 'center' | 'right';
   blurb: Bilingual;
 }
 
@@ -207,6 +208,8 @@ export const PRIZES_ARE_CUMULATIVE: Bilingual = {
 
 export const DEVCON = {
   name: 'Devcon VIII',
+  banner: '/tour/devcon-banner.jpg',
+  x: 'https://x.com/efdevcon',
   place: { es: 'Mumbai, India', en: 'Mumbai, India' } as Bilingual,
   dates: { es: '1–6 de noviembre de 2026', en: '1–6 November 2026' } as Bilingual,
   url: 'https://devcon.org/en/',
@@ -251,7 +254,7 @@ export const PRIZES: readonly PrizeTrack[] = [
   {
     sponsor: 'EAG',
     image: '/tour/eag-banner.jpg',
-    containOnLight: true,
+    focus: 'right',
     blurb: {
       es: 'Un mes construyendo con la comunidad global de Ethereum, en tres ciudades.',
       en: 'A month building with the global Ethereum community, across three cities.',
@@ -384,6 +387,8 @@ export interface Sponsor {
   name: string;
   role: Bilingual;
   url: string;
+  /** Where they post. Shown as a second link on the sponsor tile. */
+  x?: string;
   /**
    * Site-relative path under /tour. Null renders a typographic wordmark instead
    * — deliberate, so a missing asset reads as a design choice rather than as a
@@ -406,6 +411,7 @@ export interface Sponsor {
 export const SPONSORS: readonly Sponsor[] = [
   {
     name: 'Ethereum Applications Guild',
+    x: 'https://x.com/EthAppsGuild',
     role: { es: 'Organiza', en: 'Organiser' },
     url: 'https://ethappsguild.org',
     logo: '/tour/eag.png',
@@ -413,6 +419,7 @@ export const SPONSORS: readonly Sponsor[] = [
   },
   {
     name: 'Devcon VIII',
+    x: 'https://x.com/efdevcon',
     role: { es: 'Road to Devcon', en: 'Road to Devcon' },
     url: 'https://devcon.org/en/',
     logo: '/tour/devcon-viii.webp',
@@ -421,6 +428,7 @@ export const SPONSORS: readonly Sponsor[] = [
   },
   {
     name: 'Ethereum Foundation',
+    x: 'https://x.com/ethereumfndn',
     role: { es: 'Entradas a Devcon', en: 'Devcon tickets' },
     url: 'https://ethereum.foundation',
     logo: '/tour/ef-logo.png',
@@ -428,12 +436,14 @@ export const SPONSORS: readonly Sponsor[] = [
   },
   {
     name: 'HashKey Chain',
+    x: 'https://x.com/HSKChain',
     role: { es: 'Patrocinador principal', en: 'Title sponsor' },
     url: 'https://hsk.xyz',
     logo: '/tour/hashkey-chain.jpg',
   },
   {
     name: 'ETH Cali',
+    x: 'https://x.com/ethcali_org',
     role: { es: 'Anfitrión local', en: 'Local host' },
     url: 'https://ethcali.org',
     // The reversed lockup. Logo_Nodo_CLO_ETH_CO-01 is dark navy artwork drawn
@@ -442,6 +452,7 @@ export const SPONSORS: readonly Sponsor[] = [
   },
   {
     name: 'Ekinoxis Labs',
+    x: 'https://x.com/ekinoxis_xyz',
     role: { es: 'Talleres y mentoría', en: 'Workshops and mentoring' },
     url: 'https://www.ekinoxis.xyz',
     logo: '/tour/ekinoxis.png',
@@ -612,6 +623,8 @@ export const TOUR_MAP_COPY = {
 
 export const SHANHAIWOO = {
   name: 'ShanHaiWoo 山海坞',
+  site: 'https://www.shanhaiwoo.com/',
+  x: 'https://x.com/shanhaiwoo',
   editionLabel: '4ª edición',
   dates: { es: '15 oct – 10 nov 2026', en: '15 Oct – 10 Nov 2026' } as Bilingual,
   cities: ['Shenzhen', 'Mumbai', 'Hong Kong'],

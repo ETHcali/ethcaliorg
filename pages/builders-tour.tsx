@@ -2,6 +2,7 @@ import type { GetStaticProps } from 'next';
 import Image from 'next/image';
 import Layout from '../components/layout/Layout';
 import TourMap from '../components/tour/TourMap';
+import TrackMark from '../components/tour/TrackMark';
 import Seo from '../components/layout/Seo';
 import {
   TOUR,
@@ -219,7 +220,27 @@ export default function BuildersTour({ locale }: Props) {
             </div>
           </dl>
 
-          <div className="mt-9 grid gap-3 sm:max-w-2xl sm:grid-cols-2">
+          {/* The official piece, framed rather than dropped in: a brand-tinted
+              glow behind it and a hairline over it, so it reads as part of the
+              page instead of a pasted JPEG. */}
+          <div className="relative mt-10 overflow-hidden rounded-card border border-line-brand">
+            <div
+              className="pointer-events-none absolute -inset-8 blur-2xl"
+              style={{ background: 'radial-gradient(ellipse at 50% 120%, var(--eth-blue-wash), transparent 70%)' }}
+              aria-hidden
+            />
+            <Image
+              src="/tour/eag-builders-tour.jpg"
+              alt="Ethereum Builders Tour — EAG Global Application & Builder Initiative 2026"
+              width={1200}
+              height={675}
+              sizes="(min-width: 1024px) 1000px, 92vw"
+              className="relative h-auto w-full"
+              priority
+            />
+          </div>
+
+          <div className="mt-8 grid gap-3 sm:max-w-2xl sm:grid-cols-2">
             <Cta
               href={TOUR.registration.luma.url}
               label={t(TOUR.registration.luma.label)}
@@ -252,44 +273,34 @@ export default function BuildersTour({ locale }: Props) {
             >
               {/* The prize gets a face rather than a number. A month in three
                   cities and a USDT pot read very differently as pictures. */}
-              <div
-                className={`relative aspect-[16/9] ${
-                  track.containOnLight ? 'bg-surface-paper p-5' : 'bg-surface-inset'
-                }`}
-              >
+              <div className="relative aspect-[16/9] bg-surface-inset">
                 <Image
                   src={track.image}
                   alt={track.sponsor}
                   fill
                   sizes="(min-width: 1280px) 30vw, (min-width: 1024px) 45vw, 92vw"
-                  className={track.containOnLight ? 'object-contain' : 'object-cover'}
+                  className={`object-cover ${
+                    track.focus === 'right' ? 'object-right' : 'object-center'
+                  }`}
                 />
-                {/* The label needs a dark ground under it. On a contained light
-                    asset that ground does not exist, so the name is carried by
-                    the card body instead of floated over the artwork. */}
-                {!track.containOnLight && (
-                  <>
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background:
-                          'linear-gradient(to top, var(--surface-slab) 4%, transparent 60%)',
-                      }}
-                      aria-hidden
-                    />
-                    <h3 className="absolute bottom-3 left-4 text-sm font-bold uppercase tracking-wide text-content-primary">
-                      {track.sponsor}
-                    </h3>
-                  </>
-                )}
+                {/* The scrim has to carry a light label over a LIGHT image —
+                    EAG's banner is white artwork — so it is stronger than a
+                    dark-image card would need. Same scrim on all three, or the
+                    row stops reading as one set. */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'linear-gradient(to top, var(--surface-slab) 14%, rgb(6 6 11 / 0.62) 30%, transparent 66%)',
+                  }}
+                  aria-hidden
+                />
+                <h3 className="absolute bottom-3 left-4 text-sm font-bold uppercase tracking-wide text-content-primary">
+                  {track.sponsor}
+                </h3>
               </div>
 
               <div className="flex flex-1 flex-col p-5">
-                {track.containOnLight && (
-                  <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-content-primary">
-                    {track.sponsor}
-                  </h3>
-                )}
                 <p className="text-sm text-content-muted">{t(track.blurb)}</p>
                 <ul className="mt-4 space-y-3">
                   {track.tiers.map((tier) => (
@@ -332,25 +343,16 @@ export default function BuildersTour({ locale }: Props) {
 
       {/* ── tracks ───────────────────────────────────────────────────────── */}
       <Section id="tracks" eyebrow={t(COPY.tracks)} title={t(COPY.tracks)} lead={t(COPY.tracksLead)}>
-        <div className="mb-8 overflow-hidden rounded-card border border-line-hairline">
-          <Image
-            src="/tour/eag-builders-tour.jpg"
-            alt="Ethereum Builders Tour — EAG Global Application & Builder Initiative 2026"
-            width={1200}
-            height={675}
-            sizes="(min-width: 1024px) 1000px, 92vw"
-            className="h-auto w-full"
-            priority
-          />
-        </div>
-
         <h3 className="text-xs font-bold uppercase tracking-widest text-content-faint">
           EAG · 6 tracks
         </h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {EAG_TRACKS.map((track) => (
-            <div key={track.name} className="rounded-card border border-line-hairline bg-surface-slab p-4">
-              <h4 className="text-sm font-bold leading-snug text-content-primary">{track.name}</h4>
+            <div key={track.name} className="rounded-card border border-line-hairline bg-surface-slab p-5">
+              <TrackMark track={track.name} />
+              <h4 className="mt-3 text-sm font-bold leading-snug text-content-primary">
+                {track.name}
+              </h4>
               <p className="mt-2 text-sm leading-relaxed text-content-muted">{t(track.detail)}</p>
             </div>
           ))}
@@ -494,20 +496,32 @@ export default function BuildersTour({ locale }: Props) {
         lead={t(DEVCON.blurb)}
       >
         <div className="overflow-hidden rounded-card border border-signal-pending/40">
-          <div className="flex flex-wrap items-center justify-between gap-6 bg-surface-paper px-6 py-7">
+          <a
+            href={DEVCON.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative block"
+          >
             <Image
-              src={DEVCON.logo}
+              src={DEVCON.banner}
               alt={`${DEVCON.name} — ${t(DEVCON.place)}`}
-              width={300}
-              height={132}
-              sizes="300px"
-              className="h-16 w-auto object-contain"
+              width={1500}
+              height={500}
+              sizes="(min-width: 1024px) 1000px, 92vw"
+              className="h-auto w-full"
             />
-            <div className="text-left sm:text-right">
-              <p className="mono text-sm font-bold text-[#07028F]">{t(DEVCON.dates)}</p>
-              <p className="text-sm text-[#07028F]/70">{t(DEVCON.place)}</p>
+            <div
+              className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-2 p-4"
+              style={{ background: 'linear-gradient(to top, rgb(6 6 11 / 0.85), transparent)' }}
+            >
+              <p className="mono text-sm font-bold text-content-primary">
+                {t(DEVCON.dates)} · {t(DEVCON.place)}
+              </p>
+              <span className="text-xs font-semibold text-signal-pending opacity-0 transition-opacity group-hover:opacity-100">
+                devcon.org →
+              </span>
             </div>
-          </div>
+          </a>
 
           <div className="grid gap-px bg-line-hairline sm:grid-cols-3">
             {DEVCON.facts.map((f) => (
@@ -589,25 +603,46 @@ export default function BuildersTour({ locale }: Props) {
                 })}
               </ol>
 
-              <a
-                href={SHANHAIWOO.journeyPost}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
-              >
-                {t(COPY.seePost)} →
-              </a>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {[
+                  ['shanhaiwoo.com', SHANHAIWOO.site],
+                  ['@shanhaiwoo', SHANHAIWOO.x],
+                  ['devcon.org', DEVCON.url],
+                  ['@efdevcon', DEVCON.x],
+                ].map(([label, href]) => (
+                  <a
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
+                  >
+                    {label} →
+                  </a>
+                ))}
+              </div>
             </div>
 
-            <div className="relative min-h-[300px] bg-surface-inset">
+            {/* Contained, not cropped. It is a flyer with dates and cities set
+                into the artwork; covering it cut the text off. */}
+            <a
+              href={SHANHAIWOO.site}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col justify-center gap-3 bg-surface-inset p-5"
+            >
               <Image
                 src={SHANHAIWOO.poster}
                 alt={`${SHANHAIWOO.name} 2026`}
-                fill
-                sizes="(min-width: 1024px) 400px, 92vw"
-                className="object-cover"
+                width={1200}
+                height={675}
+                sizes="(min-width: 1024px) 360px, 92vw"
+                className="h-auto w-full rounded-chip"
               />
-            </div>
+              <span className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-eth-blue-text">
+                <span className="group-hover:underline">shanhaiwoo.com →</span>
+              </span>
+            </a>
           </div>
         </div>
       </Section>
@@ -685,6 +720,20 @@ export default function BuildersTour({ locale }: Props) {
                   {t(s.role)}
                 </span>
               </a>
+
+              {/* The X handle is a second destination, so it cannot be nested
+                  inside the tile's own anchor — a link inside a link is invalid
+                  and browsers resolve it unpredictably. */}
+              {s.x && (
+                <a
+                  href={s.x}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1.5 block text-center text-[11px] text-content-faint transition-colors hover:text-eth-blue-text"
+                >
+                  {s.x.replace('https://x.com/', '@')}
+                </a>
+              )}
             </li>
           ))}
         </ul>
