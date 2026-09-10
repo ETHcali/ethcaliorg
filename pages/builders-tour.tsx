@@ -252,28 +252,44 @@ export default function BuildersTour({ locale }: Props) {
             >
               {/* The prize gets a face rather than a number. A month in three
                   cities and a USDT pot read very differently as pictures. */}
-              <div className="relative aspect-[16/9] bg-surface-inset">
+              <div
+                className={`relative aspect-[16/9] ${
+                  track.containOnLight ? 'bg-surface-paper p-5' : 'bg-surface-inset'
+                }`}
+              >
                 <Image
                   src={track.image}
                   alt={track.sponsor}
                   fill
-                  sizes="(min-width: 1024px) 45vw, 92vw"
-                  className="object-cover"
+                  sizes="(min-width: 1280px) 30vw, (min-width: 1024px) 45vw, 92vw"
+                  className={track.containOnLight ? 'object-contain' : 'object-cover'}
                 />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      'linear-gradient(to top, var(--surface-slab) 4%, transparent 60%)',
-                  }}
-                  aria-hidden
-                />
-                <h3 className="absolute bottom-3 left-4 text-sm font-bold uppercase tracking-wide text-content-primary">
-                  {track.sponsor}
-                </h3>
+                {/* The label needs a dark ground under it. On a contained light
+                    asset that ground does not exist, so the name is carried by
+                    the card body instead of floated over the artwork. */}
+                {!track.containOnLight && (
+                  <>
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background:
+                          'linear-gradient(to top, var(--surface-slab) 4%, transparent 60%)',
+                      }}
+                      aria-hidden
+                    />
+                    <h3 className="absolute bottom-3 left-4 text-sm font-bold uppercase tracking-wide text-content-primary">
+                      {track.sponsor}
+                    </h3>
+                  </>
+                )}
               </div>
 
               <div className="flex flex-1 flex-col p-5">
+                {track.containOnLight && (
+                  <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-content-primary">
+                    {track.sponsor}
+                  </h3>
+                )}
                 <p className="text-sm text-content-muted">{t(track.blurb)}</p>
                 <ul className="mt-4 space-y-3">
                   {track.tiers.map((tier) => (
@@ -301,10 +317,7 @@ export default function BuildersTour({ locale }: Props) {
             sizes="28px"
             className="h-7 w-7 shrink-0"
           />
-          <p className="text-sm text-content-secondary">
-            {t(PAYOUT.note)}{' '}
-            <span className="mono text-content-faint">{t(PAYOUT.chain)}</span>
-          </p>
+          <p className="text-sm text-content-secondary">{t(PAYOUT.note)}</p>
         </div>
 
         {/* Said plainly: a builder who assumes the tracks are exclusive picks

@@ -163,6 +163,14 @@ export interface PrizeTrack {
   tiers: readonly PrizeTier[];
   /** Site-relative image that gives the prize a face rather than a number. */
   image: string;
+  /**
+   * Show the image whole on a light ground instead of cropping it to fill.
+   *
+   * EAG's banner is a 3:1 lockup on white; a 16:9 cover-crop keeps the middle
+   * 59% of its width and the logo sits at 65-95%, so covering it would cut the
+   * brand off entirely. Devcon's Mumbai art is already 16:9 and covers cleanly.
+   */
+  containOnLight?: boolean;
   blurb: Bilingual;
 }
 
@@ -242,7 +250,8 @@ export const DEVCON = {
 export const PRIZES: readonly PrizeTrack[] = [
   {
     sponsor: 'EAG',
-    image: '/tour/eag-builders-tour.jpg',
+    image: '/tour/eag-banner.jpg',
+    containOnLight: true,
     blurb: {
       es: 'Un mes construyendo con la comunidad global de Ethereum, en tres ciudades.',
       en: 'A month building with the global Ethereum community, across three cities.',
@@ -259,7 +268,8 @@ export const PRIZES: readonly PrizeTrack[] = [
   },
   {
     sponsor: 'Ethereum Foundation',
-    image: '/tour/eag-builders-tour.jpg',
+    // Devcon VIII's own Mumbai key art — the ticket is what this prize is.
+    image: '/tour/devcon-mumbai.webp',
     blurb: {
       es: 'Entradas a Devcon para los ganadores, vía el programa Road to Devcon.',
       en: 'Devcon tickets for winners, through the Road to Devcon programme.',
