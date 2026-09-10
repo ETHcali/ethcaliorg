@@ -497,7 +497,12 @@ export const SPONSORS: readonly Sponsor[] = [
     name: 'NIDO · Zonamerica',
     role: { es: 'Sede', en: 'Venue' },
     url: 'https://web.zonamerica.com/colombia/',
-    logo: null,
+    // The wordmark alone. The official lockup also carries Gobernación del Valle,
+    // Alcaldía de Cali, Cámara de Comercio and comfandi, and at tile size those
+    // five marks are illegible — nido-lockup.png keeps the full version for the
+    // venue section, where it has the width to be read.
+    logo: '/tour/nido.png',
+    wide: true,
   },
 ];
 

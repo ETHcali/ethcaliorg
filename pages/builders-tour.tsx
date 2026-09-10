@@ -829,6 +829,25 @@ export default function BuildersTour({ locale }: Props) {
             />
           </div>
         </div>
+
+        {/* The full institutional lockup, which the sponsor tile cannot carry:
+            at tile size the five partner marks below NIDO are illegible, and
+            they are the part that matters to a reader in Cali. */}
+        <a
+          href={TOUR.venue.siteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 block rounded-card border border-line-hairline bg-surface-slab px-6 py-7 transition-colors hover:border-line-strong"
+        >
+          <Image
+            src="/tour/nido-lockup.png"
+            alt="NIDO · Zonamerica — Gobernación del Valle del Cauca, Alcaldía de Cali, Cámara de Comercio de Cali, comfandi"
+            width={1731}
+            height={707}
+            sizes="(min-width: 1024px) 720px, 88vw"
+            className="mx-auto h-auto w-full max-w-[720px]"
+          />
+        </a>
       </Section>
 
       {/* ── final CTA ────────────────────────────────────────────────────── */}
