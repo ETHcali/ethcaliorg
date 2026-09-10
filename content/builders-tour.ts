@@ -206,9 +206,35 @@ export const PRIZES_ARE_CUMULATIVE: Bilingual = {
     'EAG prize, a Devcon ticket and the HashKey Chain prize. You do not have to choose.',
 };
 
+/**
+ * How the global pool relates to what is actually won in Cali.
+ *
+ * The 12,500 figure is the EAG Global Buildathon's whole pool across every stop
+ * on the tour; 1,000 of it is awarded here, as the HashKey Chain tiers. Without
+ * saying that, a reader sees 12,500 on the page and reasonably assumes it is
+ * what is on the table in Cali.
+ */
+export const POOL = {
+  globalUsd: 12500,
+  caliUsd: 1000,
+  caliGoesTo: 'HashKey Chain',
+  /** Anchor to the prize cards, where the tiers that make up caliUsd are listed. */
+  caliHref: '#prizes',
+  globalLabel: {
+    es: 'Bolsa global del EAG Global Buildathon, en todas las paradas de la gira',
+    en: "The EAG Global Buildathon's whole pool, across every stop on the tour",
+  } as Bilingual,
+  caliLabel: {
+    es: 'Se entregan en Cali, repartidos en el track de HashKey Chain',
+    en: 'Awarded in Cali, split across the HashKey Chain track',
+  } as Bilingual,
+} as const;
+
 export const DEVCON = {
   name: 'Devcon VIII',
   banner: '/tour/devcon-banner.jpg',
+  /** The Road to Devcon programme's own mark — this is the programme giving the tickets. */
+  programme: '/tour/road-to-devcon.jpg',
   x: 'https://x.com/efdevcon',
   place: { es: 'Mumbai, India', en: 'Mumbai, India' } as Bilingual,
   dates: { es: '1–6 de noviembre de 2026', en: '1–6 November 2026' } as Bilingual,
@@ -271,8 +297,9 @@ export const PRIZES: readonly PrizeTrack[] = [
   },
   {
     sponsor: 'Ethereum Foundation',
-    // Devcon VIII's own Mumbai key art — the ticket is what this prize is.
-    image: '/tour/devcon-mumbai.webp',
+    // Road to Devcon's own mark. The ticket comes from that programme, so the
+    // card shows the programme rather than a Devcon venue illustration.
+    image: '/tour/road-to-devcon.jpg',
     blurb: {
       es: 'Entradas a Devcon para los ganadores, vía el programa Road to Devcon.',
       en: 'Devcon tickets for winners, through the Road to Devcon programme.',
@@ -416,15 +443,6 @@ export const SPONSORS: readonly Sponsor[] = [
     url: 'https://ethappsguild.org',
     logo: '/tour/eag.png',
     wide: true,
-  },
-  {
-    name: 'Devcon VIII',
-    x: 'https://x.com/efdevcon',
-    role: { es: 'Road to Devcon', en: 'Road to Devcon' },
-    url: 'https://devcon.org/en/',
-    logo: '/tour/devcon-viii.webp',
-    wide: true,
-    plate: true,
   },
   {
     name: 'Ethereum Foundation',

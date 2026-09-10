@@ -12,6 +12,7 @@ import {
   PRIZES_ARE_CUMULATIVE,
   DEVCON,
   PAYOUT,
+  POOL,
   TOUR_MAP_COPY,
   SCHEDULE,
   SPONSORS,
@@ -402,10 +403,40 @@ export default function BuildersTour({ locale }: Props) {
           </a>
 
           <div>
-            <p className="mono text-4xl font-bold text-signal-pending sm:text-5xl">12 500 USD</p>
-            <p className="mt-2 text-sm text-content-muted">
-              {en ? 'EAG Global Buildathon prize pool' : 'Bolsa del EAG Global Buildathon'}
+            <p className="mono text-4xl font-bold text-signal-pending sm:text-5xl">
+              {POOL.globalUsd.toLocaleString(en ? 'en-US' : 'es-CO')} USD
             </p>
+            <p className="mt-2 max-w-prose text-sm text-content-muted">
+              {t(POOL.globalLabel)}
+            </p>
+
+            {/* The share that actually lands here, drawn to scale. 1,000 of
+                12,500 is 8% — a number most readers will assume is far larger
+                unless they can see it. */}
+            <div className="mt-7">
+              <div className="flex h-3 w-full overflow-hidden rounded-full bg-surface-inset">
+                <span
+                  className="bg-eth-blue"
+                  style={{ width: `${(POOL.caliUsd / POOL.globalUsd) * 100}%` }}
+                  aria-hidden
+                />
+              </div>
+
+              <a
+                href={POOL.caliHref}
+                className="group mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1"
+              >
+                <span className="mono text-2xl font-bold text-eth-blue-text">
+                  {POOL.caliUsd.toLocaleString(en ? 'en-US' : 'es-CO')} USDT
+                </span>
+                <span className="text-sm text-content-secondary group-hover:text-content-primary">
+                  {t(POOL.caliLabel)}
+                </span>
+                <span className="text-sm font-semibold text-eth-blue-text group-hover:underline">
+                  {en ? 'see the tiers' : 'ver los premios'} →
+                </span>
+              </a>
+            </div>
 
             <p className="mt-6 max-w-prose text-base leading-relaxed text-content-secondary">
               {en
@@ -534,7 +565,15 @@ export default function BuildersTour({ locale }: Props) {
             ))}
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 bg-surface-slab px-5 py-5 pt-0">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-4 bg-surface-slab px-5 py-5">
+            <Image
+              src={DEVCON.programme}
+              alt="Road to Devcon India"
+              width={300}
+              height={300}
+              sizes="88px"
+              className="h-[88px] w-[88px] shrink-0 rounded-chip"
+            />
             <p className="mono text-3xl font-bold text-signal-pending">
               {DEVCON.ticketValueUsd} USD
             </p>
@@ -558,93 +597,98 @@ export default function BuildersTour({ locale }: Props) {
           {SHANHAIWOO.name} · {en ? 'three cities, one journey' : 'tres ciudades, un solo recorrido'}
         </h3>
 
+        {/* Same treatment as the Devcon banner above: the artwork runs full
+            width with its own scrim carrying the dates, and the whole banner is
+            the link. The two pieces then read as a pair rather than as a banner
+            and a thumbnail. */}
         <div className="mt-4 overflow-hidden rounded-card border border-line-hairline">
-          <div className="grid lg:grid-cols-[minmax(0,1fr)_400px]">
-            <div className="bg-surface-slab p-6">
-              <p className="mono text-xs uppercase tracking-widest text-signal-pending">
-                {t(SHANHAIWOO.dates)}
+          <a
+            href={SHANHAIWOO.site}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative block"
+          >
+            <Image
+              src={SHANHAIWOO.poster}
+              alt={`${SHANHAIWOO.name} 2026`}
+              width={1200}
+              height={675}
+              sizes="(min-width: 1024px) 1000px, 92vw"
+              className="h-auto w-full"
+            />
+            <div
+              className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-2 p-4"
+              style={{ background: 'linear-gradient(to top, rgb(6 6 11 / 0.85), transparent)' }}
+            >
+              <p className="mono text-sm font-bold text-content-primary">
+                {t(SHANHAIWOO.dates)} · {SHANHAIWOO.cities.join(' · ')}
               </p>
+              <span className="text-xs font-semibold text-eth-blue-text opacity-0 transition-opacity group-hover:opacity-100">
+                shanhaiwoo.com →
+              </span>
+            </div>
+          </a>
 
-              <ol className="mt-6 space-y-0">
-                {SHANHAIWOO.legs.map((leg, i) => {
-                  const last = i === SHANHAIWOO.legs.length - 1;
-                  return (
-                    <li key={leg.city} className="relative flex gap-4 pb-7 last:pb-0">
-                      {!last && (
-                        <span
-                          className="absolute left-[7px] top-4 h-full w-px bg-line-strong"
-                          aria-hidden
-                        />
-                      )}
+          <div className="bg-surface-slab p-6">
+            <ol className="space-y-0">
+              {SHANHAIWOO.legs.map((leg, i) => {
+                const last = i === SHANHAIWOO.legs.length - 1;
+                return (
+                  <li key={leg.city} className="relative flex gap-4 pb-7 last:pb-0">
+                    {!last && (
                       <span
-                        className={`relative z-10 mt-1.5 h-3.5 w-3.5 shrink-0 rounded-full border-2 ${
-                          'devcon' in leg && leg.devcon
-                            ? 'border-signal-pending bg-signal-pending'
-                            : 'border-eth-blue-text bg-surface-slab'
-                        }`}
+                        className="absolute left-[7px] top-4 h-full w-px bg-line-strong"
                         aria-hidden
                       />
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                          <h4 className="text-base font-bold text-content-primary">{leg.city}</h4>
-                          <span className="mono text-xs text-content-faint">{leg.dates}</span>
-                          {'devcon' in leg && leg.devcon && (
-                            <span className="rounded-full bg-signal-pending/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-signal-pending">
-                              Devcon
-                            </span>
-                          )}
-                        </div>
-                        <p className="mt-1 text-sm leading-relaxed text-content-muted">
-                          {t(leg.focus)}
-                        </p>
+                    )}
+                    <span
+                      className={`relative z-10 mt-1.5 h-3.5 w-3.5 shrink-0 rounded-full border-2 ${
+                        'devcon' in leg && leg.devcon
+                          ? 'border-signal-pending bg-signal-pending'
+                          : 'border-eth-blue-text bg-surface-slab'
+                      }`}
+                      aria-hidden
+                    />
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <h4 className="text-base font-bold text-content-primary">{leg.city}</h4>
+                        <span className="mono text-xs text-content-faint">{leg.dates}</span>
+                        {'devcon' in leg && leg.devcon && (
+                          <span className="rounded-full bg-signal-pending/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-signal-pending">
+                            Devcon
+                          </span>
+                        )}
                       </div>
-                    </li>
-                  );
-                })}
-              </ol>
+                      <p className="mt-1 text-sm leading-relaxed text-content-muted">
+                        {t(leg.focus)}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
 
-              <div className="mt-6 flex flex-wrap gap-2">
-                {[
-                  ['shanhaiwoo.com', SHANHAIWOO.site],
-                  ['@shanhaiwoo', SHANHAIWOO.x],
-                  ['devcon.org', DEVCON.url],
-                  ['@efdevcon', DEVCON.x],
-                ].map(([label, href]) => (
-                  <a
-                    key={href}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
-                  >
-                    {label} →
-                  </a>
-                ))}
-              </div>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {[
+                ['shanhaiwoo.com', SHANHAIWOO.site],
+                ['@shanhaiwoo', SHANHAIWOO.x],
+                ['devcon.org', DEVCON.url],
+                ['@efdevcon', DEVCON.x],
+              ].map(([label, href]) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
+                >
+                  {label} →
+                </a>
+              ))}
             </div>
-
-            {/* Contained, not cropped. It is a flyer with dates and cities set
-                into the artwork; covering it cut the text off. */}
-            <a
-              href={SHANHAIWOO.site}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex flex-col justify-center gap-3 bg-surface-inset p-5"
-            >
-              <Image
-                src={SHANHAIWOO.poster}
-                alt={`${SHANHAIWOO.name} 2026`}
-                width={1200}
-                height={675}
-                sizes="(min-width: 1024px) 360px, 92vw"
-                className="h-auto w-full rounded-chip"
-              />
-              <span className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-eth-blue-text">
-                <span className="group-hover:underline">shanhaiwoo.com →</span>
-              </span>
-            </a>
           </div>
         </div>
+
       </Section>
 
       {/* ── venue ────────────────────────────────────────────────────────── */}
