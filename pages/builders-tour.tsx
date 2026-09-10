@@ -10,6 +10,7 @@ import {
   PRIZES,
   PRIZES_ARE_CUMULATIVE,
   DEVCON,
+  PAYOUT,
   TOUR_MAP_COPY,
   SCHEDULE,
   SPONSORS,
@@ -243,43 +244,6 @@ export default function BuildersTour({ locale }: Props) {
 
       {/* ── prizes ───────────────────────────────────────────────────────── */}
       <Section id="prizes" eyebrow={t(COPY.prizes)} title={t(COPY.prizes)} lead={t(COPY.prizesLead)}>
-        <a
-          href={DEVCON.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mb-5 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-card border border-signal-pending/40 bg-signal-pending/[0.07] px-5 py-5 transition-colors hover:border-signal-pending"
-        >
-          <span className="flex h-12 shrink-0 items-center rounded-chip bg-surface-paper px-3">
-            <Image
-              src={DEVCON.logo}
-              alt="Devcon VIII India"
-              width={140}
-              height={62}
-              sizes="140px"
-              className="h-9 w-auto object-contain"
-            />
-          </span>
-
-          <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-signal-pending">
-              Road to Devcon
-            </p>
-            <h3 className="mt-1 text-lg font-bold text-content-primary">{t(DEVCON.title)}</h3>
-            <p className="mt-1 max-w-prose text-sm leading-relaxed text-content-secondary">
-              {t(DEVCON.blurb)}
-            </p>
-          </div>
-          <div className="shrink-0 text-right">
-            <p className="mono text-3xl font-bold text-signal-pending">
-              {DEVCON.ticketValueUsd} USD
-            </p>
-            <p className="text-[11px] text-content-faint">
-              {en ? 'per ticket' : 'por entrada'}
-            </p>
-          </div>
-          <span className="w-full text-sm font-semibold text-signal-pending">devcon.org →</span>
-        </a>
-
         <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
           {PRIZES.map((track) => (
             <div
@@ -328,9 +292,24 @@ export default function BuildersTour({ locale }: Props) {
           ))}
         </div>
 
+        <div className="mt-5 flex flex-wrap items-center gap-3 rounded-card border border-line-hairline bg-surface-slab px-5 py-4">
+          <Image
+            src={PAYOUT.logo}
+            alt={PAYOUT.token}
+            width={28}
+            height={28}
+            sizes="28px"
+            className="h-7 w-7 shrink-0"
+          />
+          <p className="text-sm text-content-secondary">
+            {t(PAYOUT.note)}{' '}
+            <span className="mono text-content-faint">{t(PAYOUT.chain)}</span>
+          </p>
+        </div>
+
         {/* Said plainly: a builder who assumes the tracks are exclusive picks
             one and aims lower than they need to. */}
-        <p className="mt-5 rounded-card border border-line-brand bg-eth-blue-wash px-5 py-4 text-sm leading-relaxed text-content-secondary">
+        <p className="mt-3 rounded-card border border-line-brand bg-eth-blue-wash px-5 py-4 text-sm leading-relaxed text-content-secondary">
           <span className="font-bold text-content-primary">
             {en ? 'Prizes stack.' : 'Los premios se acumulan.'}
           </span>{' '}
@@ -492,31 +471,78 @@ export default function BuildersTour({ locale }: Props) {
       </Section>
 
       {/* ── road to Devcon ───────────────────────────────────────────────── */}
+      {/* Devcon's own identity carries this section rather than ours: the deep
+          blue on a light plate is how that mark is meant to be seen, and a
+          reader should recognise it before they read a word. */}
       <Section
-        id="shanhaiwoo"
-        eyebrow={en ? 'Road to Devcon' : 'Road to Devcon'}
-        title={en ? 'Three cities, one builder journey' : 'Tres ciudades, un solo recorrido'}
-        lead={t(SHANHAIWOO.blurb)}
+        id="devcon"
+        eyebrow="Road to Devcon"
+        title={en ? 'The road ends at Devcon' : 'El camino termina en Devcon'}
+        lead={t(DEVCON.blurb)}
       >
-        <div className="overflow-hidden rounded-card border border-line-brand">
+        <div className="overflow-hidden rounded-card border border-signal-pending/40">
+          <div className="flex flex-wrap items-center justify-between gap-6 bg-surface-paper px-6 py-7">
+            <Image
+              src={DEVCON.logo}
+              alt={`${DEVCON.name} — ${t(DEVCON.place)}`}
+              width={300}
+              height={132}
+              sizes="300px"
+              className="h-16 w-auto object-contain"
+            />
+            <div className="text-right">
+              <p className="mono text-sm font-bold text-[#07028F]">{t(DEVCON.dates)}</p>
+              <p className="text-sm text-[#07028F]/70">{t(DEVCON.place)}</p>
+            </div>
+          </div>
+
+          <div className="grid gap-px bg-line-hairline sm:grid-cols-3">
+            {DEVCON.facts.map((f) => (
+              <div key={f.label.es} className="bg-surface-slab p-5">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-signal-pending">
+                  {t(f.label)}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-content-secondary">{t(f.value)}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 bg-surface-slab px-5 py-5 pt-0">
+            <p className="mono text-3xl font-bold text-signal-pending">
+              {DEVCON.ticketValueUsd} USD
+            </p>
+            <p className="text-sm text-content-muted">
+              {en ? 'the value of each ticket' : 'el valor de cada entrada'}
+            </p>
+            <a
+              href={DEVCON.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-auto inline-flex min-h-tap items-center rounded-control border border-signal-pending/50 px-4 text-sm font-bold text-signal-pending transition-colors hover:bg-signal-pending/10"
+            >
+              devcon.org →
+            </a>
+          </div>
+        </div>
+
+        {/* The mission is how a winner actually gets to Mumbai, so it sits under
+            Devcon rather than in a section of its own. */}
+        <h3 className="mt-10 text-xs font-bold uppercase tracking-widest text-content-faint">
+          {SHANHAIWOO.name} · {en ? 'three cities, one journey' : 'tres ciudades, un solo recorrido'}
+        </h3>
+
+        <div className="mt-4 overflow-hidden rounded-card border border-line-hairline">
           <div className="grid lg:grid-cols-[minmax(0,1fr)_400px]">
-            {/* The journey as a timeline. Each leg is a step, the Devcon week is
-                marked, and the whole thing reads left-to-right as a route rather
-                than as three unrelated cities. */}
             <div className="bg-surface-slab p-6">
               <p className="mono text-xs uppercase tracking-widest text-signal-pending">
                 {t(SHANHAIWOO.dates)}
               </p>
-              <h3 className="mt-2 text-2xl">{SHANHAIWOO.name}</h3>
-              <p className="text-sm text-content-muted">{SHANHAIWOO.editionLabel}</p>
 
-              <ol className="mt-7 space-y-0">
+              <ol className="mt-6 space-y-0">
                 {SHANHAIWOO.legs.map((leg, i) => {
                   const last = i === SHANHAIWOO.legs.length - 1;
                   return (
                     <li key={leg.city} className="relative flex gap-4 pb-7 last:pb-0">
-                      {/* The connector, drawn between dots rather than under
-                          the last one, so the route visibly ends. */}
                       {!last && (
                         <span
                           className="absolute left-[7px] top-4 h-full w-px bg-line-strong"
@@ -550,24 +576,14 @@ export default function BuildersTour({ locale }: Props) {
                 })}
               </ol>
 
-              <div className="mt-6 flex flex-wrap gap-2">
-                <a
-                  href={DEVCON.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-[36px] items-center rounded-chip border border-signal-pending/40 px-3 text-xs font-semibold text-signal-pending transition-colors hover:border-signal-pending"
-                >
-                  devcon.org →
-                </a>
-                <a
-                  href={SHANHAIWOO.journeyPost}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
-                >
-                  {t(COPY.seePost)} →
-                </a>
-              </div>
+              <a
+                href={SHANHAIWOO.journeyPost}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
+              >
+                {t(COPY.seePost)} →
+              </a>
             </div>
 
             <div className="relative min-h-[300px] bg-surface-inset">

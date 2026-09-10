@@ -171,18 +171,36 @@ export interface PrizeTrack {
  * take the mission place AND the USDT — worth saying out loud, because a builder
  * who assumes the tracks are exclusive picks one and aims lower.
  */
+/** Stated next to every amount, so nobody turns up expecting a different asset. */
+export const PAYOUT: {
+  token: string;
+  chain: Bilingual;
+  logo: string;
+  note: Bilingual;
+} = {
+  token: 'USDT',
+  chain: { es: 'Ethereum mainnet', en: 'Ethereum mainnet' },
+  logo: '/tour/usdt.png',
+  note: {
+    es: 'Todos los premios en efectivo se pagan en USDT sobre Ethereum mainnet.',
+    en: 'Every cash prize is paid in USDT on Ethereum mainnet.',
+  },
+};
+
 export const PRIZES_ARE_CUMULATIVE: Bilingual = {
   es:
     'Los premios se acumulan. Cada premiación se juzga por separado, así que un mismo ' +
-    'proyecto puede llevarse un cupo en la misión de innovación, una entrada a Devcon y ' +
-    'el premio en USDT de HashKey Chain. No tienes que elegir.',
+    'proyecto puede llevarse un premio de EAG, una entrada a Devcon y el premio de ' +
+    'HashKey Chain. No tienes que elegir.',
   en:
     'Prizes stack. Each is judged separately, so a single project can take a place on the ' +
-    'innovation mission, a Devcon ticket and the HashKey Chain USDT prize. You do not have ' +
-    'to choose.',
+    'EAG prize, a Devcon ticket and the HashKey Chain prize. You do not have to choose.',
 };
 
 export const DEVCON = {
+  name: 'Devcon VIII',
+  place: { es: 'Mumbai, India', en: 'Mumbai, India' } as Bilingual,
+  dates: { es: '1–6 de noviembre de 2026', en: '1–6 November 2026' } as Bilingual,
   url: 'https://devcon.org/en/',
   logo: '/tour/devcon-viii.webp',
   ticketValueUsd: 499,
@@ -195,6 +213,30 @@ export const DEVCON = {
       'The Ethereum Foundation is contributing Devcon tickets for winners, through the ' +
       'Road to Devcon programme. Each ticket is valued at 499 USD.',
   } as Bilingual,
+  /** What the ticket actually buys, beyond entry. */
+  facts: [
+    {
+      label: { es: 'Qué es', en: 'What it is' } as Bilingual,
+      value: {
+        es: 'La conferencia de la Ethereum Foundation. Una semana con los equipos que construyen el protocolo.',
+        en: "The Ethereum Foundation's own conference. A week with the teams building the protocol.",
+      } as Bilingual,
+    },
+    {
+      label: { es: 'Dónde', en: 'Where' } as Bilingual,
+      value: {
+        es: 'Mumbai, India — la última parada del Ethereum Builders Tour es esa misma semana.',
+        en: 'Mumbai, India — the final Ethereum Builders Tour stop lands that same week.',
+      } as Bilingual,
+    },
+    {
+      label: { es: 'Cómo se gana', en: 'How you get one' } as Bilingual,
+      value: {
+        es: 'Ganando en Cali. Las entradas las aporta la Ethereum Foundation vía Road to Devcon.',
+        en: 'By winning in Cali. Tickets come from the Ethereum Foundation through Road to Devcon.',
+      } as Bilingual,
+    },
+  ],
 } as const;
 
 export const PRIZES: readonly PrizeTrack[] = [
@@ -207,10 +249,10 @@ export const PRIZES: readonly PrizeTrack[] = [
     },
     tiers: [
       {
-        place: '5',
+        place: '5 × 200',
         prize: {
-          es: 'Cinco proyectos seleccionados para la misión de innovación: Shenzhen, Hong Kong y Mumbai, desde el 15 de octubre',
-          en: 'Five projects selected for the innovation mission: Shenzhen, Hong Kong and Mumbai, from 15 October',
+          es: 'USDT para cinco proyectos ganadores, más un cupo en la misión de innovación: Shenzhen, Hong Kong y Mumbai desde el 15 de octubre',
+          en: 'USDT across five winning projects, plus a place on the innovation mission: Shenzhen, Hong Kong and Mumbai from 15 October',
         },
       },
     ],
@@ -381,16 +423,12 @@ export const SPONSORS: readonly Sponsor[] = [
     logo: '/tour/hashkey-chain.jpg',
   },
   {
-    name: 'HashKey Exchange',
-    role: { es: 'Patrocinador', en: 'Sponsor' },
-    url: 'https://www.hashkey.com',
-    logo: null,
-  },
-  {
     name: 'ETH Cali',
     role: { es: 'Anfitrión local', en: 'Local host' },
     url: 'https://ethcali.org',
-    logo: '/branding/Logo_Nodo_CLO_ETH_CO-01.png',
+    // The reversed lockup. Logo_Nodo_CLO_ETH_CO-01 is dark navy artwork drawn
+    // for a white ground and disappears on --surface-slab.
+    logo: '/branding/ethcali-horizontal-light.png',
   },
   {
     name: 'Ekinoxis Labs',
