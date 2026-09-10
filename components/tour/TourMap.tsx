@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { WORLD_PATH } from './world-path';
-import { TOUR_STOPS, TOUR_MAP_COPY, type TourStop, type Bilingual } from '../../content/builders-tour';
+import {
+  TOUR_STOPS,
+  MISSION_STOPS,
+  TOUR_MAP_COPY,
+  type TourStop,
+  type Bilingual,
+} from '../../content/builders-tour';
 import type { Locale } from '../../lib/i18n';
 
 const W = 1000;
@@ -34,10 +40,11 @@ export default function TourMap({ locale }: { locale: Locale }) {
   const [zoomed, setZoomed] = useState<TourStop | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
 
-  // Bounds around the stops, padded. Computed rather than hardcoded so adding a
-  // stop in Asia widens the frame instead of putting a marker off-canvas.
-  const xs = TOUR_STOPS.map((s) => x(s.lng));
-  const ys = TOUR_STOPS.map((s) => y(s.lat));
+  // Every point, tour and mission, so the frame covers Sydney and Shenzhen as
+  // readily as Cali. Computed rather than hardcoded for exactly that reason.
+  const ALL = [...TOUR_STOPS, ...MISSION_STOPS];
+  const xs = ALL.map((s) => x(s.lng));
+  const ys = ALL.map((s) => y(s.lat));
   const padX = 130;
   const padY = 70;
   const minX = Math.max(0, Math.min(...xs) - padX);
@@ -82,11 +89,17 @@ export default function TourMap({ locale }: { locale: Locale }) {
         >
           <path d={WORLD_PATH} fill="var(--surface-ridge)" stroke="none" />
 
-          {TOUR_STOPS.map((stop) => {
+          {ALL.map((stop) => {
             const cx = x(stop.lng);
             const cy = y(stop.lat);
             const isSelected = selected?.city === stop.city;
-            const colour = stop.upcoming ? 'var(--signal-confirmed)' : 'var(--eth-blue-text)';
+            // Three states, three colours: green is the one you can still
+            // attend, amber is where the winners go, blue is already run.
+            const colour = stop.upcoming
+              ? 'var(--signal-confirmed)'
+              : stop.isMission
+                ? 'var(--signal-pending)'
+                : 'var(--eth-blue-text)';
 
             return (
               <g
@@ -149,9 +162,9 @@ export default function TourMap({ locale }: { locale: Locale }) {
                   cx={cx}
                   cy={cy}
                   r={(isSelected ? 8 : 5.5) * k}
-                  fill={colour}
-                  stroke="var(--surface-slab)"
-                  strokeWidth={2 * k}
+                  fill={stop.isMission ? 'var(--surface-slab)' : colour}
+                  stroke={stop.isMission ? colour : 'var(--surface-slab)'}
+                  strokeWidth={(stop.isMission ? 2.5 : 2) * k}
                   className="transition-all"
                 />
 
@@ -205,16 +218,27 @@ export default function TourMap({ locale }: { locale: Locale }) {
               className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
                 selected.upcoming
                   ? 'bg-signal-confirmed/15 text-signal-confirmed'
-                  : 'bg-surface-ridge text-content-muted'
+                  : selected.isMission
+                    ? 'bg-signal-pending/15 text-signal-pending'
+                    : 'bg-surface-ridge text-content-muted'
               }`}
             >
-              {selected.upcoming ? t(TOUR_MAP_COPY.next) : t(TOUR_MAP_COPY.done)}
+              {selected.isMission
+                ? t(TOUR_MAP_COPY.mission)
+                : selected.upcoming
+                  ? t(TOUR_MAP_COPY.next)
+                  : t(TOUR_MAP_COPY.done)}
             </span>
 
             <h3 className="mt-3 text-lg font-bold text-content-primary">{selected.city}</h3>
             <p className="text-sm text-content-muted">{t(selected.country)}</p>
             {selected.dates && (
               <p className="mono mt-2 text-sm text-content-secondary">{t(selected.dates)}</p>
+            )}
+            {selected.host && (
+              <p className="mt-1 text-xs text-content-faint">
+                {t(TOUR_MAP_COPY.cohost)} <span className="mono">{selected.host}</span>
+              </p>
             )}
 
             {selected.lumaUrl && (

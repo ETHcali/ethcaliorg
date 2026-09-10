@@ -9,6 +9,7 @@ import {
   HSK_TRACKS,
   PRIZES,
   PRIZES_ARE_CUMULATIVE,
+  DEVCON,
   TOUR_MAP_COPY,
   SCHEDULE,
   SPONSORS,
@@ -17,7 +18,7 @@ import {
   type Slot,
 } from '../content/builders-tour';
 import { asLocale, formatDate, formatDateRange, type Locale } from '../lib/i18n';
-import { DETAIL_SIZES } from '../lib/images';
+
 
 interface Props {
   locale: Locale;
@@ -37,8 +38,8 @@ const COPY = {
   },
   prizes: { es: 'Premios', en: 'Prizes' },
   prizesLead: {
-    es: 'Dos tracks, dos premiaciones independientes. Puedes competir en ambos con el mismo proyecto.',
-    en: 'Two tracks, judged separately. The same project can compete in both.',
+    es: 'Tres fuentes de premios, juzgadas por separado. Un mismo proyecto puede llevarse más de una.',
+    en: 'Three prize sources, judged separately. One project can take more than one.',
   },
   tracks: { es: 'Tracks', en: 'Tracks' },
   tracksLead: {
@@ -242,7 +243,44 @@ export default function BuildersTour({ locale }: Props) {
 
       {/* ── prizes ───────────────────────────────────────────────────────── */}
       <Section id="prizes" eyebrow={t(COPY.prizes)} title={t(COPY.prizes)} lead={t(COPY.prizesLead)}>
-        <div className="grid gap-4 lg:grid-cols-2">
+        <a
+          href={DEVCON.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-5 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-card border border-signal-pending/40 bg-signal-pending/[0.07] px-5 py-5 transition-colors hover:border-signal-pending"
+        >
+          <span className="flex h-12 shrink-0 items-center rounded-chip bg-surface-paper px-3">
+            <Image
+              src={DEVCON.logo}
+              alt="Devcon VIII India"
+              width={140}
+              height={62}
+              sizes="140px"
+              className="h-9 w-auto object-contain"
+            />
+          </span>
+
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-signal-pending">
+              Road to Devcon
+            </p>
+            <h3 className="mt-1 text-lg font-bold text-content-primary">{t(DEVCON.title)}</h3>
+            <p className="mt-1 max-w-prose text-sm leading-relaxed text-content-secondary">
+              {t(DEVCON.blurb)}
+            </p>
+          </div>
+          <div className="shrink-0 text-right">
+            <p className="mono text-3xl font-bold text-signal-pending">
+              {DEVCON.ticketValueUsd} USD
+            </p>
+            <p className="text-[11px] text-content-faint">
+              {en ? 'per ticket' : 'por entrada'}
+            </p>
+          </div>
+          <span className="w-full text-sm font-semibold text-signal-pending">devcon.org →</span>
+        </a>
+
+        <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
           {PRIZES.map((track) => (
             <div
               key={track.sponsor}
@@ -453,49 +491,95 @@ export default function BuildersTour({ locale }: Props) {
         </div>
       </Section>
 
-      {/* ── ShanHaiWoo ───────────────────────────────────────────────────── */}
+      {/* ── road to Devcon ───────────────────────────────────────────────── */}
       <Section
         id="shanhaiwoo"
-        eyebrow={t(COPY.prizeLabel)}
-        title={`${SHANHAIWOO.name} · ${SHANHAIWOO.editionLabel}`}
+        eyebrow={en ? 'Road to Devcon' : 'Road to Devcon'}
+        title={en ? 'Three cities, one builder journey' : 'Tres ciudades, un solo recorrido'}
         lead={t(SHANHAIWOO.blurb)}
       >
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
-          <div>
-            <p className="mono text-sm text-content-muted">
-              {t(SHANHAIWOO.dates)} · {SHANHAIWOO.cities.join(' · ')}
-            </p>
+        <div className="overflow-hidden rounded-card border border-line-brand">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_400px]">
+            {/* The journey as a timeline. Each leg is a step, the Devcon week is
+                marked, and the whole thing reads left-to-right as a route rather
+                than as three unrelated cities. */}
+            <div className="bg-surface-slab p-6">
+              <p className="mono text-xs uppercase tracking-widest text-signal-pending">
+                {t(SHANHAIWOO.dates)}
+              </p>
+              <h3 className="mt-2 text-2xl">{SHANHAIWOO.name}</h3>
+              <p className="text-sm text-content-muted">{SHANHAIWOO.editionLabel}</p>
 
-            <ol className="mt-5 space-y-3">
-              {SHANHAIWOO.legs.map((leg) => (
-                <li key={leg.city} className="rounded-card border border-line-hairline bg-surface-slab p-4">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h3 className="text-sm font-bold text-content-primary">{leg.city}</h3>
-                    <span className="mono text-xs text-content-faint">{leg.dates}</span>
-                  </div>
-                  <p className="mt-1.5 text-sm text-content-muted">{t(leg.focus)}</p>
-                </li>
-              ))}
-            </ol>
+              <ol className="mt-7 space-y-0">
+                {SHANHAIWOO.legs.map((leg, i) => {
+                  const last = i === SHANHAIWOO.legs.length - 1;
+                  return (
+                    <li key={leg.city} className="relative flex gap-4 pb-7 last:pb-0">
+                      {/* The connector, drawn between dots rather than under
+                          the last one, so the route visibly ends. */}
+                      {!last && (
+                        <span
+                          className="absolute left-[7px] top-4 h-full w-px bg-line-strong"
+                          aria-hidden
+                        />
+                      )}
+                      <span
+                        className={`relative z-10 mt-1.5 h-3.5 w-3.5 shrink-0 rounded-full border-2 ${
+                          'devcon' in leg && leg.devcon
+                            ? 'border-signal-pending bg-signal-pending'
+                            : 'border-eth-blue-text bg-surface-slab'
+                        }`}
+                        aria-hidden
+                      />
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                          <h4 className="text-base font-bold text-content-primary">{leg.city}</h4>
+                          <span className="mono text-xs text-content-faint">{leg.dates}</span>
+                          {'devcon' in leg && leg.devcon && (
+                            <span className="rounded-full bg-signal-pending/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-signal-pending">
+                              Devcon
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-1 text-sm leading-relaxed text-content-muted">
+                          {t(leg.focus)}
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
 
-            <a
-              href={SHANHAIWOO.postUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
-            >
-              {t(COPY.seePost)} →
-            </a>
+              <div className="mt-6 flex flex-wrap gap-2">
+                <a
+                  href={DEVCON.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-[36px] items-center rounded-chip border border-signal-pending/40 px-3 text-xs font-semibold text-signal-pending transition-colors hover:border-signal-pending"
+                >
+                  devcon.org →
+                </a>
+                <a
+                  href={SHANHAIWOO.journeyPost}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
+                >
+                  {t(COPY.seePost)} →
+                </a>
+              </div>
+            </div>
+
+            <div className="relative min-h-[300px] bg-surface-inset">
+              <Image
+                src={SHANHAIWOO.poster}
+                alt={`${SHANHAIWOO.name} 2026`}
+                fill
+                sizes="(min-width: 1024px) 400px, 92vw"
+                className="object-cover"
+              />
+            </div>
           </div>
-
-          <Image
-            src={SHANHAIWOO.poster}
-            alt={`${SHANHAIWOO.name} 2026`}
-            width={1200}
-            height={675}
-            sizes={DETAIL_SIZES}
-            className="h-auto w-full rounded-card border border-line-hairline"
-          />
         </div>
       </Section>
 
@@ -548,7 +632,11 @@ export default function BuildersTour({ locale }: Props) {
                 rel="noopener noreferrer"
                 className="flex h-full flex-col items-center justify-center gap-3 rounded-card border border-line-hairline bg-surface-slab p-5 text-center transition-colors hover:border-line-brand"
               >
-                <div className="flex h-12 items-center justify-center">
+                <div
+                  className={`flex h-12 items-center justify-center ${
+                    s.plate ? 'w-full rounded-chip bg-surface-paper px-3' : ''
+                  }`}
+                >
                   {s.logo ? (
                     <Image
                       src={s.logo}

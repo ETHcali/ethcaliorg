@@ -173,14 +173,29 @@ export interface PrizeTrack {
  */
 export const PRIZES_ARE_CUMULATIVE: Bilingual = {
   es:
-    'Los premios se acumulan. Los dos tracks se juzgan por separado, así que un mismo ' +
-    'proyecto puede llevarse un cupo en la misión de innovación y además el premio en ' +
-    'USDT de HashKey Chain. No tienes que elegir.',
+    'Los premios se acumulan. Cada premiación se juzga por separado, así que un mismo ' +
+    'proyecto puede llevarse un cupo en la misión de innovación, una entrada a Devcon y ' +
+    'el premio en USDT de HashKey Chain. No tienes que elegir.',
   en:
-    'Prizes stack. The two tracks are judged separately, so a single project can take a ' +
-    'place on the innovation mission and the HashKey Chain USDT prize as well. You do not ' +
-    'have to choose.',
+    'Prizes stack. Each is judged separately, so a single project can take a place on the ' +
+    'innovation mission, a Devcon ticket and the HashKey Chain USDT prize. You do not have ' +
+    'to choose.',
 };
+
+export const DEVCON = {
+  url: 'https://devcon.org/en/',
+  logo: '/tour/devcon-viii.webp',
+  ticketValueUsd: 499,
+  title: { es: 'Entradas a Devcon', en: 'Devcon tickets' } as Bilingual,
+  blurb: {
+    es:
+      'La Ethereum Foundation aporta entradas a Devcon para los ganadores, a través del ' +
+      'programa Road to Devcon. Cada entrada está valorada en 499 USD.',
+    en:
+      'The Ethereum Foundation is contributing Devcon tickets for winners, through the ' +
+      'Road to Devcon programme. Each ticket is valued at 499 USD.',
+  } as Bilingual,
+} as const;
 
 export const PRIZES: readonly PrizeTrack[] = [
   {
@@ -196,6 +211,23 @@ export const PRIZES: readonly PrizeTrack[] = [
         prize: {
           es: 'Cinco proyectos seleccionados para la misión de innovación: Shenzhen, Hong Kong y Mumbai, desde el 15 de octubre',
           en: 'Five projects selected for the innovation mission: Shenzhen, Hong Kong and Mumbai, from 15 October',
+        },
+      },
+    ],
+  },
+  {
+    sponsor: 'Ethereum Foundation',
+    image: '/tour/eag-builders-tour.jpg',
+    blurb: {
+      es: 'Entradas a Devcon para los ganadores, vía el programa Road to Devcon.',
+      en: 'Devcon tickets for winners, through the Road to Devcon programme.',
+    },
+    tiers: [
+      {
+        place: '499',
+        prize: {
+          es: 'USD el valor de cada entrada a Devcon, aportadas por la Ethereum Foundation',
+          en: 'USD the value of each Devcon ticket, contributed by the Ethereum Foundation',
         },
       },
     ],
@@ -308,6 +340,15 @@ export interface Sponsor {
   logo: string | null;
   /** Wider logos need more room in the row. */
   wide?: boolean;
+  /**
+   * Render on a light plate instead of the dark card.
+   *
+   * For a mark whose colour IS the brand — Devcon's deep blue — recolouring it
+   * to sit on our ground would misrepresent it. EF's wordmark was neutral navy,
+   * which reverses to white the way any monochrome wordmark does; this is the
+   * other case, and it gets --surface-paper underneath instead.
+   */
+  plate?: boolean;
 }
 
 export const SPONSORS: readonly Sponsor[] = [
@@ -316,6 +357,21 @@ export const SPONSORS: readonly Sponsor[] = [
     role: { es: 'Organiza', en: 'Organiser' },
     url: 'https://ethappsguild.org',
     logo: '/tour/eag.png',
+    wide: true,
+  },
+  {
+    name: 'Devcon VIII',
+    role: { es: 'Road to Devcon', en: 'Road to Devcon' },
+    url: 'https://devcon.org/en/',
+    logo: '/tour/devcon-viii.webp',
+    wide: true,
+    plate: true,
+  },
+  {
+    name: 'Ethereum Foundation',
+    role: { es: 'Entradas a Devcon', en: 'Devcon tickets' },
+    url: 'https://ethereum.foundation',
+    logo: '/tour/ef-logo.png',
     wide: true,
   },
   {
@@ -340,7 +396,7 @@ export const SPONSORS: readonly Sponsor[] = [
     name: 'Ekinoxis Labs',
     role: { es: 'Talleres y mentoría', en: 'Workshops and mentoring' },
     url: 'https://www.ekinoxis.xyz',
-    logo: null,
+    logo: '/tour/ekinoxis.png',
   },
   {
     name: 'NIDO · Zonamerica',
@@ -375,6 +431,10 @@ export interface TourStop {
   image: string | null;
   /** The stop that has not happened yet — ours. */
   upcoming?: boolean;
+  /** A destination on the innovation mission rather than a tour stop. */
+  isMission?: boolean;
+  /** The local community that co-hosted it. */
+  host?: string | null;
   /**
    * Which side of the dot the label sits on. Accra and Lagos are ~350 km apart
    * and their labels overlap into an unreadable smear at this scale, so one of
@@ -392,51 +452,96 @@ export interface TourStop {
  */
 export const TOUR_STOPS: readonly TourStop[] = [
   {
-    city: 'Ciudad de México',
-    country: { es: 'México', en: 'Mexico' },
-    dates: { es: '8 de julio', en: '8 July' },
+    city: 'Ciudad de México', country: { es: 'México', en: 'Mexico' },
+    dates: { es: '8–13 de julio', en: '8–13 July' },
     lat: 19.4326, lng: -99.1332,
-    lumaUrl: 'https://luma.com/46e9cc6o',
-    lumaEmbedId: 'evt-RugYnVJ61jfk1Ug',
+    host: '@ETHCincoDeMayo',
+    lumaUrl: 'https://luma.com/46e9cc6o', lumaEmbedId: 'evt-RugYnVJ61jfk1Ug',
     image: '/tour/stop-mexico.jpg',
   },
   {
-    city: 'Lagos',
-    country: { es: 'Nigeria', en: 'Nigeria' },
-    dates: null,
-    lat: 6.5244, lng: 3.3792,
-    lumaUrl: 'https://luma.com/t6gj441t',
-    lumaEmbedId: 'evt-avmSR5CidWujpsh',
-    image: null,
-    labelBelow: true,
-  },
-  {
-    city: 'Accra',
-    country: { es: 'Ghana', en: 'Ghana' },
+    city: 'Accra', country: { es: 'Ghana', en: 'Ghana' },
     dates: { es: '3–4 de agosto', en: '3–4 August' },
-    lat: 5.6037, lng: -0.1870,
-    lumaUrl: 'https://luma.com/1icr5z0o',
-    lumaEmbedId: 'evt-OLpUWV8IJyHlqIG',
+    lat: 5.6037, lng: -0.187,
+    host: '@betechconnected',
+    lumaUrl: 'https://luma.com/1icr5z0o', lumaEmbedId: 'evt-OLpUWV8IJyHlqIG',
     image: '/tour/stop-ghana.jpg',
   },
   {
-    city: 'Florianópolis',
-    country: { es: 'Brasil', en: 'Brazil' },
-    dates: { es: '19 de agosto', en: '19 August' },
-    lat: -27.5954, lng: -48.5480,
-    lumaUrl: 'https://luma.com/aat5db4e',
-    lumaEmbedId: 'evt-cylpB1ibiMIoaHI',
+    city: 'Florianópolis', country: { es: 'Brasil', en: 'Brazil' },
+    dates: { es: '18–19 de agosto', en: '18–19 August' },
+    lat: -27.5954, lng: -48.548,
+    host: '@eth_floripa',
+    lumaUrl: 'https://luma.com/aat5db4e', lumaEmbedId: 'evt-cylpB1ibiMIoaHI',
     image: '/tour/stop-brazil.jpg',
   },
   {
-    city: 'Cali',
-    country: { es: 'Colombia', en: 'Colombia' },
+    city: 'Lagos', country: { es: 'Nigeria', en: 'Nigeria' },
+    dates: { es: '26–27 de agosto', en: '26–27 August' },
+    lat: 6.5244, lng: 3.3792,
+    host: '@Web3Bridge',
+    lumaUrl: 'https://luma.com/t6gj441t', lumaEmbedId: 'evt-avmSR5CidWujpsh',
+    image: null, labelBelow: true,
+  },
+  {
+    // EAG's tour announcement listed Cali as Sep 5-6. That date moved; 19-20 is
+    // final and is what every ETH Cali surface says.
+    city: 'Cali', country: { es: 'Colombia', en: 'Colombia' },
     dates: { es: '19–20 de septiembre', en: '19–20 September' },
-    lat: 3.4516, lng: -76.5320,
-    lumaUrl: 'https://luma.com/khnpkikn',
-    lumaEmbedId: 'evt-cxkPn1L26KCjbD3',
-    image: null,
-    upcoming: true,
+    lat: 3.4516, lng: -76.532,
+    host: '@ethcali_org',
+    lumaUrl: 'https://luma.com/khnpkikn', lumaEmbedId: 'evt-cxkPn1L26KCjbD3',
+    image: null, upcoming: true,
+  },
+  {
+    city: 'Nairobi', country: { es: 'Kenia', en: 'Kenya' },
+    dates: { es: '7–8 de septiembre', en: '7–8 September' },
+    lat: -1.2864, lng: 36.8172,
+    host: '@ETHSafari',
+    lumaUrl: null, lumaEmbedId: null, image: null, labelBelow: true,
+  },
+  {
+    city: 'Cochabamba', country: { es: 'Bolivia', en: 'Bolivia' },
+    dates: { es: '11–13 de septiembre', en: '11–13 September' },
+    lat: -17.3895, lng: -66.1568,
+    host: '@EthereumBo',
+    lumaUrl: null, lumaEmbedId: null, image: null,
+  },
+  {
+    city: 'Sydney', country: { es: 'Australia', en: 'Australia' },
+    dates: { es: '27–29 de septiembre', en: '27–29 September' },
+    lat: -33.8688, lng: 151.2093,
+    host: null,
+    lumaUrl: null, lumaEmbedId: null, image: null,
+  },
+  {
+    // The tour's last stop and the mission's Devcon leg are the same week in the
+    // same city. That is the whole shape of the programme in one line.
+    city: 'Mumbai', country: { es: 'India', en: 'India' },
+    dates: { es: '1–6 de noviembre', en: '1–6 November' },
+    lat: 19.076, lng: 72.8777,
+    host: null,
+    lumaUrl: null, lumaEmbedId: null, image: null, isMission: true,
+  },
+];
+
+/**
+ * Where the winning projects go. Not tour stops — destinations, drawn differently
+ * so the map reads as a journey with an end rather than a scatter of dots.
+ */
+export const MISSION_STOPS: readonly TourStop[] = [
+  {
+    city: 'Shenzhen', country: { es: 'China', en: 'China' },
+    dates: { es: '15–31 de octubre', en: '15–31 October' },
+    lat: 22.5431, lng: 114.0579,
+    host: null, lumaUrl: null, lumaEmbedId: null, image: null, isMission: true,
+  },
+  {
+    city: 'Hong Kong', country: { es: 'Hong Kong', en: 'Hong Kong' },
+    dates: { es: '6–10 de noviembre', en: '6–10 November' },
+    lat: 22.3193, lng: 114.1694,
+    host: null, lumaUrl: null, lumaEmbedId: null, image: null,
+    isMission: true, labelBelow: true,
   },
 ];
 
@@ -444,13 +549,15 @@ export const TOUR_MAP_COPY = {
   eyebrow: { es: 'La gira', en: 'The tour' } as Bilingual,
   title: { es: 'Dónde ha estado', en: 'Where it has been' } as Bilingual,
   lead: {
-    es: 'El Ethereum Builders Tour recorre el mundo activando comunidades. Toca un punto para ver la parada.',
-    en: 'The Ethereum Builders Tour activates communities around the world. Tap a point to open a stop.',
+    es: 'El Ethereum Builders Tour recorre el mundo activando builders. Toca un punto para ver la parada. Los puntos en ámbar son el destino: la misión de innovación.',
+    en: 'The Ethereum Builders Tour travels the world activating builders. Tap a point to open a stop. The amber points are the destination: the innovation mission.',
   } as Bilingual,
   next: { es: 'Próxima parada', en: 'Next stop' } as Bilingual,
   done: { es: 'Ya ocurrió', en: 'Already happened' } as Bilingual,
   openLuma: { es: 'Ver en Luma', en: 'Open on Luma' } as Bilingual,
   back: { es: 'Ver todo el mapa', en: 'See the whole map' } as Bilingual,
+  mission: { es: 'Misión de innovación', en: 'Innovation mission' } as Bilingual,
+  cohost: { es: 'Con', en: 'With' } as Bilingual,
 };
 
 // ── ShanHaiWoo ──────────────────────────────────────────────────────────────
@@ -472,6 +579,8 @@ export const SHANHAIWOO = {
       'city across three cities. Not a sightseeing trip — a month building alongside the ' +
       'global Ethereum community.',
   } as Bilingual,
+  /** The post the legs below are taken from, so a reader can check the source. */
+  journeyPost: 'https://x.com/shanhaiwoo/status/2095007170115121388',
   legs: [
     {
       city: 'Shenzhen',
@@ -484,6 +593,8 @@ export const SHANHAIWOO = {
     {
       city: 'Mumbai',
       dates: '1–6 nov',
+      // The tour's final stop and this leg are the same week in the same city.
+      devcon: true,
       focus: {
         es: 'Conexión con las comunidades globales de Ethereum y open source durante Devcon.',
         en: 'Connecting with the global Ethereum and open-source communities during Devcon.',
