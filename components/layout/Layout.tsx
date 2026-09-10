@@ -15,8 +15,12 @@ const NAV: readonly NavItem[] = [
   // and is the one thing marked live until 20 September.
   { href: '/builders-tour', key: 'nav.tour', live: true },
   {
-    href: '/events',
+    // Points at the local list, not a hub. /events used to be a page whose only
+    // content was two cards linking to these same two pages — the dropdown does
+    // that job, and a page that just repeats the menu is a click for nothing.
+    href: '/events/local',
     key: 'nav.events',
+    matchPrefix: '/events',
     children: [
       { href: '/events/local', key: 'nav.eventsLocal' },
       { href: '/events/international', key: 'nav.eventsIntl' },

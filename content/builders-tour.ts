@@ -28,8 +28,14 @@ export const TOUR = {
   endsOn: '2026-09-20',
 
   tagline: {
-    es: 'Dos días para construir la próxima ola de aplicaciones de Ethereum, en Cali.',
-    en: 'Two days building the next wave of Ethereum applications, in Cali.',
+    es:
+      'Dos días para construir aplicaciones con inteligencia artificial, criptografía y ' +
+      'robótica. Además, la posibilidad de participar en una misión de innovación ' +
+      'avanzada en Shenzhen, Hong Kong y Mumbai desde el 15 de octubre.',
+    en:
+      'Two days building applications with artificial intelligence, cryptography and ' +
+      'robotics. Plus a shot at joining an advanced innovation mission across Shenzhen, ' +
+      'Hong Kong and Mumbai from 15 October.',
   } as Bilingual,
 
   intro: {
@@ -155,23 +161,52 @@ export interface PrizeTier {
 export interface PrizeTrack {
   sponsor: string;
   tiers: readonly PrizeTier[];
+  /** Site-relative image that gives the prize a face rather than a number. */
+  image: string;
+  blurb: Bilingual;
 }
+
+/**
+ * The two tracks are judged separately and the prizes stack. One project can
+ * take the mission place AND the USDT — worth saying out loud, because a builder
+ * who assumes the tracks are exclusive picks one and aims lower.
+ */
+export const PRIZES_ARE_CUMULATIVE: Bilingual = {
+  es:
+    'Los premios se acumulan. Los dos tracks se juzgan por separado, así que un mismo ' +
+    'proyecto puede llevarse un cupo en la misión de innovación y además el premio en ' +
+    'USDT de HashKey Chain. No tienes que elegir.',
+  en:
+    'Prizes stack. The two tracks are judged separately, so a single project can take a ' +
+    'place on the innovation mission and the HashKey Chain USDT prize as well. You do not ' +
+    'have to choose.',
+};
 
 export const PRIZES: readonly PrizeTrack[] = [
   {
     sponsor: 'EAG',
+    image: '/tour/shanhaiwoo-2026.png',
+    blurb: {
+      es: 'Un mes construyendo con la comunidad global de Ethereum, en tres ciudades.',
+      en: 'A month building with the global Ethereum community, across three cities.',
+    },
     tiers: [
       {
-        place: '1º',
+        place: '5',
         prize: {
-          es: 'Beca ShanHaiWoo — un cupo para asistir a la popup city en China',
-          en: 'ShanHaiWoo Scholarship — a place at the popup city in China',
+          es: 'Cinco proyectos seleccionados para la misión de innovación: Shenzhen, Hong Kong y Mumbai, desde el 15 de octubre',
+          en: 'Five projects selected for the innovation mission: Shenzhen, Hong Kong and Mumbai, from 15 October',
         },
       },
     ],
   },
   {
     sponsor: 'HashKey Chain',
+    image: '/tour/hashkey-chain.jpg',
+    blurb: {
+      es: 'Premio en USDT para los mejores proyectos del track de HashKey Chain.',
+      en: 'A USDT prize for the strongest projects on the HashKey Chain track.',
+    },
     tiers: [
       { place: '1º', prize: { es: '500 USDT', en: '500 USDT' } },
       { place: '2º', prize: { es: '300 USDT', en: '300 USDT' } },

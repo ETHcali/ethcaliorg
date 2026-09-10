@@ -18,6 +18,9 @@ module.exports = {
     const moved = [
       ['/ethcali', '/'],
       ['/home', '/'],
+      // /events was a hub page whose only content was two links. Removed, but it
+      // was published, so it lands on the local list rather than 404ing.
+      ['/events', '/events/local'],
       ['/events_locales', '/events/local'],
       ['/events_internationals', '/events/international'],
       ['/ethcalivenues', '/venues'],

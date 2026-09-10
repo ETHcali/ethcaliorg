@@ -7,6 +7,7 @@ import {
   EAG_TRACKS,
   HSK_TRACKS,
   PRIZES,
+  PRIZES_ARE_CUMULATIVE,
   SCHEDULE,
   SPONSORS,
   SHANHAIWOO,
@@ -150,6 +151,7 @@ function Cta({
 
 export default function BuildersTour({ locale }: Props) {
   const t = (b: Bilingual) => pick(b, locale);
+  const en = locale === 'en';
 
   const dateRange = formatDateRange(TOUR.startsOn, TOUR.endsOn, locale);
 
@@ -235,25 +237,62 @@ export default function BuildersTour({ locale }: Props) {
 
       {/* ── prizes ───────────────────────────────────────────────────────── */}
       <Section id="prizes" eyebrow={t(COPY.prizes)} title={t(COPY.prizes)} lead={t(COPY.prizesLead)}>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-2">
           {PRIZES.map((track) => (
-            <div key={track.sponsor} className="rounded-card border border-line-hairline bg-surface-slab p-5">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-eth-blue-text">
-                {track.sponsor}
-              </h3>
-              <ul className="mt-4 space-y-3">
-                {track.tiers.map((tier) => (
-                  <li key={tier.place} className="flex items-baseline gap-3">
-                    <span className="mono shrink-0 text-lg font-bold text-signal-pending">
-                      {tier.place}
-                    </span>
-                    <span className="text-sm text-content-secondary">{t(tier.prize)}</span>
-                  </li>
-                ))}
-              </ul>
+            <div
+              key={track.sponsor}
+              className="flex flex-col overflow-hidden rounded-card border border-line-hairline bg-surface-slab"
+            >
+              {/* The prize gets a face rather than a number. A month in three
+                  cities and a USDT pot read very differently as pictures. */}
+              <div className="relative aspect-[16/9] bg-surface-inset">
+                <Image
+                  src={track.image}
+                  alt={track.sponsor}
+                  fill
+                  sizes="(min-width: 1024px) 45vw, 92vw"
+                  className="object-cover"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'linear-gradient(to top, var(--surface-slab) 4%, transparent 60%)',
+                  }}
+                  aria-hidden
+                />
+                <h3 className="absolute bottom-3 left-4 text-sm font-bold uppercase tracking-wide text-content-primary">
+                  {track.sponsor}
+                </h3>
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <p className="text-sm text-content-muted">{t(track.blurb)}</p>
+                <ul className="mt-4 space-y-3">
+                  {track.tiers.map((tier) => (
+                    <li key={tier.place} className="flex items-baseline gap-3">
+                      <span className="mono shrink-0 text-2xl font-bold text-signal-pending">
+                        {tier.place}
+                      </span>
+                      <span className="text-sm leading-relaxed text-content-secondary">
+                        {t(tier.prize)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>
+
+        {/* Said plainly: a builder who assumes the tracks are exclusive picks
+            one and aims lower than they need to. */}
+        <p className="mt-5 rounded-card border border-line-brand bg-eth-blue-wash px-5 py-4 text-sm leading-relaxed text-content-secondary">
+          <span className="font-bold text-content-primary">
+            {en ? 'Prizes stack.' : 'Los premios se acumulan.'}
+          </span>{' '}
+          {t(PRIZES_ARE_CUMULATIVE).replace(/^[^.]*\.\s*/, '')}
+        </p>
       </Section>
 
       {/* ── tracks ───────────────────────────────────────────────────────── */}

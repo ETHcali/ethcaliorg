@@ -12,7 +12,8 @@ import { asLocale, type Locale } from '../lib/i18n';
 import { APP } from '../lib/links';
 
 interface Props {
-  recent: EventRecord[];
+  upcoming: EventRecord[];
+  past: EventRecord[];
   partners: PartnerRecord[];
   totals: { events: number; hackathons: number; years: number; venues: number };
   locale: Locale;
@@ -72,7 +73,7 @@ function LogoRow({
   );
 }
 
-export default function Home({ recent, partners, totals, locale }: Props) {
+export default function Home({ upcoming, past, partners, totals, locale }: Props) {
   const t = (b: Bilingual) => b[locale];
   const en = locale === 'en';
 
@@ -152,13 +153,29 @@ export default function Home({ recent, partners, totals, locale }: Props) {
         </div>
       </Section>
 
-      <Section title={en ? 'Recent events' : 'Eventos recientes'}>
+      {/* Upcoming first, and only when there is something. "Recent events"
+          showing a year-old meetup is accurate and useless; an empty upcoming
+          section would be worse, so it simply is not rendered. */}
+      {upcoming.length > 0 && (
+        <Section title={en ? 'Coming up' : 'Próximos eventos'}>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {upcoming.map((event) => (
+              <EventCard key={event.id} event={event} locale={locale} />
+            ))}
+          </div>
+        </Section>
+      )}
+
+      <Section title={en ? 'What we have run' : 'Lo que hemos hecho'}>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {recent.map((event) => (
+          {past.map((event) => (
             <EventCard key={event.id} event={event} locale={locale} />
           ))}
         </div>
-        <Link href="/events" className="mt-6 inline-block text-sm text-eth-blue-text hover:underline">
+        <Link
+          href="/events/local"
+          className="mt-6 inline-block text-sm text-eth-blue-text hover:underline"
+        >
           {en ? 'All events' : 'Todos los eventos'} →
         </Link>
       </Section>
@@ -258,9 +275,16 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   const [all, partners, venues] = await Promise.all([getEvents(), getPartners(), getVenues()]);
   const years = new Set(all.map((e) => e.starts_on.slice(0, 4)));
 
+  // Compared as YYYY-MM-DD strings, which sorts correctly and avoids the
+  // timezone slip that parsing a bare date into a Date would reintroduce.
+  // An event counts as upcoming through its last day, not its first.
+  const today = new Date().toISOString().slice(0, 10);
+  const isUpcoming = (e: EventRecord) => (e.ends_on ?? e.starts_on) >= today;
+
   return {
     props: {
-      recent: all.slice(0, 6),
+      upcoming: all.filter(isUpcoming).sort((a, b) => a.starts_on.localeCompare(b.starts_on)),
+      past: all.filter((e) => !isUpcoming(e)).slice(0, 6),
       partners,
       totals: {
         events: all.length,

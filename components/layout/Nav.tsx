@@ -10,6 +10,8 @@ export interface NavChild {
 export interface NavItem {
   href: string;
   key: string;
+  /** Highlight on this prefix when it differs from href (e.g. /events/local under /events). */
+  matchPrefix?: string;
   /** Renders as a dropdown. The parent href stays a real, clickable page. */
   children?: readonly NavChild[];
   /** Time-boxed campaign entry — dot and heavier weight. */
@@ -40,7 +42,7 @@ export default function NavEntry({
   const ref = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number>();
 
-  const active = router.asPath.split('?')[0].startsWith(item.href);
+  const active = router.asPath.split('?')[0].startsWith(item.matchPrefix ?? item.href);
 
   useEffect(() => {
     if (!open) return;
