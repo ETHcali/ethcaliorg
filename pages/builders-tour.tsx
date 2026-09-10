@@ -1,6 +1,7 @@
 import type { GetStaticProps } from 'next';
 import Image from 'next/image';
 import Layout from '../components/layout/Layout';
+import TourMap from '../components/tour/TourMap';
 import Seo from '../components/layout/Seo';
 import {
   TOUR,
@@ -8,6 +9,7 @@ import {
   HSK_TRACKS,
   PRIZES,
   PRIZES_ARE_CUMULATIVE,
+  TOUR_MAP_COPY,
   SCHEDULE,
   SPONSORS,
   SHANHAIWOO,
@@ -167,7 +169,10 @@ export default function BuildersTour({ locale }: Props) {
         title={TOUR.title}
         description={t(TOUR.tagline)}
         path="/builders-tour"
-        image={SHANHAIWOO.poster}
+        // The share card is the tour's own poster, not the mission artwork.
+        // This is what appears in a Facebook ad and a WhatsApp forward, so it
+        // should say Ethereum Builders Tour rather than show a dragon.
+        image="/tour/eag-builders-tour.jpg"
         type="article"
       />
 
@@ -297,6 +302,18 @@ export default function BuildersTour({ locale }: Props) {
 
       {/* ── tracks ───────────────────────────────────────────────────────── */}
       <Section id="tracks" eyebrow={t(COPY.tracks)} title={t(COPY.tracks)} lead={t(COPY.tracksLead)}>
+        <div className="mb-8 overflow-hidden rounded-card border border-line-hairline">
+          <Image
+            src="/tour/eag-builders-tour.jpg"
+            alt="Ethereum Builders Tour — EAG Global Application & Builder Initiative 2026"
+            width={1200}
+            height={675}
+            sizes="(min-width: 1024px) 1000px, 92vw"
+            className="h-auto w-full"
+            priority
+          />
+        </div>
+
         <h3 className="text-xs font-bold uppercase tracking-widest text-content-faint">
           EAG · 6 tracks
         </h3>
@@ -322,6 +339,66 @@ export default function BuildersTour({ locale }: Props) {
             </li>
           ))}
         </ul>
+      </Section>
+
+      {/* ── the global buildathon ────────────────────────────────────────── */}
+      <Section
+        id="buildathon"
+        eyebrow="EAG Global Buildathon"
+        title={en ? 'The global side of it' : 'El lado global'}
+        lead={
+          en
+            ? 'Cali is one stop on a worldwide programme. The same six EAG tracks run online with a 12,500 USD prize pool, and your Devfolio submission enters both.'
+            : 'Cali es una parada de un programa mundial. Los mismos seis tracks de EAG corren en línea con una bolsa de 12.500 USD, y tu entrega en Devfolio compite en ambos.'
+        }
+      >
+        <div className="grid gap-6 lg:grid-cols-[380px_minmax(0,1fr)] lg:items-start">
+          <a
+            href={TOUR.registration.devfolio.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block overflow-hidden rounded-card border border-line-hairline transition-colors hover:border-line-brand"
+          >
+            <Image
+              src="/tour/eag-global-buildathon.png"
+              alt="EAG Global Buildathon — 6 tracks, 12,500 USD prize pool"
+              width={595}
+              height={842}
+              sizes="(min-width: 1024px) 380px, 92vw"
+              className="h-auto w-full"
+            />
+          </a>
+
+          <div>
+            <p className="mono text-4xl font-bold text-signal-pending sm:text-5xl">12 500 USD</p>
+            <p className="mt-2 text-sm text-content-muted">
+              {en ? 'EAG Global Buildathon prize pool' : 'Bolsa del EAG Global Buildathon'}
+            </p>
+
+            <p className="mt-6 max-w-prose text-base leading-relaxed text-content-secondary">
+              {en
+                ? 'One submission, two shots: the Cali hackathon judges in the room, and the global buildathon judges everything that came in from every stop.'
+                : 'Una sola entrega, dos oportunidades: el hackathon de Cali se juzga en la sala, y el buildathon global juzga todo lo que llegó desde cada parada.'}
+            </p>
+
+            <Cta
+              href={TOUR.registration.devfolio.url}
+              label={t(TOUR.registration.devfolio.label)}
+              note={t(TOUR.registration.devfolio.note)}
+              tone="outline"
+            />
+          </div>
+        </div>
+      </Section>
+
+      {/* ── the tour map ─────────────────────────────────────────────────── */}
+      <Section
+        id="tour-map"
+        eyebrow={t(TOUR_MAP_COPY.eyebrow)}
+        title={t(TOUR_MAP_COPY.title)}
+        lead={t(TOUR_MAP_COPY.lead)}
+      >
+        <TourMap locale={locale} />
       </Section>
 
       {/* ── schedule ─────────────────────────────────────────────────────── */}

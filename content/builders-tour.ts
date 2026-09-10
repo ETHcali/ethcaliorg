@@ -185,7 +185,7 @@ export const PRIZES_ARE_CUMULATIVE: Bilingual = {
 export const PRIZES: readonly PrizeTrack[] = [
   {
     sponsor: 'EAG',
-    image: '/tour/shanhaiwoo-2026.png',
+    image: '/tour/eag-builders-tour.jpg',
     blurb: {
       es: 'Un mes construyendo con la comunidad global de Ethereum, en tres ciudades.',
       en: 'A month building with the global Ethereum community, across three cities.',
@@ -349,6 +349,109 @@ export const SPONSORS: readonly Sponsor[] = [
     logo: null,
   },
 ];
+
+// ── the global tour ─────────────────────────────────────────────────────────
+
+export interface TourStop {
+  city: string;
+  country: Bilingual;
+  /**
+   * Null where the exact date is not confirmed. The Luma embed carries the
+   * authoritative date once a stop is opened, so a vague "August" on the card is
+   * worth less than showing nothing and letting the embed answer.
+   */
+  dates: Bilingual | null;
+  lat: number;
+  lng: number;
+  lumaUrl: string | null;
+  /**
+   * Luma's embeddable id. The plain lu.ma page sends X-Frame-Options sameorigin
+   * and refuses to frame; /embed/event/<api_id>/simple does not. The id is not
+   * derivable from the slug and CORS blocks reading it at runtime, so it is
+   * resolved once and committed.
+   */
+  lumaEmbedId: string | null;
+  /** Site-relative artwork, where that stop published one. */
+  image: string | null;
+  /** The stop that has not happened yet — ours. */
+  upcoming?: boolean;
+  /**
+   * Which side of the dot the label sits on. Accra and Lagos are ~350 km apart
+   * and their labels overlap into an unreadable smear at this scale, so one of
+   * them goes below. Set only where geography forces it.
+   */
+  labelBelow?: boolean;
+}
+
+/**
+ * Where the Ethereum Builders Tour has actually landed.
+ *
+ * Every stop links to its own Luma page, so the map is not a decoration — it is
+ * a set of live doors. Coordinates are city centres; at this projection nothing
+ * finer than a city is legible anyway.
+ */
+export const TOUR_STOPS: readonly TourStop[] = [
+  {
+    city: 'Ciudad de México',
+    country: { es: 'México', en: 'Mexico' },
+    dates: { es: '8 de julio', en: '8 July' },
+    lat: 19.4326, lng: -99.1332,
+    lumaUrl: 'https://luma.com/46e9cc6o',
+    lumaEmbedId: 'evt-RugYnVJ61jfk1Ug',
+    image: '/tour/stop-mexico.jpg',
+  },
+  {
+    city: 'Lagos',
+    country: { es: 'Nigeria', en: 'Nigeria' },
+    dates: null,
+    lat: 6.5244, lng: 3.3792,
+    lumaUrl: 'https://luma.com/t6gj441t',
+    lumaEmbedId: 'evt-avmSR5CidWujpsh',
+    image: null,
+    labelBelow: true,
+  },
+  {
+    city: 'Accra',
+    country: { es: 'Ghana', en: 'Ghana' },
+    dates: { es: '3–4 de agosto', en: '3–4 August' },
+    lat: 5.6037, lng: -0.1870,
+    lumaUrl: 'https://luma.com/1icr5z0o',
+    lumaEmbedId: 'evt-OLpUWV8IJyHlqIG',
+    image: '/tour/stop-ghana.jpg',
+  },
+  {
+    city: 'Florianópolis',
+    country: { es: 'Brasil', en: 'Brazil' },
+    dates: { es: '19 de agosto', en: '19 August' },
+    lat: -27.5954, lng: -48.5480,
+    lumaUrl: 'https://luma.com/aat5db4e',
+    lumaEmbedId: 'evt-cylpB1ibiMIoaHI',
+    image: '/tour/stop-brazil.jpg',
+  },
+  {
+    city: 'Cali',
+    country: { es: 'Colombia', en: 'Colombia' },
+    dates: { es: '19–20 de septiembre', en: '19–20 September' },
+    lat: 3.4516, lng: -76.5320,
+    lumaUrl: 'https://luma.com/khnpkikn',
+    lumaEmbedId: 'evt-cxkPn1L26KCjbD3',
+    image: null,
+    upcoming: true,
+  },
+];
+
+export const TOUR_MAP_COPY = {
+  eyebrow: { es: 'La gira', en: 'The tour' } as Bilingual,
+  title: { es: 'Dónde ha estado', en: 'Where it has been' } as Bilingual,
+  lead: {
+    es: 'El Ethereum Builders Tour recorre el mundo activando comunidades. Toca un punto para ver la parada.',
+    en: 'The Ethereum Builders Tour activates communities around the world. Tap a point to open a stop.',
+  } as Bilingual,
+  next: { es: 'Próxima parada', en: 'Next stop' } as Bilingual,
+  done: { es: 'Ya ocurrió', en: 'Already happened' } as Bilingual,
+  openLuma: { es: 'Ver en Luma', en: 'Open on Luma' } as Bilingual,
+  back: { es: 'Ver todo el mapa', en: 'See the whole map' } as Bilingual,
+};
 
 // ── ShanHaiWoo ──────────────────────────────────────────────────────────────
 
