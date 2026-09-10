@@ -7,6 +7,18 @@
      from @ethcali/design-tokens, imported in _app.tsx before this file. */
   html {
     color-scheme: dark;
+    /* In-page links animate rather than jump. Respects the OS setting below. */
+    scroll-behavior: smooth;
+  }
+
+  /* The header is sticky and 60px tall, so an anchor target lands underneath it
+     unless every scrollable target reserves that much room above itself. */
+  [id] {
+    scroll-margin-top: calc(var(--nav-h) + 12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
   }
 
   body {

@@ -79,7 +79,54 @@ export default function TourMap({ locale }: { locale: Locale }) {
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <div className="overflow-hidden rounded-card border border-line-hairline bg-surface-slab">
+      {/* Below md the map is unusable, not merely cramped: the frame spans
+          Mexico City to Sydney, so at 400px wide it renders as a 116px strip
+          with 5px city labels. A tappable list carries the same information and
+          is the better answer on a phone, so the map simply is not shown. */}
+      <ul className="flex flex-col gap-2 md:hidden">
+        {ALL.map((stop) => {
+          const active = selected?.city === stop.city;
+          return (
+            <li key={stop.city}>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelected(stop);
+                  setZoomed((z) => (z?.city === stop.city ? null : stop));
+                }}
+                className={`flex w-full min-h-tap items-center gap-3 rounded-card border px-4 py-3 text-left transition-colors ${
+                  active
+                    ? 'border-line-brand bg-eth-blue-wash'
+                    : 'border-line-hairline bg-surface-slab'
+                }`}
+              >
+                <span
+                  className={`h-2.5 w-2.5 shrink-0 rounded-full ${
+                    stop.upcoming
+                      ? 'bg-signal-confirmed'
+                      : stop.isMission
+                        ? 'border-2 border-signal-pending'
+                        : 'bg-eth-blue-text'
+                  }`}
+                  aria-hidden
+                />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-bold text-content-primary">{stop.city}</span>
+                  <span className="block text-xs text-content-muted">
+                    {t(stop.country)}
+                    {stop.dates && ` · ${t(stop.dates)}`}
+                  </span>
+                </span>
+                {stop.lumaUrl && (
+                  <span className="shrink-0 text-xs font-semibold text-eth-blue-text">→</span>
+                )}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className="hidden overflow-hidden rounded-card border border-line-hairline bg-surface-slab md:block">
         <svg
           viewBox={viewBox}
           className="h-auto w-full transition-[view-box] duration-slow"

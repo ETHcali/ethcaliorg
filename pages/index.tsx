@@ -119,8 +119,8 @@ export default function Home({ upcoming, past, partners, totals, locale }: Props
         </Link>
       </section>
 
-      <section className="mx-auto max-w-page px-gutter pb-4 pt-12">
-        <h1 className="max-w-3xl text-4xl sm:text-5xl">El Jardín Infinito</h1>
+      <section className="mx-auto max-w-page px-gutter pb-4 pt-9 sm:pt-12">
+        <h1 className="max-w-3xl text-3xl sm:text-5xl">El Jardín Infinito</h1>
         <p className="mt-5 max-w-prose text-lg text-content-secondary">
           {en
             ? 'The Ethereum community of Cali, Colombia. We run meetups, workshops and hackathons, and we lend the hardware so other people can run theirs.'

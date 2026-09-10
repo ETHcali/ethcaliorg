@@ -101,7 +101,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="border-t border-line-hairline py-14">
+    <section id={id} className="border-t border-line-hairline py-10 sm:py-14">
       <div className="mx-auto max-w-page px-gutter">
         {eyebrow && (
           <p className="text-[11px] font-semibold uppercase tracking-widest text-eth-blue-text">
@@ -188,7 +188,7 @@ export default function BuildersTour({ locale }: Props) {
           }}
           aria-hidden
         />
-        <div className="relative mx-auto max-w-page px-gutter pb-12 pt-16">
+        <div className="relative mx-auto max-w-page px-gutter pb-10 pt-12 sm:pb-12 sm:pt-16">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-eth-blue-text">
             {t(COPY.eyebrow)}
           </p>
@@ -490,7 +490,7 @@ export default function BuildersTour({ locale }: Props) {
               sizes="300px"
               className="h-16 w-auto object-contain"
             />
-            <div className="text-right">
+            <div className="text-left sm:text-right">
               <p className="mono text-sm font-bold text-[#07028F]">{t(DEVCON.dates)}</p>
               <p className="text-sm text-[#07028F]/70">{t(DEVCON.place)}</p>
             </div>
@@ -518,7 +518,7 @@ export default function BuildersTour({ locale }: Props) {
               href={DEVCON.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-auto inline-flex min-h-tap items-center rounded-control border border-signal-pending/50 px-4 text-sm font-bold text-signal-pending transition-colors hover:bg-signal-pending/10"
+              className="inline-flex min-h-tap w-full items-center justify-center rounded-control border border-signal-pending/50 px-4 text-sm font-bold text-signal-pending transition-colors hover:bg-signal-pending/10 sm:ml-auto sm:w-auto"
             >
               devcon.org →
             </a>
@@ -678,7 +678,7 @@ export default function BuildersTour({ locale }: Props) {
       </Section>
 
       {/* ── final CTA ────────────────────────────────────────────────────── */}
-      <section className="border-t border-line-hairline py-16">
+      <section className="border-t border-line-hairline py-12 sm:py-16">
         <div className="mx-auto max-w-page px-gutter">
           <h2 className="text-3xl">{t(COPY.ctaFinal)}</h2>
           <p className="mt-2 max-w-prose text-base text-content-secondary">{t(COPY.ctaFinalLead)}</p>

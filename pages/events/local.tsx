@@ -27,7 +27,7 @@ export default function LocalEvents({ events, locale }: Props) {
         <p className="text-[11px] font-semibold uppercase tracking-widest text-eth-blue-text">
           {t('events.title')}
         </p>
-        <h1 className="mt-2 text-4xl">{t('events.local')}</h1>
+        <h1 className="mt-2 text-3xl sm:text-4xl">{t('events.local')}</h1>
         <p className="mt-4 max-w-prose text-base text-content-secondary">
           {t('events.localLead')}
         </p>

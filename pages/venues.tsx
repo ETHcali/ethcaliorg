@@ -25,7 +25,7 @@ export default function Venues({ venues, locale }: Props) {
         <p className="text-[11px] font-semibold uppercase tracking-widest text-eth-blue-text">
           {t('nav.venues')}
         </p>
-        <h1 className="mt-2 text-4xl">{t('nav.venues')}</h1>
+        <h1 className="mt-2 text-3xl sm:text-4xl">{t('nav.venues')}</h1>
         <p className="mt-4 max-w-prose text-base text-content-secondary">{lead}</p>
 
         <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

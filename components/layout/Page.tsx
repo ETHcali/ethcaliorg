@@ -11,11 +11,11 @@ export function PageHeader({
   lead?: string;
 }) {
   return (
-    <header className="mx-auto max-w-page px-gutter pb-2 pt-14">
+    <header className="mx-auto max-w-page px-gutter pb-2 pt-10 sm:pt-14">
       <p className="text-[11px] font-semibold uppercase tracking-widest text-eth-blue-text">
         {eyebrow}
       </p>
-      <h1 className="mt-2 text-4xl">{title}</h1>
+      <h1 className="mt-2 text-3xl sm:text-4xl">{title}</h1>
       {lead && <p className="mt-4 max-w-prose text-base text-content-secondary">{lead}</p>}
     </header>
   );
@@ -33,7 +33,7 @@ export function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="border-t border-line-hairline py-12 first:border-t-0">
+    <section className="border-t border-line-hairline py-9 first:border-t-0 sm:py-12">
       <div className="mx-auto max-w-page px-gutter">
         {eyebrow && (
           <p className="text-[11px] font-semibold uppercase tracking-widest text-eth-blue-text">
