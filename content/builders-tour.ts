@@ -186,6 +186,7 @@ export const PAYOUT: {
   chain: Bilingual;
   logo: string;
   note: Bilingual;
+  noWallet: { title: Bilingual; body: Bilingual; cta: Bilingual };
 } = {
   token: 'USDT',
   chain: { es: 'Ethereum mainnet', en: 'Ethereum mainnet' },
@@ -193,6 +194,23 @@ export const PAYOUT: {
   note: {
     es: 'Todos los premios en efectivo se pagan en USDT sobre Ethereum mainnet.',
     en: 'Every cash prize is paid in USDT on Ethereum mainnet.',
+  },
+  /**
+   * Most first-time hackers in Cali arrive without a wallet, and "we will pay you
+   * in USDT on mainnet" is meaningless if you have nowhere to receive it. The
+   * answer is a wallet we already run, so the page can hand them one.
+   */
+  noWallet: {
+    title: { es: '¿No tienes wallet?', en: 'No wallet?' } as Bilingual,
+    body: {
+      es:
+        'Usa la nuestra. Se crea con tu correo, no tienes que anotar una frase semilla, ' +
+        'y las llaves son tuyas. Ábrela antes del evento y llegas listo para recibir el premio.',
+      en:
+        'Use ours. It is created from your email, there is no seed phrase to write down, ' +
+        'and the keys are yours. Open it before the event and you arrive ready to be paid.',
+    } as Bilingual,
+    cta: { es: 'Abrir una wallet', en: 'Open a wallet' } as Bilingual,
   },
 };
 
@@ -289,8 +307,8 @@ export const PRIZES: readonly PrizeTrack[] = [
       {
         place: '5 × 200',
         prize: {
-          es: 'USDT para cinco proyectos ganadores, más un cupo en la misión de innovación: Shenzhen, Hong Kong y Mumbai desde el 15 de octubre',
-          en: 'USDT across five winning projects, plus a place on the innovation mission: Shenzhen, Hong Kong and Mumbai from 15 October',
+          es: 'USDT — cinco proyectos ganadores, 200 USDT cada uno',
+          en: 'USDT — five winning projects, 200 USDT each',
         },
       },
     ],

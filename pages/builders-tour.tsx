@@ -21,6 +21,7 @@ import {
   type Slot,
 } from '../content/builders-tour';
 import { asLocale, formatDate, formatDateRange, type Locale } from '../lib/i18n';
+import { APP } from '../lib/links';
 
 
 interface Props {
@@ -320,18 +321,6 @@ export default function BuildersTour({ locale }: Props) {
           ))}
         </div>
 
-        <div className="mt-5 flex flex-wrap items-center gap-3 rounded-card border border-line-hairline bg-surface-slab px-5 py-4">
-          <Image
-            src={PAYOUT.logo}
-            alt={PAYOUT.token}
-            width={28}
-            height={28}
-            sizes="28px"
-            className="h-7 w-7 shrink-0"
-          />
-          <p className="text-sm text-content-secondary">{t(PAYOUT.note)}</p>
-        </div>
-
         {/* Said plainly: a builder who assumes the tracks are exclusive picks
             one and aims lower than they need to. */}
         <p className="mt-3 rounded-card border border-line-brand bg-eth-blue-wash px-5 py-4 text-sm leading-relaxed text-content-secondary">
@@ -340,6 +329,48 @@ export default function BuildersTour({ locale }: Props) {
           </span>{' '}
           {t(PRIZES_ARE_CUMULATIVE).replace(/^[^.]*\.\s*/, '')}
         </p>
+      </Section>
+
+      {/* ── how you get paid ─────────────────────────────────────────────── */}
+      <Section
+        id="payout"
+        eyebrow={en ? 'Getting paid' : 'Cómo se paga'}
+        title={en ? 'Paid in USDT, on Ethereum' : 'Se paga en USDT, sobre Ethereum'}
+        lead={t(PAYOUT.note)}
+      >
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="flex items-center gap-5 rounded-card border border-line-hairline bg-surface-slab p-6">
+            <Image
+              src={PAYOUT.logo}
+              alt={PAYOUT.token}
+              width={64}
+              height={64}
+              sizes="64px"
+              className="h-16 w-16 shrink-0"
+            />
+            <div>
+              <p className="mono text-2xl font-bold text-content-primary">{PAYOUT.token}</p>
+              <p className="mono mt-1 text-sm text-content-muted">{t(PAYOUT.chain)}</p>
+            </div>
+          </div>
+
+          <div className="rounded-card border border-line-brand bg-eth-blue-wash p-6">
+            <h3 className="text-lg font-bold text-content-primary">
+              {t(PAYOUT.noWallet.title)}
+            </h3>
+            <p className="mt-2 max-w-prose text-sm leading-relaxed text-content-secondary">
+              {t(PAYOUT.noWallet.body)}
+            </p>
+            <a
+              href={APP.home}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex min-h-tap items-center rounded-control bg-eth-blue px-5 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
+            >
+              {t(PAYOUT.noWallet.cta)} →
+            </a>
+          </div>
+        </div>
       </Section>
 
       {/* ── tracks ───────────────────────────────────────────────────────── */}
