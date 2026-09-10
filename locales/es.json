@@ -13,7 +13,8 @@
     "eventsLocal": "Locales",
     "eventsIntl": "Internacionales",
     "hackathonsAll": "Todos los hackathons",
-    "hackerHouses": "Hacker houses"
+    "hackerHouses": "Hacker houses",
+    "quest": "Quests"
   },
   "events": {
     "title": "Eventos",

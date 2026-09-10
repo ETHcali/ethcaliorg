@@ -1,5 +1,6 @@
 import type { GetStaticProps } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import Layout from '../components/layout/Layout';
 import TourMap from '../components/tour/TourMap';
 import TrackMark from '../components/tour/TrackMark';
@@ -222,27 +223,7 @@ export default function BuildersTour({ locale }: Props) {
             </div>
           </dl>
 
-          {/* The official piece, framed rather than dropped in: a brand-tinted
-              glow behind it and a hairline over it, so it reads as part of the
-              page instead of a pasted JPEG. */}
-          <div className="relative mt-10 overflow-hidden rounded-card border border-line-brand">
-            <div
-              className="pointer-events-none absolute -inset-8 blur-2xl"
-              style={{ background: 'radial-gradient(ellipse at 50% 120%, var(--eth-blue-wash), transparent 70%)' }}
-              aria-hidden
-            />
-            <Image
-              src="/tour/eag-builders-tour.jpg"
-              alt="Ethereum Builders Tour — EAG Global Application & Builder Initiative 2026"
-              width={1200}
-              height={675}
-              sizes="(min-width: 1024px) 1000px, 92vw"
-              className="relative h-auto w-full"
-              priority
-            />
-          </div>
-
-          <div className="mt-8 grid gap-3 sm:max-w-2xl sm:grid-cols-2">
+          <div className="mt-9 grid gap-3 sm:max-w-2xl sm:grid-cols-2">
             <Cta
               href={TOUR.registration.luma.url}
               label={t(TOUR.registration.luma.label)}
@@ -262,6 +243,174 @@ export default function BuildersTour({ locale }: Props) {
       <Section id="about" title={TOUR.title}>
         <div className="max-w-prose whitespace-pre-line text-base leading-relaxed text-content-secondary">
           {t(TOUR.intro)}
+        </div>
+
+        {/* The official piece, framed rather than dropped in: a brand-tinted
+            glow behind it and a hairline over it, so it reads as part of the
+            page instead of a pasted JPEG. */}
+        <div className="relative mt-10 overflow-hidden rounded-card border border-line-brand">
+          <div
+            className="pointer-events-none absolute -inset-8 blur-2xl"
+            style={{ background: 'radial-gradient(ellipse at 50% 120%, var(--eth-blue-wash), transparent 70%)' }}
+            aria-hidden
+          />
+          <Image
+            src="/tour/eag-builders-tour.jpg"
+            alt="Ethereum Builders Tour — EAG Global Application & Builder Initiative 2026"
+            width={1200}
+            height={675}
+            sizes="(min-width: 1024px) 1000px, 92vw"
+            className="relative h-auto w-full"
+            priority
+          />
+        </div>
+      </Section>
+
+      {/* ── the tour map ─────────────────────────────────────────────────── */}
+      <Section
+        id="tour-map"
+        eyebrow={t(TOUR_MAP_COPY.eyebrow)}
+        title={t(TOUR_MAP_COPY.title)}
+        lead={t(TOUR_MAP_COPY.lead)}
+      >
+        <TourMap locale={locale} />
+      </Section>
+
+      {/* ── sponsors ─────────────────────────────────────────────────────── */}
+      <Section id="sponsors" title={t(COPY.sponsors)}>
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {SPONSORS.map((s) => (
+            <li key={s.name}>
+              <a
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-full flex-col items-center justify-center gap-3 rounded-card border border-line-hairline bg-surface-slab p-5 text-center transition-colors hover:border-line-brand"
+              >
+                <div
+                  className={`flex h-12 items-center justify-center ${
+                    s.plate ? 'w-full rounded-chip bg-surface-paper px-3' : ''
+                  }`}
+                >
+                  {s.logo ? (
+                    <Image
+                      src={s.logo}
+                      alt={s.name}
+                      width={s.wide ? 180 : 110}
+                      height={48}
+                      sizes={s.wide ? '180px' : '110px'}
+                      className={`max-h-12 w-auto object-contain ${s.wide ? 'max-w-[180px]' : 'max-w-[110px]'}`}
+                    />
+                  ) : (
+                    <span className="text-base font-bold leading-tight text-content-primary">
+                      {s.name}
+                    </span>
+                  )}
+                </div>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
+                  {t(s.role)}
+                </span>
+              </a>
+
+              {/* The X handle is a second destination, so it cannot be nested
+                  inside the tile's own anchor — a link inside a link is invalid
+                  and browsers resolve it unpredictably. */}
+              {s.x && (
+                <a
+                  href={s.x}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1.5 block text-center text-[11px] text-content-faint transition-colors hover:text-eth-blue-text"
+                >
+                  {s.x.replace('https://x.com/', '@')}
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* ── tracks ───────────────────────────────────────────────────────── */}
+      <Section id="tracks" eyebrow={t(COPY.tracks)} title={t(COPY.tracks)} lead={t(COPY.tracksLead)}>
+        <h3 className="text-xs font-bold uppercase tracking-widest text-content-faint">
+          EAG · 6 tracks
+        </h3>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {EAG_TRACKS.map((track) => (
+            <div key={track.name} className="rounded-card border border-line-hairline bg-surface-slab p-5">
+              <TrackMark track={track.name} />
+              <h4 className="mt-3 text-sm font-bold leading-snug text-content-primary">
+                {track.name}
+              </h4>
+              <p className="mt-2 text-sm leading-relaxed text-content-muted">{t(track.detail)}</p>
+            </div>
+          ))}
+        </div>
+
+        <h3 className="mt-10 text-xs font-bold uppercase tracking-widest text-content-faint">
+          HashKey Chain · 7 tracks
+        </h3>
+        <ul className="mt-4 flex flex-wrap gap-2">
+          {HSK_TRACKS.map((name) => (
+            <li
+              key={name}
+              className="rounded-chip border border-line-hairline bg-surface-slab px-3.5 py-2 text-sm text-content-secondary"
+            >
+              {name}
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* ── schedule ─────────────────────────────────────────────────────── */}
+      <Section id="schedule" eyebrow={t(COPY.schedule)} title={t(COPY.schedule)} lead={t(COPY.scheduleLead)}>
+        <div className="grid gap-8 lg:grid-cols-2">
+          {SCHEDULE.map((day) => (
+            <div key={day.date}>
+              <h3 className="text-base font-bold text-content-primary">
+                {t(day.label)}{' '}
+                <span className="mono ml-1 text-sm font-normal text-content-faint">
+                  {formatDate(day.date, locale, { year: undefined })}
+                </span>
+              </h3>
+
+              <ol className="mt-4 space-y-1.5">
+                {day.slots.map((slot, i) => (
+                  <li
+                    key={`${slot.start}-${i}`}
+                    className={`border-l-2 py-2 pl-3.5 ${SLOT_STYLE[slot.kind]} ${
+                      slot.highlight ? 'bg-surface-slab' : ''
+                    } rounded-r-chip`}
+                  >
+                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <span className="mono shrink-0 text-xs font-bold text-content-primary">
+                        {slot.start}
+                        {slot.end && <span className="text-content-faint">–{slot.end}</span>}
+                      </span>
+                      <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
+                        {t(SLOT_LABEL[slot.kind])}
+                      </span>
+                    </div>
+
+                    <p
+                      className={`mt-0.5 text-sm ${
+                        slot.highlight ? 'font-bold text-content-primary' : 'text-content-secondary'
+                      }`}
+                    >
+                      {t(slot.activity)}
+                    </p>
+
+                    {slot.who && (
+                      <p className="mt-0.5 text-xs text-content-muted">
+                        <span className="text-content-secondary">{slot.who.name}</span> ·{' '}
+                        {t(slot.who.role)}
+                      </p>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
         </div>
       </Section>
 
@@ -329,15 +478,13 @@ export default function BuildersTour({ locale }: Props) {
           </span>{' '}
           {t(PRIZES_ARE_CUMULATIVE).replace(/^[^.]*\.\s*/, '')}
         </p>
-      </Section>
 
-      {/* ── how you get paid ─────────────────────────────────────────────── */}
-      <Section
-        id="payout"
-        eyebrow={en ? 'Getting paid' : 'Cómo se paga'}
-        title={en ? 'Paid in USDT, on Ethereum' : 'Se paga en USDT, sobre Ethereum'}
-        lead={t(PAYOUT.note)}
-      >
+        <h3 className="mt-10 text-xs font-bold uppercase tracking-widest text-content-faint">
+          {en ? 'Getting paid' : 'Cómo se paga'}
+        </h3>
+        <p className="mt-2 max-w-prose text-sm text-content-secondary">{t(PAYOUT.note)}</p>
+
+        <div className="mt-4">
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="flex items-center gap-5 rounded-card border border-line-hairline bg-surface-slab p-6">
             <Image
@@ -371,38 +518,7 @@ export default function BuildersTour({ locale }: Props) {
             </a>
           </div>
         </div>
-      </Section>
-
-      {/* ── tracks ───────────────────────────────────────────────────────── */}
-      <Section id="tracks" eyebrow={t(COPY.tracks)} title={t(COPY.tracks)} lead={t(COPY.tracksLead)}>
-        <h3 className="text-xs font-bold uppercase tracking-widest text-content-faint">
-          EAG · 6 tracks
-        </h3>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {EAG_TRACKS.map((track) => (
-            <div key={track.name} className="rounded-card border border-line-hairline bg-surface-slab p-5">
-              <TrackMark track={track.name} />
-              <h4 className="mt-3 text-sm font-bold leading-snug text-content-primary">
-                {track.name}
-              </h4>
-              <p className="mt-2 text-sm leading-relaxed text-content-muted">{t(track.detail)}</p>
-            </div>
-          ))}
         </div>
-
-        <h3 className="mt-10 text-xs font-bold uppercase tracking-widest text-content-faint">
-          HashKey Chain · 7 tracks
-        </h3>
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {HSK_TRACKS.map((name) => (
-            <li
-              key={name}
-              className="rounded-chip border border-line-hairline bg-surface-slab px-3.5 py-2 text-sm text-content-secondary"
-            >
-              {name}
-            </li>
-          ))}
-        </ul>
       </Section>
 
       {/* ── the global buildathon ────────────────────────────────────────── */}
@@ -482,68 +598,6 @@ export default function BuildersTour({ locale }: Props) {
               tone="outline"
             />
           </div>
-        </div>
-      </Section>
-
-      {/* ── the tour map ─────────────────────────────────────────────────── */}
-      <Section
-        id="tour-map"
-        eyebrow={t(TOUR_MAP_COPY.eyebrow)}
-        title={t(TOUR_MAP_COPY.title)}
-        lead={t(TOUR_MAP_COPY.lead)}
-      >
-        <TourMap locale={locale} />
-      </Section>
-
-      {/* ── schedule ─────────────────────────────────────────────────────── */}
-      <Section id="schedule" eyebrow={t(COPY.schedule)} title={t(COPY.schedule)} lead={t(COPY.scheduleLead)}>
-        <div className="grid gap-8 lg:grid-cols-2">
-          {SCHEDULE.map((day) => (
-            <div key={day.date}>
-              <h3 className="text-base font-bold text-content-primary">
-                {t(day.label)}{' '}
-                <span className="mono ml-1 text-sm font-normal text-content-faint">
-                  {formatDate(day.date, locale, { year: undefined })}
-                </span>
-              </h3>
-
-              <ol className="mt-4 space-y-1.5">
-                {day.slots.map((slot, i) => (
-                  <li
-                    key={`${slot.start}-${i}`}
-                    className={`border-l-2 py-2 pl-3.5 ${SLOT_STYLE[slot.kind]} ${
-                      slot.highlight ? 'bg-surface-slab' : ''
-                    } rounded-r-chip`}
-                  >
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span className="mono shrink-0 text-xs font-bold text-content-primary">
-                        {slot.start}
-                        {slot.end && <span className="text-content-faint">–{slot.end}</span>}
-                      </span>
-                      <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
-                        {t(SLOT_LABEL[slot.kind])}
-                      </span>
-                    </div>
-
-                    <p
-                      className={`mt-0.5 text-sm ${
-                        slot.highlight ? 'font-bold text-content-primary' : 'text-content-secondary'
-                      }`}
-                    >
-                      {t(slot.activity)}
-                    </p>
-
-                    {slot.who && (
-                      <p className="mt-0.5 text-xs text-content-muted">
-                        <span className="text-content-secondary">{slot.who.name}</span> ·{' '}
-                        {t(slot.who.role)}
-                      </p>
-                    )}
-                  </li>
-                ))}
-              </ol>
-            </div>
-          ))}
         </div>
       </Section>
 
@@ -699,7 +753,24 @@ export default function BuildersTour({ locale }: Props) {
               })}
             </ol>
 
-            <div className="mt-6 flex flex-wrap gap-2">
+            <Link
+              href="/quest"
+              className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-card border border-line-brand bg-eth-blue-wash px-5 py-4 transition-colors hover:border-eth-blue"
+            >
+              <span className="text-sm font-bold text-content-primary">
+                {en
+                  ? 'Does your business need something done in Asia?'
+                  : '¿Tu empresa necesita algo resuelto en Asia?'}
+              </span>
+              <span className="text-sm text-content-secondary">
+                {en
+                  ? 'Delegate a mission to the builders who will be there.'
+                  : 'Delega una misión a los builders que van a estar allá.'}
+              </span>
+              <span className="ml-auto text-sm font-semibold text-eth-blue-text">→</span>
+            </Link>
+
+            <div className="mt-4 flex flex-wrap gap-2">
               {[
                 ['shanhaiwoo.com', SHANHAIWOO.site],
                 ['@shanhaiwoo', SHANHAIWOO.x],
@@ -758,60 +829,6 @@ export default function BuildersTour({ locale }: Props) {
             />
           </div>
         </div>
-      </Section>
-
-      {/* ── sponsors ─────────────────────────────────────────────────────── */}
-      <Section id="sponsors" title={t(COPY.sponsors)}>
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {SPONSORS.map((s) => (
-            <li key={s.name}>
-              <a
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-full flex-col items-center justify-center gap-3 rounded-card border border-line-hairline bg-surface-slab p-5 text-center transition-colors hover:border-line-brand"
-              >
-                <div
-                  className={`flex h-12 items-center justify-center ${
-                    s.plate ? 'w-full rounded-chip bg-surface-paper px-3' : ''
-                  }`}
-                >
-                  {s.logo ? (
-                    <Image
-                      src={s.logo}
-                      alt={s.name}
-                      width={s.wide ? 180 : 110}
-                      height={48}
-                      sizes={s.wide ? '180px' : '110px'}
-                      className={`max-h-12 w-auto object-contain ${s.wide ? 'max-w-[180px]' : 'max-w-[110px]'}`}
-                    />
-                  ) : (
-                    <span className="text-base font-bold leading-tight text-content-primary">
-                      {s.name}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
-                  {t(s.role)}
-                </span>
-              </a>
-
-              {/* The X handle is a second destination, so it cannot be nested
-                  inside the tile's own anchor — a link inside a link is invalid
-                  and browsers resolve it unpredictably. */}
-              {s.x && (
-                <a
-                  href={s.x}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1.5 block text-center text-[11px] text-content-faint transition-colors hover:text-eth-blue-text"
-                >
-                  {s.x.replace('https://x.com/', '@')}
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
       </Section>
 
       {/* ── final CTA ────────────────────────────────────────────────────── */}

@@ -40,6 +40,7 @@ const NAV: readonly NavItem[] = [
 ];
 
 const FOOTER_NAV = [
+  ['/quest', 'nav.quest'],
   ['/education', 'nav.education'],
   ['/swag', 'nav.swag'],
   ['/technical-infra', 'nav.infra'],
