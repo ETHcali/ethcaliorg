@@ -278,9 +278,19 @@ export default function BuildersTour({ locale }: Props) {
 
       {/* ── sponsors ─────────────────────────────────────────────────────── */}
       <Section id="sponsors" title={t(COPY.sponsors)}>
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {/* Flex rather than grid: five single marks never fill two or three
+            columns evenly, and a grid leaves the orphan hard against the left
+            edge with a hole beside it. Wrapping centres the short row. */}
+        <ul className="flex flex-wrap justify-center gap-3">
           {SPONSORS.map((s) => (
-            <li key={s.name}>
+            <li
+              key={s.name}
+              className={
+                s.lockup
+                  ? 'basis-full'
+                  : 'basis-[calc(50%-0.375rem)] sm:basis-[calc(33.333%-0.5rem)]'
+              }
+            >
               <a
                 href={s.url}
                 target="_blank"
@@ -288,19 +298,33 @@ export default function BuildersTour({ locale }: Props) {
                 className="flex h-full flex-col items-center justify-center gap-3 rounded-card border border-line-hairline bg-surface-slab p-5 text-center transition-colors hover:border-line-brand"
               >
                 <div
-                  className={`flex h-12 items-center justify-center ${
+                  className={`flex items-center justify-center ${s.lockup ? 'w-full' : 'h-12'} ${
                     s.plate ? 'w-full rounded-chip bg-surface-paper px-3' : ''
                   }`}
                 >
                   {s.logo ? (
-                    <Image
-                      src={s.logo}
-                      alt={s.name}
-                      width={s.wide ? 180 : 110}
-                      height={48}
-                      sizes={s.wide ? '180px' : '110px'}
-                      className={`max-h-12 w-auto object-contain ${s.wide ? 'max-w-[180px]' : 'max-w-[110px]'}`}
-                    />
+                    s.lockup ? (
+                      // Sized so the institutional row under the wordmark is
+                      // actually legible: below ~300px wide its type falls under
+                      // 8px and the marks turn to noise.
+                      <Image
+                        src={s.logo}
+                        alt={`${s.name} — Gobernación del Valle del Cauca, Alcaldía de Santiago de Cali, Cámara de Comercio de Cali, comfandi`}
+                        width={1731}
+                        height={707}
+                        sizes="(min-width: 640px) 520px, 88vw"
+                        className="h-auto w-full max-w-[520px]"
+                      />
+                    ) : (
+                      <Image
+                        src={s.logo}
+                        alt={s.name}
+                        width={s.wide ? 180 : 110}
+                        height={48}
+                        sizes={s.wide ? '180px' : '110px'}
+                        className={`max-h-12 w-auto object-contain ${s.wide ? 'max-w-[180px]' : 'max-w-[110px]'}`}
+                      />
+                    )
                   ) : (
                     <span className="text-base font-bold leading-tight text-content-primary">
                       {s.name}
@@ -830,9 +854,8 @@ export default function BuildersTour({ locale }: Props) {
           </div>
         </div>
 
-        {/* The full institutional lockup, which the sponsor tile cannot carry:
-            at tile size the five partner marks below NIDO are illegible, and
-            they are the part that matters to a reader in Cali. */}
+        {/* The same lockup the sponsor row carries, given the width it was drawn
+            for — this is where the institutional backing is worth reading. */}
         <a
           href={TOUR.venue.siteUrl}
           target="_blank"
@@ -840,8 +863,8 @@ export default function BuildersTour({ locale }: Props) {
           className="mt-6 block rounded-card border border-line-hairline bg-surface-slab px-6 py-7 transition-colors hover:border-line-strong"
         >
           <Image
-            src="/tour/nido-lockup.png"
-            alt="NIDO · Zonamerica — Gobernación del Valle del Cauca, Alcaldía de Cali, Cámara de Comercio de Cali, comfandi"
+            src="/tour/nido.png"
+            alt="NIDO · Zonamerica — Gobernación del Valle del Cauca, Alcaldía de Santiago de Cali, Cámara de Comercio de Cali, comfandi"
             width={1731}
             height={707}
             sizes="(min-width: 1024px) 720px, 88vw"

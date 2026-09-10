@@ -451,6 +451,16 @@ export interface Sponsor {
    * other case, and it gets --surface-paper underneath instead.
    */
   plate?: boolean;
+  /**
+   * A lockup rather than a single mark: it gets its own full-width row.
+   *
+   * NIDO's official artwork carries five institutional marks under the wordmark
+   * — Gobernación del Valle, paraíso de todos, Alcaldía de Cali, Cámara de
+   * Comercio and comfandi. In a shared 48px tile they render about ten pixels
+   * tall and read as dirt. The lockup is not allowed to be cropped, so the row
+   * gives way to it instead.
+   */
+  lockup?: boolean;
 }
 
 export const SPONSORS: readonly Sponsor[] = [
@@ -497,12 +507,9 @@ export const SPONSORS: readonly Sponsor[] = [
     name: 'NIDO · Zonamerica',
     role: { es: 'Sede', en: 'Venue' },
     url: 'https://web.zonamerica.com/colombia/',
-    // The wordmark alone. The official lockup also carries Gobernación del Valle,
-    // Alcaldía de Cali, Cámara de Comercio and comfandi, and at tile size those
-    // five marks are illegible — nido-lockup.png keeps the full version for the
-    // venue section, where it has the width to be read.
+    // The official lockup, whole. Every mark on it stays on it.
     logo: '/tour/nido.png',
-    wide: true,
+    lockup: true,
   },
 ];
 
