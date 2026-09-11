@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { asLocale, translator } from '../../lib/i18n';
 import NavEntry, { type NavItem } from './Nav';
+import { FRONTIER } from '../../content/quest';
 
 /**
  * Top-level entries carry their own page; the dropdown children are the ways of
@@ -40,7 +41,7 @@ const NAV: readonly NavItem[] = [
 ];
 
 const FOOTER_NAV = [
-  ['/frontier-cities', 'nav.frontier'],
+  [FRONTIER.path, 'nav.frontier'],
   ['/education', 'nav.education'],
   ['/swag', 'nav.swag'],
   ['/technical-infra', 'nav.infra'],

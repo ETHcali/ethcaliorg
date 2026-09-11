@@ -1,12 +1,12 @@
 import type { GetStaticProps } from 'next';
 import Image from 'next/image';
-import Layout from '../components/layout/Layout';
-import Seo from '../components/layout/Seo';
-import { Section } from '../components/layout/Page';
-import QuestForm from '../components/quest/QuestForm';
-import { FRONTIER, QUEST, QUEST_CITIES, QUEST_COPY, QUEST_STEPS } from '../content/quest';
-import { SHANHAIWOO, type Bilingual } from '../content/builders-tour';
-import { asLocale, type Locale } from '../lib/i18n';
+import Layout from '../../components/layout/Layout';
+import Seo from '../../components/layout/Seo';
+import { Section } from '../../components/layout/Page';
+import QuestForm from '../../components/quest/QuestForm';
+import { FRONTIER, QUEST, QUEST_CITIES, QUEST_COPY, QUEST_STEPS } from '../../content/quest';
+import { SHANHAIWOO, type Bilingual } from '../../content/builders-tour';
+import { asLocale, type Locale } from '../../lib/i18n';
 
 interface Props {
   locale: Locale;

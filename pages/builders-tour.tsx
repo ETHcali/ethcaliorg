@@ -16,6 +16,7 @@ import {
   TOUR_MAP_COPY,
   SCHEDULE,
   SPONSORS,
+  CALI,
   SHANHAIWOO,
   type Bilingual,
   type Slot,
@@ -56,13 +57,11 @@ const COPY = {
     es: 'Dos días completos. El sábado se aprende y se arranca; el domingo se construye, se entrega y se premia.',
     en: 'Two full days. Saturday you learn and start; Sunday you build, submit and win.',
   },
-  venue: { es: 'La sede', en: 'The venue' },
   frontierNote: {
     es: 'Para empresas — delega una misión en Asia.',
     en: 'For businesses — delegate a mission in Asia.',
   },
   sponsors: { es: 'Quiénes lo hacen posible', en: 'Who makes it possible' },
-  openMaps: { es: 'Abrir en Google Maps', en: 'Open in Google Maps' },
   prizeLabel: { es: 'Premio', en: 'Prize' },
   seePost: { es: 'Ver el anuncio', en: 'See the announcement' },
   ctaFinal: { es: '¿Listo?', en: 'Ready?' },
@@ -182,12 +181,6 @@ export default function BuildersTour({ locale }: Props) {
 
   const dateRange = formatDateRange(TOUR.startsOn, TOUR.endsOn, locale);
 
-  // Keyless embed. The Maps Embed API proper needs a key; this legacy form does
-  // not, which matters for a page paid traffic lands on — a rotated key would
-  // silently blank the map. Note it must be maps.google.com: the www.google.com
-  // spelling of the same query returns an empty white frame.
-  const mapSrc = `https://maps.google.com/maps?q=${TOUR.venue.lat},${TOUR.venue.lng}&z=16&hl=${locale}&output=embed`;
-
   return (
     <Layout>
       <Seo
@@ -235,8 +228,8 @@ export default function BuildersTour({ locale }: Props) {
                 {t(COPY.where)}
               </dt>
               <dd className="mt-1 text-base font-bold text-content-primary">
-                <a href="#venue" className="hover:text-eth-blue-text">
-                  {TOUR.venue.name}
+                <a href="#cali" className="hover:text-eth-blue-text">
+                  {t(TOUR.place.label)}
                 </a>
               </dd>
             </div>
@@ -278,7 +271,13 @@ export default function BuildersTour({ locale }: Props) {
 
         {/* The official piece, framed rather than dropped in: a brand-tinted
             glow behind it and a hairline over it, so it reads as part of the
-            page instead of a pasted JPEG. */}
+            page instead of a pasted JPEG.
+
+            This is the Colombia edition of the creative, not the generic tour
+            banner that was here before: it names Cali and 19–20 September on
+            the artwork itself, and carries host, sponsor, co-host and partners
+            along the bottom. A reader who lands from an ad and scrolls once
+            should see the event they were sold. */}
         <div className="relative mt-10 overflow-hidden rounded-card border border-line-brand">
           <div
             className="pointer-events-none absolute -inset-8 blur-2xl"
@@ -286,10 +285,10 @@ export default function BuildersTour({ locale }: Props) {
             aria-hidden
           />
           <Image
-            src="/tour/eag-builders-tour.jpg"
-            alt="Ethereum Builders Tour — EAG Global Application & Builder Initiative 2026"
-            width={1200}
-            height={675}
+            src="/tour/builders-tour-colombia.jpg"
+            alt="Ethereum Builders Tour @Colombia — Cali, 19–20 de septiembre de 2026. Host: EAG. Sponsor: HashKey Chain. Co-host: ETH Cali. Partners: Ekinoxis, Devcon VIII India"
+            width={1600}
+            height={900}
             sizes="(min-width: 1024px) 1000px, 92vw"
             className="relative h-auto w-full"
             priority
@@ -427,39 +426,6 @@ export default function BuildersTour({ locale }: Props) {
           ))}
         </ul>
 
-        {SPONSORS.filter((s) => s.tier === 'venue').map((s) => (
-          <a
-            key={s.name}
-            href={s.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 flex flex-col items-center gap-4 rounded-card border border-line-hairline bg-surface-slab p-6 text-center transition-colors hover:border-line-brand"
-          >
-            <span className="text-[10px] font-bold uppercase tracking-widest text-eth-blue-text">
-              {t(s.role)}
-            </span>
-
-            {s.logo && (
-              // Sized so the institutional row under the wordmark is actually
-              // legible: below ~300px wide its type falls under 8px and the
-              // marks turn to noise. The lockup is never cropped — Gobernación
-              // del Valle, Alcaldía de Cali, Cámara de Comercio and comfandi are
-              // part of the mark.
-              <Image
-                src={s.logo}
-                alt={`${s.name} — Gobernación del Valle del Cauca, Alcaldía de Santiago de Cali, Cámara de Comercio de Cali, comfandi`}
-                width={1731}
-                height={707}
-                sizes="(min-width: 640px) 520px, 88vw"
-                className="h-auto w-full max-w-[520px]"
-              />
-            )}
-
-            <span className="max-w-prose text-sm leading-relaxed text-content-muted">
-              {t(s.gives)}
-            </span>
-          </a>
-        ))}
       </Section>
 
       {/* ── tracks ───────────────────────────────────────────────────────── */}
@@ -887,60 +853,40 @@ export default function BuildersTour({ locale }: Props) {
 
       </Section>
 
-      {/* ── venue ────────────────────────────────────────────────────────── */}
-      <Section id="venue" eyebrow={t(COPY.where)} title={t(COPY.venue)}>
-        <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
-          <div>
-            <h3 className="text-base font-bold text-content-primary">{TOUR.venue.name}</h3>
-            <p className="mt-1 text-sm text-content-muted">{TOUR.venue.city}</p>
-            <div className="mt-4 flex flex-col gap-2">
-              <a
-                href={TOUR.venue.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-[36px] items-center text-sm text-eth-blue-text hover:underline"
-              >
-                {t(COPY.openMaps)} →
-              </a>
-              <a
-                href={TOUR.venue.siteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-[36px] items-center text-sm text-eth-blue-text hover:underline"
-              >
-                zonamerica.com →
-              </a>
-            </div>
-          </div>
+      {/* ── the city ─────────────────────────────────────────────────────── */}
+      {/* This was a venue block: a named building, a Google Maps pin and the
+          institutional lockup of the place that owns it. A builder deciding
+          whether to travel is choosing a city, not a room, and the room told
+          them nothing about whether the trip is worth it. So the section shows
+          Cali — the valley from the western hills, Cristo Rey over it, and the
+          cat on the river bank. The exact address goes out with the Luma
+          confirmation, where it is actually useful. */}
+      <Section id="cali" eyebrow={t(COPY.where)} title={t(TOUR.place.label)}>
+        <p className="max-w-prose text-base leading-relaxed text-content-secondary">
+          {t(CALI.blurb)}
+        </p>
 
-          <div className="overflow-hidden rounded-card border border-line-hairline">
-            <iframe
-              src={mapSrc}
-              title={TOUR.venue.name}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="h-[340px] w-full border-0"
-            />
-          </div>
-        </div>
-
-        {/* The same lockup the sponsor row carries, given the width it was drawn
-            for — this is where the institutional backing is worth reading. */}
-        <a
-          href={TOUR.venue.siteUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 block rounded-card border border-line-hairline bg-surface-slab px-6 py-7 transition-colors hover:border-line-strong"
-        >
-          <Image
-            src="/tour/nido.png"
-            alt="NIDO · Zonamerica — Gobernación del Valle del Cauca, Alcaldía de Santiago de Cali, Cámara de Comercio de Cali, comfandi"
-            width={1731}
-            height={707}
-            sizes="(min-width: 1024px) 720px, 88vw"
-            className="mx-auto h-auto w-full max-w-[720px]"
-          />
-        </a>
+        <ul className="mt-8 grid gap-4 sm:grid-cols-3">
+          {CALI.photos.map((photo) => (
+            <li
+              key={photo.src}
+              className="overflow-hidden rounded-card border border-line-hairline bg-surface-slab"
+            >
+              {/* A fixed 4:3 box on every card, so three photographs shot at
+                  different crops still read as one row. */}
+              <div className="relative aspect-[4/3]">
+                <Image
+                  src={photo.src}
+                  alt={photo.caption.es}
+                  fill
+                  sizes="(min-width: 640px) 33vw, 92vw"
+                  className="object-cover"
+                />
+              </div>
+              <p className="p-4 text-sm leading-relaxed text-content-muted">{t(photo.caption)}</p>
+            </li>
+          ))}
+        </ul>
       </Section>
 
       {/* ── final CTA ────────────────────────────────────────────────────── */}

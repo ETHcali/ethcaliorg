@@ -59,8 +59,8 @@ export const TOUR = {
       url: 'https://luma.com/khnpkikn',
       label: { es: 'Regístrate al evento en Cali', en: 'Register for the Cali event' } as Bilingual,
       note: {
-        es: 'Presencial en Zonamerica. Cupos limitados.',
-        en: 'In person at Zonamerica. Limited places.',
+        es: 'Presencial en Cali. Cupos limitados.',
+        en: 'In person in Cali. Limited places.',
       } as Bilingual,
     },
     devfolio: {
@@ -77,14 +77,69 @@ export const TOUR = {
     },
   },
 
-  venue: {
-    name: 'Zonamerica — NIDO: Distrito de Innovación',
-    city: 'Cali, Colombia',
-    mapsUrl: 'https://maps.app.goo.gl/Mb1RVAhBoaWDVte96',
-    siteUrl: 'https://web.zonamerica.com/colombia/',
-    lat: 3.327976,
-    lng: -76.521277,
+  /**
+   * The city, and only the city.
+   *
+   * The page used to name a specific venue and pin it on a map. It now says
+   * Cali, Colombia everywhere — in the hero fact, in the Luma note and in the
+   * section below — so there is one answer to "where", and it is the same one
+   * in all three places.
+   */
+  place: {
+    label: { es: 'Cali, Colombia', en: 'Cali, Colombia' } as Bilingual,
   },
+} as const;
+
+// ── the city ────────────────────────────────────────────────────────────────
+
+export interface CaliPhoto {
+  src: string;
+  /** Bilingual, because it is read as a caption and not only by a screen reader. */
+  caption: Bilingual;
+}
+
+/**
+ * What Cali is, for a reader who has never been.
+ *
+ * A builder deciding whether to fly in is choosing a city, not a room, so this
+ * shows the city. The three photographs are the ones anyone from here would
+ * pick: the valley from the western hills, Cristo Rey over it, and the cat on
+ * the river bank.
+ */
+export const CALI = {
+  blurb: {
+    es:
+      'Cali es la tercera ciudad de Colombia y la capital del Valle del Cauca, en el ' +
+      'suroccidente del país. Está a mil metros sobre el nivel del mar, entre la cordillera ' +
+      'Occidental y el valle del río Cauca, y hace unos 30 °C casi todos los días del año.',
+    en:
+      'Cali is Colombia\'s third city and the capital of Valle del Cauca, in the south-west ' +
+      'of the country. It sits a thousand metres up between the Western Andes and the Cauca ' +
+      'valley, at around 30 °C almost every day of the year.',
+  } as Bilingual,
+  photos: [
+    {
+      src: '/cali/cali-desde-los-cerros.jpg',
+      caption: {
+        es: 'La ciudad y el valle, vistos desde los cerros del occidente',
+        en: 'The city and the valley, seen from the western hills',
+      },
+    },
+    {
+      src: '/cali/cristo-rey.jpg',
+      caption: {
+        es: 'Cristo Rey, sobre el cerro de los Cristales',
+        en: 'Cristo Rey, above Cerro de los Cristales',
+      },
+    },
+    {
+      src: '/cali/gato-del-rio.jpg',
+      caption: {
+        es: 'El Gato del Río, de Hernando Tejada, a orillas del río Cali',
+        en: "Hernando Tejada's Gato del Río, on the bank of the Cali river",
+      },
+    },
+  ] as readonly CaliPhoto[],
 } as const;
 
 // ── tracks ──────────────────────────────────────────────────────────────────
@@ -414,7 +469,7 @@ export interface Sponsor {
    * same size tells a reader nothing and undersells the one paying for the
    * prizes.
    */
-  tier: 'title' | 'partner' | 'venue';
+  tier: 'title' | 'partner';
   /**
    * The contribution in one line. Every one of these is stated elsewhere on the
    * page — the prize cards, the Devcon section, the schedule — so the wall
@@ -442,16 +497,6 @@ export interface Sponsor {
    * other case, and it gets --surface-paper underneath instead.
    */
   plate?: boolean;
-  /**
-   * A lockup rather than a single mark: it gets its own full-width row.
-   *
-   * NIDO's official artwork carries five institutional marks under the wordmark
-   * — Gobernación del Valle, paraíso de todos, Alcaldía de Cali, Cámara de
-   * Comercio and comfandi. In a shared 48px tile they render about ten pixels
-   * tall and read as dirt. The lockup is not allowed to be cropped, so the row
-   * gives way to it instead.
-   */
-  lockup?: boolean;
 }
 
 export const SPONSORS: readonly Sponsor[] = [
@@ -522,20 +567,6 @@ export const SPONSORS: readonly Sponsor[] = [
     proof: '#schedule',
     url: 'https://www.ekinoxis.xyz',
     logo: '/tour/ekinoxis.png',
-  },
-  {
-    name: 'NIDO · Zonamerica',
-    role: { es: 'Sede', en: 'Venue' },
-    tier: 'venue',
-    gives: {
-      es: 'La sede: NIDO, el distrito de innovación de Zonamerica en Cali',
-      en: "The venue: NIDO, Zonamerica's innovation district in Cali",
-    },
-    proof: '#venue',
-    url: 'https://web.zonamerica.com/colombia/',
-    // The official lockup, whole. Every mark on it stays on it.
-    logo: '/tour/nido.png',
-    lockup: true,
   },
 ];
 

@@ -18,7 +18,13 @@ export const FRONTIER = {
   /** Untranslated on purpose, the way Ethereum Builders Tour and Road to Devcon
    *  are: it is a name, not a description. */
   name: 'Frontier Cities',
-  path: '/frontier-cities',
+  /**
+   * Nested under the campaign it belongs to rather than sitting at the root.
+   * A bare /quest said nothing about which quest, and a root /frontier-cities
+   * read like a standing product; this is the Builders Tour's business offer
+   * and the URL now says so.
+   */
+  path: '/builders-tour/frontier-cities-quest',
 } as const;
 
 export const QUEST = {
