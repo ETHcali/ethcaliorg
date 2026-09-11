@@ -26,6 +26,9 @@ module.exports = {
       ['/ethcalivenues', '/venues'],
       ['/ethcalidao', '/dao'],
       ['/brand_guidelines', '/brand-guidelines'],
+      // The business offer shipped as /quest and is now Frontier Cities. The old
+      // URL was in the footer of every page, so it is out in the world already.
+      ['/quest', '/frontier-cities'],
       ['/hackathon-ethcolombia-2023', '/hackathons/hackathon-web3-ethcolombia'],
       ['/hackathon-web3-cali-2025', '/hackathons/hackathon-web3-cali'],
       ['/hackathon-usc-2025', '/hackathons/hackathon-usc'],

@@ -1,12 +1,25 @@
 /**
- * ShanHaiWoo quests — a business delegates a mission to be run on the ground.
+ * Frontier Cities — a business delegates a mission to be run on the ground.
  *
  * The proposition is unusual enough that the page has to explain it before it
  * asks for anything: your company needs something done in Shenzhen, Hong Kong or
  * Mumbai, and rather than flying someone out, you hand it to builders who are
  * already there for a month.
+ *
+ * "Frontier Cities" is the name the offer goes to market under and the URL it
+ * lives at; a quest is still the unit of work inside it, which is why the
+ * symbols, the form and the `quest_requests` table keep that name.
  */
 import type { Bilingual } from './builders-tour';
+
+/** The public identity of the offer. One place, so the nav, the tour page and
+ *  the page itself can never drift apart. */
+export const FRONTIER = {
+  /** Untranslated on purpose, the way Ethereum Builders Tour and Road to Devcon
+   *  are: it is a name, not a description. */
+  name: 'Frontier Cities',
+  path: '/frontier-cities',
+} as const;
 
 export const QUEST = {
   /** The window the popup city runs, and therefore when a quest can be executed. */
@@ -93,7 +106,19 @@ export const QUEST_CITY_OPTIONS: readonly { id: string; label: Bilingual }[] = [
 
 export const QUEST_COPY = {
   eyebrow: { es: 'Para empresas', en: 'For businesses' } as Bilingual,
-  title: { es: 'Delega una misión en Asia', en: 'Delegate a mission in Asia' } as Bilingual,
+  /** The H1 is the name; the line under it is what the name means. A reader who
+   *  only takes one of the two still knows this is about Asia. */
+  title: { es: FRONTIER.name, en: FRONTIER.name } as Bilingual,
+  subtitle: {
+    es: 'Delega una misión en Asia',
+    en: 'Delegate a mission in Asia',
+  } as Bilingual,
+  /** A tab and a WhatsApp preview get both halves — "Frontier Cities" alone
+   *  says nothing to someone who has not seen the page. */
+  seoTitle: {
+    es: `${FRONTIER.name} — delega una misión en Asia`,
+    en: `${FRONTIER.name} — delegate a mission in Asia`,
+  } as Bilingual,
   lead: {
     es:
       'Tu empresa necesita algo resuelto en Shenzhen, Hong Kong o Mumbai. En vez de comprar ' +
@@ -104,6 +129,10 @@ export const QUEST_COPY = {
   } as Bilingual,
   howTitle: { es: 'Cómo funciona', en: 'How it works' } as Bilingual,
   citiesTitle: { es: 'Dónde se ejecuta', en: 'Where it gets done' } as Bilingual,
+  /** The two facts the hero states outright, in the same dt/dd shape the tour
+   *  hero uses for its date and venue. */
+  windowLabel: { es: 'La ventana', en: 'The window' } as Bilingual,
+  citiesLabel: { es: 'Las ciudades', en: 'The cities' } as Bilingual,
   formTitle: { es: 'Propón tu misión', en: 'Propose your mission' } as Bilingual,
   formLead: {
     es: 'Entre más concreto seas, más útil te va a resultar. Respondemos a cada propuesta.',

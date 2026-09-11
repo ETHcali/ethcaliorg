@@ -224,30 +224,6 @@ export const PRIZES_ARE_CUMULATIVE: Bilingual = {
     'EAG prize, a Devcon ticket and the HashKey Chain prize. You do not have to choose.',
 };
 
-/**
- * How the global pool relates to what is actually won in Cali.
- *
- * The 12,500 figure is the EAG Global Buildathon's whole pool across every stop
- * on the tour; 1,000 of it is awarded here, as the HashKey Chain tiers. Without
- * saying that, a reader sees 12,500 on the page and reasonably assumes it is
- * what is on the table in Cali.
- */
-export const POOL = {
-  globalUsd: 12500,
-  caliUsd: 1000,
-  caliGoesTo: 'HashKey Chain',
-  /** Anchor to the prize cards, where the tiers that make up caliUsd are listed. */
-  caliHref: '#prizes',
-  globalLabel: {
-    es: 'Bolsa global del EAG Global Buildathon, en todas las paradas de la gira',
-    en: "The EAG Global Buildathon's whole pool, across every stop on the tour",
-  } as Bilingual,
-  caliLabel: {
-    es: 'Se entregan en Cali, repartidos en el track de HashKey Chain',
-    en: 'Awarded in Cali, split across the HashKey Chain track',
-  } as Bilingual,
-} as const;
-
 export const DEVCON = {
   name: 'Devcon VIII',
   banner: '/tour/devcon-banner.jpg',
@@ -432,6 +408,21 @@ export interface Sponsor {
   name: string;
   role: Bilingual;
   url: string;
+  /**
+   * What this sponsor is to the event, which decides how much room the mark
+   * gets. A wall where the title sponsor and a workshop partner render at the
+   * same size tells a reader nothing and undersells the one paying for the
+   * prizes.
+   */
+  tier: 'title' | 'partner' | 'venue';
+  /**
+   * The contribution in one line. Every one of these is stated elsewhere on the
+   * page — the prize cards, the Devcon section, the schedule — so the wall
+   * summarises rather than claims anything new.
+   */
+  gives: Bilingual;
+  /** Anchor to the section that backs `gives` up, where there is one. */
+  proof?: string;
   /** Where they post. Shown as a second link on the sponsor tile. */
   x?: string;
   /**
@@ -468,6 +459,12 @@ export const SPONSORS: readonly Sponsor[] = [
     name: 'Ethereum Applications Guild',
     x: 'https://x.com/EthAppsGuild',
     role: { es: 'Organiza', en: 'Organiser' },
+    tier: 'partner',
+    gives: {
+      es: 'La gira, los seis tracks y 5 × 200 USDT en premios',
+      en: 'The tour itself, the six tracks and 5 × 200 USDT in prizes',
+    },
+    proof: '#prizes',
     url: 'https://ethappsguild.org',
     logo: '/tour/eag.png',
     wide: true,
@@ -476,6 +473,12 @@ export const SPONSORS: readonly Sponsor[] = [
     name: 'Ethereum Foundation',
     x: 'https://x.com/ethereumfndn',
     role: { es: 'Entradas a Devcon', en: 'Devcon tickets' },
+    tier: 'partner',
+    gives: {
+      es: 'Entradas a Devcon VIII para los ganadores, de 499 USD cada una',
+      en: 'Devcon VIII tickets for the winners, 499 USD each',
+    },
+    proof: '#devcon',
     url: 'https://ethereum.foundation',
     logo: '/tour/ef-logo.png',
     wide: true,
@@ -484,6 +487,12 @@ export const SPONSORS: readonly Sponsor[] = [
     name: 'HashKey Chain',
     x: 'https://x.com/HSKChain',
     role: { es: 'Patrocinador principal', en: 'Title sponsor' },
+    tier: 'title',
+    gives: {
+      es: '1.000 USDT en premios y un track propio: 500, 300 y 200 USDT',
+      en: '1,000 USDT in prizes and a track of its own: 500, 300 and 200 USDT',
+    },
+    proof: '#prizes',
     url: 'https://hsk.xyz',
     logo: '/tour/hashkey-chain.jpg',
   },
@@ -491,6 +500,11 @@ export const SPONSORS: readonly Sponsor[] = [
     name: 'ETH Cali',
     x: 'https://x.com/ethcali_org',
     role: { es: 'Anfitrión local', en: 'Local host' },
+    tier: 'partner',
+    gives: {
+      es: 'La organización en tierra y la comunidad que llega a la sala',
+      en: 'The organising on the ground, and the community that fills the room',
+    },
     url: 'https://ethcali.org',
     // The reversed lockup. Logo_Nodo_CLO_ETH_CO-01 is dark navy artwork drawn
     // for a white ground and disappears on --surface-slab.
@@ -500,12 +514,24 @@ export const SPONSORS: readonly Sponsor[] = [
     name: 'Ekinoxis Labs',
     x: 'https://x.com/ekinoxis_xyz',
     role: { es: 'Talleres y mentoría', en: 'Workshops and mentoring' },
+    tier: 'partner',
+    gives: {
+      es: 'Los talleres técnicos de los dos días y mentoría durante el hackathon',
+      en: 'The technical workshops across both days, and mentoring through the hackathon',
+    },
+    proof: '#schedule',
     url: 'https://www.ekinoxis.xyz',
     logo: '/tour/ekinoxis.png',
   },
   {
     name: 'NIDO · Zonamerica',
     role: { es: 'Sede', en: 'Venue' },
+    tier: 'venue',
+    gives: {
+      es: 'La sede: NIDO, el distrito de innovación de Zonamerica en Cali',
+      en: "The venue: NIDO, Zonamerica's innovation district in Cali",
+    },
+    proof: '#venue',
     url: 'https://web.zonamerica.com/colombia/',
     // The official lockup, whole. Every mark on it stays on it.
     logo: '/tour/nido.png',

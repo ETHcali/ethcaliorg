@@ -22,18 +22,21 @@ export function PageHeader({
 }
 
 export function Section({
+  id,
   eyebrow,
   title,
   lead,
   children,
 }: {
+  /** Set it when something links here — a hero fact, or a CTA that scrolls. */
+  id?: string;
   eyebrow?: string;
   title?: string;
   lead?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="border-t border-line-hairline py-9 first:border-t-0 sm:py-12">
+    <section id={id} className="border-t border-line-hairline py-9 first:border-t-0 sm:py-12">
       <div className="mx-auto max-w-page px-gutter">
         {eyebrow && (
           <p className="text-[11px] font-semibold uppercase tracking-widest text-eth-blue-text">

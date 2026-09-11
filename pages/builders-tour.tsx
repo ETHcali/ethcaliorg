@@ -13,7 +13,6 @@ import {
   PRIZES_ARE_CUMULATIVE,
   DEVCON,
   PAYOUT,
-  POOL,
   TOUR_MAP_COPY,
   SCHEDULE,
   SPONSORS,
@@ -21,6 +20,7 @@ import {
   type Bilingual,
   type Slot,
 } from '../content/builders-tour';
+import { FRONTIER, QUEST, QUEST_CITIES, QUEST_COPY } from '../content/quest';
 import { asLocale, formatDate, formatDateRange, type Locale } from '../lib/i18n';
 import { APP } from '../lib/links';
 
@@ -57,6 +57,10 @@ const COPY = {
     en: 'Two full days. Saturday you learn and start; Sunday you build, submit and win.',
   },
   venue: { es: 'La sede', en: 'The venue' },
+  frontierNote: {
+    es: 'Para empresas — delega una misión en Asia.',
+    en: 'For businesses — delegate a mission in Asia.',
+  },
   sponsors: { es: 'Quiénes lo hacen posible', en: 'Who makes it possible' },
   openMaps: { es: 'Abrir en Google Maps', en: 'Open in Google Maps' },
   prizeLabel: { es: 'Premio', en: 'Prize' },
@@ -124,6 +128,10 @@ function Section({
  * The primary action. Both registrations are primary — the page would be lying
  * if it implied one was optional, since a project only competes once it is on
  * Devfolio and only gets in the room once it is on Luma.
+ *
+ * A site-relative href routes through next/link instead: Frontier Cities is our
+ * own page, and sending it to a new tab would be treating it like somebody
+ * else's site.
  */
 function Cta({
   href,
@@ -136,23 +144,34 @@ function Cta({
   note?: string;
   tone?: 'brand' | 'outline';
 }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`group flex min-h-tap flex-col justify-center rounded-control px-5 py-3 transition-colors ${
-        tone === 'brand'
-          ? 'bg-eth-blue text-on-brand hover:bg-eth-blue-lift'
-          : 'border border-line-strong text-content-primary hover:border-eth-blue hover:bg-eth-blue-wash'
-      }`}
-    >
+  const className = `group flex min-h-tap flex-col justify-center rounded-control px-5 py-3 transition-colors ${
+    tone === 'brand'
+      ? 'bg-eth-blue text-on-brand hover:bg-eth-blue-lift'
+      : 'border border-line-strong text-content-primary hover:border-eth-blue hover:bg-eth-blue-wash'
+  }`;
+
+  const inner = (
+    <>
       <span className="text-sm font-bold">{label} →</span>
       {note && (
         <span className={`mt-0.5 text-xs ${tone === 'brand' ? 'text-on-brand/80' : 'text-content-muted'}`}>
           {note}
         </span>
       )}
+    </>
+  );
+
+  if (href.startsWith('/')) {
+    return (
+      <Link href={href} className={className}>
+        {inner}
+      </Link>
+    );
+  }
+
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+      {inner}
     </a>
   );
 }
@@ -223,7 +242,13 @@ export default function BuildersTour({ locale }: Props) {
             </div>
           </dl>
 
-          <div className="mt-9 grid gap-3 sm:max-w-2xl sm:grid-cols-2">
+          {/* Two audiences, three doors. The first two are for a builder and
+              are both required; the third is the one a business owner reading
+              this page has been looking for, and until now it was buried eight
+              sections down. Three across only from lg — at sm the third wraps
+              to its own full-width row, which reads correctly as "and,
+              separately, this one is for you". */}
+          <div className="mt-9 grid gap-3 sm:max-w-2xl sm:grid-cols-2 lg:max-w-4xl lg:grid-cols-3">
             <Cta
               href={TOUR.registration.luma.url}
               label={t(TOUR.registration.luma.label)}
@@ -233,6 +258,12 @@ export default function BuildersTour({ locale }: Props) {
               href={TOUR.registration.devfolio.url}
               label={t(TOUR.registration.devfolio.label)}
               note={t(TOUR.registration.devfolio.note)}
+              tone="outline"
+            />
+            <Cta
+              href={FRONTIER.path}
+              label={FRONTIER.name}
+              note={t(COPY.frontierNote)}
               tone="outline"
             />
           </div>
@@ -277,81 +308,158 @@ export default function BuildersTour({ locale }: Props) {
       </Section>
 
       {/* ── sponsors ─────────────────────────────────────────────────────── */}
+      {/* Three tiers, and the order is identical at every width: title sponsor,
+          then the four partners in one order, then the venue. Each tier stacks
+          to a single column on a phone rather than re-flowing into a different
+          arrangement, so somebody reading on a phone and somebody reading on a
+          laptop see the same sponsors in the same sequence.
+
+          The previous version rendered all six marks at one size with a 10px
+          role caption. HashKey Chain funds the prize money and got exactly as
+          much room as everyone else; nobody could tell from the wall who paid
+          for what. Each tile now states the contribution and links to the
+          section of this page that backs it up. */}
       <Section id="sponsors" title={t(COPY.sponsors)}>
-        {/* Flex rather than grid: five single marks never fill two or three
-            columns evenly, and a grid leaves the orphan hard against the left
-            edge with a hole beside it. Wrapping centres the short row. */}
-        <ul className="flex flex-wrap justify-center gap-3">
-          {SPONSORS.map((s) => (
-            <li
-              key={s.name}
-              className={
-                s.lockup
-                  ? 'basis-full'
-                  : 'basis-[calc(50%-0.375rem)] sm:basis-[calc(33.333%-0.5rem)]'
-              }
+        {SPONSORS.filter((s) => s.tier === 'title').map((s) => (
+          <a
+            key={s.name}
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mb-3 flex flex-col items-center gap-5 rounded-card border border-line-brand bg-eth-blue-wash p-6 text-center transition-colors hover:border-eth-blue sm:flex-row sm:text-left"
+          >
+            {/* The plate is opt-in, same as the partner tiles: HashKey's mark
+                ships as artwork with its own dark ground, and a white plate
+                under it renders as a black square inside a white box. */}
+            <span
+              className={`flex w-full shrink-0 items-center justify-center px-5 py-4 sm:w-[220px] ${
+                s.plate ? 'rounded-chip bg-surface-paper' : 'rounded-chip bg-surface-slab'
+              }`}
             >
+              {s.logo ? (
+                <Image
+                  src={s.logo}
+                  alt={s.name}
+                  width={220}
+                  height={72}
+                  sizes="(min-width: 640px) 180px, 60vw"
+                  className="max-h-16 w-auto object-contain"
+                />
+              ) : (
+                <span className="text-lg font-bold text-surface-void">{s.name}</span>
+              )}
+            </span>
+
+            <span className="min-w-0">
+              <span className="block text-[10px] font-bold uppercase tracking-widest text-eth-blue-text">
+                {t(s.role)}
+              </span>
+              <span className="mt-1.5 block text-xl font-bold text-content-primary">{s.name}</span>
+              <span className="mt-2 block text-sm leading-relaxed text-content-secondary">
+                {t(s.gives)}
+              </span>
+            </span>
+          </a>
+        ))}
+
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {SPONSORS.filter((s) => s.tier === 'partner').map((s) => (
+            <li key={s.name} className="flex flex-col">
               <a
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-full flex-col items-center justify-center gap-3 rounded-card border border-line-hairline bg-surface-slab p-5 text-center transition-colors hover:border-line-brand"
+                className="flex flex-1 flex-col items-center gap-4 rounded-card border border-line-hairline bg-surface-slab p-5 text-center transition-colors hover:border-line-brand"
               >
-                <div
-                  className={`flex items-center justify-center ${s.lockup ? 'w-full' : 'h-12'} ${
+                <span
+                  className={`flex h-12 items-center justify-center ${
                     s.plate ? 'w-full rounded-chip bg-surface-paper px-3' : ''
                   }`}
                 >
                   {s.logo ? (
-                    s.lockup ? (
-                      // Sized so the institutional row under the wordmark is
-                      // actually legible: below ~300px wide its type falls under
-                      // 8px and the marks turn to noise.
-                      <Image
-                        src={s.logo}
-                        alt={`${s.name} — Gobernación del Valle del Cauca, Alcaldía de Santiago de Cali, Cámara de Comercio de Cali, comfandi`}
-                        width={1731}
-                        height={707}
-                        sizes="(min-width: 640px) 520px, 88vw"
-                        className="h-auto w-full max-w-[520px]"
-                      />
-                    ) : (
-                      <Image
-                        src={s.logo}
-                        alt={s.name}
-                        width={s.wide ? 180 : 110}
-                        height={48}
-                        sizes={s.wide ? '180px' : '110px'}
-                        className={`max-h-12 w-auto object-contain ${s.wide ? 'max-w-[180px]' : 'max-w-[110px]'}`}
-                      />
-                    )
+                    <Image
+                      src={s.logo}
+                      alt={s.name}
+                      width={s.wide ? 180 : 110}
+                      height={48}
+                      sizes={s.wide ? '180px' : '110px'}
+                      className={`max-h-12 w-auto object-contain ${s.wide ? 'max-w-[180px]' : 'max-w-[110px]'}`}
+                    />
                   ) : (
                     <span className="text-base font-bold leading-tight text-content-primary">
                       {s.name}
                     </span>
                   )}
-                </div>
-                <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
+                </span>
+
+                <span className="text-[10px] font-bold uppercase tracking-widest text-eth-blue-text">
                   {t(s.role)}
                 </span>
+                <span className="text-sm leading-relaxed text-content-muted">{t(s.gives)}</span>
               </a>
 
-              {/* The X handle is a second destination, so it cannot be nested
-                  inside the tile's own anchor — a link inside a link is invalid
-                  and browsers resolve it unpredictably. */}
-              {s.x && (
-                <a
-                  href={s.x}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1.5 block text-center text-[11px] text-content-faint transition-colors hover:text-eth-blue-text"
-                >
-                  {s.x.replace('https://x.com/', '@')}
-                </a>
+              {/* Second and third destinations, so neither can be nested inside
+                  the tile's own anchor — a link inside a link is invalid and
+                  browsers resolve it unpredictably. */}
+              {(s.proof || s.x) && (
+                <span className="mt-1.5 flex flex-wrap items-center justify-center gap-x-3 text-[11px]">
+                  {s.proof && (
+                    <a
+                      href={s.proof}
+                      className="font-semibold text-eth-blue-text hover:underline"
+                    >
+                      {en ? 'see it' : 'ver'} →
+                    </a>
+                  )}
+                  {s.x && (
+                    <a
+                      href={s.x}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-content-faint transition-colors hover:text-eth-blue-text"
+                    >
+                      {s.x.replace('https://x.com/', '@')}
+                    </a>
+                  )}
+                </span>
               )}
             </li>
           ))}
         </ul>
+
+        {SPONSORS.filter((s) => s.tier === 'venue').map((s) => (
+          <a
+            key={s.name}
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 flex flex-col items-center gap-4 rounded-card border border-line-hairline bg-surface-slab p-6 text-center transition-colors hover:border-line-brand"
+          >
+            <span className="text-[10px] font-bold uppercase tracking-widest text-eth-blue-text">
+              {t(s.role)}
+            </span>
+
+            {s.logo && (
+              // Sized so the institutional row under the wordmark is actually
+              // legible: below ~300px wide its type falls under 8px and the
+              // marks turn to noise. The lockup is never cropped — Gobernación
+              // del Valle, Alcaldía de Cali, Cámara de Comercio and comfandi are
+              // part of the mark.
+              <Image
+                src={s.logo}
+                alt={`${s.name} — Gobernación del Valle del Cauca, Alcaldía de Santiago de Cali, Cámara de Comercio de Cali, comfandi`}
+                width={1731}
+                height={707}
+                sizes="(min-width: 640px) 520px, 88vw"
+                className="h-auto w-full max-w-[520px]"
+              />
+            )}
+
+            <span className="max-w-prose text-sm leading-relaxed text-content-muted">
+              {t(s.gives)}
+            </span>
+          </a>
+        ))}
       </Section>
 
       {/* ── tracks ───────────────────────────────────────────────────────── */}
@@ -545,80 +653,55 @@ export default function BuildersTour({ locale }: Props) {
         </div>
       </Section>
 
-      {/* ── the global buildathon ────────────────────────────────────────── */}
+      {/* ── Frontier Cities ─────────────────────────────────────────────── */}
+      {/* The one section on this page not addressed to a builder, and it says so
+          in its first three words. It stands where the EAG Global Buildathon
+          used to: that section explained a 12,500 USD pool of which 1,000 is
+          actually awarded here, and readers took the big number for the prize
+          they were competing for. The Devfolio requirement is already stated in
+          "how to join", so nothing load-bearing left with it.
+
+          The layout is deliberately unlike the rest of the page — three city
+          cards and a value strip, no poster. The ShanHaiWoo artwork is a few
+          hundred pixels below in the Devcon section, where it belongs to the
+          builder story; repeating it here would make the two offers look like
+          one. */}
       <Section
-        id="buildathon"
-        eyebrow="EAG Global Buildathon"
-        title={en ? 'The global side of it' : 'El lado global'}
-        lead={
+        id="frontier"
+        eyebrow={FRONTIER.name}
+        title={
           en
-            ? 'Cali is one stop on a worldwide programme. The same six EAG tracks run online with a 12,500 USD prize pool, and your Devfolio submission enters both.'
-            : 'Cali es una parada de un programa mundial. Los mismos seis tracks de EAG corren en línea con una bolsa de 12.500 USD, y tu entrega en Devfolio compite en ambos.'
+            ? 'For businesses: delegate a mission in Asia'
+            : 'Para empresas: delega una misión en Asia'
         }
+        lead={t(QUEST_COPY.lead)}
       >
-        <div className="grid gap-6 lg:grid-cols-[380px_minmax(0,1fr)] lg:items-start">
-          <a
-            href={TOUR.registration.devfolio.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block overflow-hidden rounded-card border border-line-hairline transition-colors hover:border-line-brand"
-          >
-            <Image
-              src="/tour/eag-global-buildathon.png"
-              alt="EAG Global Buildathon — 6 tracks, 12,500 USD prize pool"
-              width={595}
-              height={842}
-              sizes="(min-width: 1024px) 380px, 92vw"
-              className="h-auto w-full"
-            />
-          </a>
-
-          <div>
-            <p className="mono text-4xl font-bold text-signal-pending sm:text-5xl">
-              {POOL.globalUsd.toLocaleString(en ? 'en-US' : 'es-CO')} USD
-            </p>
-            <p className="mt-2 max-w-prose text-sm text-content-muted">
-              {t(POOL.globalLabel)}
-            </p>
-
-            {/* The share that actually lands here, drawn to scale. 1,000 of
-                12,500 is 8% — a number most readers will assume is far larger
-                unless they can see it. */}
-            <div className="mt-7">
-              <div className="flex h-3 w-full overflow-hidden rounded-full bg-surface-inset">
-                <span
-                  className="bg-eth-blue"
-                  style={{ width: `${(POOL.caliUsd / POOL.globalUsd) * 100}%` }}
-                  aria-hidden
-                />
+        <div className="overflow-hidden rounded-card border border-line-brand bg-eth-blue-wash">
+          <div className="grid gap-px bg-line-hairline sm:grid-cols-3">
+            {QUEST_CITIES.map((city) => (
+              <div key={city.id} className="bg-surface-slab p-5">
+                <h3 className="text-base font-bold text-content-primary">{city.name}</h3>
+                <p className="mono mt-1 text-xs text-content-faint">{t(city.dates)}</p>
+                <p className="mt-3 text-sm leading-relaxed text-content-muted">{t(city.known)}</p>
               </div>
+            ))}
+          </div>
 
-              <a
-                href={POOL.caliHref}
-                className="group mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1"
-              >
-                <span className="mono text-2xl font-bold text-eth-blue-text">
-                  {POOL.caliUsd.toLocaleString(en ? 'en-US' : 'es-CO')} USDT
-                </span>
-                <span className="text-sm text-content-secondary group-hover:text-content-primary">
-                  {t(POOL.caliLabel)}
-                </span>
-                <span className="text-sm font-semibold text-eth-blue-text group-hover:underline">
-                  {en ? 'see the tiers' : 'ver los premios'} →
-                </span>
-              </a>
-            </div>
-
-            <p className="mt-6 max-w-prose text-base leading-relaxed text-content-secondary">
-              {en
-                ? 'One submission, two shots: the Cali hackathon judges in the room, and the global buildathon judges everything that came in from every stop.'
-                : 'Una sola entrega, dos oportunidades: el hackathon de Cali se juzga en la sala, y el buildathon global juzga todo lo que llegó desde cada parada.'}
+          {/* The reference value is the fact a business owner is scanning for,
+              so it gets the same monospaced treatment the prize figures get. */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-4 px-5 py-5">
+            <p className="mono text-3xl font-bold text-eth-blue-text">
+              {QUEST.postedValueUsd.toLocaleString(en ? 'en-US' : 'es-CO')} USD
             </p>
-
+            <p className="max-w-prose text-sm text-content-secondary">
+              {en
+                ? 'the reference value per mission, agreed before anything is run'
+                : 'el valor de referencia por misión, acordado antes de ejecutar nada'}
+            </p>
             <Cta
-              href={TOUR.registration.devfolio.url}
-              label={t(TOUR.registration.devfolio.label)}
-              note={t(TOUR.registration.devfolio.note)}
+              href={FRONTIER.path}
+              label={t(QUEST_COPY.formTitle)}
+              note={t(QUEST.window)}
               tone="outline"
             />
           </div>
@@ -777,23 +860,10 @@ export default function BuildersTour({ locale }: Props) {
               })}
             </ol>
 
-            <Link
-              href="/quest"
-              className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-card border border-line-brand bg-eth-blue-wash px-5 py-4 transition-colors hover:border-eth-blue"
-            >
-              <span className="text-sm font-bold text-content-primary">
-                {en
-                  ? 'Does your business need something done in Asia?'
-                  : '¿Tu empresa necesita algo resuelto en Asia?'}
-              </span>
-              <span className="text-sm text-content-secondary">
-                {en
-                  ? 'Delegate a mission to the builders who will be there.'
-                  : 'Delega una misión a los builders que van a estar allá.'}
-              </span>
-              <span className="ml-auto text-sm font-semibold text-eth-blue-text">→</span>
-            </Link>
-
+            {/* The business offer used to be pitched here, at the bottom of a
+                section about a builder's prize. It now has its own section a
+                screen above, so repeating the same destination inside the
+                journey would be asking twice in the same breath. */}
             <div className="mt-4 flex flex-wrap gap-2">
               {[
                 ['shanhaiwoo.com', SHANHAIWOO.site],
