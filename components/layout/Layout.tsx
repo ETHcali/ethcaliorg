@@ -81,8 +81,37 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b border-line-hairline bg-surface-void/85 backdrop-blur">
         <div className="mx-auto flex h-nav max-w-page items-center gap-4 px-gutter">
-          <Link href="/" className="shrink-0 text-sm font-black tracking-tight text-content-primary">
-            ETH<span className="text-eth-blue-text">Cali</span>
+          {/* The mark, not a styled string.
+              The header carried the letters "ETHCali" set in Sarun Black, which
+              is not any of the three lockups BRAND.md defines. At a 60px nav the
+              horizontal lockup would put its ETH·CO CALI wordmark at about 8px
+              a line, under the 32px minimum the guide sets — and the guide's own
+              answer to that is the diamond glyph alone. So: the glyph.
+
+              A plain <img> rather than next/image. next/image cannot optimise an
+              SVG and will only serve one behind `dangerouslyAllowSVG`; a vector
+              needs neither. Width and height are set so the header does not
+              shift while it loads. */}
+          {/* The glyph is 25px wide, which is not a tap target. The padding
+              takes the hit area to the token's 48px minimum and the negative
+              margin pulls it back so the mark still sits optically on the
+              gutter rather than indented by its own padding. */}
+          <Link
+            href="/"
+            aria-label="ETH Cali"
+            className="-ml-3 flex min-h-tap shrink-0 items-center rounded-chip px-3 focus-visible:outline-offset-2"
+          >
+            <img
+              src="/branding/favicon.svg"
+              alt=""
+              width={25}
+              height={40}
+              // 40 rather than the 32px floor. The filigree is fine ironwork and
+              // at 32 the frame and the octahedron inside it silt up into one
+              // blue smudge; at 40 both read. The 60px bar has the room.
+              className="h-10 w-auto"
+              aria-hidden
+            />
           </Link>
 
           {/* Desktop. The nav has outgrown a phone header, so below lg it moves
