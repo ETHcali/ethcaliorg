@@ -86,10 +86,16 @@ in the repo explains why the site broke.
 `/builders-tour` is a fixed-date campaign page that paid Facebook traffic lands on, with
 `/builders-tour/frontier-cities-quest` as its business-facing counterpart. Both read `content/`, not the CMS.
 
-- **The location is the city and only the city.** `TOUR.place` is Cali, Colombia, and
-  the hero fact, the Luma note and the `#cali` section all say exactly that. No venue is
-  named and no map is pinned; the address goes out with the Luma confirmation. If you
-  reintroduce a venue, reintroduce it in all three places or none.
+- **Where is answered twice, deliberately, and each answer is in all its places.**
+  `TOUR.venue` is the Auditorio SIDOC at Universidad Icesi — named in the hero fact, in
+  the Luma note and in the `#venue` section, because a reader should not have to register
+  to find out where the event is. `TOUR.place` is Cali, Colombia, and carries the `#cali`
+  section, because someone weighing a flight is choosing a city, not a room. Change one
+  and change every place it appears; the failure mode this rule exists for is three
+  different spellings of "where", not naming the venue.
+- **`TOUR.venue.query` is the only place the location is written.** The Maps link and the
+  embedded map are both derived from it, so a pin and a link cannot drift apart. There is
+  no lat/lng and no separate `mapsUrl` — do not add one back.
 - **Frontier Cities is the name of the offer; a quest is the unit of work inside it.**
   Hence `/builders-tour/frontier-cities-quest` as the URL and `nav.frontier` as the label, but
   `content/quest.ts`, `QuestForm` and the `quest_requests` table unchanged.

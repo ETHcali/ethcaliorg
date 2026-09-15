@@ -59,8 +59,8 @@ export const TOUR = {
       url: 'https://luma.com/khnpkikn',
       label: { es: 'Regístrate al evento en Cali', en: 'Register for the Cali event' } as Bilingual,
       note: {
-        es: 'Presencial en Cali. Cupos limitados.',
-        en: 'In person in Cali. Limited places.',
+        es: 'Presencial en el Auditorio SIDOC, Universidad Icesi. Cupos limitados.',
+        en: 'In person at the SIDOC Auditorium, Universidad Icesi. Limited places.',
       } as Bilingual,
     },
     devfolio: {
@@ -78,17 +78,53 @@ export const TOUR = {
   },
 
   /**
-   * The city, and only the city.
+   * The city, for the reader deciding whether to travel at all.
    *
-   * The page used to name a specific venue and pin it on a map. It now says
-   * Cali, Colombia everywhere — in the hero fact, in the Luma note and in the
-   * section below — so there is one answer to "where", and it is the same one
-   * in all three places.
+   * Kept separate from `venue` on purpose: these answer two different questions.
+   * A builder weighing a flight is choosing a city; a builder who has already
+   * decided needs the room. `#cali` is the first, `#venue` is the second.
    */
   place: {
     label: { es: 'Cali, Colombia', en: 'Cali, Colombia' } as Bilingual,
   },
+
+  /**
+   * The room, for the reader who has already decided.
+   *
+   * Icesi gives us the Auditorio SIDOC, so the page names it. The rule that
+   * governs this is all-or-nothing: a venue is named in the hero fact, the Luma
+   * note and the `#venue` section, or in none of them. Three spellings of
+   * "where" is the failure mode, not naming one.
+   *
+   * `query` is the single source of truth for the location. The Maps link and
+   * the embedded map are both built from it, so the pin and the link cannot
+   * drift apart the way a separate mapsUrl and lat/lng pair can. It is the
+   * address as Google itself resolves it.
+   */
+  venue: {
+    name: { es: 'Auditorio SIDOC — Universidad Icesi', en: 'SIDOC Auditorium — Universidad Icesi' } as Bilingual,
+    /** The street line only — the city sits under it, from `place.label`. */
+    address: {
+      es: 'Cl. 18 #122-135, barrio Pance',
+      en: 'Cl. 18 #122-135, Barrio Pance',
+    } as Bilingual,
+    query: 'ICESI University Cl. 18 #122-135, Barrio Pance, Cali, Valle del Cauca, Colombia',
+    siteUrl: 'https://www.icesi.edu.co',
+  },
 } as const;
+
+/** The public Maps link and the embeddable map, from the one address above. */
+export const venueMapsUrl = () =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(TOUR.venue.query)}`;
+
+/**
+ * Keyless embed. The Maps Embed API proper needs a key; this legacy form does
+ * not, which matters for a page paid traffic lands on — a rotated key would
+ * silently blank the map. It must be maps.google.com: the www.google.com
+ * spelling of the same query returns an empty white frame.
+ */
+export const venueEmbedUrl = (locale: string) =>
+  `https://maps.google.com/maps?q=${encodeURIComponent(TOUR.venue.query)}&z=16&hl=${locale}&output=embed`;
 
 // ── the city ────────────────────────────────────────────────────────────────
 
@@ -469,7 +505,7 @@ export interface Sponsor {
    * same size tells a reader nothing and undersells the one paying for the
    * prizes.
    */
-  tier: 'title' | 'partner';
+  tier: 'title' | 'partner' | 'venue';
   /**
    * The contribution in one line. Every one of these is stated elsewhere on the
    * page — the prize cards, the Devcon section, the schedule — so the wall
@@ -567,6 +603,24 @@ export const SPONSORS: readonly Sponsor[] = [
     proof: '#schedule',
     url: 'https://www.ekinoxis.xyz',
     logo: '/tour/ekinoxis.png',
+  },
+  {
+    name: 'Universidad Icesi',
+    role: { es: 'Sede', en: 'Venue' },
+    tier: 'venue',
+    gives: {
+      es: 'La sede: el Auditorio SIDOC, en el campus de Icesi en Pance',
+      en: "The venue: the SIDOC Auditorium, on Icesi's campus in Pance",
+    },
+    proof: '#venue',
+    url: 'https://www.icesi.edu.co',
+    // Icesi's mark is rgb(83 83 238), within a few points of --eth-blue-lift.
+    // On our dark ground it reads as our own brand blue rather than theirs, and
+    // it is not a neutral wordmark that can reverse to white. So it keeps its
+    // own colour on --surface-paper, the way Devcon's does.
+    logo: '/universities/universidad_icesi.png',
+    plate: true,
+    wide: true,
   },
 ];
 

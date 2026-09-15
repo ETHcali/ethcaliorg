@@ -18,6 +18,8 @@ import {
   SPONSORS,
   CALI,
   SHANHAIWOO,
+  venueMapsUrl,
+  venueEmbedUrl,
   type Bilingual,
   type Slot,
 } from '../content/builders-tour';
@@ -62,6 +64,8 @@ const COPY = {
     en: 'For businesses — delegate a mission in Asia.',
   },
   sponsors: { es: 'Quiénes lo hacen posible', en: 'Who makes it possible' },
+  venue: { es: 'La sede', en: 'The venue' },
+  openMaps: { es: 'Abrir en Google Maps', en: 'Open in Google Maps' },
   prizeLabel: { es: 'Premio', en: 'Prize' },
   seePost: { es: 'Ver el anuncio', en: 'See the announcement' },
   ctaFinal: { es: '¿Listo?', en: 'Ready?' },
@@ -227,8 +231,16 @@ export default function BuildersTour({ locale }: Props) {
               <dt className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
                 {t(COPY.where)}
               </dt>
+              {/* The room, then the city under it. The reader who has decided
+                  needs the first; the one still deciding needs the second. */}
               <dd className="mt-1 text-base font-bold text-content-primary">
-                <a href="#cali" className="hover:text-eth-blue-text">
+                <a href="#venue" className="hover:text-eth-blue-text">
+                  {t(TOUR.venue.name)}
+                </a>
+                <a
+                  href="#cali"
+                  className="mt-0.5 block text-sm font-normal text-content-muted hover:text-eth-blue-text"
+                >
                   {t(TOUR.place.label)}
                 </a>
               </dd>
@@ -425,6 +437,54 @@ export default function BuildersTour({ locale }: Props) {
             </li>
           ))}
         </ul>
+
+        {/* The venue gets its own full-width row rather than a quarter of the
+            partner grid. It is the one contribution a reader acts on — they
+            have to physically go there — so the tile carries the address and
+            the anchor to the map rather than only a mark. */}
+        {SPONSORS.filter((s) => s.tier === 'venue').map((s) => (
+          <div
+            key={s.name}
+            className="mt-3 flex flex-col items-center gap-4 rounded-card border border-line-hairline bg-surface-slab p-6 text-center"
+          >
+            <span className="text-[10px] font-bold uppercase tracking-widest text-eth-blue-text">
+              {t(s.role)}
+            </span>
+
+            <a
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`flex h-14 items-center justify-center rounded-chip px-5 transition-opacity hover:opacity-80 ${
+                s.plate ? 'bg-surface-paper' : ''
+              }`}
+            >
+              {s.logo && (
+                <Image
+                  src={s.logo}
+                  alt={s.name}
+                  width={260}
+                  height={99}
+                  sizes="260px"
+                  className="h-auto max-h-10 w-auto max-w-[260px] object-contain"
+                />
+              )}
+            </a>
+
+            <span className="max-w-prose text-sm leading-relaxed text-content-muted">
+              {t(s.gives)}
+            </span>
+
+            {s.proof && (
+              <a
+                href={s.proof}
+                className="text-[11px] font-semibold text-eth-blue-text hover:underline"
+              >
+                {en ? 'see it' : 'ver'} →
+              </a>
+            )}
+          </div>
+        ))}
 
       </Section>
 
@@ -853,14 +913,55 @@ export default function BuildersTour({ locale }: Props) {
 
       </Section>
 
+      {/* ── venue ────────────────────────────────────────────────────────── */}
+      {/* Icesi gives us the Auditorio SIDOC, so the page names it. This pairs
+          with the city section below rather than replacing it: this one answers
+          "where exactly", the next answers "is this city worth the flight". The
+          Luma confirmation still carries the address, but a reader deciding
+          whether to come should not have to register to find out where it is. */}
+      <Section id="venue" eyebrow={t(COPY.where)} title={t(COPY.venue)}>
+        <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+          <div>
+            <h3 className="text-base font-bold text-content-primary">{t(TOUR.venue.name)}</h3>
+            <p className="mt-1 text-sm text-content-muted">{t(TOUR.venue.address)}</p>
+            <p className="text-sm text-content-muted">{t(TOUR.place.label)}</p>
+            <div className="mt-4 flex flex-col gap-2">
+              <a
+                href={venueMapsUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[36px] items-center text-sm text-eth-blue-text hover:underline"
+              >
+                {t(COPY.openMaps)} →
+              </a>
+              <a
+                href={TOUR.venue.siteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[36px] items-center text-sm text-eth-blue-text hover:underline"
+              >
+                icesi.edu.co →
+              </a>
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-card border border-line-hairline">
+            <iframe
+              src={venueEmbedUrl(locale)}
+              title={t(TOUR.venue.name)}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="h-[340px] w-full border-0"
+            />
+          </div>
+        </div>
+      </Section>
+
       {/* ── the city ─────────────────────────────────────────────────────── */}
-      {/* This was a venue block: a named building, a Google Maps pin and the
-          institutional lockup of the place that owns it. A builder deciding
-          whether to travel is choosing a city, not a room, and the room told
-          them nothing about whether the trip is worth it. So the section shows
-          Cali — the valley from the western hills, Cristo Rey over it, and the
-          cat on the river bank. The exact address goes out with the Luma
-          confirmation, where it is actually useful. */}
+      {/* The venue above answers "which room". This answers the question a
+          builder weighing a flight is actually asking, which the room never
+          could: the valley from the western hills, Cristo Rey over it, and the
+          cat on the river bank. */}
       <Section id="cali" eyebrow={t(COPY.where)} title={t(TOUR.place.label)}>
         <p className="max-w-prose text-base leading-relaxed text-content-secondary">
           {t(CALI.blurb)}
