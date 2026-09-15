@@ -79,3 +79,18 @@ export const SAME_AS = [
   'https://x.com/ethcali_org',
   'https://github.com/ETHcali',
 ] as const;
+
+/**
+ * The point at which appending the brand costs more than it adds.
+ *
+ * " | ETH Cali" is 11 characters. Google renders roughly 60 before it truncates,
+ * and 14 event pages were losing the end of their own name to a suffix that says
+ * the same thing on every page of the site. Past this length the title stands on
+ * its own.
+ */
+export const BRAND_SUFFIX_LIMIT = 52;
+
+export function pageTitle(title: string): string {
+  if (title === BRAND) return title;
+  return title.length > BRAND_SUFFIX_LIMIT ? title : `${title} | ${BRAND}`;
+}

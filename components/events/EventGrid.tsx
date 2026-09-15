@@ -14,9 +14,12 @@ import EventCard from './EventCard';
 export default function EventGrid({
   events,
   locale,
+  headingLevel,
 }: {
   events: EventRecord[];
   locale: Locale;
+  /** Forwarded to each card. See EventCard's own note on why this exists. */
+  headingLevel?: 2 | 3;
 }) {
   const t = translator(locale);
   const [year, setYear] = useState<string>('all');
@@ -56,7 +59,7 @@ export default function EventGrid({
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((event) => (
-          <EventCard key={event.id} event={event} locale={locale} />
+          <EventCard key={event.id} event={event} locale={locale} headingLevel={headingLevel} />
         ))}
       </div>
     </>

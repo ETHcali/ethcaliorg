@@ -8,7 +8,8 @@ import type { EventDetail } from '../../types/content';
 import { localized } from '../../types/content';
 import { posterSrc, DETAIL_SIZES } from '../../lib/images';
 import { asLocale, formatDateRange, translator, type Locale } from '../../lib/i18n';
-import { eventJsonLd } from '../../lib/jsonld';
+import { eventJsonLd, breadcrumbJsonLd } from '../../lib/jsonld';
+import { eventDescription } from '../../lib/descriptions';
 
 interface Props {
   event: EventDetail;
@@ -69,16 +70,21 @@ export default function EventPage({ event, locale }: Props) {
     <Layout>
       <Seo
         title={name}
-        description={
-          summary ??
-          `${t(`kind.${event.kind}`)} · ${formatDateRange(event.starts_on, event.ends_on, locale)}${
-            event.city ? ` · ${event.city}` : ''
-          }`
-        }
+        description={eventDescription(event, name, summary, locale)}
         path={`/events/${event.slug}`}
         image={event.poster_path}
         type="article"
-        jsonLd={eventJsonLd(event, locale)}
+        jsonLd={[
+          eventJsonLd(event, locale),
+          breadcrumbJsonLd(
+            [
+              { name: 'ETH Cali', route: '/' },
+              { name: t('events.title'), route: '/events/local' },
+              { name, route: `/events/${event.slug}` },
+            ],
+            locale
+          ),
+        ]}
       />
 
       <article className="mx-auto max-w-page px-gutter py-10">
@@ -138,7 +144,7 @@ export default function EventPage({ event, locale }: Props) {
           {poster && (
             <Image
               src={poster}
-              alt=""
+              alt={name}
               width={640}
               height={640}
               sizes={DETAIL_SIZES}

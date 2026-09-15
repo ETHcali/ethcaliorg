@@ -61,7 +61,7 @@ export default function About({ team, locale }: Props) {
                       <div className="relative mb-3 aspect-square overflow-hidden rounded-chip bg-surface-inset">
                         <Image
                           src={m.image_path}
-                          alt=""
+                          alt={m.name}
                           fill
                           sizes="(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw"
                           className="object-cover"

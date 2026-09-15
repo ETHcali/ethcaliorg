@@ -24,6 +24,8 @@ import {
   type Slot,
 } from '../content/builders-tour';
 import { FRONTIER, QUEST, QUEST_CITIES, QUEST_COPY } from '../content/quest';
+import { tourEventJsonLd, breadcrumbJsonLd } from '../lib/jsonld';
+import { clamp } from '../lib/descriptions';
 import { asLocale, formatDate, formatDateRange, type Locale } from '../lib/i18n';
 import { APP } from '../lib/links';
 
@@ -189,13 +191,37 @@ export default function BuildersTour({ locale }: Props) {
     <Layout>
       <Seo
         title={TOUR.title}
-        description={t(TOUR.tagline)}
+        // The tagline runs to 220 characters, and a result page renders about
+        // 160. Clamped on a word boundary rather than published knowing the
+        // last clause will be cut mid-word.
+        description={clamp(t(TOUR.tagline))}
         path="/builders-tour"
         // The share card is the tour's own poster, not the mission artwork.
         // This is what appears in a Facebook ad and a WhatsApp forward, so it
         // should say Ethereum Builders Tour rather than show a dragon.
         image="/tour/eag-builders-tour.jpg"
         type="article"
+        jsonLd={[
+          tourEventJsonLd(
+            {
+              title: TOUR.title,
+              startsOn: TOUR.startsOn,
+              endsOn: TOUR.endsOn,
+              venue: { name: t(TOUR.venue.name), address: t(TOUR.venue.address) },
+              registrationUrl: TOUR.registration.luma.url,
+            },
+            clamp(t(TOUR.tagline)),
+            '/tour/builders-tour-colombia.jpg',
+            locale
+          ),
+          breadcrumbJsonLd(
+            [
+              { name: 'ETH Cali', route: '/' },
+              { name: TOUR.title, route: '/builders-tour' },
+            ],
+            locale
+          ),
+        ]}
       />
 
       {/* ── hero ─────────────────────────────────────────────────────────── */}

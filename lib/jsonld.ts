@@ -116,3 +116,77 @@ export function eventJsonLd(event: EventDetail, locale: string): Record<string, 
       : {}),
   };
 }
+
+/**
+ * Where this page sits, for the breadcrumb trail Google renders in place of a
+ * raw URL. Every item needs an absolute URL or the trail is dropped silently.
+ */
+export function breadcrumbJsonLd(
+  trail: readonly { name: string; route: string }[],
+  locale: string
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: trail.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: absoluteUrl(item.route, locale),
+    })),
+  };
+}
+
+/**
+ * The Builders Tour, as an Event.
+ *
+ * The one genuinely upcoming event on the site, and the only page with a date, a
+ * named venue and a registration URL — which is exactly the set of fields that
+ * turns a search result into a dated event card. It is built from `content/`
+ * rather than the CMS because the campaign is.
+ */
+export function tourEventJsonLd(
+  tour: {
+    title: string;
+    startsOn: string;
+    endsOn: string;
+    venue: { name: string; address: string };
+    registrationUrl: string;
+  },
+  description: string,
+  image: string,
+  locale: string
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Hackathon',
+    name: tour.title,
+    url: absoluteUrl('/builders-tour', locale),
+    startDate: tour.startsOn,
+    endDate: tour.endsOn,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    description,
+    image: `${SITE}${image}`,
+    location: {
+      '@type': 'Place',
+      name: tour.venue.name,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: tour.venue.address,
+        addressLocality: 'Cali',
+        addressRegion: 'Valle del Cauca',
+        addressCountry: 'CO',
+      },
+    },
+    organizer: { '@type': 'Organization', '@id': ORG_ID, name: BRAND, url: SITE },
+    offers: {
+      '@type': 'Offer',
+      url: tour.registrationUrl,
+      price: '0',
+      priceCurrency: 'COP',
+      availability: 'https://schema.org/InStock',
+      validFrom: '2026-08-01',
+    },
+  };
+}

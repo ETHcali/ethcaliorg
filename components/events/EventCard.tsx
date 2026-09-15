@@ -9,7 +9,21 @@ import { posterSrc, GRID_SIZES } from '../../lib/images';
  * One event in a grid. The whole card is the link — this is the thing the old
  * site did not have: an event you can open, share, and land on directly.
  */
-export default function EventCard({ event, locale }: { event: EventRecord; locale: Locale }) {
+export default function EventCard({
+  event,
+  locale,
+  headingLevel = 3,
+}: {
+  event: EventRecord;
+  locale: Locale;
+  /**
+   * The card title's level. On a listing page the grid is the only thing under
+   * the h1, so the cards are h2; on the home page they sit under a Section's own
+   * h2 and stay h3. Hardcoding 3 made every listing page skip h1 → h3.
+   */
+  headingLevel?: 2 | 3;
+}) {
+  const Heading = (headingLevel === 2 ? 'h2' : 'h3') as 'h2' | 'h3';
   const t = translator(locale);
   const name = localized(event as unknown as Record<string, unknown>, 'name', locale) ?? event.slug;
   const poster = posterSrc(event.poster_path);
@@ -29,7 +43,10 @@ export default function EventCard({ event, locale }: { event: EventRecord; local
         {poster ? (
           <Image
             src={poster}
-            alt=""
+            // The poster is the event's own artwork, not decoration — it is the
+            // thing people recognise and the only way these turn up in image
+            // search. It was alt="" across 36 cards on the events list alone.
+            alt={name}
             fill
             sizes={GRID_SIZES}
             className="object-cover transition-transform duration-slow group-hover:scale-[1.03]"
@@ -51,7 +68,7 @@ export default function EventCard({ event, locale }: { event: EventRecord; local
           <span className="text-content-faint">{t(`role.${event.role}`)}</span>
         </div>
 
-        <h3 className="text-base font-bold leading-snug text-content-primary">{name}</h3>
+        <Heading className="text-base font-bold leading-snug text-content-primary">{name}</Heading>
 
         <p className="mono text-xs text-content-muted">
           {formatDateRange(event.starts_on, event.ends_on, locale)}

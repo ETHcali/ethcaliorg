@@ -33,7 +33,7 @@ export default function LocalEvents({ events, locale }: Props) {
         </p>
 
         <div className="mt-10">
-          <EventGrid events={events} locale={locale} />
+          <EventGrid events={events} locale={locale} headingLevel={2} />
         </div>
       </div>
     </Layout>

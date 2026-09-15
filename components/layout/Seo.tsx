@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { SITE, BRAND, LOCALES, DEFAULT_LOCALE, absoluteUrl } from '../../lib/seo';
+import { SITE, BRAND, LOCALES, DEFAULT_LOCALE, absoluteUrl, pageTitle } from '../../lib/seo';
+import { clamp } from '../../lib/descriptions';
 
 const FALLBACK_IMAGE = '/branding/Banner1200x400.png';
 
@@ -43,16 +44,38 @@ export default function Seo({
   const url = absoluteUrl(route, locale);
   const share = `${SITE}${image || FALLBACK_IMAGE}`;
 
-  // The home page's title is the brand, and "ETH Cali | ETH Cali" is what
-  // appending it unconditionally produced.
-  const full = title === BRAND ? title : `${title} | ${BRAND}`;
+  // Two things this rule fixes: "ETH Cali | ETH Cali" on the home page, whose
+  // title is already the brand, and 14 event pages whose own names were being
+  // truncated in results to make room for a suffix identical on every page.
+  const full = pageTitle(title);
 
   const blocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+
+  // Every page below the root gets a breadcrumb, not just the ones that pass a
+  // hand-built trail. 22 pages had no structured data at all, and for a one-level
+  // page the trail is fully derivable — root, then this page. A page that already
+  // supplies its own (an event, three levels deep) keeps it.
+  const hasCrumbs = blocks.some((b) => b['@type'] === 'BreadcrumbList');
+  const autoCrumbs =
+    route === '/' || hasCrumbs
+      ? null
+      : {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: BRAND, item: absoluteUrl('/', locale) },
+            { '@type': 'ListItem', position: 2, name: title, item: url },
+          ],
+        };
+
+  const allBlocks = autoCrumbs ? [...blocks, autoCrumbs] : blocks;
 
   return (
     <Head>
       <title>{full}</title>
-      <meta name="description" content={description} />
+      {/* Clamped here rather than at 20 call sites: a description longer than
+          a result page renders is silently truncated mid-word. */}
+      <meta name="description" content={clamp(description)} />
       <link rel="canonical" href={url} />
 
       {/* Tell search engines the two locales are the same page, or they read
@@ -65,7 +88,7 @@ export default function Seo({
       <meta property="og:type" content={type} />
       <meta property="og:site_name" content={BRAND} />
       <meta property="og:title" content={full} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={clamp(description)} />
       <meta property="og:image" content={share} />
       <meta property="og:image:alt" content={title} />
       {/* Only the fallback's dimensions are known here; an event poster is a
@@ -87,10 +110,10 @@ export default function Seo({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@ethcali_org" />
       <meta name="twitter:title" content={full} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:description" content={clamp(description)} />
       <meta name="twitter:image" content={share} />
 
-      {blocks.map((block, i) => (
+      {allBlocks.map((block, i) => (
         <script
           key={i}
           type="application/ld+json"

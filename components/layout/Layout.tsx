@@ -40,6 +40,19 @@ const NAV: readonly NavItem[] = [
   { href: '/dao', key: 'nav.dao' },
 ];
 
+/**
+ * Where to reach ETH Cali. The X handle and the Telegram group both existed
+ * already, inside `content/builders-tour.ts`, which meant they appeared on
+ * exactly one page of the site.
+ */
+const SOCIAL = [
+  { url: 'https://x.com/ethcali_org', label: '@ethcali_org' },
+  { url: 'https://t.me/+QfakRR2_LwxkNzM1', label: 'Telegram' },
+  { url: 'https://github.com/ETHcali', label: 'GitHub' },
+] as const;
+
+const CONTACT_EMAIL = 'hola@ethcali.org';
+
 const FOOTER_NAV = [
   [FRONTIER.path, 'nav.frontier'],
   ['/education', 'nav.education'],
@@ -164,8 +177,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             Fundación Innovación del Pacífico · Cali, Colombia
           </p>
 
+          {/* Both halves of the site, not just the secondary half.
+              The footer used to carry five links and the nav the other six, so
+              /education, /swag and /brand-guidelines were reachable from one
+              place on the whole site and every crawl path to them ran through
+              a single link. */}
           <nav className="mt-6 flex flex-wrap gap-x-5 gap-y-2" aria-label="Secundaria">
-            {FOOTER_NAV.map(([href, key]) => (
+            {[...NAV.map((i) => [i.href, i.key] as const), ...FOOTER_NAV].map(([href, key]) => (
               <Link
                 key={href}
                 href={href}
@@ -175,6 +193,28 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             ))}
           </nav>
+
+          {/* Where to actually reach us. Both of these existed only inside the
+              Builders Tour content file, so they appeared on one page. */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+            {SOCIAL.map((s) => (
+              <a
+                key={s.url}
+                href={s.url}
+                target="_blank"
+                rel="me noopener noreferrer"
+                className="text-sm text-content-muted transition-colors hover:text-content-primary"
+              >
+                {s.label}
+              </a>
+            ))}
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="text-sm text-content-muted transition-colors hover:text-content-primary"
+            >
+              {CONTACT_EMAIL}
+            </a>
+          </div>
 
           <p className="mt-6 text-xs text-content-faint">© {new Date().getFullYear()} ETH Cali</p>
         </div>

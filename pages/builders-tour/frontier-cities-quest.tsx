@@ -2,10 +2,12 @@ import type { GetStaticProps } from 'next';
 import Image from 'next/image';
 import Layout from '../../components/layout/Layout';
 import Seo from '../../components/layout/Seo';
+import { clamp } from '../../lib/descriptions';
+import { breadcrumbJsonLd } from '../../lib/jsonld';
 import { Section } from '../../components/layout/Page';
 import QuestForm from '../../components/quest/QuestForm';
 import { FRONTIER, QUEST, QUEST_CITIES, QUEST_COPY, QUEST_STEPS } from '../../content/quest';
-import { SHANHAIWOO, type Bilingual } from '../../content/builders-tour';
+import { TOUR, SHANHAIWOO, type Bilingual } from '../../content/builders-tour';
 import { asLocale, type Locale } from '../../lib/i18n';
 
 interface Props {
@@ -20,10 +22,18 @@ export default function FrontierCities({ locale }: Props) {
     <Layout>
       <Seo
         title={t(QUEST_COPY.seoTitle)}
-        description={t(QUEST_COPY.lead)}
+        description={clamp(t(QUEST_COPY.lead))}
         path={FRONTIER.path}
         image={SHANHAIWOO.poster}
         type="article"
+        jsonLd={breadcrumbJsonLd(
+          [
+            { name: 'ETH Cali', route: '/' },
+            { name: TOUR.title, route: '/builders-tour' },
+            { name: FRONTIER.name, route: FRONTIER.path },
+          ],
+          locale
+        )}
       />
 
       {/* ── hero ─────────────────────────────────────────────────────────── */}

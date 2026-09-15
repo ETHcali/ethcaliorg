@@ -34,7 +34,7 @@ export default function HackathonsIndex({ events, locale }: Props) {
 
         <div className="mt-10">
           {events.length ? (
-            <EventGrid events={events} locale={locale} />
+            <EventGrid events={events} locale={locale} headingLevel={2} />
           ) : (
             <p className="text-sm text-content-muted">{t('hackathons.empty')}</p>
           )}
