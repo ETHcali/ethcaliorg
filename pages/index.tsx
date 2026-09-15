@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
+import { organizationJsonLd } from '../lib/jsonld';
 import { Section } from '../components/layout/Page';
 import EventCard from '../components/events/EventCard';
 import { getEvents, getPartners, getVenues } from '../lib/content';
@@ -38,7 +39,10 @@ function LogoRow({
                   width={120}
                   height={48}
                   sizes="120px"
-                  className="max-h-12 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100"
+                  // Both dimensions auto, not just width: next/image warns on
+                  // every one of these logos otherwise, because constraining one
+                  // axis in CSS and leaving the other fixed distorts the mark.
+                  className="h-auto max-h-12 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100"
                 />
               ) : (
                 <span className="text-sm font-bold text-content-secondary">{item.name}</span>
@@ -96,6 +100,7 @@ export default function Home({ upcoming, past, partners, totals, locale }: Props
             : 'La comunidad Ethereum de Cali, Colombia. Meetups, workshops, hackathons y la gente que los construye.'
         }
         path="/"
+        jsonLd={organizationJsonLd(locale)}
       />
 
       {/* The one time-boxed thing on the site, above the fold until 20 September

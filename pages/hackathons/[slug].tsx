@@ -8,6 +8,7 @@ import type { EventDetail } from '../../types/content';
 import { localized } from '../../types/content';
 import { posterSrc, DETAIL_SIZES } from '../../lib/images';
 import { asLocale, formatDateRange, translator, type Locale } from '../../lib/i18n';
+import { eventJsonLd } from '../../lib/jsonld';
 
 interface Props {
   event: EventDetail;
@@ -83,6 +84,7 @@ export default function HackathonPage({ event, locale }: Props) {
         path={`/hackathons/${event.slug}`}
         image={event.poster_path}
         type="article"
+        jsonLd={eventJsonLd(event, locale)}
       />
 
       <article className="mx-auto max-w-page px-gutter py-10">

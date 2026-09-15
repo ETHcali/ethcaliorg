@@ -1,0 +1,10 @@
+# ethcali.org
+# Everything here is public. The only thing worth saying is where the sitemap is.
+
+User-agent: *
+Allow: /
+
+# Next.js build assets. Crawling them costs budget and indexes nothing.
+Disallow: /_next/static/chunks/
+
+Sitemap: https://www.ethcali.org/sitemap.xml

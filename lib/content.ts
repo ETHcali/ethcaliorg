@@ -1,5 +1,6 @@
 /**
- * Content queries. Every one of these runs at build time in getStaticProps.
+ * Content queries. Almost every one of these runs at build time in
+ * getStaticProps; `getSitemapEvents` is the exception and runs per request.
  *
  * These read the published view of the world: RLS hides drafts from the anon
  * key, so there is no `is_published` filter to forget here. Nothing in this file
@@ -110,4 +111,29 @@ export async function getPartners(): Promise<PartnerRecord[]> {
     .order('sort_order');
   if (error) throw new Error(`getPartners: ${error.message}`);
   return (data ?? []) as PartnerRecord[];
+}
+
+/** Slug, kind and mtime — everything the sitemap needs and nothing it does not. */
+export interface SitemapEvent {
+  slug: string;
+  kind: EventRecord['kind'];
+  updated_at: string;
+}
+
+/**
+ * Every published event, for the sitemap.
+ *
+ * `kind` comes back because the slug alone does not say which route the event
+ * lives at: hackathons and hacker houses are served from /hackathons/[slug] and
+ * everything else from /events/[slug]. Building the sitemap without it would
+ * list half the detail pages under a URL that 404s.
+ */
+export async function getSitemapEvents(): Promise<SitemapEvent[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('events')
+    .select('slug, kind, updated_at')
+    .order('updated_at', { ascending: false });
+  if (error) throw new Error(`getSitemapEvents: ${error.message}`);
+  return (data ?? []) as SitemapEvent[];
 }

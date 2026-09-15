@@ -12,6 +12,7 @@
  * and are left as written — renaming a sponsor's track in translation would
  * make it unsearchable against their own materials.
  */
+import { SITE } from '../lib/seo';
 
 export interface Bilingual {
   es: string;
@@ -586,7 +587,9 @@ export const SPONSORS: readonly Sponsor[] = [
       es: 'La organización en tierra y la comunidad que llega a la sala',
       en: 'The organising on the ground, and the community that fills the room',
     },
-    url: 'https://ethcali.org',
+    // SITE, not a literal: the apex 307s to www, and our own sponsor tile
+    // should not send a reader through a redirect to reach us.
+    url: SITE,
     // The reversed lockup. Logo_Nodo_CLO_ETH_CO-01 is dark navy artwork drawn
     // for a white ground and disappears on --surface-slab.
     logo: '/branding/ethcali-horizontal-light.png',
