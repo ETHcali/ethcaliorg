@@ -75,7 +75,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const other = locale === 'es' ? 'en' : 'es';
-  const current = router.asPath;
+  // Without the hash stripped this is a hydration mismatch: the server renders
+  // asPath without the fragment and the client renders it with, so landing on
+  // /builders-tour#venue logs a "Prop href did not match" error and React
+  // discards the server-rendered header. The fragment is a position on the page
+  // we are already on, and carries nothing across a language switch anyway.
+  const current = router.asPath.split('#')[0];
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -101,6 +106,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             aria-label="ETH Cali"
             className="-ml-3 flex min-h-tap shrink-0 items-center rounded-chip px-3 focus-visible:outline-offset-2"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element --
+                the rule is about raster LCP cost. This is a 12KB SVG that
+                next/image cannot optimise and will only serve behind
+                dangerouslyAllowSVG; the reasoning is on the Link above. */}
             <img
               src="/branding/favicon.svg"
               alt=""

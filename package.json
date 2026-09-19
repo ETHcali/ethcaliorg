@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "lint": "next lint",
+    "lint": "eslint .",
     "check": "tsx scripts/helpers.check.mts"
   },
   "dependencies": {
@@ -23,6 +23,8 @@
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
     "autoprefixer": "10.4.21",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.4",
     "postcss": "8.5.28",
     "tailwindcss": "3.4.17",
     "tsx": "^4.23.13",

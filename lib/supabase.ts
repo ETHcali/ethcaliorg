@@ -3,8 +3,13 @@
  *
  * Anon key only, and that is the whole security model: every content table
  * grants `anon` SELECT and nothing else, gated on `is_published`. There is no
- * service-role client in this repo on purpose — the site never writes. Editing
- * happens in the wallet app's /admin/content, behind an on-chain ADMIN_ROLE check.
+ * service-role client in this repo on purpose. Content editing happens in the
+ * wallet app's /admin/content, behind an on-chain ADMIN_ROLE check.
+ *
+ * One exception, and it is not a content table: `quest_requests` grants anon
+ * INSERT so the Frontier Cities form can submit, and grants no SELECT, so a
+ * visitor can leave a proposal and cannot read anyone else's — including their
+ * own. Nothing in this repo reads that table back.
  */
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
