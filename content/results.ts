@@ -29,13 +29,32 @@ export const RESULTS = {
   judgedOn: '2026-09-20',
 
   /**
-   * The EAG prize as the Builders Tour page published it: five winning projects,
-   * 200 USDT each, paid in USDT on Ethereum mainnet.
+   * What the room actually was, for the hero.
    *
-   * The HashKey Chain track (500 / 300 / 200 USDT) and the Devcon tickets are
-   * judged separately and have not been awarded yet. The page says that out
-   * loud rather than leaving them off: a builder who competed for them needs to
-   * know the result is still coming, not wonder whether it already passed them by.
+   * `hackers` is the count of people in the room over the two days, and it is
+   * deliberately NOT derived from `PROJECTS`. Adding up the team arrays gives 24,
+   * because that counts names credited on a Devfolio submission — not everyone
+   * who built, mentored or stayed up, and not the ones whose teammate filled the
+   * form in without listing them. The room was more than 25. Do not "fix" this
+   * against the team arrays; they are answering a different question.
+   *
+   * `hours` is the gap between the opening at 09:00 Saturday and the winner
+   * announcement at 17:30 Sunday, stated as the ceiling rather than the figure —
+   * "under 48 hours" is the claim, and it is true with room to spare.
+   */
+  hackers: 25,
+  hours: 48,
+
+  /**
+   * Two prize sets, judged separately, and the page must not conflate them.
+   *
+   * EAG picks five projects at 200 USDT each. HashKey Chain picks three more on
+   * its own track at 500 / 300 / 200 — eight places in total across the weekend,
+   * not five. Saying "five took a prize" undersells the room by three and tells
+   * the HashKey entrants their result already happened without them.
+   *
+   * The HashKey places and the Devcon tickets have not been awarded yet; the page
+   * holds them open rather than leaving them off.
    */
   prize: { each: 200, token: 'USDT', winners: 5 },
 } as const;
@@ -506,19 +525,22 @@ export const RESULTS_COPY = {
     es: 'Ganadores del EAG Global Buildathon en Cali',
     en: 'EAG Global Buildathon winners in Cali',
   } as Bilingual,
+  /**
+   * What happened, not who won.
+   *
+   * The lead used to open on "thirteen projects, five took a prize", which was
+   * wrong twice: it counted only the EAG places and left HashKey Chain's three
+   * out, and it made a ranking the headline of a weekend whose actual result was
+   * the room. The prizes have two sections of their own further down; this says
+   * what was built and with what.
+   */
   lead: {
     es:
-      'Trece proyectos se entregaron desde Cali al track de Colombia del EAG Global Buildathon. ' +
-      'Cinco se llevaron premio. Están todos aquí, porque construir dos días y entregar algo que ' +
-      'corre ya es un resultado.',
+      'Más de 25 hackers y 13 proyectos en menos de 48 horas, construyendo aplicaciones de frontera ' +
+      'con Ethereum, inteligencia artificial, smart devices y software de código abierto.',
     en:
-      'Thirteen projects were submitted from Cali to the Colombia track of the EAG Global Buildathon. ' +
-      'Five took a prize. All thirteen are here, because building for two days and shipping something ' +
-      'that runs is already a result.',
-  } as Bilingual,
-  prizeNote: {
-    es: 'Cada proyecto ganador se lleva 200 USDT del premio de EAG, pagados sobre Ethereum mainnet.',
-    en: 'Each winning project takes 200 USDT from the EAG prize, paid on Ethereum mainnet.',
+      'More than 25 hackers and 13 projects in under 48 hours, building frontier applications with ' +
+      'Ethereum, artificial intelligence, smart devices and open-source software.',
   } as Bilingual,
   // ── the HashKey Chain track ──────────────────────────────────────────────
   hskTitle: { es: 'El track de HashKey Chain', en: 'The HashKey Chain track' } as Bilingual,
@@ -538,12 +560,6 @@ export const RESULTS_COPY = {
   } as Bilingual,
   /** In the empty slot. Short, because it is repeated three times. */
   hskAwaiting: { es: 'Por anunciar', en: 'To be announced' } as Bilingual,
-  /** Follows the EAG prize line in the hero, so the number up there does not
-   *  read as the whole of the money. */
-  hskHeroLink: {
-    es: 'El track de HashKey Chain reparte otros 1.000 USDT y está por anunciarse →',
-    en: 'The HashKey Chain track carries another 1,000 USDT and is still to be announced →',
-  } as Bilingual,
   hskEntrants: {
     es: 'Compitieron en este track',
     en: 'Competed on this track',
@@ -564,10 +580,16 @@ export const RESULTS_COPY = {
       'Devcon programme, valued at 499 USD each. Not yet allocated; they will be published here when they are.',
   } as Bilingual,
   placeLabel: { es: 'Puesto', en: 'Place' } as Bilingual,
-  winnersTitle: { es: 'El podio', en: 'The podium' } as Bilingual,
+
+  /**
+   * "The podium" said podium of what, and the answer was five of eight places.
+   * These are EAG's, and the section says so — HashKey Chain's three are a
+   * section of their own and were never in the running for this heading.
+   */
+  winnersTitle: { es: 'Los ganadores de EAG', en: "EAG's winners" } as Bilingual,
   podiumLead: {
-    es: 'Los cinco proyectos premiados, en el orden en que se anunciaron.',
-    en: 'The five projects that took a prize, in the order they were announced.',
+    es: 'Cinco proyectos, 200 USDT cada uno, pagados sobre Ethereum mainnet.',
+    en: 'Five projects, 200 USDT each, paid on Ethereum mainnet.',
   } as Bilingual,
   othersTitle: { es: 'Todo lo que se entregó', en: 'Everything that shipped' } as Bilingual,
   othersLead: {
@@ -576,9 +598,11 @@ export const RESULTS_COPY = {
   } as Bilingual,
   teamLabel: { es: 'Equipo', en: 'Team' } as Bilingual,
   tracksLabel: { es: 'Tracks', en: 'Tracks' } as Bilingual,
-  projectsLabel: { es: 'Proyectos entregados', en: 'Projects submitted' } as Bilingual,
-  winnersLabel: { es: 'Ganadores', en: 'Winners' } as Bilingual,
-  prizeLabel: { es: 'Premio por ganador', en: 'Prize per winner' } as Bilingual,
+
+  // ── the hero stats: what the room was, not who won ───────────────────────
+  hackersLabel: { es: 'Hackers', en: 'Hackers' } as Bilingual,
+  projectsLabel: { es: 'Proyectos', en: 'Projects' } as Bilingual,
+  hoursLabel: { es: 'En', en: 'In' } as Bilingual,
   onDevfolio: { es: 'Ver en Devfolio', en: 'View on Devfolio' } as Bilingual,
   code: { es: 'Código', en: 'Code' } as Bilingual,
   demo: { es: 'Demo', en: 'Demo' } as Bilingual,

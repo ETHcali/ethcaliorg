@@ -48,9 +48,11 @@ const COPY = {
     en: 'Two separate registrations, and you need both: one gets you the seat, the other is where you submit the project.',
   },
   /** Sits beside the results link in the hero, so the link says what it is. */
+  // The room, matching the hero of the page it links to. "5 premiados" was
+  // here too, and it counted one of the two prize sets as though it were both.
   resultsNote: {
-    es: '· 13 proyectos entregados, 5 premiados',
-    en: '· 13 projects shipped, 5 with prizes',
+    es: '· +25 hackers, 13 proyectos, menos de 48 horas',
+    en: '· 25+ hackers, 13 projects, under 48 hours',
   },
   prizes: { es: 'Premios', en: 'Prizes' },
   prizesLead: {

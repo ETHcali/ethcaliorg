@@ -296,29 +296,27 @@ export default function Winners({ locale }: Props) {
             {formatDate(RESULTS.judgedOn, locale)} · {TOUR.venue.name[locale]}
           </p>
 
+          {/* The room, not the ranking. These three used to be projects, winners
+              and prize-per-winner, which made the hero a scoreboard for one of
+              the two prize sets — and the wrong total at that. Who won is two
+              sections of its own below; this is what the weekend was. */}
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <Stat label={t(RESULTS_COPY.hackersLabel)} value={`+${RESULTS.hackers}`} />
             <Stat label={t(RESULTS_COPY.projectsLabel)} value={String(PROJECTS.length)} />
-            <Stat label={t(RESULTS_COPY.winnersLabel)} value={String(RESULTS.prize.winners)} />
-            <Stat
-              label={t(RESULTS_COPY.prizeLabel)}
-              value={`${RESULTS.prize.each} ${RESULTS.prize.token}`}
-            />
+            <Stat label={t(RESULTS_COPY.hoursLabel)} value={`< ${RESULTS.hours} h`} />
           </div>
-
-          {/* The stat above is the EAG prize only. Without this the hero reads
-              as though 5 × 200 USDT were the whole of it, and the 1,000 USDT
-              still open on the HashKey Chain track is three sections down where
-              nobody arriving from a shared link will scroll to it. */}
-          <p className="mt-4 max-w-prose text-sm text-content-muted">
-            {t(RESULTS_COPY.prizeNote)}{' '}
-            <a href="#hashkey" className="text-eth-blue-text hover:underline">
-              {t(RESULTS_COPY.hskHeroLink)}
-            </a>
-          </p>
         </div>
       </header>
 
-      <Section id="podium" title={t(RESULTS_COPY.winnersTitle)} lead={t(RESULTS_COPY.podiumLead)}>
+      {/* EAG's five. The eyebrow names the sponsor for the same reason the
+          HashKey section does: two prize sets were judged in this room and a
+          heading that says only "the winners" claims both. */}
+      <Section
+        id="podium"
+        eyebrow="EAG"
+        title={t(RESULTS_COPY.winnersTitle)}
+        lead={t(RESULTS_COPY.podiumLead)}
+      >
         <div className="grid gap-6">
           {WINNERS.map((project, i) => (
             <WinnerCard key={project.slug} project={project} t={t} flip={i % 2 === 1} />
