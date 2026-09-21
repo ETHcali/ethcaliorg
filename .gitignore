@@ -12,3 +12,7 @@ admin/
 *.xlsx
 .vercel
 .env*
+
+# Built by scripts/brand-kit.mts before every dev and build, from the file list
+# in content/brand.ts. A ZIP in git is a snapshot of a folder that keeps moving.
+public/brand-kit/

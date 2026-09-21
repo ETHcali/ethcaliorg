@@ -4,12 +4,13 @@
   "private": true,
   "description": "ethcali.org — the ETH Cali community site",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run brand-kit && next dev",
+    "build": "npm run brand-kit && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "check": "tsx scripts/helpers.check.mts"
+    "check": "tsx scripts/helpers.check.mts",
+    "brand-kit": "tsx scripts/brand-kit.mts"
   },
   "dependencies": {
     "@ethcali/design-tokens": "github:ETHcali/design-tokens#v1",

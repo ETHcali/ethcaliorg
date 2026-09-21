@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { asLocale, translator } from '../../lib/i18n';
 import NavEntry, { type NavItem } from './Nav';
+import SocialIcon, { type SocialName } from './SocialIcon';
 import { FRONTIER } from '../../content/quest';
+import { RESULTS } from '../../content/results';
 
 /**
  * Top-level entries carry their own page; the dropdown children are the ways of
@@ -11,10 +13,24 @@ import { FRONTIER } from '../../content/quest';
  * that only opens a menu is a dead end for anyone who expected it to be one.
  */
 const NAV: readonly NavItem[] = [
-  // Time-boxed campaign entry. Paid traffic lands on /builders-tour directly,
-  // but organic visitors have to be able to find it too, so it leads the nav
-  // and is the one thing marked live until 20 September.
-  { href: '/builders-tour', key: 'nav.tour', live: true },
+  // The campaign entry. Paid traffic lands on /builders-tour directly, but
+  // organic visitors have to be able to find it too, so it still leads the nav.
+  //
+  // No longer `live`. That dot is `signal-confirmed`, and BRAND.md is explicit
+  // that a signal colour means something happened rather than that something is
+  // worth looking at — the weekend of 19–20 September is over, so a green dot
+  // beside it now says something untrue. The results took its place as the
+  // reason to click, and they are the first child.
+  {
+    href: '/builders-tour',
+    key: 'nav.tour',
+    matchPrefix: '/builders-tour',
+    children: [
+      { href: RESULTS.path, key: 'nav.winners' },
+      { href: '/builders-tour', key: 'nav.tour' },
+      { href: FRONTIER.path, key: 'nav.frontier' },
+    ],
+  },
   {
     // Points at the local list, not a hub. /events used to be a page whose only
     // content was two cards linking to these same two pages — the dropdown does
@@ -40,20 +56,44 @@ const NAV: readonly NavItem[] = [
   { href: '/dao', key: 'nav.dao' },
 ];
 
-/**
- * Where to reach ETH Cali. The X handle and the Telegram group both existed
- * already, inside `content/builders-tour.ts`, which meant they appeared on
- * exactly one page of the site.
- */
-const SOCIAL = [
-  { url: 'https://x.com/ethcali_org', label: '@ethcali_org' },
-  { url: 'https://t.me/+QfakRR2_LwxkNzM1', label: 'Telegram' },
-  { url: 'https://github.com/ETHcali', label: 'GitHub' },
-] as const;
-
 const CONTACT_EMAIL = 'hola@ethcali.org';
 
+/**
+ * Where to reach ETH Cali — all of it, on every page.
+ *
+ * The footer used to carry three of these, and two of them were wrong for the
+ * job: the Telegram link was the Builders Tour campaign group rather than the
+ * community channel, and Instagram, LinkedIn and Discord were not on the site
+ * at all despite being where most of the room actually is.
+ *
+ * `label` is the account, not the network. A reader checking they are about to
+ * follow the right ETH Cali is better served by `@ethcali.eth` than by
+ * "Instagram", and the icon already says which network it is.
+ *
+ * Keep this in step with `SAME_AS` in `lib/seo.ts`: that is the same list told
+ * to search engines, and a profile in one but not the other is a profile we are
+ * claiming in exactly one of the two places it matters.
+ */
+const SOCIAL: readonly { name: SocialName; url: string; label: string }[] = [
+  { name: 'x', url: 'https://x.com/ethcali_org', label: '@ethcali_org' },
+  { name: 'instagram', url: 'https://www.instagram.com/ethcali.eth/', label: '@ethcali.eth' },
+  // The company page as the public sees it. Two things were wrong with the URL
+  // we were given: it was the /admin/dashboard view, which only an
+  // administrator can open, and the numeric company id behind it (93608244)
+  // also 302s a logged-out visitor to a login wall. The vanity slug is the one
+  // spelling that serves the page to someone who is not signed in — checked,
+  // not assumed.
+  { name: 'linkedin', url: 'https://www.linkedin.com/company/eth-cali/', label: 'LinkedIn' },
+  { name: 'discord', url: 'https://discord.gg/269Qpf3rb2', label: 'Discord' },
+  // The community channel. The Builders Tour group stays on the tour page,
+  // where it is scoped to that campaign.
+  { name: 'telegram', url: 'https://t.me/ethcali', label: 'Telegram' },
+  { name: 'github', url: 'https://github.com/ETHcali', label: 'GitHub' },
+  { name: 'email', url: `mailto:${CONTACT_EMAIL}`, label: CONTACT_EMAIL },
+];
+
 const FOOTER_NAV = [
+  [RESULTS.path, 'nav.winners'],
   [FRONTIER.path, 'nav.frontier'],
   ['/education', 'nav.education'],
   ['/swag', 'nav.swag'],
@@ -232,27 +272,28 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             ))}
           </nav>
 
-          {/* Where to actually reach us. Both of these existed only inside the
-              Builders Tour content file, so they appeared on one page. */}
-          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
-            {SOCIAL.map((s) => (
-              <a
-                key={s.url}
-                href={s.url}
-                target="_blank"
-                rel="me noopener noreferrer"
-                className="text-sm text-content-muted transition-colors hover:text-content-primary"
-              >
-                {s.label}
-              </a>
-            ))}
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              className="text-sm text-content-muted transition-colors hover:text-content-primary"
-            >
-              {CONTACT_EMAIL}
-            </a>
-          </div>
+          {/* Where to actually reach us.
+              `rel="me"` on the profiles and not on the mailto: it is the link
+              type that says "this account is the same entity as this site", and
+              it means nothing on an email address. mailto also never opens in a
+              new tab — target="_blank" on one leaves a blank tab behind. */}
+          <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1">
+            {SOCIAL.map((s) => {
+              const mail = s.name === 'email';
+              return (
+                <li key={s.url}>
+                  <a
+                    href={s.url}
+                    {...(mail ? {} : { target: '_blank', rel: 'me noopener noreferrer' })}
+                    className="flex min-h-tap items-center gap-2 rounded-chip text-sm text-content-muted transition-colors hover:text-content-primary"
+                  >
+                    <SocialIcon name={s.name} className="h-4 w-4 shrink-0" />
+                    {s.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
 
           <p className="mt-6 text-xs text-content-faint">© {new Date().getFullYear()} ETH Cali</p>
         </div>

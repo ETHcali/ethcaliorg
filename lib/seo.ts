@@ -61,6 +61,7 @@ export const STATIC_ROUTES: readonly { route: string; priority: number }[] = [
   { route: '/', priority: 1.0 },
   { route: '/builders-tour', priority: 0.9 },
   { route: '/builders-tour/frontier-cities-quest', priority: 0.9 },
+  { route: '/builders-tour/winners', priority: 0.8 },
   { route: '/events/local', priority: 0.8 },
   { route: '/events/international', priority: 0.7 },
   { route: '/hackathons', priority: 0.8 },
@@ -77,6 +78,10 @@ export const STATIC_ROUTES: readonly { route: string; priority: number }[] = [
 /** Where ETH Cali actually posts. Feeds `sameAs` on the Organization record. */
 export const SAME_AS = [
   'https://x.com/ethcali_org',
+  'https://www.instagram.com/ethcali.eth/',
+  'https://www.linkedin.com/company/eth-cali/',
+  'https://t.me/ethcali',
+  'https://discord.gg/269Qpf3rb2',
   'https://github.com/ETHcali',
 ] as const;
 

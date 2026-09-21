@@ -24,6 +24,7 @@ import {
   type Slot,
 } from '../content/builders-tour';
 import { FRONTIER, QUEST, QUEST_CITIES, QUEST_COPY } from '../content/quest';
+import { RESULTS, RESULTS_COPY } from '../content/results';
 import { tourEventJsonLd, breadcrumbJsonLd } from '../lib/jsonld';
 import { clamp } from '../lib/descriptions';
 import { asLocale, formatDate, formatDateRange, type Locale } from '../lib/i18n';
@@ -45,6 +46,11 @@ const COPY = {
   howToJoinLead: {
     es: 'Son dos registros distintos y necesitas los dos: uno te da el cupo presencial, el otro es donde entregas el proyecto.',
     en: 'Two separate registrations, and you need both: one gets you the seat, the other is where you submit the project.',
+  },
+  /** Sits beside the results link in the hero, so the link says what it is. */
+  resultsNote: {
+    es: '· 13 proyectos entregados, 5 premiados',
+    en: '· 13 projects shipped, 5 with prizes',
   },
   prizes: { es: 'Premios', en: 'Prizes' },
   prizesLead: {
@@ -235,6 +241,22 @@ export default function BuildersTour({ locale }: Props) {
           aria-hidden
         />
         <div className="relative mx-auto max-w-page px-gutter pb-10 pt-12 sm:pb-12 sm:pt-16">
+          {/* The weekend has happened. This page still sells it in the present
+              tense throughout — every date, every prize, every registration
+              button — and the one thing a reader arriving after the fact wants
+              is the result. So it is the first thing on the page, above the
+              eyebrow, rather than a line added at the bottom of a page nobody
+              scrolls to the end of once the event is over. */}
+          <Link
+            href={RESULTS.path}
+            className="mb-7 inline-flex min-h-tap items-center gap-3 rounded-control border border-line-brand bg-eth-blue-wash px-5 text-sm font-semibold text-content-primary transition-colors hover:bg-eth-blue-wash/70"
+          >
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal-confirmed" aria-hidden />
+            {t(RESULTS_COPY.title)}
+            <span className="font-normal text-content-muted">{t(COPY.resultsNote)}</span>
+            <span aria-hidden>→</span>
+          </Link>
+
           <p className="text-[11px] font-semibold uppercase tracking-widest text-eth-blue-text">
             {t(COPY.eyebrow)}
           </p>

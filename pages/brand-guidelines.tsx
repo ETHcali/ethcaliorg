@@ -1,8 +1,20 @@
 import type { GetStaticProps } from 'next';
+import Image from 'next/image';
 import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
 import { PageHeader, Section } from '../components/layout/Page';
 import { asLocale, type Locale } from '../lib/i18n';
+import {
+  LOGOS,
+  SOCIAL_ART,
+  WEB_FONTS,
+  KITS,
+  GUIDE,
+  BRAND_COPY,
+  type BrandAsset,
+  type BrandFile,
+} from '../content/brand';
+import type { Bilingual } from '../content/builders-tour';
 
 interface Props {
   locale: Locale;
@@ -55,8 +67,109 @@ function Swatch({ cls, token, note }: { cls: string; token: string; note?: strin
   );
 }
 
+/**
+ * One file, as a download.
+ *
+ * `download` is the whole reason this is not a plain link: the files on disk
+ * keep the names the design studio gave them — `Logo_Nodo_CLO_ETH_CO-02.png` —
+ * and renaming them would break anything already pointing at them. The
+ * attribute puts a name someone can recognise in the downloads folder without
+ * moving the file. It only works same-origin, which these all are.
+ */
+function FileLink({ file, t }: { file: BrandFile; t: (b: Bilingual) => string }) {
+  return (
+    <a
+      href={file.path}
+      download={file.download}
+      className="inline-flex min-h-[36px] items-center gap-2 rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
+    >
+      <svg viewBox="0 0 16 16" className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.6} aria-hidden>
+        <path d="M8 2v8m0 0L5 7m3 3 3-3M3 13h10" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      {file.format}
+      {file.dimensions && <span className="mono font-normal text-content-faint">{file.dimensions}</span>}
+      {file.note && <span className="font-normal text-content-faint">{t(file.note)}</span>}
+    </a>
+  );
+}
+
+/**
+ * One asset: what it looks like, what it is for, and every format of it.
+ *
+ * The preview is `object-contain` on a fixed-height box so six cards of wildly
+ * different aspect ratios line up as a grid rather than as a ransom note. Light
+ * artwork gets `--surface-paper` under it; black lettering on `--surface-slab`
+ * is invisible, which is the failure mode this page exists to prevent.
+ */
+function AssetCard({ asset, t }: { asset: BrandAsset; t: (b: Bilingual) => string }) {
+  return (
+    <article className="flex flex-col overflow-hidden rounded-card border border-line-hairline bg-surface-slab">
+      <div
+        className={`flex h-40 items-center justify-center p-6 ${
+          asset.plate ? 'bg-surface-paper' : 'bg-surface-inset'
+        }`}
+      >
+        <Image
+          src={asset.preview}
+          alt=""
+          width={asset.previewWidth}
+          height={asset.previewHeight}
+          sizes="(min-width: 1024px) 380px, 92vw"
+          className="max-h-full w-auto object-contain"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="text-base font-bold text-content-primary">{t(asset.name)}</h3>
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-content-muted">{t(asset.detail)}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {asset.files.map((file) => (
+            <FileLink key={file.path} file={file} t={t} />
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/** The big one. A ZIP is a download, not navigation — it never opens a tab. */
+function KitCard({
+  kit,
+  t,
+}: {
+  kit: { file: string; download: string; name: Bilingual; detail: Bilingual };
+  t: (b: Bilingual) => string;
+}) {
+  return (
+    <a
+      href={kit.file}
+      download={kit.download}
+      className="flex flex-col rounded-card border border-line-strong bg-surface-slab p-5 transition-colors hover:border-eth-blue hover:bg-eth-blue-wash"
+    >
+      <p className="flex items-center gap-2 text-base font-bold text-content-primary">
+        <svg viewBox="0 0 16 16" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.6} aria-hidden>
+          <path d="M8 2v8m0 0L5 7m3 3 3-3M3 13h10" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        {t(kit.name)}
+      </p>
+      <p className="mt-2 flex-1 text-sm leading-relaxed text-content-muted">{t(kit.detail)}</p>
+      <span className="mono mt-4 text-xs text-eth-blue-text">ZIP →</span>
+    </a>
+  );
+}
+
+function Rule({ title, body }: { title: string; body: string }) {
+  return (
+    <div className="rounded-card border border-line-hairline bg-surface-slab p-5">
+      <h3 className="text-sm font-bold text-content-primary">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-content-muted">{body}</p>
+    </div>
+  );
+}
+
 export default function BrandGuidelines({ locale }: Props) {
   const en = locale === 'en';
+  const t = (b: Bilingual) => b[locale];
 
   const lead = en
     ? 'The living design system. Every swatch below reads the same token the site and the app render with, so this page cannot drift from what ships.'
@@ -75,6 +188,63 @@ export default function BrandGuidelines({ locale }: Props) {
         title={en ? 'Brand guidelines' : 'Guía de marca'}
         lead={lead}
       />
+
+      {/* Downloads first.
+          The page opened on the colour palette, which is the right answer for a
+          developer reading the token names and the wrong one for everybody else
+          who lands here — a sponsor putting our mark on a banner, a university
+          making a poster, a partner community building a deck. They want the
+          logo, and they were scrolling past four grids of swatches to not find
+          it, because it was not on the page at all. */}
+      <Section id="downloads" title={t(BRAND_COPY.downloadsTitle)} lead={t(BRAND_COPY.downloadsLead)}>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <KitCard kit={KITS.brand} t={t} />
+          <KitCard kit={KITS.fonts} t={t} />
+        </div>
+
+        <h3 className="mt-10 text-[11px] font-semibold uppercase tracking-widest text-content-faint">
+          {t(BRAND_COPY.logosTitle)}
+        </h3>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {LOGOS.map((asset) => (
+            <AssetCard key={asset.id} asset={asset} t={t} />
+          ))}
+        </div>
+
+        <h3 className="mt-10 text-[11px] font-semibold uppercase tracking-widest text-content-faint">
+          {t(BRAND_COPY.socialTitle)}
+        </h3>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {SOCIAL_ART.map((asset) => (
+            <AssetCard key={asset.id} asset={asset} t={t} />
+          ))}
+        </div>
+      </Section>
+
+      {/* The rules, straight after the download button and before the palette.
+          Whoever just took the logo is the person these are addressed to, and
+          they are reading this page for exactly one more scroll. */}
+      <Section id="usage" title={t(BRAND_COPY.rulesTitle)} lead={t(BRAND_COPY.rulesLead)}>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Rule title={t(GUIDE.clearSpace.title)} body={t(GUIDE.clearSpace.body)} />
+          <Rule title={t(GUIDE.minimum.title)} body={t(GUIDE.minimum.body)} />
+          <Rule title={t(GUIDE.colour.title)} body={t(GUIDE.colour.body)} />
+        </div>
+
+        <div className="mt-3 rounded-card border border-line-hairline bg-surface-slab p-5">
+          <h3 className="text-sm font-bold text-signal-reverted">{t(GUIDE.never.title)}</h3>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            {GUIDE.never.items.map((item) => (
+              <li key={item.en} className="flex gap-2 text-sm text-content-muted">
+                <span className="text-signal-reverted" aria-hidden>
+                  ×
+                </span>
+                {t(item)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
 
       <Section title={en ? 'Brand' : 'Marca'}>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -147,6 +317,49 @@ export default function BrandGuidelines({ locale }: Props) {
               : 'Sarun Pro no tiene 600. Salta de Medium 500 a Bold 700, así que font-semibold se mapea a 700 en vez de sintetizarse.'}
           </p>
         </div>
+
+
+        <div className="mt-6 rounded-card border border-line-hairline bg-surface-slab p-5">
+          <h3 className="text-sm font-bold text-content-primary">{t(BRAND_COPY.webFontsTitle)}</h3>
+          <p className="mt-1 text-sm text-content-muted">{t(BRAND_COPY.webFontsLead)}</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {WEB_FONTS.map((file) => (
+              <a
+                key={file.path}
+                href={file.path}
+                download={file.download}
+                className="inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
+              >
+                {file.download.replace('SarunPro-', '').replace('.woff2', '')}
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-5 flex flex-wrap gap-2 border-t border-line-hairline pt-5">
+            <a
+              href={KITS.fonts.file}
+              download={KITS.fonts.download}
+              className="inline-flex min-h-tap items-center rounded-control border border-line-strong px-5 text-sm font-semibold text-content-primary transition-colors hover:border-eth-blue hover:bg-eth-blue-wash"
+            >
+              {t(KITS.fonts.name)} · ZIP →
+            </a>
+            <a
+              href="https://www.jetbrains.com/lp/mono/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-tap items-center rounded-control border border-line-hairline px-5 text-sm font-semibold text-content-secondary transition-colors hover:border-line-strong hover:text-content-primary"
+            >
+              JetBrains Mono →
+            </a>
+          </div>
+        </div>
+
+        {/* Said once, plainly. Sarun Pro is not ours to hand out without
+            qualification, and someone downloading 60 fonts should know which
+            of the two typefaces on this page carries a condition. */}
+        <p className="mt-4 max-w-prose text-xs leading-relaxed text-content-faint">
+          {t(BRAND_COPY.licenceNote)} {t(BRAND_COPY.monoNote)}
+        </p>
       </Section>
 
       <Section title={en ? 'Where it lives' : 'Dónde vive'}>
