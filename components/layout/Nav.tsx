@@ -42,7 +42,14 @@ export default function NavEntry({
   const ref = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number>();
 
-  const active = router.asPath.split('?')[0].startsWith(item.matchPrefix ?? item.href);
+  // A group can gather pages that share no path prefix — Nosotros holds /about,
+  // /dao, /venues and /technical-infra — so the parent also lights up when the
+  // current route is one of its children. Prefix matching alone left the bar
+  // showing nothing selected on four of the site's pages.
+  const path = router.asPath.split('?')[0].split('#')[0];
+  const active =
+    path.startsWith(item.matchPrefix ?? item.href) ||
+    (item.children?.some((c) => path === c.href) ?? false);
 
   useEffect(() => {
     if (!open) return;

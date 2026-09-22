@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { asLocale, translator } from '../../lib/i18n';
 import NavEntry, { type NavItem } from './Nav';
@@ -51,9 +52,32 @@ const NAV: readonly NavItem[] = [
       { href: '/hacker-houses', key: 'nav.hackerHouses' },
     ],
   },
-  { href: '/venues', key: 'nav.venues' },
-  { href: '/about', key: 'nav.about' },
-  { href: '/dao', key: 'nav.dao' },
+  // Who we are, how we are governed, where we meet and what we own. Four pages
+  // that answer one question between them, so they are one entry rather than
+  // four — /venues and /technical-infra had no place in the bar at all and were
+  // reachable only from the footer.
+  {
+    href: '/about',
+    key: 'nav.about',
+    children: [
+      { href: '/about', key: 'nav.about' },
+      { href: '/dao', key: 'nav.dao' },
+      { href: '/venues', key: 'nav.venues' },
+      { href: '/technical-infra', key: 'nav.infra' },
+    ],
+  },
+  // The things a reader can take away: learn something, wear something, use our
+  // mark. The parent points at /education because it is the one most people
+  // want; a nav entry that only opens a menu is a dead end.
+  {
+    href: '/education',
+    key: 'nav.resources',
+    children: [
+      { href: '/education', key: 'nav.education' },
+      { href: '/swag', key: 'nav.swag' },
+      { href: '/brand-guidelines', key: 'nav.brand' },
+    ],
+  },
 ];
 
 const CONTACT_EMAIL = 'hola@ethcali.org';
@@ -91,15 +115,6 @@ const SOCIAL: readonly { name: SocialName; url: string; label: string }[] = [
   { name: 'github', url: 'https://github.com/ETHcali', label: 'GitHub' },
   { name: 'email', url: `mailto:${CONTACT_EMAIL}`, label: CONTACT_EMAIL },
 ];
-
-const FOOTER_NAV = [
-  [RESULTS.path, 'nav.winners'],
-  [FRONTIER.path, 'nav.frontier'],
-  ['/education', 'nav.education'],
-  ['/swag', 'nav.swag'],
-  ['/technical-infra', 'nav.infra'],
-  ['/brand-guidelines', 'nav.brand'],
-] as const;
 
 /**
  * The site chrome.
@@ -230,18 +245,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
             ))}
 
-            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 border-t border-line-hairline pt-3">
-              {FOOTER_NAV.map(([href, key]) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={() => setMenuOpen(false)}
-                  className="py-1 text-sm text-content-muted"
-                >
-                  {t(key)}
-                </Link>
-              ))}
-            </div>
           </nav>
         )}
       </header>
@@ -250,27 +253,39 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <footer className="mt-16 border-t border-line-hairline">
         <div className="mx-auto max-w-page px-gutter py-10">
-          <p className="text-sm font-bold text-content-primary">ETH Cali</p>
-          <p className="mt-1 max-w-prose text-sm text-content-muted">
+          {/* The mark, where the header could not use it.
+              The header sets the glyph alone because at a 60px bar the lockup's
+              ETH·CO CALI wordmark would fall under the 32px minimum BRAND.md
+              sets. The footer has the room, so it carries the full horizontal
+              lockup — the reversed artwork, drawn white for exactly this ground.
+
+              The whole site used to say its own name here in bold body text,
+              which is a styled string standing in for a logo we ship in
+              public/branding. */}
+          <Link href="/" aria-label="ETH Cali" className="inline-flex">
+            <Image
+              src="/branding/ethcali-horizontal-light.png"
+              alt="ETH Cali"
+              width={334}
+              height={227}
+              // 80px, not the 32px floor. BRAND.md's minimum is about the
+              // lockup as a whole, and this artwork spends most of its height
+              // on the glyph — at 56px the ETH·CO CALI wordmark beside it was
+              // setting two lines in about 8px each and reading as texture
+              // rather than as words.
+              className="h-16 w-auto sm:h-20"
+            />
+          </Link>
+
+          <p className="mt-3 max-w-prose text-sm text-content-muted">
             Fundación Innovación del Pacífico · Cali, Colombia
           </p>
 
-          {/* Both halves of the site, not just the secondary half.
-              The footer used to carry five links and the nav the other six, so
-              /education, /swag and /brand-guidelines were reachable from one
-              place on the whole site and every crawl path to them ran through
-              a single link. */}
-          <nav className="mt-6 flex flex-wrap gap-x-5 gap-y-2" aria-label="Secundaria">
-            {[...NAV.map((i) => [i.href, i.key] as const), ...FOOTER_NAV].map(([href, key]) => (
-              <Link
-                key={href}
-                href={href}
-                className="text-sm text-content-muted transition-colors hover:text-content-primary"
-              >
-                {t(key)}
-              </Link>
-            ))}
-          </nav>
+          {/* No link list. Every page it carried is now in the nav — /venues,
+              /technical-infra, /education, /swag and /brand-guidelines were the
+              five that had no entry in the bar, and they are grouped under
+              Nosotros and Recursos rather than exiled down here. A footer that
+              repeats the whole nav is the nav twice. */}
 
           {/* Where to actually reach us.
               `rel="me"` on the profiles and not on the mailto: it is the link

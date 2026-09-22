@@ -48,10 +48,11 @@ export function absoluteUrl(route: string, locale: string): string {
 /**
  * Every route that is not generated from the CMS.
  *
- * The sitemap reads this; the nav does not. They are deliberately separate —
- * `/education`, `/swag` and `/brand-guidelines` are real indexable pages that
- * live in the footer rather than the nav, and a sitemap built from the nav
- * would quietly drop them.
+ * The sitemap reads this; the nav does not. They stay separate on purpose. Every
+ * route here is now reachable from the nav, but the two lists answer different
+ * questions — this one is "what is indexable", the nav is "what is worth a menu
+ * entry", and a sitemap derived from a menu would drop a page the moment someone
+ * tidied the bar.
  *
  * `changefreq` is omitted throughout: Google has said for years that it ignores
  * it, and a field nobody reads is a field that goes stale without anyone

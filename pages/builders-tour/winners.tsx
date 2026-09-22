@@ -13,10 +13,11 @@ import {
   RESULTS_COPY,
   WINNERS,
   OTHERS,
-  PROJECTS,
   HSK,
   HSK_ANNOUNCED,
   HSK_ENTRANTS,
+  resultsLead,
+  othersLead,
   projectBySlug,
   devfolioUrl,
   devfolioProfile,
@@ -231,15 +232,6 @@ function HskSlotCard({ slot, t }: { slot: HskSlot; t: (b: Bilingual) => string }
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-card border border-line-hairline bg-surface-slab p-4">
-      <p className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">{label}</p>
-      <p className="mono mt-1 text-xl font-bold text-content-primary">{value}</p>
-    </div>
-  );
-}
-
 /**
  * What came out of the Builders Tour stop in Cali.
  *
@@ -255,7 +247,7 @@ export default function Winners({ locale }: Props) {
     <Layout>
       <Seo
         title={t(RESULTS_COPY.seoTitle)}
-        description={clamp(t(RESULTS_COPY.lead))}
+        description={clamp(resultsLead(locale))}
         path={RESULTS.path}
         image={WINNERS[0]?.photo ?? null}
         type="article"
@@ -286,25 +278,23 @@ export default function Winners({ locale }: Props) {
             ← {t(RESULTS_COPY.backToTour)}
           </Link>
 
+          {/* Eyebrow, name, one sentence, one line of fact. That is the hero.
+
+              There were three stat tiles under this reading Hackers +25,
+              Proyectos 13, En < 48 h — which is the sentence above them, set
+              twice, the second time in boxes. The numbers belong in the
+              sentence, where they are a claim about a weekend rather than a
+              dashboard, and the tiles were the only thing between the reader
+              and the first winner. */}
           <p className="mt-6 text-[11px] font-semibold uppercase tracking-widest text-eth-blue-text">
             {t(RESULTS_COPY.eyebrow)}
           </p>
           <h1 className="mt-2 text-4xl leading-[1.05] sm:text-5xl">{t(RESULTS_COPY.title)}</h1>
-          <p className="mt-5 max-w-prose text-lg text-content-secondary">{t(RESULTS_COPY.lead)}</p>
+          <p className="mt-5 max-w-prose text-lg text-content-secondary">{resultsLead(locale)}</p>
 
-          <p className="mono mt-4 text-sm text-content-muted">
+          <p className="mono mt-5 text-sm text-content-muted">
             {formatDate(RESULTS.judgedOn, locale)} · {TOUR.venue.name[locale]}
           </p>
-
-          {/* The room, not the ranking. These three used to be projects, winners
-              and prize-per-winner, which made the hero a scoreboard for one of
-              the two prize sets — and the wrong total at that. Who won is two
-              sections of its own below; this is what the weekend was. */}
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            <Stat label={t(RESULTS_COPY.hackersLabel)} value={`+${RESULTS.hackers}`} />
-            <Stat label={t(RESULTS_COPY.projectsLabel)} value={String(PROJECTS.length)} />
-            <Stat label={t(RESULTS_COPY.hoursLabel)} value={`< ${RESULTS.hours} h`} />
-          </div>
         </div>
       </header>
 
@@ -389,7 +379,7 @@ export default function Winners({ locale }: Props) {
       <Section
         id="projects"
         title={t(RESULTS_COPY.othersTitle)}
-        lead={t(RESULTS_COPY.othersLead)}
+        lead={othersLead(locale)}
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {OTHERS.map((project) => (

@@ -509,6 +509,56 @@ export const HSK_ENTRANTS = PROJECTS.filter((p) => p.tracks.includes(HSK.trackTa
 /** True once any place has been filled in. Drives the page copy. */
 export const HSK_ANNOUNCED = HSK.slots.some((s) => s.slug !== null);
 
+/**
+ * The lead, counted rather than typed.
+ *
+ * Every number in this sentence is read off the data beside it, so the prose
+ * cannot end up disagreeing with the page under it. It was written out in full
+ * once and already said "13 projects" in two languages next to an array whose
+ * length is the real answer — two copies of a number is one copy too many.
+ *
+ * What happened, not who won: the lead used to open on "thirteen projects, five
+ * took a prize", which counted only EAG's places and left HashKey Chain's three
+ * out. The prizes have two sections of their own; this says what was built.
+ */
+export const resultsLead = (locale: 'es' | 'en'): string =>
+  locale === 'en'
+    ? `More than ${RESULTS.hackers} hackers and ${PROJECTS.length} projects in under ${RESULTS.hours} hours, ` +
+      'building frontier applications with Ethereum, artificial intelligence, smart devices and ' +
+      'open-source software.'
+    : `Más de ${RESULTS.hackers} hackers y ${PROJECTS.length} proyectos en menos de ${RESULTS.hours} horas, ` +
+      'construyendo aplicaciones de frontera con Ethereum, inteligencia artificial, smart devices y ' +
+      'software de código abierto.';
+
+/**
+ * The lead over the rest of the room.
+ *
+ * Two things it deliberately does not say. It does not claim a submission
+ * order — the order these sit in is the order we were handed the links, and
+ * Devfolio does not publish timestamps we read, so "in the order they were
+ * submitted" was a fact we never had.
+ *
+ * And it does not call them losers. One of them is still on the HashKey Chain
+ * track with three places undecided, and that count is computed rather than
+ * written down so it corrects itself the moment a slot is filled in.
+ */
+export const othersLead = (locale: 'es' | 'en'): string => {
+  const stillIn = OTHERS.filter((p) => p.tracks.includes(HSK.trackTag)).length;
+  const open = HSK.slots.some((s) => s.slug === null);
+
+  if (locale === 'en') {
+    const base = `The other ${OTHERS.length} projects submitted from Cali, which are not among EAG's ${RESULTS.prize.winners}.`;
+    return stillIn && open
+      ? `${base} ${stillIn === 1 ? 'One of them is' : `${stillIn} of them are`} still in the running on the HashKey Chain track.`
+      : base;
+  }
+
+  const base = `Los otros ${OTHERS.length} proyectos que se entregaron desde Cali, que no entraron en los ${RESULTS.prize.winners} de EAG.`;
+  return stillIn && open
+    ? `${base} ${stillIn === 1 ? 'Uno de ellos sigue' : `${stillIn} de ellos siguen`} en carrera por el track de HashKey Chain.`
+    : base;
+};
+
 /** `https://devfolio.co/projects/<slug>` — the record behind every card. */
 export const devfolioUrl = (slug: string) => `https://devfolio.co/projects/${slug}`;
 
@@ -524,23 +574,6 @@ export const RESULTS_COPY = {
   seoTitle: {
     es: 'Ganadores del EAG Global Buildathon en Cali',
     en: 'EAG Global Buildathon winners in Cali',
-  } as Bilingual,
-  /**
-   * What happened, not who won.
-   *
-   * The lead used to open on "thirteen projects, five took a prize", which was
-   * wrong twice: it counted only the EAG places and left HashKey Chain's three
-   * out, and it made a ranking the headline of a weekend whose actual result was
-   * the room. The prizes have two sections of their own further down; this says
-   * what was built and with what.
-   */
-  lead: {
-    es:
-      'Más de 25 hackers y 13 proyectos en menos de 48 horas, construyendo aplicaciones de frontera ' +
-      'con Ethereum, inteligencia artificial, smart devices y software de código abierto.',
-    en:
-      'More than 25 hackers and 13 projects in under 48 hours, building frontier applications with ' +
-      'Ethereum, artificial intelligence, smart devices and open-source software.',
   } as Bilingual,
   // ── the HashKey Chain track ──────────────────────────────────────────────
   hskTitle: { es: 'El track de HashKey Chain', en: 'The HashKey Chain track' } as Bilingual,
@@ -591,18 +624,12 @@ export const RESULTS_COPY = {
     es: 'Cinco proyectos, 200 USDT cada uno, pagados sobre Ethereum mainnet.',
     en: 'Five projects, 200 USDT each, paid on Ethereum mainnet.',
   } as Bilingual,
-  othersTitle: { es: 'Todo lo que se entregó', en: 'Everything that shipped' } as Bilingual,
-  othersLead: {
-    es: 'Los otros ocho proyectos del track de Colombia, en el orden en que se entregaron.',
-    en: 'The other eight projects on the Colombia track, in the order they were submitted.',
-  } as Bilingual,
-  teamLabel: { es: 'Equipo', en: 'Team' } as Bilingual,
-  tracksLabel: { es: 'Tracks', en: 'Tracks' } as Bilingual,
-
-  // ── the hero stats: what the room was, not who won ───────────────────────
-  hackersLabel: { es: 'Hackers', en: 'Hackers' } as Bilingual,
-  projectsLabel: { es: 'Proyectos', en: 'Projects' } as Bilingual,
-  hoursLabel: { es: 'En', en: 'In' } as Bilingual,
+  /**
+   * "Everything that shipped" over eight of thirteen was simply false — the
+   * other five are in the EAG section above it. This section is the rest of
+   * the room, and the heading says that and nothing more.
+   */
+  othersTitle: { es: 'Los demás proyectos', en: 'The other projects' } as Bilingual,
   onDevfolio: { es: 'Ver en Devfolio', en: 'View on Devfolio' } as Bilingual,
   code: { es: 'Código', en: 'Code' } as Bilingual,
   demo: { es: 'Demo', en: 'Demo' } as Bilingual,
