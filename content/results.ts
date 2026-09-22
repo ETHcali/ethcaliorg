@@ -565,15 +565,22 @@ export const resultsLead = (locale: 'es' | 'en'): string =>
 export const othersLead = (locale: 'es' | 'en'): string => {
   const stillIn = OTHERS.filter((p) => p.tracks.includes(HSK.trackTag)).length;
   const open = HSK.slots.some((s) => s.slug === null);
+  // While HashKey's track is open the list is measured against EAG's five;
+  // once it is decided, against every place on the page.
+  const places = RESULTS.prize.winners + HSK.slots.length;
 
   if (locale === 'en') {
-    const base = `The other ${OTHERS.length} projects submitted from Cali, which are not among EAG's ${RESULTS.prize.winners}.`;
+    const base = open
+      ? `The other ${OTHERS.length} projects submitted from Cali, which are not among EAG's ${RESULTS.prize.winners}.`
+      : `The other ${OTHERS.length} projects submitted from Cali, which did not take one of the ${places} places above.`;
     return stillIn && open
       ? `${base} ${stillIn === 1 ? 'One of them is' : `${stillIn} of them are`} still in the running on the HashKey Chain track.`
       : base;
   }
 
-  const base = `Los otros ${OTHERS.length} proyectos que se entregaron desde Cali, que no entraron en los ${RESULTS.prize.winners} de EAG.`;
+  const base = open
+    ? `Los otros ${OTHERS.length} proyectos que se entregaron desde Cali, que no entraron en los ${RESULTS.prize.winners} de EAG.`
+    : `Los otros ${OTHERS.length} proyectos que se entregaron desde Cali, que no se llevaron ninguno de los ${places} puestos de arriba.`;
   return stillIn && open
     ? `${base} ${stillIn === 1 ? 'Uno de ellos sigue' : `${stillIn} de ellos siguen`} en carrera por el track de HashKey Chain.`
     : base;
@@ -615,7 +622,17 @@ export const devfolioProfile = (handle: string) => `https://devfolio.co/@${handl
 export const WINNERS = PROJECTS.filter((p) => p.place) as readonly (Project & {
   place: 1 | 2 | 3 | 4 | 5;
 })[];
-export const OTHERS = PROJECTS.filter((p) => !p.place);
+/**
+ * Everything that did not place with either jury.
+ *
+ * `!p.place` alone was right while HashKey Chain's track was open; once it
+ * was decided, PayAgent HSK sat on that podium and in this list at the same
+ * time, and a project that won cannot also be one of "the others". A slot
+ * still at `null` excludes nothing, so a project in the running stays here
+ * until its result lands.
+ */
+const HSK_WINNER_SLUGS = new Set(HSK.slots.map((s) => s.slug).filter(Boolean));
+export const OTHERS = PROJECTS.filter((p) => !p.place && !HSK_WINNER_SLUGS.has(p.slug));
 
 export const RESULTS_COPY = {
   eyebrow: { es: 'EAG Global Buildathon · Cali', en: 'EAG Global Buildathon · Cali' } as Bilingual,
