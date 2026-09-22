@@ -108,10 +108,11 @@ export default function VenueMap({
   return (
     <div
       ref={el}
-      // A fixed height, like the Maps and Luma embeds. A map has no intrinsic
+      // A fixed height, like the Maps and Luma embeds: a map has no intrinsic
       // aspect ratio — it shows whatever fits — so the box decides, not the
-      // content.
-      className="h-[420px] w-full overflow-hidden rounded-card border border-line-hairline bg-surface-inset"
+      // content. Taller than those two because on /venues it is not an
+      // illustration beside the content, it is the content.
+      className="h-[460px] w-full overflow-hidden rounded-card border border-line-hairline bg-surface-inset sm:h-[600px]"
       role="application"
       aria-label={locale === 'en' ? 'Map of our venues in Cali' : 'Mapa de nuestros lugares en Cali'}
     />

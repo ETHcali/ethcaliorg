@@ -45,7 +45,10 @@ export default function Venues({ venues, locale }: Props) {
         <p className="mt-4 max-w-prose text-base text-content-secondary">{lead}</p>
 
         {/* The map the static site had and the rebuild lost, which left
-            `venues.lat` and `venues.lng` as columns nothing read. */}
+            `venues.lat` and `venues.lng` as columns nothing read.
+
+            It is now the whole page: the grid of cards that used to sit under it
+            said the same thing in a less useful shape. */}
         {mapped.length > 0 && (
           <div className="mt-10">
             <VenueMap venues={mapped} locale={locale} />
@@ -62,22 +65,23 @@ export default function Venues({ venues, locale }: Props) {
           </div>
         )}
 
-        <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {/* The same venues, for readers the map cannot serve.
+            A Leaflet map is a canvas of tiles and an SVG of circles: a screen
+            reader gets nothing from it, and neither does a crawler. Dropping the
+            card grid without this would have left /venues with a heading, a
+            sentence and no content — nineteen places we have been, invisible to
+            search and unreachable without a mouse.
+
+            `sr-only` is Tailwind's clip-rect, not `display: none`. The list is
+            in the accessibility tree and in the HTML; it simply takes no space. */}
+        <ul className="sr-only">
           {venues.map((v) => (
-            <li
-              key={v.id}
-              className="rounded-card border border-line-hairline bg-surface-slab p-4"
-            >
-              <h2 className="text-base font-bold text-content-primary">{v.name}</h2>
-              {v.kind && <p className="mt-1 text-xs text-content-muted">{v.kind}</p>}
+            <li key={v.id}>
+              <h2>{v.name}</h2>
+              {v.kind && <p>{v.kind}</p>}
               {httpUrl(v.maps_url) && (
-                <a
-                  href={httpUrl(v.maps_url) as string}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-flex min-h-tap items-center text-xs text-eth-blue-text hover:underline"
-                >
-                  {locale === 'en' ? 'Open in Maps' : 'Ver en Maps'}
+                <a href={httpUrl(v.maps_url) as string} target="_blank" rel="noopener noreferrer">
+                  {locale === 'en' ? `Open ${v.name} in Maps` : `Ver ${v.name} en Maps`}
                 </a>
               )}
             </li>
