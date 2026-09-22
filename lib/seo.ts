@@ -69,6 +69,7 @@ export const STATIC_ROUTES: readonly { route: string; priority: number }[] = [
   { route: '/hacker-houses', priority: 0.6 },
   { route: '/venues', priority: 0.6 },
   { route: '/about', priority: 0.7 },
+  { route: '/team', priority: 0.6 },
   { route: '/dao', priority: 0.6 },
   { route: '/education', priority: 0.6 },
   { route: '/swag', priority: 0.5 },

@@ -61,6 +61,7 @@ const navItems = (locale: 'es' | 'en'): readonly NavItem[] => [
     key: 'nav.about',
     children: [
       { href: '/about', key: 'nav.about' },
+      { href: '/team', key: 'nav.team' },
       { href: '/dao', key: 'nav.dao' },
       { href: '/venues', key: 'nav.venues' },
       { href: '/technical-infra', key: 'nav.infra' },

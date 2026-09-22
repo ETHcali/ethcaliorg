@@ -1,117 +1,130 @@
 import type { GetStaticProps } from 'next';
-import Image from 'next/image';
+import Link from 'next/link';
 import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
 import { PageHeader, Section } from '../components/layout/Page';
-import { getTeam } from '../lib/content';
-import type { TeamMemberRecord } from '../types/content';
-import { MISSION, type Bilingual } from '../content/site';
+import { getEvents, getVenues, getPartners, getTeam } from '../lib/content';
+import { ABOUT, MISSION, IMPACT, type Bilingual } from '../content/site';
 import { asLocale, type Locale } from '../lib/i18n';
-import { httpUrl } from '../lib/url';
+
+interface Counts {
+  events: number;
+  meetups: number;
+  workshops: number;
+  hackathons: number;
+  hosted: number;
+  venues: number;
+  universities: number;
+  years: number;
+  team: number;
+}
 
 interface Props {
-  team: TeamMemberRecord[];
+  counts: Counts;
   locale: Locale;
 }
 
-/** Grouped in the order people joined the project, not alphabetically. */
-const GROUPS: readonly { key: string; label: Bilingual }[] = [
-  { key: 'Founder', label: { es: 'Fundadores', en: 'Founders' } },
-  { key: 'Core', label: { es: 'Core', en: 'Core' } },
-  { key: 'Contributor', label: { es: 'Contributors', en: 'Contributors' } },
-  { key: 'Volunteer', label: { es: 'Voluntarios', en: 'Volunteers' } },
-  { key: 'Former Core', label: { es: 'Antiguos core', en: 'Former core' } },
-];
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-card border border-line-hairline bg-surface-slab p-4">
+      <p className="mono text-2xl font-bold text-content-primary">{value}</p>
+      <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-content-faint">
+        {label}
+      </p>
+    </div>
+  );
+}
 
-export default function About({ team, locale }: Props) {
+/**
+ * What ETH Cali is.
+ *
+ * This route was the team page — "Nosotros" opening on twenty portraits, never
+ * saying what the organisation had built. The people are at /team now and this
+ * page finally does the job its URL promised.
+ *
+ * Every figure is counted in getStaticProps from the rows the CMS already holds,
+ * so the page cannot claim 47 events on the day there are 48.
+ */
+export default function About({ counts, locale }: Props) {
   const t = (b: Bilingual) => b[locale];
-
-  const lead =
-    locale === 'en'
-      ? 'Founders, core, contributors and volunteers. Every one of them started as someone who turned up to a meetup.'
-      : 'Fundadores, core, contributors y voluntarios. Todos empezaron como asistentes a un meetup.';
+  const en = locale === 'en';
+  const L = ABOUT.labels;
 
   return (
     <Layout>
-      <Seo title={locale === 'en' ? 'About' : 'Nosotros'} description={lead} path="/about" />
+      <Seo title={t(ABOUT.title)} description={t(ABOUT.lead)} path="/about" />
 
-      <PageHeader
-        eyebrow={locale === 'en' ? 'Who we are' : 'Quiénes somos'}
-        title={locale === 'en' ? 'The builders of the garden' : 'Los builders del jardín'}
-        lead={lead}
-      />
+      <PageHeader eyebrow={t(ABOUT.eyebrow)} title={t(ABOUT.title)} lead={t(ABOUT.lead)} />
 
-      <Section title={locale === 'en' ? 'The team' : 'Nuestro equipo'}>
-        {GROUPS.map((group) => {
-          const members = team.filter((m) => m.status === group.key);
-          if (!members.length) return null;
+      <Section title={t(ABOUT.origin.title)}>
+        <div className="max-w-prose whitespace-pre-line text-base leading-relaxed text-content-secondary">
+          {t(ABOUT.origin.body)}
+        </div>
+      </Section>
 
-          return (
-            <div key={group.key} className="mb-10 last:mb-0">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-content-faint">
-                {t(group.label)} <span className="mono ml-1 font-normal">{members.length}</span>
-              </h3>
+      <Section title={t(ABOUT.numbers.title)} lead={t(ABOUT.numbers.lead)}>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat value={String(counts.events)} label={t(L.events)} />
+          <Stat value={String(counts.hosted)} label={t(L.hosted)} />
+          <Stat value={String(counts.meetups)} label={t(L.meetups)} />
+          <Stat value={String(counts.workshops)} label={t(L.workshops)} />
+          <Stat value={String(counts.hackathons)} label={t(L.hackathons)} />
+          <Stat value={String(counts.venues)} label={t(L.venues)} />
+          <Stat value={String(counts.universities)} label={t(L.universities)} />
+          <Stat value={String(counts.years)} label={t(L.years)} />
+        </div>
 
-              <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                {members.map((m) => (
-                  <li
-                    key={m.id}
-                    className="rounded-card border border-line-hairline bg-surface-slab p-4"
-                  >
-                    {m.image_path && (
-                      <div className="relative mb-3 aspect-square overflow-hidden rounded-chip bg-surface-inset">
-                        <Image
-                          src={m.image_path}
-                          alt={m.name}
-                          fill
-                          sizes="(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw"
-                          className="object-cover"
-                        />
-                      </div>
-                    )}
-                    <p className="text-sm font-bold leading-snug text-content-primary">{m.name}</p>
-                    {(locale === 'en' ? m.role_en ?? m.role_es : m.role_es) && (
-                      <p className="mt-1 text-xs leading-relaxed text-content-muted">
-                        {locale === 'en' ? m.role_en ?? m.role_es : m.role_es}
-                      </p>
-                    )}
+        {/* The onchain half, which the events table cannot count. Same figures
+            and the same caveat as the home page — stated once here rather than
+            re-derived, so the two pages cannot disagree. */}
+        <div className="mt-6 rounded-card border border-line-hairline bg-surface-slab p-5">
+          <div className="flex flex-wrap gap-x-10 gap-y-4">
+            {IMPACT.metrics.map((m) => (
+              <div key={m.value}>
+                <p className="mono text-xl font-bold text-content-primary">{m.value}</p>
+                <p className="mt-1 text-xs text-content-secondary">{m.label[locale]}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 max-w-prose text-xs leading-relaxed text-content-muted">
+            {t(IMPACT.note)}
+          </p>
+          <a
+            href={IMPACT.dashboardUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-block text-sm text-eth-blue-text hover:underline"
+          >
+            {t(IMPACT.cta)} →
+          </a>
+        </div>
+      </Section>
 
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {([
-                        ['in', m.linkedin_url],
-                        ['x', m.twitter_url],
-                        ['gh', m.github_url],
-                      ] as const)
-                        .map(([label, url]) => [label, httpUrl(url as string)] as const)
-                        .filter(([, url]) => Boolean(url))
-                        .map(([label, url]) => (
-                          <a
-                            key={label}
-                            href={url as string}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            // Was 22px tall. These are three separate outbound
-                            // links sitting 8px apart under a portrait — the
-                            // exact shape a thumb misses.
-                            className="inline-flex min-h-tap min-w-tap items-center justify-center rounded-chip border border-line-hairline px-3 text-[10px] font-semibold uppercase tracking-wide text-content-muted transition-colors hover:border-line-brand hover:text-content-primary"
-                          >
-                            {label}
-                          </a>
-                        ))}
-                    </div>
-                  </li>
-                ))}
-              </ul>
+      <Section title={t(ABOUT.doing.title)} lead={t(ABOUT.doing.lead)}>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {ABOUT.doing.items.map((item) => (
+            <div
+              key={item.href}
+              className="flex flex-col rounded-card border border-line-hairline bg-surface-slab p-5"
+            >
+              <h3 className="text-base font-bold text-content-primary">{t(item.title)}</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-content-muted">{t(item.body)}</p>
+              <Link
+                href={item.href}
+                className="mt-4 text-sm font-semibold text-eth-blue-text hover:underline"
+              >
+                {t(item.cta)} →
+              </Link>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </Section>
 
       <Section
-        eyebrow={locale === 'en' ? 'What drives us' : 'Qué nos mueve'}
-        title={locale === 'en' ? 'Our mission' : 'Nuestra misión'}
+        eyebrow={en ? 'What drives us' : 'Qué nos mueve'}
+        title={en ? 'Our mission' : 'Nuestra misión'}
       >
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {MISSION.map((m) => (
             <div key={m.title.es} className="rounded-card border border-line-hairline bg-surface-slab p-5">
               <h3 className="text-base font-bold text-content-primary">{t(m.title)}</h3>
@@ -120,11 +133,51 @@ export default function About({ team, locale }: Props) {
           ))}
         </div>
       </Section>
+
+      <Section title={t(ABOUT.team.title)}>
+        <p className="max-w-prose text-base leading-relaxed text-content-secondary">
+          {t(ABOUT.team.body)}
+        </p>
+        <Link
+          href="/team"
+          className="mt-6 inline-flex min-h-tap items-center rounded-control border border-line-strong px-5 text-sm font-semibold text-content-primary transition-colors hover:border-eth-blue hover:bg-eth-blue-wash"
+        >
+          {t(ABOUT.team.cta)} · {counts.team} →
+        </Link>
+      </Section>
     </Layout>
   );
 }
 
-export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => ({
-  props: { team: await getTeam(), locale: asLocale(locale) },
-  revalidate: 60,
-});
+export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
+  const [events, venues, partners, team] = await Promise.all([
+    getEvents(),
+    getVenues(),
+    getPartners(),
+    getTeam(),
+  ]);
+
+  const kind = (k: string) => events.filter((e) => e.kind === k).length;
+  const years = new Set(events.map((e) => e.starts_on.slice(0, 4)));
+
+  return {
+    props: {
+      counts: {
+        events: events.length,
+        meetups: kind('meetup'),
+        workshops: kind('workshop'),
+        hackathons: kind('hackathon'),
+        // `host` and `cohost` are both "we made this happen"; `colab` and
+        // `participant` are not, and counting them here would turn showing up
+        // into organising.
+        hosted: events.filter((e) => e.role === 'host' || e.role === 'cohost').length,
+        venues: venues.length,
+        universities: partners.filter((p) => p.kind === 'university').length,
+        years: years.size,
+        team: team.length,
+      },
+      locale: asLocale(locale),
+    },
+    revalidate: 60,
+  };
+};

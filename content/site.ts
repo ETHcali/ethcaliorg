@@ -112,6 +112,130 @@ export const INTERSECTION = {
   ],
 } as const;
 
+// ── about ───────────────────────────────────────────────────────────────────
+
+/**
+ * What ETH Cali is and what it has done.
+ *
+ * /about used to be the team page: a route called "Nosotros" that opened on
+ * twenty portraits and never once said what the organisation had built. The
+ * people moved to /team and this took the name it already had.
+ *
+ * Every number on the page is counted from Supabase at build time rather than
+ * written here — 47 events, 19 venues, 6 universities are facts the CMS already
+ * holds, and a second copy in prose is a copy that goes stale. The prose is what
+ * cannot be counted.
+ */
+export const ABOUT = {
+  eyebrow: { es: 'Nosotros', en: 'About us' } as Bilingual,
+  title: { es: 'Qué es ETH Cali', en: 'What ETH Cali is' } as Bilingual,
+  lead: {
+    es:
+      'La comunidad Ethereum de Cali y el Pacífico colombiano. Una fundación sin ánimo de lucro que ' +
+      'enseña, investiga y construye con Ethereum — y que presta los equipos para que otros hagan lo mismo.',
+    en:
+      'The Ethereum community of Cali and the Colombian Pacific. A non-profit foundation that teaches, ' +
+      'researches and builds with Ethereum — and lends out the hardware so other people can do the same.',
+  } as Bilingual,
+
+  origin: {
+    title: { es: 'Cómo empezó', en: 'How it started' } as Bilingual,
+    body: {
+      es:
+        'Empezó en 2022, después de Devcon VI, con dos eventos y la sospecha de que en Cali había gente ' +
+        'suficiente para sostener una comunidad Ethereum. En 2023 fueron veinticinco.\n\n' +
+        'No empezó con una oficina ni con financiación. Empezó en bares, cafés y salones prestados — el ' +
+        'mapa de lugares de esta misma web sigue siendo esa lista — y con universidades que abrieron sus ' +
+        'auditorios antes de que existiera un motivo obvio para hacerlo.\n\n' +
+        'La Fundación Innovación del Pacífico es la figura legal que sostiene todo eso. Lo que se decide, ' +
+        'se decide en cadena.',
+      en:
+        'It started in 2022, after Devcon VI, with two events and a suspicion that Cali had enough people ' +
+        'to hold an Ethereum community together. In 2023 there were twenty-five.\n\n' +
+        'It did not start with an office or with funding. It started in bars, cafés and borrowed lecture ' +
+        'halls — the venue map on this site is still that list — and with universities that opened their ' +
+        'auditoriums before there was an obvious reason to.\n\n' +
+        'Fundación Innovación del Pacífico is the legal shape that holds it. What gets decided, gets ' +
+        'decided on chain.',
+    } as Bilingual,
+  },
+
+  numbers: {
+    title: { es: 'Lo que llevamos', en: 'What it adds up to' } as Bilingual,
+    lead: {
+      es: 'Contado desde el CMS, no de memoria: cada cifra sale de las mismas filas que arman las páginas de eventos.',
+      en: 'Counted from the CMS rather than from memory: every figure comes from the same rows that build the events pages.',
+    } as Bilingual,
+  },
+
+  /** What we do, stated as work rather than as values. Links out to the proof. */
+  doing: {
+    title: { es: 'Qué hacemos', en: 'What we do' } as Bilingual,
+    lead: {
+      es: 'Cuatro cosas, y cada una tiene una página donde se puede verificar.',
+      en: 'Four things, and each one has a page where you can check it.',
+    } as Bilingual,
+    items: [
+      {
+        title: { es: 'Enseñamos', en: 'We teach' } as Bilingual,
+        body: {
+          es: 'Meetups abiertos y workshops en seis universidades de la ciudad. Gratis, siempre, y sin pedir que sepas nada antes de llegar.',
+          en: 'Open meetups and workshops across six universities in the city. Free, always, and with nothing you need to know before you arrive.',
+        } as Bilingual,
+        href: '/education',
+        cta: { es: 'La ruta de aprendizaje', en: 'The learning path' } as Bilingual,
+      },
+      {
+        title: { es: 'Organizamos hackathons', en: 'We run hackathons' } as Bilingual,
+        body: {
+          es: 'Con EAG, HashKey Chain, Base, Uniswap y ETHGlobal. Lo último fue el Ethereum Builders Tour, con más de 25 hackers en menos de 48 horas.',
+          en: 'With EAG, HashKey Chain, Base, Uniswap and ETHGlobal. The latest was the Ethereum Builders Tour: 25+ hackers in under 48 hours.',
+        } as Bilingual,
+        href: '/hackathons',
+        cta: { es: 'Todos los hackathons', en: 'Every hackathon' } as Bilingual,
+      },
+      {
+        title: { es: 'Prestamos los equipos', en: 'We lend the hardware' } as Bilingual,
+        body: {
+          es: 'Proyectores, sonido, cámaras y sillas. Gratis, y no hace falta ser de ETH Cali para pedirlos — para eso los compramos.',
+          en: 'Projectors, sound, cameras and chairs. Free, and you do not have to be part of ETH Cali to ask — that is what we bought them for.',
+        } as Bilingual,
+        href: '/technical-infra',
+        cta: { es: 'Ver el inventario', en: 'See the inventory' } as Bilingual,
+      },
+      {
+        title: { es: 'Nos gobernamos en cadena', en: 'We govern on chain' } as Bilingual,
+        body: {
+          es: 'La tesorería es un Safe 3-de-5 en cinco cadenas, las decisiones se votan en Snapshot y cada dirección de esta web enlaza a su explorador.',
+          en: 'The treasury is a 3-of-5 Safe on five chains, decisions are voted on Snapshot, and every address on this site links to its explorer.',
+        } as Bilingual,
+        href: '/dao',
+        cta: { es: 'Cómo se decide', en: 'How decisions are made' } as Bilingual,
+      },
+    ],
+  },
+
+  team: {
+    title: { es: 'Quiénes lo hacen', en: 'Who does it' } as Bilingual,
+    body: {
+      es: 'Veinte personas entre fundadores, core, elite, voluntarios y quienes lo construyeron antes. Todos empezaron como alguien que llegó a un meetup.',
+      en: 'Twenty people across founders, core, elite, volunteers and the ones who built it before. Every one of them started as someone who turned up to a meetup.',
+    } as Bilingual,
+    cta: { es: 'Conocer al equipo', en: 'Meet the team' } as Bilingual,
+  },
+
+  labels: {
+    events: { es: 'Eventos', en: 'Events' } as Bilingual,
+    meetups: { es: 'Meetups', en: 'Meetups' } as Bilingual,
+    workshops: { es: 'Workshops', en: 'Workshops' } as Bilingual,
+    hackathons: { es: 'Hackathons', en: 'Hackathons' } as Bilingual,
+    hosted: { es: 'Organizados por nosotros', en: 'Run by us' } as Bilingual,
+    venues: { es: 'Lugares', en: 'Venues' } as Bilingual,
+    universities: { es: 'Universidades', en: 'Universities' } as Bilingual,
+    years: { es: 'Años', en: 'Years' } as Bilingual,
+  },
+} as const;
+
 // ── impact ──────────────────────────────────────────────────────────────────
 
 /**
