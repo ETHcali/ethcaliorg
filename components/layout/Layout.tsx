@@ -181,6 +181,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Desktop. The nav has outgrown a phone header, so below lg it moves
               into a sheet rather than scrolling sideways off the screen. */}
           <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Principal">
+            {/* Hidden below lg rather than unmounted, so its links — which is
+                every page on the site — stay in the HTML a crawler receives
+                whatever width it claims to be. */}
             {NAV.map((item) => (
               <NavEntry key={item.href} item={item} t={t} />
             ))}
@@ -214,37 +217,58 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
+        {/* The phone sheet.
+            Scrollable and capped at the viewport below the bar: five groups is
+            seventeen rows, and on a short phone in landscape the last of them
+            used to sit below the fold with no way to reach it.
+
+            Every group renders as a heading plus its children, and the heading
+            is NOT a link. Each group's parent href is also one of its children
+            — that is the invariant NAV keeps — so linking the heading too put
+            "Nosotros" directly above "Nosotros" and "Hackathons" above
+            "Hackathons". On a pointer the parent is still a real link; here the
+            child list already contains it. */}
         {menuOpen && (
           <nav
-            className="border-t border-line-hairline bg-surface-void px-gutter py-3 lg:hidden"
-            aria-label="Principal"
+            className="max-h-[calc(100vh-var(--nav-h))] overflow-y-auto overscroll-contain border-t border-line-hairline bg-surface-void px-gutter py-3 lg:hidden"
+            aria-label="Principal, móvil"
           >
-            {NAV.map((item) => (
-              <div key={item.href} className="border-b border-line-hairline/60 py-1 last:border-b-0">
-                <Link
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="block py-2 text-sm font-semibold text-content-primary"
-                >
-                  {t(item.key)}
-                </Link>
-                {item.children && (
-                  <div className="mb-1 ml-3 flex flex-col">
-                    {item.children.map((c) => (
-                      <Link
-                        key={c.href}
-                        href={c.href}
-                        onClick={() => setMenuOpen(false)}
-                        className="py-1.5 text-sm text-content-muted"
-                      >
-                        {t(c.key)}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+            {NAV.map((item) => {
+              const rows = item.children ?? [{ href: item.href, key: item.key }];
+              return (
+                <div key={item.href} className="border-b border-line-hairline/60 py-2 last:border-b-0">
+                  {item.children ? (
+                    <p className="px-1 py-1 text-[11px] font-semibold uppercase tracking-widest text-content-faint">
+                      {t(item.key)}
+                    </p>
+                  ) : null}
 
+                  <ul className="flex flex-col">
+                    {rows.map((row) => {
+                      const rowActive = current === row.href;
+                      return (
+                        <li key={row.href}>
+                          <Link
+                            href={row.href}
+                            aria-current={rowActive ? 'page' : undefined}
+                            onClick={() => setMenuOpen(false)}
+                            className={`flex min-h-tap items-center rounded-chip px-1 text-sm transition-colors ${
+                              rowActive
+                                ? 'font-semibold text-eth-blue-text'
+                                : item.children
+                                  ? 'text-content-secondary'
+                                  : 'font-semibold text-content-primary'
+                            }`}
+                          >
+                            {t(row.key)}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              );
+            })}
           </nav>
         )}
       </header>

@@ -42,6 +42,11 @@ export default function NavEntry({
   const ref = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number>();
 
+  // Derived from the href rather than useId(): it has to be identical on the
+  // server and the client, and it is the one string on this component that is
+  // already unique per entry.
+  const panelId = `nav-${item.href.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
+
   // A group can gather pages that share no path prefix — Nosotros holds /about,
   // /dao, /venues and /technical-infra — so the parent also lights up when the
   // current route is one of its children. Prefix matching alone left the bar
@@ -111,6 +116,12 @@ export default function NavEntry({
         // crossing the gap between the trigger and the panel.
         closeTimer.current = window.setTimeout(() => setOpen(false), 120);
       }}
+      // Tabbing past the last child used to leave the panel hanging open behind
+      // the cursor. relatedTarget is where focus went; inside the group it is
+      // still ours, and null (window blur) is not a reason to close.
+      onBlur={(e) => {
+        if (e.relatedTarget && !e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false);
+      }}
     >
       <div className="flex items-center">
         <Link
@@ -121,13 +132,18 @@ export default function NavEntry({
         >
           {t(item.key)}
         </Link>
+        {/* `aria-haspopup="menu"` and the role="menu"/"menuitem" pair that used
+            to go with it promise an application menu: a screen reader announces
+            one and its user reaches for the arrow keys, which do nothing here.
+            This is a list of links. `aria-expanded` and `aria-controls` are the
+            whole of what it needs to say. */}
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          aria-haspopup="menu"
+          aria-controls={panelId}
           aria-label={`${t(item.key)} — submenú`}
-          className="-ml-1.5 flex h-8 w-6 items-center justify-center text-content-faint transition-colors hover:text-content-primary"
+          className="-ml-1.5 flex h-8 w-6 shrink-0 items-center justify-center text-content-faint transition-colors hover:text-content-primary"
         >
           <svg
             viewBox="0 0 12 12"
@@ -142,18 +158,29 @@ export default function NavEntry({
         </button>
       </div>
 
-      {open && (
-        <div
-          role="menu"
-          className="absolute left-0 top-full z-50 min-w-[190px] overflow-hidden rounded-card border border-line-hairline bg-surface-slab py-1 shadow-lg shadow-black/40"
-        >
-          {item.children.map((child) => {
-            const childActive = router.asPath.split('?')[0] === child.href;
-            return (
+      {/* Always in the DOM, hidden with the `hidden` attribute rather than
+          unmounted.
+
+          Mounting this only when `open` meant the children existed nowhere in
+          the server-rendered HTML — a crawler never hovers. When the loose
+          pages moved out of the footer and into these menus, /dao, /venues,
+          /technical-infra, /swag, /brand-guidelines and the winners page lost
+          every internal link on the site in one commit and were left findable
+          only through the sitemap. `hidden` keeps the anchors in the markup and
+          out of the accessibility tree and the tab order, which is what we
+          wanted from the conditional in the first place. */}
+      <ul
+        id={panelId}
+        hidden={!open}
+        className="absolute left-0 top-full z-50 min-w-[190px] overflow-hidden rounded-card border border-line-hairline bg-surface-slab py-1 shadow-lg shadow-black/40"
+      >
+        {item.children.map((child) => {
+          const childActive = path === child.href;
+          return (
+            <li key={child.href}>
               <Link
-                key={child.href}
                 href={child.href}
-                role="menuitem"
+                aria-current={childActive ? 'page' : undefined}
                 onClick={() => {
                   setOpen(false);
                   onNavigate?.();
@@ -166,10 +193,10 @@ export default function NavEntry({
               >
                 {t(child.key)}
               </Link>
-            );
-          })}
-        </div>
-      )}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
