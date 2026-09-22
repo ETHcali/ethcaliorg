@@ -31,7 +31,6 @@ import { clamp } from '../lib/descriptions';
 import { asLocale, formatDate, formatDateRange, type Locale } from '../lib/i18n';
 import { appEntry } from '../lib/links';
 
-
 interface Props {
   locale: Locale;
 }
@@ -168,7 +167,9 @@ function Cta({
     <>
       <span className="text-sm font-bold">{label} →</span>
       {note && (
-        <span className={`mt-0.5 text-xs ${tone === 'brand' ? 'text-on-brand/80' : 'text-content-muted'}`}>
+        <span
+          className={`mt-0.5 text-xs ${tone === 'brand' ? 'text-on-brand/80' : 'text-content-muted'}`}
+        >
           {note}
         </span>
       )}
@@ -205,10 +206,11 @@ export default function BuildersTour({ locale }: Props) {
         // last clause will be cut mid-word.
         description={clamp(t(TOUR.tagline))}
         path="/builders-tour"
-        // The share card is the tour's own poster, not the mission artwork.
-        // This is what appears in a Facebook ad and a WhatsApp forward, so it
-        // should say Ethereum Builders Tour rather than show a dragon.
-        image="/tour/eag-builders-tour.jpg"
+        // The share card is this stop's own banner, not the mission artwork
+        // and not EAG's global tour banner. This is what appears in a Facebook
+        // ad and a WhatsApp forward, so it should say Cali and the dates.
+        image={TOUR.banner.src}
+        imageSize={TOUR.banner}
         type="article"
         jsonLd={[
           tourEventJsonLd(
@@ -220,7 +222,7 @@ export default function BuildersTour({ locale }: Props) {
               registrationUrl: TOUR.registration.luma.url,
             },
             clamp(t(TOUR.tagline)),
-            '/tour/builders-tour-colombia.jpg',
+            TOUR.banner.src,
             locale
           ),
           breadcrumbJsonLd(
@@ -344,14 +346,17 @@ export default function BuildersTour({ locale }: Props) {
         <div className="relative mt-10 overflow-hidden rounded-card border border-line-brand">
           <div
             className="pointer-events-none absolute -inset-8 blur-2xl"
-            style={{ background: 'radial-gradient(ellipse at 50% 120%, var(--eth-blue-wash), transparent 70%)' }}
+            style={{
+              background:
+                'radial-gradient(ellipse at 50% 120%, var(--eth-blue-wash), transparent 70%)',
+            }}
             aria-hidden
           />
           <Image
-            src="/tour/builders-tour-colombia.jpg"
-            alt="Ethereum Builders Tour @Colombia — Cali, 19–20 de septiembre de 2026. Host: EAG. Sponsor: HashKey Chain. Co-host: ETH Cali. Partners: Ekinoxis, Devcon VIII India"
-            width={1600}
-            height={900}
+            src={TOUR.banner.src}
+            alt={TOUR.banner.alt}
+            width={TOUR.banner.width}
+            height={TOUR.banner.height}
             sizes="(min-width: 1024px) 1000px, 92vw"
             className="relative h-auto w-full"
             priority
@@ -481,10 +486,7 @@ export default function BuildersTour({ locale }: Props) {
               {(s.proof || s.x) && (
                 <span className="mt-1.5 flex flex-wrap items-center justify-center gap-x-3 text-[11px]">
                   {s.proof && (
-                    <a
-                      href={s.proof}
-                      className="font-semibold text-eth-blue-text hover:underline"
-                    >
+                    <a href={s.proof} className="font-semibold text-eth-blue-text hover:underline">
                       {en ? 'see it' : 'ver'} →
                     </a>
                   )}
@@ -551,17 +553,24 @@ export default function BuildersTour({ locale }: Props) {
             )}
           </div>
         ))}
-
       </Section>
 
       {/* ── tracks ───────────────────────────────────────────────────────── */}
-      <Section id="tracks" eyebrow={t(COPY.tracks)} title={t(COPY.tracks)} lead={t(COPY.tracksLead)}>
+      <Section
+        id="tracks"
+        eyebrow={t(COPY.tracks)}
+        title={t(COPY.tracks)}
+        lead={t(COPY.tracksLead)}
+      >
         <h3 className="text-xs font-bold uppercase tracking-widest text-content-faint">
           EAG · 6 tracks
         </h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {EAG_TRACKS.map((track) => (
-            <div key={track.name} className="rounded-card border border-line-hairline bg-surface-slab p-5">
+            <div
+              key={track.name}
+              className="rounded-card border border-line-hairline bg-surface-slab p-5"
+            >
               <TrackMark track={track.name} />
               <h4 className="mt-3 text-sm font-bold leading-snug text-content-primary">
                 {track.name}
@@ -587,7 +596,12 @@ export default function BuildersTour({ locale }: Props) {
       </Section>
 
       {/* ── schedule ─────────────────────────────────────────────────────── */}
-      <Section id="schedule" eyebrow={t(COPY.schedule)} title={t(COPY.schedule)} lead={t(COPY.scheduleLead)}>
+      <Section
+        id="schedule"
+        eyebrow={t(COPY.schedule)}
+        title={t(COPY.schedule)}
+        lead={t(COPY.scheduleLead)}
+      >
         <div className="grid gap-8 lg:grid-cols-2">
           {SCHEDULE.map((day) => (
             <div key={day.date}>
@@ -639,7 +653,12 @@ export default function BuildersTour({ locale }: Props) {
       </Section>
 
       {/* ── prizes ───────────────────────────────────────────────────────── */}
-      <Section id="prizes" eyebrow={t(COPY.prizes)} title={t(COPY.prizes)} lead={t(COPY.prizesLead)}>
+      <Section
+        id="prizes"
+        eyebrow={t(COPY.prizes)}
+        title={t(COPY.prizes)}
+        lead={t(COPY.prizesLead)}
+      >
         <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
           {PRIZES.map((track) => (
             <div
@@ -709,43 +728,41 @@ export default function BuildersTour({ locale }: Props) {
         <p className="mt-2 max-w-prose text-sm text-content-secondary">{t(PAYOUT.note)}</p>
 
         <div className="mt-4">
-        <div className="grid gap-4 lg:grid-cols-2">
-          <div className="flex items-center gap-5 rounded-card border border-line-hairline bg-surface-slab p-6">
-            <Image
-              src={PAYOUT.logo}
-              alt={PAYOUT.token}
-              width={64}
-              height={64}
-              sizes="64px"
-              className="h-16 w-16 shrink-0"
-            />
-            <div>
-              <p className="mono text-2xl font-bold text-content-primary">{PAYOUT.token}</p>
-              <p className="mono mt-1 text-sm text-content-muted">{t(PAYOUT.chain)}</p>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="flex items-center gap-5 rounded-card border border-line-hairline bg-surface-slab p-6">
+              <Image
+                src={PAYOUT.logo}
+                alt={PAYOUT.token}
+                width={64}
+                height={64}
+                sizes="64px"
+                className="h-16 w-16 shrink-0"
+              />
+              <div>
+                <p className="mono text-2xl font-bold text-content-primary">{PAYOUT.token}</p>
+                <p className="mono mt-1 text-sm text-content-muted">{t(PAYOUT.chain)}</p>
+              </div>
             </div>
-          </div>
 
-          <div className="rounded-card border border-line-brand bg-eth-blue-wash p-6">
-            <h3 className="text-lg font-bold text-content-primary">
-              {t(PAYOUT.noWallet.title)}
-            </h3>
-            <p className="mt-2 max-w-prose text-sm leading-relaxed text-content-secondary">
-              {t(PAYOUT.noWallet.body)}
-            </p>
-            {/* `appEntry('/wallet')` rather than the app's home page: this
+            <div className="rounded-card border border-line-brand bg-eth-blue-wash p-6">
+              <h3 className="text-lg font-bold text-content-primary">{t(PAYOUT.noWallet.title)}</h3>
+              <p className="mt-2 max-w-prose text-sm leading-relaxed text-content-secondary">
+                {t(PAYOUT.noWallet.body)}
+              </p>
+              {/* `appEntry('/wallet')` rather than the app's home page: this
                 block is addressed to a winner who has no wallet, so the
                 destination is the wallet, and the entry carries it through the
                 sign-in instead of dropping them on a landing page. */}
-            <a
-              href={appEntry('/wallet')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex min-h-tap items-center rounded-control bg-eth-blue px-5 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
-            >
-              {t(PAYOUT.noWallet.cta)} →
-            </a>
+              <a
+                href={appEntry('/wallet')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex min-h-tap items-center rounded-control bg-eth-blue px-5 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
+              >
+                {t(PAYOUT.noWallet.cta)} →
+              </a>
+            </div>
           </div>
-        </div>
         </div>
       </Section>
 
@@ -882,7 +899,8 @@ export default function BuildersTour({ locale }: Props) {
         {/* The mission is how a winner actually gets to Mumbai, so it sits under
             Devcon rather than in a section of its own. */}
         <h3 className="mt-10 text-xs font-bold uppercase tracking-widest text-content-faint">
-          {SHANHAIWOO.name} · {en ? 'three cities, one journey' : 'tres ciudades, un solo recorrido'}
+          {SHANHAIWOO.name} ·{' '}
+          {en ? 'three cities, one journey' : 'tres ciudades, un solo recorrido'}
         </h3>
 
         {/* Same treatment as the Devcon banner above: the artwork runs full
@@ -980,7 +998,6 @@ export default function BuildersTour({ locale }: Props) {
             </div>
           </div>
         </div>
-
       </Section>
 
       {/* ── venue ────────────────────────────────────────────────────────── */}
@@ -1064,7 +1081,9 @@ export default function BuildersTour({ locale }: Props) {
       <section className="border-t border-line-hairline py-12 sm:py-16">
         <div className="mx-auto max-w-page px-gutter">
           <h2 className="text-3xl">{t(COPY.ctaFinal)}</h2>
-          <p className="mt-2 max-w-prose text-base text-content-secondary">{t(COPY.ctaFinalLead)}</p>
+          <p className="mt-2 max-w-prose text-base text-content-secondary">
+            {t(COPY.ctaFinalLead)}
+          </p>
 
           <div className="mt-7 grid gap-3 sm:max-w-2xl sm:grid-cols-2">
             <Cta
