@@ -50,3 +50,79 @@
     border-radius: 4px;
   }
 }
+
+/* ── Leaflet, in the dark ───────────────────────────────────────────────────
+   Leaflet ships a light theme: white popups, white zoom buttons, a white
+   attribution bar. Dropped into this site unchanged, the venues map would put
+   three bright white rectangles on a page that is otherwise ink. Its own
+   stylesheet is imported in _app.tsx before this file, so these win. */
+
+.leaflet-container {
+  background: var(--surface-inset);
+  font-family: var(--font-sans);
+  outline: none;
+}
+
+/* OpenStreetMap serves one tile set and it is a light one. Inverting the tile
+   pane turns it into a dark basemap without a key, an account or a second
+   provider — CARTO's dark tiles now watermark "API KEY REQUIRED" across
+   themselves for anyone without one.
+
+   The hue rotation is what keeps it from looking like a photo negative: invert
+   alone turns green parks magenta and blue water orange, and rotating the hue
+   180° puts them back. Saturation comes down because a dark map should sit
+   behind the markers rather than argue with them.
+
+   Scoped to the tile pane on purpose. Markers, popups and controls live in
+   other panes and must not be inverted — a marker drawn in ultramarine would
+   come out yellow. */
+.leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.88) saturate(0.55);
+}
+
+.leaflet-control-zoom a,
+.leaflet-control-attribution {
+  background: var(--surface-slab);
+  color: var(--text-muted);
+  border-color: var(--line-hairline);
+}
+
+.leaflet-control-zoom a:hover {
+  background: var(--surface-ridge);
+  color: var(--text-primary);
+}
+
+.leaflet-control-attribution a {
+  color: var(--text-secondary);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--surface-slab);
+  color: var(--text-primary);
+  border: 1px solid var(--line-hairline);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%);
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.leaflet-popup-content a {
+  color: var(--eth-blue-text);
+}
+
+.leaflet-popup-content .venue-kind {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--text-muted);
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: var(--text-primary);
+}
