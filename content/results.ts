@@ -569,42 +569,6 @@ export const resultsLead = (locale: 'es' | 'en'): string =>
       'software de código abierto.';
 
 /**
- * The lead over the rest of the room.
- *
- * Two things it deliberately does not say. It does not claim a submission
- * order — the order these sit in is the order we were handed the links, and
- * Devfolio does not publish timestamps we read, so "in the order they were
- * submitted" was a fact we never had.
- *
- * And it does not call them losers. One of them is still on the HashKey Chain
- * track with three places undecided, and that count is computed rather than
- * written down so it corrects itself the moment a slot is filled in.
- */
-export const othersLead = (locale: 'es' | 'en'): string => {
-  const stillIn = OTHERS.filter((p) => p.tracks.includes(HSK.trackTag)).length;
-  const open = HSK.slots.some((s) => s.slug === null);
-  // While HashKey's track is open the list is measured against EAG's five;
-  // once it is decided, against every place on the page.
-  const places = RESULTS.prize.winners + HSK.slots.length;
-
-  if (locale === 'en') {
-    const base = open
-      ? `The other ${OTHERS.length} projects submitted from Cali, which are not among EAG's ${RESULTS.prize.winners}.`
-      : `The other ${OTHERS.length} projects submitted from Cali, which did not take one of the ${places} places above.`;
-    return stillIn && open
-      ? `${base} ${stillIn === 1 ? 'One of them is' : `${stillIn} of them are`} still in the running on the HashKey Chain track.`
-      : base;
-  }
-
-  const base = open
-    ? `Los otros ${OTHERS.length} proyectos que se entregaron desde Cali, que no entraron en los ${RESULTS.prize.winners} de EAG.`
-    : `Los otros ${OTHERS.length} proyectos que se entregaron desde Cali, que no se llevaron ninguno de los ${places} puestos de arriba.`;
-  return stillIn && open
-    ? `${base} ${stillIn === 1 ? 'Uno de ellos sigue' : `${stillIn} de ellos siguen`} en carrera por el track de HashKey Chain.`
-    : base;
-};
-
-/**
  * Where the weekend was streamed.
  *
  * Both days went out live on two platforms at once. The YouTube recording can be
@@ -737,6 +701,21 @@ export const RESULTS_COPY = {
   othersTitle: {
     es: '¡Conoce más proyectos participantes!',
     en: 'Meet more of the projects that took part',
+  } as Bilingual,
+  /**
+   * Written, not counted. This used to be a computed sentence — "the other 7
+   * projects, which did not take one of the 8 places above" — and it was
+   * accurate the way a consolation bracket is accurate. William rewrote it
+   * as the invitation it was always meant to be, and it no longer needs a
+   * number in it to be true.
+   */
+  othersLead: {
+    es:
+      'Conoce más proyectos que también participaron en este evento y entregaron desde Cali ' +
+      'ideas emocionantes. ¡Proyectos en la verdadera frontera tecnológica!',
+    en:
+      'Meet more projects that also took part in this event and shipped exciting ideas from Cali. ' +
+      'Projects on the real technological frontier!',
   } as Bilingual,
   onDevfolio: { es: 'Ver en Devfolio', en: 'View on Devfolio' } as Bilingual,
   code: { es: 'Código', en: 'Code' } as Bilingual,

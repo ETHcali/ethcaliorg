@@ -18,7 +18,6 @@ import {
   HSK_ENTRANTS,
   HSK_STACKED,
   resultsLead,
-  othersLead,
   projectBySlug,
   devfolioUrl,
   devfolioProfile,
@@ -462,7 +461,7 @@ export default function Winners({ locale }: Props) {
         </div>
       </Section>
 
-      <Section id="projects" title={t(RESULTS_COPY.othersTitle)} lead={othersLead(locale)}>
+      <Section id="projects" title={t(RESULTS_COPY.othersTitle)} lead={t(RESULTS_COPY.othersLead)}>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {OTHERS.map((project) => (
             <ProjectCard key={project.slug} project={project} t={t} />
