@@ -23,7 +23,6 @@ import {
   devfolioUrl,
   devfolioProfile,
   type Project,
-  type HskSlot,
 } from '../../content/results';
 
 interface Props {
@@ -51,47 +50,73 @@ function Out({ href, children }: { href: string; children: React.ReactNode }) {
 /**
  * The credit line.
  *
- * Names are the point of this page, so they are rendered at body size rather
- * than as metadata, and each one links to the profile that proves it. A member
- * without a Devfolio handle is still named — the submission is the record, and
- * some of them were entered without one.
+ * Names are the point of this page, so they get an eyebrow of their own, the
+ * way the tracks do, and are rendered at body size rather than as metadata.
+ * Each one links to the Devfolio profile that proves it and looks like a link:
+ * primary text, underlined in the brand colour, with an outbound mark. It was
+ * plain text with a hover, which is a link only to someone who happens to
+ * move the mouse over it, and nobody does that on a phone.
+ *
+ * A member without a Devfolio handle is still named — the submission is the
+ * record, and some of them were entered without one.
  */
-function Team({ team }: { team: Project['team'] }) {
+function Team({ team, t }: { team: Project['team']; t: (b: Bilingual) => string }) {
   return (
-    <p className="mt-3 text-sm text-content-secondary">
-      {team.map((m, i) => (
-        <span key={m.name}>
-          {i > 0 && <span className="text-content-faint"> · </span>}
-          {m.handle ? (
-            <a
-              href={devfolioProfile(m.handle)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-eth-blue-text"
-            >
-              {m.name}
-            </a>
-          ) : (
-            m.name
-          )}
-        </span>
-      ))}
-    </p>
+    <div className="mt-4">
+      <p className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
+        {t(RESULTS_COPY.teamLabel)}
+      </p>
+      <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-sm">
+        {team.map((m) => (
+          <li key={m.name}>
+            {m.handle ? (
+              <a
+                href={devfolioProfile(m.handle)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-content-primary underline decoration-line-brand decoration-1 underline-offset-4 transition-colors hover:text-eth-blue-text hover:decoration-eth-blue"
+              >
+                {m.name}
+                <span className="ml-0.5 text-[10px] text-content-muted" aria-hidden>
+                  ↗
+                </span>
+              </a>
+            ) : (
+              <span className="text-content-secondary">{m.name}</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
-function Tracks({ tracks }: { tracks: readonly string[] }) {
+/**
+ * The tracks a project entered, and they are not metadata.
+ *
+ * They were hairline chips in the faintest text on the page, which is how you
+ * style a tag nobody is meant to read. A track is what the project is *for* —
+ * agent economy, open hardware, real-world Ethereum — and on this page it is
+ * also which juries saw it. So they get the brand wash and an eyebrow, and
+ * they sit directly under the tagline rather than after the blurb.
+ */
+function Tracks({ tracks, t }: { tracks: readonly string[]; t: (b: Bilingual) => string }) {
   return (
-    <ul className="mt-4 flex flex-wrap gap-1.5">
-      {tracks.map((track) => (
-        <li
-          key={track}
-          className="rounded-chip border border-line-hairline px-2.5 py-1 text-[11px] text-content-muted"
-        >
-          {track}
-        </li>
-      ))}
-    </ul>
+    <div className="mt-4">
+      <p className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
+        {t(RESULTS_COPY.tracksLabel)}
+      </p>
+      <ul className="mt-1.5 flex flex-wrap gap-1.5">
+        {tracks.map((track) => (
+          <li
+            key={track}
+            className="rounded-chip border border-line-brand bg-eth-blue-wash px-2.5 py-1 text-[11px] font-semibold text-eth-blue-text"
+          >
+            {track}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
@@ -108,55 +133,111 @@ function Links({ project, t }: { project: Project; t: (b: Bilingual) => string }
 }
 
 /**
- * A winner, with the photograph taken when they presented.
+ * One place on a podium — EAG's or HashKey Chain's, filled or reserved.
  *
- * The photo is the reason this page exists rather than a list of links: a
- * ranking is a table, but the people who built the thing are a room. It leads
- * the card on mobile and sits beside it from `lg` up, alternating sides so five
- * stacked cards do not read as a template.
+ * There used to be two cards. EAG's five were full-width, photo beside text,
+ * each about a screen tall; HashKey's three were small, photo on top, with no
+ * blurb and no tracks. Two juries, two shapes, and the second read as a
+ * footnote to the first even though its top prize is the biggest on the page.
+ *
+ * This is the one card both podiums use now, and its shape is the one the EAG
+ * card already had on a phone: photo on top, then place and prize, name,
+ * tagline, tracks, team, the full blurb, links. Every place on the page carries
+ * the same facts in the same order, and a phone reader sees exactly what they
+ * saw before — the change is that a laptop now shows three of these in a row
+ * instead of one stretched across the screen.
+ *
+ * `also` is the place this project took on the other podium, if it took one.
+ * Two projects won with both juries, and the same photo twice on one page
+ * needs a sentence saying so.
+ *
+ * An empty slot keeps the frame: place and prize are known, the middle says
+ * "to be announced", and the border is dashed. `signal-pending` is amber and
+ * means waiting, which is exactly what it is.
  */
-function WinnerCard({
+function PrizeCard({
   project,
+  place,
+  prize,
+  token,
+  also,
   t,
-  flip,
 }: {
-  project: Project & { place: number };
+  project: Project | null;
+  place: number;
+  prize: number;
+  token: string;
+  also?: { label: string; href: string };
   t: (b: Bilingual) => string;
-  flip: boolean;
 }) {
   return (
-    <article className="overflow-hidden rounded-card border border-line-hairline bg-surface-slab">
-      <div className={`grid lg:grid-cols-2 ${flip ? 'lg:[&>*:first-child]:order-2' : ''}`}>
-        {project.photo && (
-          <Image
-            src={project.photo}
-            alt={`${project.name} — ${RESULTS.hackathon}, Cali`}
-            width={1280}
-            height={960}
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="h-56 w-full object-cover sm:h-72 lg:h-full"
-          />
-        )}
+    <article
+      className={`flex flex-col overflow-hidden rounded-card bg-surface-slab ${
+        project ? 'border border-line-brand' : 'border border-dashed border-line-hairline'
+      }`}
+    >
+      {project?.photo && (
+        <Image
+          src={project.photo}
+          alt={`${project.name} — ${RESULTS.hackathon}, Cali`}
+          width={1280}
+          height={960}
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          className="aspect-[4/3] w-full object-cover"
+        />
+      )}
 
-        <div className="p-6 sm:p-8">
-          <div className="flex items-baseline gap-3">
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="flex items-baseline justify-between gap-3">
+          <div className="flex items-baseline gap-2">
             {/* The rank as a numeral, monospaced: it is a result, not a heading. */}
-            <span className="mono text-3xl font-bold text-eth-blue-text">{project.place}</span>
+            <span className="mono text-3xl font-bold text-eth-blue-text">{place}</span>
             <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
               {t(RESULTS_COPY.placeLabel)}
             </span>
           </div>
-
-          <h3 className="mt-3 text-2xl">{project.name}</h3>
-          <p className="mt-1 text-base text-eth-blue-text">{t(project.tagline)}</p>
-
-          <Team team={project.team} />
-
-          <p className="mt-4 text-sm leading-relaxed text-content-secondary">{t(project.blurb)}</p>
-
-          <Tracks tracks={project.tracks} />
-          <Links project={project} t={t} />
+          <span className="mono text-sm font-bold text-content-primary">
+            {prize} {token}
+          </span>
         </div>
+
+        {project ? (
+          <>
+            <h3 className="mt-3 text-xl sm:text-2xl">{project.name}</h3>
+            <p className="mt-1 text-base text-eth-blue-text">{t(project.tagline)}</p>
+            {also && (
+              <a
+                href={also.href}
+                className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-content-secondary transition-colors hover:text-content-primary"
+              >
+                <span
+                  className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal-confirmed"
+                  aria-hidden
+                />
+                {also.label}
+              </a>
+            )}
+
+            <Tracks tracks={project.tracks} t={t} />
+            <Team team={project.team} t={t} />
+
+            <p className="mt-4 text-sm leading-relaxed text-content-secondary">
+              {t(project.blurb)}
+            </p>
+
+            <div className="mt-auto">
+              <Links project={project} t={t} />
+            </div>
+          </>
+        ) : (
+          // Centred rather than pushed to the bottom: a reserved place beside a
+          // filled one is a short card next to a tall one, and `mt-auto` would
+          // strand the label at the foot of a column of nothing.
+          <p className="flex flex-1 items-center justify-center gap-2 py-10 text-sm text-content-muted">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal-pending" aria-hidden />
+            {t(RESULTS_COPY.hskAwaiting)}
+          </p>
+        )}
       </div>
     </article>
   );
@@ -168,82 +249,10 @@ function ProjectCard({ project, t }: { project: Project; t: (b: Bilingual) => st
     <article className="flex flex-col rounded-card border border-line-hairline bg-surface-slab p-5">
       <h3 className="text-lg">{project.name}</h3>
       <p className="mt-1 text-sm text-eth-blue-text">{t(project.tagline)}</p>
-      <Team team={project.team} />
+      <Tracks tracks={project.tracks} t={t} />
+      <Team team={project.team} t={t} />
       <p className="mt-3 flex-1 text-sm leading-relaxed text-content-muted">{t(project.blurb)}</p>
-      <Tracks tracks={project.tracks} />
       <Links project={project} t={t} />
-    </article>
-  );
-}
-
-/**
- * One place on the HashKey Chain track — filled, or reserved.
- *
- * The two states are deliberately the same card at the same height: the place
- * and the amount are known either way, and only the middle changes. An empty
- * slot that collapsed to a thin strip would read as an afterthought rather than
- * as a result that has not arrived, and the row would reflow the day one lands.
- *
- * The border is dashed while empty and solid once filled. That is the only
- * signal colour decision here — `signal-pending` is amber and means waiting,
- * which is exactly what this is.
- *
- * A filled slot leads with the showcase photograph, for the reason the EAG
- * cards do: a prize is a line in a table, the team that took it is a room.
- * Three columns instead of one, so the photo sits on top rather than beside.
- */
-function HskSlotCard({ slot, t }: { slot: HskSlot; t: (b: Bilingual) => string }) {
-  const project = slot.slug ? projectBySlug(slot.slug) : null;
-
-  return (
-    <article
-      className={`flex min-h-[200px] flex-col overflow-hidden rounded-card bg-surface-slab ${
-        project ? 'border border-line-brand' : 'border border-dashed border-line-hairline'
-      }`}
-    >
-      {project?.photo && (
-        <Image
-          src={project.photo}
-          alt={`${project.name} — ${HSK.sponsor}, ${RESULTS.hackathon}, Cali`}
-          width={1280}
-          height={960}
-          sizes="(min-width: 1024px) 33vw, 100vw"
-          className="h-48 w-full object-cover"
-        />
-      )}
-
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-baseline justify-between gap-3">
-          <div className="flex items-baseline gap-2">
-            <span className="mono text-3xl font-bold text-eth-blue-text">{slot.place}</span>
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
-              {t(RESULTS_COPY.placeLabel)}
-            </span>
-          </div>
-          <span className="mono text-sm font-bold text-content-primary">
-            {slot.prize} {HSK.token}
-          </span>
-        </div>
-
-        {project ? (
-          <>
-            <h3 className="mt-4 text-lg">{project.name}</h3>
-            <p className="mt-1 text-sm text-eth-blue-text">{t(project.tagline)}</p>
-            <Team team={project.team} />
-            <div className="mt-auto pt-4">
-              <Links project={project} t={t} />
-            </div>
-          </>
-        ) : (
-          // Centred rather than pushed to the bottom. Once one place is filled it
-          // is a tall card next to two short ones, and `mt-auto` would strand the
-          // label at the foot of a column of nothing.
-          <p className="flex flex-1 items-center justify-center gap-2 py-6 text-sm text-content-muted">
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal-pending" aria-hidden />
-            {t(RESULTS_COPY.hskAwaiting)}
-          </p>
-        )}
-      </div>
     </article>
   );
 }
@@ -323,10 +332,29 @@ export default function Winners({ locale }: Props) {
         title={t(RESULTS_COPY.winnersTitle)}
         lead={t(RESULTS_COPY.podiumLead)}
       >
-        <div className="grid gap-6">
-          {WINNERS.map((project, i) => (
-            <WinnerCard key={project.slug} project={project} t={t} flip={i % 2 === 1} />
-          ))}
+        {/* Three across on a laptop, two on a tablet, one on a phone — the
+            same grid the HashKey section uses, so five places and three
+            places are visibly the same kind of thing. */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {WINNERS.map((project) => {
+            const hsk = HSK.slots.find((s) => s.slug === project.slug);
+            return (
+              <PrizeCard
+                key={project.slug}
+                project={project}
+                place={project.place}
+                prize={RESULTS.prize.each}
+                token={RESULTS.prize.token}
+                also={
+                  hsk && {
+                    label: t(RESULTS_COPY.alsoHsk).replace('{n}', String(hsk.place)),
+                    href: '#hashkey',
+                  }
+                }
+                t={t}
+              />
+            );
+          })}
         </div>
       </Section>
 
@@ -342,10 +370,28 @@ export default function Winners({ locale }: Props) {
         title={t(RESULTS_COPY.hskTitle)}
         lead={t(HSK_ANNOUNCED ? RESULTS_COPY.hskLeadAnnounced : RESULTS_COPY.hskLeadPending)}
       >
-        <div className="grid gap-4 lg:grid-cols-3">
-          {HSK.slots.map((slot) => (
-            <HskSlotCard key={slot.place} slot={slot} t={t} />
-          ))}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {HSK.slots.map((slot) => {
+            const project = slot.slug ? projectBySlug(slot.slug) : null;
+            return (
+              <PrizeCard
+                key={slot.place}
+                project={project}
+                place={slot.place}
+                prize={slot.prize}
+                token={HSK.token}
+                also={
+                  project?.place
+                    ? {
+                        label: t(RESULTS_COPY.alsoEag).replace('{n}', String(project.place)),
+                        href: '#podium',
+                      }
+                    : undefined
+                }
+                t={t}
+              />
+            );
+          })}
         </div>
 
         <p className="mt-6 text-sm text-content-muted">
