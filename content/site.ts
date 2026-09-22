@@ -375,8 +375,9 @@ export interface SwagGroup {
  *
  * Aspect ratios differ by group and sometimes within one — the caps are 9:16
  * product shots except the Privacy collection, which is a landscape pair
- * showing front and back. The page contains rather than crops, so a cap is
- * never beheaded to fit a square.
+ * showing front and back, and the Uniswap × Cali tee is 4470×3238 against the
+ * others' 1024. The page contains rather than crops, so a cap is never beheaded
+ * to fit a square and a wide shot is never cut in half.
  */
 export const SWAG_GROUPS: readonly SwagGroup[] = [
   {
@@ -491,13 +492,43 @@ export const SWAG_GROUPS: readonly SwagGroup[] = [
   {
     id: 'tshirts',
     name: { es: 'Camisetas', en: 'T-shirts' },
-    items: [],
-    // Announced rather than omitted: an empty group says a camiseta is coming,
-    // where leaving it out says we do not make them.
-    pending: {
-      es: 'En preparación. Pronto.',
-      en: 'In the works. Soon.',
-    },
+    items: [
+      {
+        // The only one that is about Cali rather than about Ethereum, and the
+        // only black one, so it leads.
+        name: { es: 'Camiseta Uniswap × Cali', en: 'Uniswap × Cali t-shirt' },
+        detail: {
+          es: 'El unicornio al pecho y Cali a la espalda: el Gato del Río, Cristo Rey, las iglesias y el río, en una línea rosada.',
+          en: 'The unicorn on the chest and Cali on the back: the Gato del Río, Cristo Rey, the churches and the river, in one pink line.',
+        },
+        image: '/swags/tshirt-uniswap-cali.png',
+        tags: [{ es: 'Oversized', en: 'Oversized' }, { es: 'Frente y espalda', en: 'Front and back' }],
+      },
+      {
+        name: { es: 'Camiseta Impacto', en: 'Impact t-shirt' },
+        detail: {
+          es: 'El octaedro al pecho y las manos sosteniéndolo a la espalda — la misma ilustración del hoodie crudo.',
+          en: 'The octahedron on the chest and the hands holding it on the back — the same illustration as the undyed hoodie.',
+        },
+        image: '/swags/tshirt-impact.png',
+        tags: [{ es: 'Frente y espalda', en: 'Front and back' }],
+      },
+      {
+        name: { es: 'Camiseta Robot', en: 'Robot t-shirt' },
+        detail: {
+          es: 'Un robot armado con bloques, a la espalda. Para el track de smart devices y hardware abierto.',
+          en: 'A robot built out of blocks, on the back. For the smart devices and open hardware track.',
+        },
+        image: '/swags/tshirt-robot.png',
+        tags: [{ es: 'Frente y espalda', en: 'Front and back' }],
+      },
+      {
+        name: { es: 'Camiseta Doge — Merkle Collection', en: 'Doge t-shirt — Merkle Collection' },
+        detail: { es: 'El doge en su escritorio. Edición global limitada.', en: 'The doge at his desk. Limited global release.' },
+        image: '/swags/tshirt-doge-merkle.png',
+        tags: [{ es: 'Edición limitada', en: 'Limited edition' }, { es: 'Frente y espalda', en: 'Front and back' }],
+      },
+    ],
   },
 ];
 
