@@ -45,6 +45,13 @@ export interface BrandAsset {
   files: readonly BrandFile[];
 }
 
+/**
+ * Every lockup shipped as PNG only; the vector existed as a sheet of all six at
+ * once, so anyone who wanted the horizontal mark at billboard size had to open
+ * the sheet and cut it out. `scripts/split-logo-sheet.mts` does that cut once,
+ * reproducibly — see its header for how the split is verified. SVG is listed
+ * first in each card because it is the one to reach for.
+ */
 export const LOGOS: readonly BrandAsset[] = [
   {
     id: 'glyph',
@@ -74,6 +81,7 @@ export const LOGOS: readonly BrandAsset[] = [
     previewWidth: 334,
     previewHeight: 227,
     files: [
+      { path: '/branding/ethcali-horizontal-on-dark.svg', download: 'ethcali-horizontal-on-dark.svg', format: 'SVG' },
       { path: '/branding/ethcali-horizontal-light.png', download: 'ethcali-horizontal-on-dark.png', format: 'PNG', dimensions: '334 × 227' },
     ],
   },
@@ -89,6 +97,7 @@ export const LOGOS: readonly BrandAsset[] = [
     previewHeight: 668,
     plate: true,
     files: [
+      { path: '/branding/ethcali-horizontal-on-light.svg', download: 'ethcali-horizontal-on-light.svg', format: 'SVG' },
       { path: '/branding/Logo_Nodo_CLO_ETH_CO-01.png', download: 'ethcali-horizontal-on-light.png', format: 'PNG', dimensions: '1154 × 668' },
       { path: '/branding/ethcali-horizontal-compact-on-light.png', download: 'ethcali-horizontal-compact-on-light.png', format: 'PNG', dimensions: '393 × 266' },
     ],
@@ -105,8 +114,9 @@ export const LOGOS: readonly BrandAsset[] = [
     previewHeight: 934,
     plate: true,
     files: [
+      { path: '/branding/ethcali-vertical-on-light.svg', download: 'ethcali-vertical-on-light.svg', format: 'SVG', note: { es: 'sobre claro', en: 'on light' } },
+      { path: '/branding/ethcali-vertical-on-dark.svg', download: 'ethcali-vertical-on-dark.svg', format: 'SVG', note: { es: 'sobre oscuro', en: 'on dark' } },
       { path: '/branding/Logo_Nodo_CLO_ETH_CO-02.png', download: 'ethcali-vertical-on-light.png', format: 'PNG', dimensions: '709 × 934' },
-      { path: '/branding/ethcali-vertical-on-light.png', download: 'ethcali-vertical-compact-on-light.png', format: 'PNG', dimensions: '209 × 364' },
       { path: '/branding/ethcali-vertical-on-dark.png', download: 'ethcali-vertical-on-dark.png', format: 'PNG', dimensions: '209 × 363' },
     ],
   },
@@ -122,6 +132,8 @@ export const LOGOS: readonly BrandAsset[] = [
     previewHeight: 470,
     plate: true,
     files: [
+      { path: '/branding/ethcali-horizontal-simple-on-light.svg', download: 'ethcali-horizontal-simple-on-light.svg', format: 'SVG', note: { es: 'sobre claro', en: 'on light' } },
+      { path: '/branding/ethcali-horizontal-simple-on-dark.svg', download: 'ethcali-horizontal-simple-on-dark.svg', format: 'SVG', note: { es: 'sobre oscuro', en: 'on dark' } },
       { path: '/branding/Logo_Nodo_CLO_ETH_CO-03.png', download: 'ethcali-horizontal-simple-on-light.png', format: 'PNG', dimensions: '1134 × 470' },
     ],
   },
