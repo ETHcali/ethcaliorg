@@ -274,7 +274,11 @@ export default function Winners({ locale }: Props) {
         title={t(RESULTS_COPY.seoTitle)}
         description={clamp(resultsLead(locale))}
         path={RESULTS.path}
-        image={WINNERS[0]?.photo ?? null}
+        // The event's banner, not the first winner's photo. A forwarded link
+        // should show the tour a reader may not have heard of, not three
+        // people they have not met; the photos are on the page itself.
+        image={TOUR.banner.src}
+        imageSize={TOUR.banner}
         type="article"
         jsonLd={breadcrumbJsonLd(
           [

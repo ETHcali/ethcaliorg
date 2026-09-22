@@ -24,6 +24,29 @@ export const TOUR = {
 
   title: 'Ethereum Builders Tour: Cali, Colombia',
 
+  /**
+   * The Colombia stop's own banner: names Cali and the dates on the artwork
+   * and carries host, sponsor, co-host and partners along the bottom.
+   *
+   * One record, four uses — the hero on the campaign page, the event's
+   * JSON-LD image, and the share card of both the campaign page and the
+   * winners page. The share card used to be EAG's global tour banner, which
+   * says July to November and nothing about Colombia; a forward on WhatsApp
+   * should show the event that was sold.
+   *
+   * 1200×675 at under 300 KB on purpose. WhatsApp drops the preview image
+   * above roughly that size, and it is the platform most of this campaign's
+   * links travel on. The dimensions are published in the meta tags so a card
+   * lays out before the image lands. The pixels are also the JPEG's real
+   * pixels — change one and change the other.
+   */
+  banner: {
+    src: '/tour/builders-tour-colombia.jpg',
+    width: 1200,
+    height: 675,
+    alt: 'Ethereum Builders Tour @Colombia — Cali, 19–20 de septiembre de 2026. Host: EAG. Sponsor: HashKey Chain. Co-host: ETH Cali. Partners: Ekinoxis, Devcon VIII India',
+  },
+
   /** ISO dates. Saturday and Sunday. */
   startsOn: '2026-09-19',
   endsOn: '2026-09-20',
@@ -66,7 +89,10 @@ export const TOUR = {
     },
     devfolio: {
       url: 'https://eag-global-buildathon.devfolio.co',
-      label: { es: 'Inscribe tu proyecto en Devfolio', en: 'Submit your project on Devfolio' } as Bilingual,
+      label: {
+        es: 'Inscribe tu proyecto en Devfolio',
+        en: 'Submit your project on Devfolio',
+      } as Bilingual,
       note: {
         es: 'El EAG Global Buildathon. Aquí es donde se entrega y se juzga tu proyecto.',
         en: 'The EAG Global Buildathon. This is where your project is submitted and judged.',
@@ -103,7 +129,10 @@ export const TOUR = {
    * address as Google itself resolves it.
    */
   venue: {
-    name: { es: 'Auditorio SIDOC — Universidad Icesi', en: 'SIDOC Auditorium — Universidad Icesi' } as Bilingual,
+    name: {
+      es: 'Auditorio SIDOC — Universidad Icesi',
+      en: 'SIDOC Auditorium — Universidad Icesi',
+    } as Bilingual,
     /** The street line only — the city sits under it, from `place.label`. */
     address: {
       es: 'Cl. 18 #122-135, barrio Pance',
@@ -150,7 +179,7 @@ export const CALI = {
       'suroccidente del país. Está a mil metros sobre el nivel del mar, entre la cordillera ' +
       'Occidental y el valle del río Cauca, y hace unos 30 °C casi todos los días del año.',
     en:
-      'Cali is Colombia\'s third city and the capital of Valle del Cauca, in the south-west ' +
+      "Cali is Colombia's third city and the capital of Valle del Cauca, in the south-west " +
       'of the country. It sits a thousand metres up between the Western Andes and the Cauca ' +
       'valley, at around 30 °C almost every day of the year.',
   } as Bilingual,
@@ -440,56 +469,144 @@ export const SCHEDULE: readonly Day[] = [
     label: { es: 'Día 1 · sábado', en: 'Day 1 · Saturday' },
     slots: [
       {
-        start: '09:00', end: '10:00', kind: 'opening', highlight: true,
-        activity: { es: 'Apertura y bienvenida — registro y entrega de swag', en: 'Opening and welcome — registration and swag claim' },
+        start: '09:00',
+        end: '10:00',
+        kind: 'opening',
+        highlight: true,
+        activity: {
+          es: 'Apertura y bienvenida — registro y entrega de swag',
+          en: 'Opening and welcome — registration and swag claim',
+        },
       },
       {
-        start: '10:00', end: '10:10', kind: 'talk',
+        start: '10:00',
+        end: '10:10',
+        kind: 'talk',
         activity: { es: 'Discurso de apertura', en: 'Opening speech' },
-        who: { name: 'Audrey Tang', role: { es: 'Directora Ejecutiva, EAG', en: 'Executive Director, EAG' } },
+        who: {
+          name: 'Audrey Tang',
+          role: { es: 'Directora Ejecutiva, EAG', en: 'Executive Director, EAG' },
+        },
       },
       {
-        start: '10:10', end: '10:30', kind: 'talk',
-        activity: { es: 'EAG 2026 Global Application & Builder Initiatives', en: 'EAG 2026 Global Application & Builder Initiatives' },
+        start: '10:10',
+        end: '10:30',
+        kind: 'talk',
+        activity: {
+          es: 'EAG 2026 Global Application & Builder Initiatives',
+          en: 'EAG 2026 Global Application & Builder Initiatives',
+        },
         who: { name: 'Jiang', role: { es: 'Líder Técnico, EAG', en: 'Technical Lead, EAG' } },
       },
-      { start: '10:30', end: '11:00', kind: 'workshop', activity: { es: 'Tracks de EAG', en: 'EAG tracks' } },
-      { start: '11:00', end: '12:00', kind: 'workshop', activity: { es: 'Tracks de HashKey Chain', en: 'HashKey Chain tracks' } },
       {
-        start: '12:00', end: '12:15', kind: 'talk',
+        start: '10:30',
+        end: '11:00',
+        kind: 'workshop',
+        activity: { es: 'Tracks de EAG', en: 'EAG tracks' },
+      },
+      {
+        start: '11:00',
+        end: '12:00',
+        kind: 'workshop',
+        activity: { es: 'Tracks de HashKey Chain', en: 'HashKey Chain tracks' },
+      },
+      {
+        start: '12:00',
+        end: '12:15',
+        kind: 'talk',
         activity: { es: '¿Qué es ETH Cali?', en: 'What is ETH Cali?' },
         who: { name: 'María del Mar', role: { es: 'Core, ETH Cali', en: 'Core member, ETH Cali' } },
       },
-      { start: '12:15', end: '13:00', kind: 'workshop', activity: { es: '¿Qué es Ethereum?', en: 'What is Ethereum?' } },
+      {
+        start: '12:15',
+        end: '13:00',
+        kind: 'workshop',
+        activity: { es: '¿Qué es Ethereum?', en: 'What is Ethereum?' },
+      },
       { start: '13:00', end: '14:00', kind: 'break', activity: { es: 'Almuerzo', en: 'Lunch' } },
       {
-        start: '14:00', end: '16:00', kind: 'workshop', highlight: true,
-        activity: { es: 'Scaffold apps en Ethereum con IA', en: 'Scaffold apps in Ethereum with AI' },
-        who: { name: 'William Martínez', role: { es: 'Fundador, Ekinoxis Labs', en: 'Founder, Ekinoxis Labs' } },
+        start: '14:00',
+        end: '16:00',
+        kind: 'workshop',
+        highlight: true,
+        activity: {
+          es: 'Scaffold apps en Ethereum con IA',
+          en: 'Scaffold apps in Ethereum with AI',
+        },
+        who: {
+          name: 'William Martínez',
+          role: { es: 'Fundador, Ekinoxis Labs', en: 'Founder, Ekinoxis Labs' },
+        },
       },
-      { start: '16:00', end: '19:00', kind: 'hackathon', activity: { es: 'Lluvia de ideas y armado de equipos', en: 'Brainstorming and team setup' } },
+      {
+        start: '16:00',
+        end: '19:00',
+        kind: 'hackathon',
+        activity: { es: 'Lluvia de ideas y armado de equipos', en: 'Brainstorming and team setup' },
+      },
       { start: '19:00', end: '20:00', kind: 'break', activity: { es: 'Cena', en: 'Dinner' } },
-      { start: '20:00', end: '00:00', kind: 'hackathon', activity: { es: 'Build, build, build', en: 'Build, build, build' } },
+      {
+        start: '20:00',
+        end: '00:00',
+        kind: 'hackathon',
+        activity: { es: 'Build, build, build', en: 'Build, build, build' },
+      },
     ],
   },
   {
     date: '2026-09-20',
     label: { es: 'Día 2 · domingo', en: 'Day 2 · Sunday' },
     slots: [
-      { start: '00:00', end: '10:00', kind: 'hackathon', activity: { es: 'Mentorías y feedback de los mentores', en: 'Mentorships and feedback from mentors' } },
-      { start: '10:00', end: '10:30', kind: 'break', activity: { es: 'Desayuno', en: 'Breakfast' } },
-      { start: '10:30', end: '13:30', kind: 'hackathon', activity: { es: 'Build, build, build', en: 'Build, build, build' } },
       {
-        start: '13:30', kind: 'hackathon', highlight: true,
+        start: '00:00',
+        end: '10:00',
+        kind: 'hackathon',
+        activity: {
+          es: 'Mentorías y feedback de los mentores',
+          en: 'Mentorships and feedback from mentors',
+        },
+      },
+      {
+        start: '10:00',
+        end: '10:30',
+        kind: 'break',
+        activity: { es: 'Desayuno', en: 'Breakfast' },
+      },
+      {
+        start: '10:30',
+        end: '13:30',
+        kind: 'hackathon',
+        activity: { es: 'Build, build, build', en: 'Build, build, build' },
+      },
+      {
+        start: '13:30',
+        kind: 'hackathon',
+        highlight: true,
         activity: { es: 'Cierre de entregas', en: 'Hackathon submission ends' },
       },
       { start: '13:30', end: '14:00', kind: 'break', activity: { es: 'Almuerzo', en: 'Lunch' } },
       {
-        start: '14:00', end: '17:30', kind: 'demo', highlight: true,
-        activity: { es: 'Demo Showcase — 5 min por proyecto (3 min demo + 2 min preguntas)', en: 'Demo showcase — 5 min per project (3 min demo + 2 min Q&A)' },
+        start: '14:00',
+        end: '17:30',
+        kind: 'demo',
+        highlight: true,
+        activity: {
+          es: 'Demo Showcase — 5 min por proyecto (3 min demo + 2 min preguntas)',
+          en: 'Demo showcase — 5 min per project (3 min demo + 2 min Q&A)',
+        },
       },
-      { start: '17:00', end: '17:30', kind: 'judgement', activity: { es: 'Deliberación del jurado', en: 'Judging' } },
-      { start: '17:30', kind: 'winner', highlight: true, activity: { es: 'Anuncio de ganadores', en: 'Winner announcement' } },
+      {
+        start: '17:00',
+        end: '17:30',
+        kind: 'judgement',
+        activity: { es: 'Deliberación del jurado', en: 'Judging' },
+      },
+      {
+        start: '17:30',
+        kind: 'winner',
+        highlight: true,
+        activity: { es: 'Anuncio de ganadores', en: 'Winner announcement' },
+      },
     ],
   },
 ];
@@ -673,76 +790,111 @@ export interface TourStop {
  */
 export const TOUR_STOPS: readonly TourStop[] = [
   {
-    city: 'Ciudad de México', country: { es: 'México', en: 'Mexico' },
+    city: 'Ciudad de México',
+    country: { es: 'México', en: 'Mexico' },
     dates: { es: '8–13 de julio', en: '8–13 July' },
-    lat: 19.4326, lng: -99.1332,
+    lat: 19.4326,
+    lng: -99.1332,
     host: '@ETHCincoDeMayo',
-    lumaUrl: 'https://luma.com/46e9cc6o', lumaEmbedId: 'evt-RugYnVJ61jfk1Ug',
+    lumaUrl: 'https://luma.com/46e9cc6o',
+    lumaEmbedId: 'evt-RugYnVJ61jfk1Ug',
     image: '/tour/stop-mexico.jpg',
   },
   {
-    city: 'Accra', country: { es: 'Ghana', en: 'Ghana' },
+    city: 'Accra',
+    country: { es: 'Ghana', en: 'Ghana' },
     dates: { es: '3–4 de agosto', en: '3–4 August' },
-    lat: 5.6037, lng: -0.187,
+    lat: 5.6037,
+    lng: -0.187,
     host: '@betechconnected',
-    lumaUrl: 'https://luma.com/1icr5z0o', lumaEmbedId: 'evt-OLpUWV8IJyHlqIG',
+    lumaUrl: 'https://luma.com/1icr5z0o',
+    lumaEmbedId: 'evt-OLpUWV8IJyHlqIG',
     image: '/tour/stop-ghana.jpg',
   },
   {
-    city: 'Florianópolis', country: { es: 'Brasil', en: 'Brazil' },
+    city: 'Florianópolis',
+    country: { es: 'Brasil', en: 'Brazil' },
     dates: { es: '18–19 de agosto', en: '18–19 August' },
-    lat: -27.5954, lng: -48.548,
+    lat: -27.5954,
+    lng: -48.548,
     host: '@eth_floripa',
-    lumaUrl: 'https://luma.com/aat5db4e', lumaEmbedId: 'evt-cylpB1ibiMIoaHI',
+    lumaUrl: 'https://luma.com/aat5db4e',
+    lumaEmbedId: 'evt-cylpB1ibiMIoaHI',
     image: '/tour/stop-brazil.jpg',
   },
   {
-    city: 'Lagos', country: { es: 'Nigeria', en: 'Nigeria' },
+    city: 'Lagos',
+    country: { es: 'Nigeria', en: 'Nigeria' },
     dates: { es: '26–27 de agosto', en: '26–27 August' },
-    lat: 6.5244, lng: 3.3792,
+    lat: 6.5244,
+    lng: 3.3792,
     host: '@Web3Bridge',
-    lumaUrl: 'https://luma.com/t6gj441t', lumaEmbedId: 'evt-avmSR5CidWujpsh',
-    image: null, labelBelow: true,
+    lumaUrl: 'https://luma.com/t6gj441t',
+    lumaEmbedId: 'evt-avmSR5CidWujpsh',
+    image: null,
+    labelBelow: true,
   },
   {
     // EAG's tour announcement listed Cali as Sep 5-6. That date moved; 19-20 is
     // final and is what every ETH Cali surface says.
-    city: 'Cali', country: { es: 'Colombia', en: 'Colombia' },
+    city: 'Cali',
+    country: { es: 'Colombia', en: 'Colombia' },
     dates: { es: '19–20 de septiembre', en: '19–20 September' },
-    lat: 3.4516, lng: -76.532,
+    lat: 3.4516,
+    lng: -76.532,
     host: '@ethcali_org',
-    lumaUrl: 'https://luma.com/khnpkikn', lumaEmbedId: 'evt-cxkPn1L26KCjbD3',
-    image: null, upcoming: true,
+    lumaUrl: 'https://luma.com/khnpkikn',
+    lumaEmbedId: 'evt-cxkPn1L26KCjbD3',
+    image: null,
+    upcoming: true,
   },
   {
-    city: 'Nairobi', country: { es: 'Kenia', en: 'Kenya' },
+    city: 'Nairobi',
+    country: { es: 'Kenia', en: 'Kenya' },
     dates: { es: '7–8 de septiembre', en: '7–8 September' },
-    lat: -1.2864, lng: 36.8172,
+    lat: -1.2864,
+    lng: 36.8172,
     host: '@ETHSafari',
-    lumaUrl: null, lumaEmbedId: null, image: null, labelBelow: true,
+    lumaUrl: null,
+    lumaEmbedId: null,
+    image: null,
+    labelBelow: true,
   },
   {
-    city: 'Cochabamba', country: { es: 'Bolivia', en: 'Bolivia' },
+    city: 'Cochabamba',
+    country: { es: 'Bolivia', en: 'Bolivia' },
     dates: { es: '11–13 de septiembre', en: '11–13 September' },
-    lat: -17.3895, lng: -66.1568,
+    lat: -17.3895,
+    lng: -66.1568,
     host: '@EthereumBo',
-    lumaUrl: null, lumaEmbedId: null, image: null,
+    lumaUrl: null,
+    lumaEmbedId: null,
+    image: null,
   },
   {
-    city: 'Sydney', country: { es: 'Australia', en: 'Australia' },
+    city: 'Sydney',
+    country: { es: 'Australia', en: 'Australia' },
     dates: { es: '27–29 de septiembre', en: '27–29 September' },
-    lat: -33.8688, lng: 151.2093,
+    lat: -33.8688,
+    lng: 151.2093,
     host: null,
-    lumaUrl: null, lumaEmbedId: null, image: null,
+    lumaUrl: null,
+    lumaEmbedId: null,
+    image: null,
   },
   {
     // The tour's last stop and the mission's Devcon leg are the same week in the
     // same city. That is the whole shape of the programme in one line.
-    city: 'Mumbai', country: { es: 'India', en: 'India' },
+    city: 'Mumbai',
+    country: { es: 'India', en: 'India' },
     dates: { es: '1–6 de noviembre', en: '1–6 November' },
-    lat: 19.076, lng: 72.8777,
+    lat: 19.076,
+    lng: 72.8777,
     host: null,
-    lumaUrl: null, lumaEmbedId: null, image: null, isMission: true,
+    lumaUrl: null,
+    lumaEmbedId: null,
+    image: null,
+    isMission: true,
   },
 ];
 
@@ -752,17 +904,29 @@ export const TOUR_STOPS: readonly TourStop[] = [
  */
 export const MISSION_STOPS: readonly TourStop[] = [
   {
-    city: 'Shenzhen', country: { es: 'China', en: 'China' },
+    city: 'Shenzhen',
+    country: { es: 'China', en: 'China' },
     dates: { es: '15–31 de octubre', en: '15–31 October' },
-    lat: 22.5431, lng: 114.0579,
-    host: null, lumaUrl: null, lumaEmbedId: null, image: null, isMission: true,
+    lat: 22.5431,
+    lng: 114.0579,
+    host: null,
+    lumaUrl: null,
+    lumaEmbedId: null,
+    image: null,
+    isMission: true,
   },
   {
-    city: 'Hong Kong', country: { es: 'Hong Kong', en: 'Hong Kong' },
+    city: 'Hong Kong',
+    country: { es: 'Hong Kong', en: 'Hong Kong' },
     dates: { es: '6–10 de noviembre', en: '6–10 November' },
-    lat: 22.3193, lng: 114.1694,
-    host: null, lumaUrl: null, lumaEmbedId: null, image: null,
-    isMission: true, labelBelow: true,
+    lat: 22.3193,
+    lng: 114.1694,
+    host: null,
+    lumaUrl: null,
+    lumaEmbedId: null,
+    image: null,
+    isMission: true,
+    labelBelow: true,
   },
 ];
 
@@ -798,7 +962,7 @@ export const SHANHAIWOO = {
       'de un mes que recorre tres ciudades. No es un viaje turístico — es un mes ' +
       'construyendo junto a la comunidad global de Ethereum.',
     en:
-      "First prize on the EAG track is a scholarship to ShanHaiWoo: a month-long popup " +
+      'First prize on the EAG track is a scholarship to ShanHaiWoo: a month-long popup ' +
       'city across three cities. Not a sightseeing trip — a month building alongside the ' +
       'global Ethereum community.',
   } as Bilingual,

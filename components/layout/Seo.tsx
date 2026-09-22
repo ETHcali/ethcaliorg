@@ -16,6 +16,9 @@ interface Props {
   path?: string;
   /** Site-relative path to the share image. An event passes its own poster. */
   image?: string | null;
+  /** The share image's real pixels, when the caller knows them. Platforms lay
+   *  out the card before the image lands; without these it reflows after. */
+  imageSize?: { width: number; height: number };
   /** `article` for a single event, `website` for a listing. */
   type?: 'website' | 'article';
   /** JSON-LD for this page. Rendered as-is into a ld+json script. */
@@ -34,6 +37,7 @@ export default function Seo({
   description,
   path,
   image,
+  imageSize,
   type = 'website',
   jsonLd,
 }: Props) {
@@ -91,21 +95,22 @@ export default function Seo({
       <meta property="og:description" content={clamp(description)} />
       <meta property="og:image" content={share} />
       <meta property="og:image:alt" content={title} />
-      {/* Only the fallback's dimensions are known here; an event poster is a
-          different shape per row, so it ships without them rather than with
-          numbers that would be wrong. */}
-      {!image && (
-        <>
-          <meta property="og:image:width" content={String(FALLBACK_DIMENSIONS.width)} />
-          <meta property="og:image:height" content={String(FALLBACK_DIMENSIONS.height)} />
-        </>
-      )}
+      {/* Dimensions only when they are known: the fallback's, or the ones the
+          caller passed. An event poster from the database is a different
+          shape per row and ships without them rather than with numbers that
+          would be wrong. */}
+      {(() => {
+        const size = image ? imageSize : FALLBACK_DIMENSIONS;
+        return size ? (
+          <>
+            <meta property="og:image:width" content={String(size.width)} />
+            <meta property="og:image:height" content={String(size.height)} />
+          </>
+        ) : null;
+      })()}
       <meta property="og:url" content={url} />
       <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'es_CO'} />
-      <meta
-        property="og:locale:alternate"
-        content={locale === 'en' ? 'es_CO' : 'en_US'}
-      />
+      <meta property="og:locale:alternate" content={locale === 'en' ? 'es_CO' : 'en_US'} />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@ethcali_org" />
