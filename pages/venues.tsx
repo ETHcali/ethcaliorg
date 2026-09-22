@@ -41,7 +41,7 @@ export default function Venues({ venues, locale }: Props) {
                   href={v.maps_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-block text-xs text-eth-blue-text hover:underline"
+                  className="mt-2 inline-flex min-h-tap items-center text-xs text-eth-blue-text hover:underline"
                 >
                   {locale === 'en' ? 'Open in Maps' : 'Ver en Maps'}
                 </a>

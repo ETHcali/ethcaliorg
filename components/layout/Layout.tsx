@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 import { asLocale, translator } from '../../lib/i18n';
 import NavEntry, { type NavItem } from './Nav';
 import SocialIcon, { type SocialName } from './SocialIcon';
-import { FRONTIER } from '../../content/quest';
-import { RESULTS } from '../../content/results';
 
 /**
  * Top-level entries carry their own page; the dropdown children are the ways of
@@ -27,25 +25,22 @@ const NAV: readonly NavItem[] = [
     ],
   },
   // The Builders Tour used to lead the bar as its own entry, which was right
-  // while it was selling a weekend that had not happened. It has happened. It is
-  // a hackathon we ran, so it belongs where the other ones are — as a third
-  // level inside Hackathons, keeping its three pages together rather than
-  // scattering them among the standing ones.
+  // while it was selling a weekend that had not happened. It has happened, and
+  // it is a hackathon we ran, so it belongs where the other ones are.
+  //
+  // Flat, not expanded. The menu names the hackathon and the hackathon's page
+  // carries its own parts — the results, Frontier Cities — because a menu that
+  // unfolds a campaign's sub-pages inside a section about hackathons in general
+  // is a menu explaining our filing system. `/hackathons` is where every
+  // hackathon is listed, with its poster and its date, which is a better index
+  // than a column of text could be and never goes stale.
   {
     href: '/hackathons',
     key: 'nav.hackathons',
     children: [
       { href: '/hackathons', key: 'nav.hackathonsAll' },
+      { href: '/builders-tour', key: 'nav.tour' },
       { href: '/hacker-houses', key: 'nav.hackerHouses' },
-      {
-        href: '/builders-tour',
-        key: 'nav.tour',
-        children: [
-          { href: RESULTS.path, key: 'nav.winners' },
-          { href: '/builders-tour', key: 'nav.tour' },
-          { href: FRONTIER.path, key: 'nav.frontier' },
-        ],
-      },
     ],
   },
   // Who we are, how we are governed, where we meet and what we own. Four pages
@@ -186,11 +181,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
-            {/* Keeps you on the page you are reading rather than dumping you home. */}
+            {/* Keeps you on the page you are reading rather than dumping you home.
+
+                `min-h-tap` because this was 32px tall on a phone — the one
+                control present on every page of the site, and the smallest. The
+                chip still looks the same; the hit area is the token's 48px. */}
             <Link
               href={current}
               locale={other}
-              className="rounded-chip border border-line-hairline px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-content-muted transition-colors hover:border-line-strong hover:text-content-primary"
+              className="flex min-h-tap items-center rounded-chip border border-line-hairline px-3 text-[11px] font-semibold uppercase tracking-wide text-content-muted transition-colors hover:border-line-strong hover:text-content-primary"
             >
               {other}
             </Link>
@@ -200,7 +199,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
               aria-label="Menú"
-              className="flex h-9 w-9 items-center justify-center rounded-chip border border-line-hairline text-content-muted transition-colors hover:text-content-primary lg:hidden"
+              className="flex h-12 w-12 items-center justify-center rounded-chip border border-line-hairline text-content-muted transition-colors hover:text-content-primary lg:hidden"
             >
               <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.6} aria-hidden>
                 {menuOpen ? (
@@ -240,54 +239,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   ) : null}
 
                   <ul className="flex flex-col">
-                    {rows.map((row) =>
-                      // The third level, indented under its own label. Same
-                      // shape as the desktop panel, because a phone should get
-                      // the campaign's three pages grouped rather than dumped
-                      // in among the standing hackathon links.
-                      row.children ? (
-                        <li key={row.href}>
-                          <p className="px-1 pb-0.5 pt-3 text-[10px] font-semibold uppercase tracking-widest text-content-faint">
-                            {t(row.key)}
-                          </p>
-                          <ul className="flex flex-col">
-                            {row.children.map((g) => (
-                              <li key={g.href}>
-                                <Link
-                                  href={g.href}
-                                  aria-current={current === g.href ? 'page' : undefined}
-                                  onClick={() => setMenuOpen(false)}
-                                  className={`flex min-h-tap items-center rounded-chip pl-4 pr-1 text-sm transition-colors ${
-                                    current === g.href
-                                      ? 'font-semibold text-eth-blue-text'
-                                      : 'text-content-secondary'
-                                  }`}
-                                >
-                                  {t(g.key)}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                      ) : (
-                        <li key={row.href}>
-                          <Link
-                            href={row.href}
-                            aria-current={current === row.href ? 'page' : undefined}
-                            onClick={() => setMenuOpen(false)}
-                            className={`flex min-h-tap items-center rounded-chip px-1 text-sm transition-colors ${
-                              current === row.href
-                                ? 'font-semibold text-eth-blue-text'
-                                : item.children
-                                  ? 'text-content-secondary'
-                                  : 'font-semibold text-content-primary'
-                            }`}
-                          >
-                            {t(row.key)}
-                          </Link>
-                        </li>
-                      )
-                    )}
+                    {rows.map((row) => (
+                      <li key={row.href}>
+                        <Link
+                          href={row.href}
+                          aria-current={current === row.href ? 'page' : undefined}
+                          onClick={() => setMenuOpen(false)}
+                          className={`flex min-h-tap items-center rounded-chip px-1 text-sm transition-colors ${
+                            current === row.href
+                              ? 'font-semibold text-eth-blue-text'
+                              : item.children
+                                ? 'text-content-secondary'
+                                : 'font-semibold text-content-primary'
+                          }`}
+                        >
+                          {t(row.key)}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               );

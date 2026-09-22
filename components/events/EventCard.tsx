@@ -4,6 +4,7 @@ import type { EventRecord } from '../../types/content';
 import { localized } from '../../types/content';
 import { formatDateRange, type Locale, translator } from '../../lib/i18n';
 import { posterSrc, GRID_SIZES } from '../../lib/images';
+import { eventRoute } from '../../lib/routes';
 
 /**
  * One event in a grid. The whole card is the link — this is the thing the old
@@ -29,12 +30,9 @@ export default function EventCard({
   const poster = posterSrc(event.poster_path);
   const summary = localized(event as unknown as Record<string, unknown>, 'summary', locale);
 
-  // Hackathons and hacker houses have a richer page of their own.
-  const base = event.kind === 'hackathon' || event.kind === 'hacker_house' ? '/hackathons' : '/events';
-
   return (
     <Link
-      href={`${base}/${event.slug}`}
+      href={eventRoute(event.slug, event.kind)}
       className="group flex flex-col overflow-hidden rounded-card border border-line-hairline bg-surface-slab transition-colors hover:border-line-brand"
     >
       {/* Fixed aspect ratio so a missing poster leaves a tidy block rather than

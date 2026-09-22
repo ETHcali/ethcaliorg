@@ -1,6 +1,7 @@
 import type { GetServerSideProps } from 'next';
 import { getSitemapEvents } from '../lib/content';
 import { LOCALES, DEFAULT_LOCALE, STATIC_ROUTES, absoluteUrl } from '../lib/seo';
+import { eventRoute } from '../lib/routes';
 
 /**
  * /sitemap.xml
@@ -19,9 +20,6 @@ import { LOCALES, DEFAULT_LOCALE, STATIC_ROUTES, absoluteUrl } from '../lib/seo'
  * multilingual sitemap, and it is the same mapping `Seo` renders into the page
  * head — both read `absoluteUrl`, so the two cannot disagree.
  */
-
-/** Hackathons and hacker houses have a richer page, at a different route. */
-const HACKATHON_KINDS = new Set(['hackathon', 'hacker_house']);
 
 const escapeXml = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -58,11 +56,13 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
 
   const entries: Entry[] = [
     ...STATIC_ROUTES.map(({ route, priority }) => ({ route, priority })),
-    ...events.map((e) => ({
-      route: `${HACKATHON_KINDS.has(e.kind) ? '/hackathons' : '/events'}/${e.slug}`,
-      priority: 0.6,
-      lastmod: e.updated_at,
-    })),
+    // `eventRoute` rather than the kind alone: the Builders Tour's page is the
+    // campaign page, and listing /hackathons/<its slug> here would put a URL
+    // that 308s into the sitemap.
+    ...events
+      .map((e) => ({ route: eventRoute(e.slug, e.kind), priority: 0.6, lastmod: e.updated_at }))
+      // /builders-tour is already in STATIC_ROUTES at a higher priority.
+      .filter((e) => !STATIC_ROUTES.some((r) => r.route === e.route)),
   ];
 
   const body = [

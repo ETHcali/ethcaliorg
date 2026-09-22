@@ -29,6 +29,13 @@ module.exports = {
       // The business offer shipped as /quest and is now Frontier Cities. The old
       // URL was in the footer of every page, so it is out in the world already.
       ['/quest', '/builders-tour/frontier-cities-quest'],
+      // One hackathon, one URL. The Builders Tour's page is the campaign page —
+      // it has the schedule, the sponsors, the prizes and the results, while the
+      // CMS row for the same weekend was a stub whose own external link pointed
+      // back here. The CMS route was published and indexed, so it redirects
+      // rather than 404s. See lib/routes.ts, which every link and the sitemap
+      // read so none of them point at this redirect.
+      ['/hackathons/ethereum-builders-tour-cali', '/builders-tour'],
       ['/hackathon-ethcolombia-2023', '/hackathons/hackathon-web3-ethcolombia'],
       ['/hackathon-web3-cali-2025', '/hackathons/hackathon-web3-cali'],
       ['/hackathon-usc-2025', '/hackathons/hackathon-usc'],

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Layout from '../../components/layout/Layout';
 import Seo from '../../components/layout/Seo';
 import { getEvent, getEventSlugs } from '../../lib/content';
+import { hasCanonicalOverride } from '../../lib/routes';
 import type { EventDetail } from '../../types/content';
 import { localized } from '../../types/content';
 import { posterSrc, DETAIL_SIZES } from '../../lib/images';
@@ -24,6 +25,19 @@ function Stat({ label, value }: { label: string; value: string }) {
       </p>
       <p className="mono mt-1 text-xl font-bold text-content-primary">{value}</p>
     </div>
+  );
+}
+
+function LinkChip({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
+    >
+      {children}
+    </a>
   );
 }
 
@@ -66,8 +80,28 @@ export default function HackathonPage({ event, locale }: Props) {
   const poster = posterSrc(event.poster_path);
   const h = event.hackathon;
 
+  const venueHref = event.venue?.maps_url ?? event.location_url;
+
+  const links: { href: string; label: string }[] = (
+    [
+      [h?.external_url, h?.partner_org ?? 'Web'],
+      [event.registration_url, t('events.register')],
+      [event.recap_url, t('events.recap')],
+      [event.photos_url, t('events.photos')],
+      [event.social_url, t('events.social')],
+      [event.youtube_url, t('events.video')],
+    ] as const
+  )
+    .filter(([href]) => Boolean(href))
+    .map(([href, label]) => ({ href: href as string, label: label as string }));
+
+  // `rsvp_count` is on every event row and was read only by the events
+  // template, so four hackathons with a recorded turnout showed no number at
+  // all. It is the participant count when hackathon_details has none of its own.
   const stats = [
-    h?.participant_count != null && { label: t('hackathons.participants'), value: String(h.participant_count) },
+    h?.participant_count != null
+      ? { label: t('hackathons.participants'), value: String(h.participant_count) }
+      : event.rsvp_count != null && { label: t('events.attendees'), value: String(event.rsvp_count) },
     h?.project_count != null && { label: t('hackathons.projects'), value: String(h.project_count) },
     h?.prize_pool && { label: t('hackathons.prizePool'), value: h.prize_pool },
   ].filter(Boolean) as { label: string; value: string }[];
@@ -114,8 +148,23 @@ export default function HackathonPage({ event, locale }: Props) {
 
             <p className="mono mt-3 text-sm text-content-muted">
               {formatDateRange(event.starts_on, event.ends_on, locale)}
-              {event.venue?.name && ` · ${event.venue.name}`}
-              {event.city && ` · ${event.city}`}
+              {/* The venue was printed as plain text while the row carries a
+                  maps_url, so "Universidad Santiago de Cali" was a dead string
+                  on a page about an event that happened there. */}
+              {(event.venue?.name || event.city) && ' · '}
+              {venueHref ? (
+                <a
+                  href={venueHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-eth-blue-text hover:underline"
+                >
+                  {event.venue?.name ?? event.city}
+                </a>
+              ) : (
+                event.venue?.name ?? event.city
+              )}
+              {event.city && event.venue?.name && ` · ${event.city}`}
             </p>
 
             {summary && (
@@ -173,30 +222,71 @@ export default function HackathonPage({ event, locale }: Props) {
         <Chips label={t('hackathons.sponsors')} items={h?.sponsors ?? []} />
         <Chips label={t('hackathons.winners')} items={h?.winners ?? []} />
 
-        {(h?.external_url || event.registration_url || event.recap_url || event.youtube_url) && (
+        {/* Every link the row carries, not four of seven. `photos_url`,
+            `social_url` and the POAP and NFT tables were read by the events
+            template and ignored here, which is most of why a hackathon with no
+            `hackathon_details` looked like an empty page: the content was in the
+            database, and this template threw it away. */}
+        {links.length > 0 && (
           <section className="mt-10">
             <h2 className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
               {t('events.links')}
             </h2>
             <div className="mt-3 flex flex-wrap gap-2">
-              {[
-                [h?.external_url, h?.partner_org ?? 'Web'],
-                [event.registration_url, t('events.register')],
-                [event.recap_url, t('events.recap')],
-                [event.youtube_url, t('events.video')],
-              ]
-                .filter(([href]) => Boolean(href))
-                .map(([href, label]) => (
-                  <a
-                    key={href as string}
-                    href={href as string}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs font-semibold text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
+              {links.map((l) => (
+                <LinkChip key={l.href} href={l.href}>
+                  {l.label}
+                </LinkChip>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {event.poaps.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
+              {t('events.poaps')}
+            </h2>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {event.poaps.map((p) => (
+                <LinkChip key={p.id} href={p.poap_url}>
+                  POAP
+                  {p.collectors !== null && (
+                    <span className="mono ml-2 text-content-faint">
+                      {p.collectors} {t('events.collectors')}
+                    </span>
+                  )}
+                </LinkChip>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {event.nfts.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
+              {t('events.nfts')}
+            </h2>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {event.nfts.map((n) =>
+                n.nft_url ? (
+                  <LinkChip key={n.id} href={n.nft_url}>
+                    {n.protocol ?? 'NFT'}
+                    {n.mints !== null && (
+                      <span className="mono ml-2 text-content-faint">
+                        {n.mints} {t('events.mints')}
+                      </span>
+                    )}
+                  </LinkChip>
+                ) : (
+                  <span
+                    key={n.id}
+                    className="inline-flex min-h-[36px] items-center rounded-chip border border-line-hairline px-3 text-xs text-content-muted"
                   >
-                    {label as string}
-                  </a>
-                ))}
+                    {n.protocol ?? 'NFT'}
+                  </span>
+                )
+              )}
             </div>
           </section>
         )}
@@ -210,7 +300,9 @@ export const getStaticPaths: GetStaticPaths = async ({ locales = ['es'] }) => {
     getEventSlugs('hackathon'),
     getEventSlugs('hacker_house'),
   ]);
-  const slugs = [...hackathons, ...houses];
+  // An event whose page lives elsewhere is not built here. next.config.js 308s
+  // the route, so this only avoids prerendering a page nothing can reach.
+  const slugs = [...hackathons, ...houses].filter((s) => !hasCanonicalOverride(s));
 
   return {
     // Named per locale so /en is built and verified in CI, not on first request.

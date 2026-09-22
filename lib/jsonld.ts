@@ -13,6 +13,7 @@
 import { SITE, BRAND, SAME_AS, absoluteUrl } from './seo';
 import type { EventDetail } from '../types/content';
 import { localized } from '../types/content';
+import { eventRoute } from './routes';
 
 /** Schema.org wants a stable node id so records can reference each other. */
 const ORG_ID = `${SITE}/#organization`;
@@ -61,7 +62,7 @@ const EVENT_TYPE: Record<string, string> = {
 export function eventJsonLd(event: EventDetail, locale: string): Record<string, unknown> {
   const name = localized(event as unknown as Record<string, unknown>, 'name', locale) ?? event.slug;
   const summary = localized(event as unknown as Record<string, unknown>, 'summary', locale);
-  const route = `${event.kind === 'hackathon' || event.kind === 'hacker_house' ? '/hackathons' : '/events'}/${event.slug}`;
+  const route = eventRoute(event.slug, event.kind);
 
   const location = event.venue
     ? {

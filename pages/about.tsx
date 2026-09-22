@@ -88,7 +88,10 @@ export default function About({ team, locale }: Props) {
                             href={url as string}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="rounded-chip border border-line-hairline px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-content-muted transition-colors hover:border-line-brand hover:text-content-primary"
+                            // Was 22px tall. These are three separate outbound
+                            // links sitting 8px apart under a portrait — the
+                            // exact shape a thumb misses.
+                            className="inline-flex min-h-tap min-w-tap items-center justify-center rounded-chip border border-line-hairline px-3 text-[10px] font-semibold uppercase tracking-wide text-content-muted transition-colors hover:border-line-brand hover:text-content-primary"
                           >
                             {label}
                           </a>

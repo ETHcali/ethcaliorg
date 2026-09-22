@@ -5,17 +5,6 @@ import { useRouter } from 'next/router';
 export interface NavChild {
   href: string;
   key: string;
-  /**
-   * A third level, for a campaign that owns several pages and sits inside a
-   * standing section — the Builders Tour under Hackathons.
-   *
-   * It renders as a labelled group inside the same panel, not as a flyout. A
-   * flyout needs a hover path a touch device cannot produce, and this menu is
-   * the same markup on a phone as on a desktop. As with the second level, the
-   * group's own href is repeated among its children so the label can be a
-   * label rather than a link you have to hit precisely.
-   */
-  children?: readonly NavChild[];
 }
 
 export interface NavItem {
@@ -27,11 +16,6 @@ export interface NavItem {
   children?: readonly NavChild[];
   /** Time-boxed campaign entry — dot and heavier weight. */
   live?: boolean;
-}
-
-/** Every href under an entry, at any depth. Used for the active state. */
-export function descendantHrefs(children: readonly NavChild[] = []): string[] {
-  return children.flatMap((c) => [c.href, ...descendantHrefs(c.children)]);
 }
 
 /**
@@ -71,7 +55,7 @@ export default function NavEntry({
   const path = router.asPath.split('?')[0].split('#')[0];
   const active =
     path.startsWith(item.matchPrefix ?? item.href) ||
-    descendantHrefs(item.children).includes(path);
+    (item.children?.some((c) => path === c.href) ?? false);
 
   useEffect(() => {
     if (!open) return;
@@ -191,56 +175,25 @@ export default function NavEntry({
         hidden={!open}
         className="absolute left-0 top-full z-50 min-w-[190px] overflow-hidden rounded-card border border-line-hairline bg-surface-slab py-1 shadow-lg shadow-black/40"
       >
-        {item.children.map((child) =>
-          child.children ? (
-            // A campaign inside a standing section. The label is not a link —
-            // its own page is the second row of the group under it.
-            <li key={child.href} className="mt-1 border-t border-line-hairline pt-1">
-              <p className="px-4 pb-1 pt-1.5 text-[10px] font-semibold uppercase tracking-widest text-content-faint">
-                {t(child.key)}
-              </p>
-              <ul>
-                {child.children.map((g) => (
-                  <li key={g.href}>
-                    <Link
-                      href={g.href}
-                      aria-current={path === g.href ? 'page' : undefined}
-                      onClick={() => {
-                        setOpen(false);
-                        onNavigate?.();
-                      }}
-                      className={`block py-2.5 pl-7 pr-4 text-sm transition-colors ${
-                        path === g.href
-                          ? 'bg-eth-blue-wash text-eth-blue-text'
-                          : 'text-content-secondary hover:bg-surface-inset hover:text-content-primary'
-                      }`}
-                    >
-                      {t(g.key)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ) : (
-            <li key={child.href}>
-              <Link
-                href={child.href}
-                aria-current={path === child.href ? 'page' : undefined}
-                onClick={() => {
-                  setOpen(false);
-                  onNavigate?.();
-                }}
-                className={`block px-4 py-2.5 text-sm transition-colors ${
-                  path === child.href
-                    ? 'bg-eth-blue-wash text-eth-blue-text'
-                    : 'text-content-secondary hover:bg-surface-inset hover:text-content-primary'
-                }`}
-              >
-                {t(child.key)}
-              </Link>
-            </li>
-          )
-        )}
+        {item.children.map((child) => (
+          <li key={child.href}>
+            <Link
+              href={child.href}
+              aria-current={path === child.href ? 'page' : undefined}
+              onClick={() => {
+                setOpen(false);
+                onNavigate?.();
+              }}
+              className={`block px-4 py-2.5 text-sm transition-colors ${
+                path === child.href
+                  ? 'bg-eth-blue-wash text-eth-blue-text'
+                  : 'text-content-secondary hover:bg-surface-inset hover:text-content-primary'
+              }`}
+            >
+              {t(child.key)}
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   );
