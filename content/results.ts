@@ -668,6 +668,20 @@ export const RESULTS_COPY = {
       'Devcon programme, valued at 499 USD each. Not yet allocated; they will be published here when they are.',
   } as Bilingual,
   placeLabel: { es: 'Puesto', en: 'Place' } as Bilingual,
+  /** Eyebrows over the track chips and the credit line. The chips and the
+   *  names are the answer; these are the question. */
+  tracksLabel: { es: 'Tracks', en: 'Tracks' } as Bilingual,
+  teamLabel: { es: 'Equipo', en: 'Team' } as Bilingual,
+  /**
+   * On a project that placed with both juries. The same photo appears on both
+   * podiums, and without this line that reads as a mistake rather than as a
+   * project that won twice. `{n}` is the place on the other podium.
+   */
+  alsoHsk: {
+    es: 'También puesto {n} en el track de HashKey Chain',
+    en: 'Also place {n} on the HashKey Chain track',
+  } as Bilingual,
+  alsoEag: { es: 'También puesto {n} de EAG', en: "Also EAG's place {n}" } as Bilingual,
 
   /**
    * "The podium" said podium of what, and the answer was five of eight places.
