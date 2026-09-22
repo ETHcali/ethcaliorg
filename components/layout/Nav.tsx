@@ -4,7 +4,14 @@ import { useRouter } from 'next/router';
 
 export interface NavChild {
   href: string;
+  /** Translation key. Ignored when `label` is set. */
   key: string;
+  /**
+   * A literal, already-localized label — for entries that are data rather than
+   * chrome. A hackathon's name comes out of the CMS and has no translation key
+   * to look up.
+   */
+  label?: string;
 }
 
 export interface NavItem {
@@ -107,7 +114,12 @@ export default function NavEntry({
   return (
     <div
       ref={ref}
-      className="relative"
+      // `h-full`, not the 36px the row wants. The bar is 60px tall and this box
+      // used to be 36, so there was a 12px dead strip above and below every
+      // entry: run the cursor along the bar and the menu opens only if you
+      // happen to be in the middle band. The whole height of the bar over this
+      // entry now opens it, which is what "on hover" is supposed to mean.
+      className="relative flex h-full items-center"
       onMouseEnter={() => {
         window.clearTimeout(closeTimer.current);
         setOpen(true);
@@ -173,7 +185,12 @@ export default function NavEntry({
       <ul
         id={panelId}
         hidden={!open}
-        className="absolute left-0 top-full z-50 min-w-[190px] overflow-hidden rounded-card border border-line-hairline bg-surface-slab py-1 shadow-lg shadow-black/40"
+        // `w-max` so the panel sizes to the longest entry. These are hackathon
+        // names out of the CMS, not chrome labels of a known length, and at a
+        // fixed 190px "Hacksession Base Batch LATAM: Zonamerica Colombia" set
+        // itself over three ragged lines. Capped so one very long name cannot
+        // run the menu off a laptop screen; it wraps at that point instead.
+        className="absolute left-0 top-full z-50 w-max min-w-[200px] max-w-[min(24rem,80vw)] overflow-hidden rounded-card border border-line-hairline bg-surface-slab py-1 shadow-lg shadow-black/40"
       >
         {item.children.map((child) => (
           <li key={child.href}>
@@ -190,7 +207,7 @@ export default function NavEntry({
                   : 'text-content-secondary hover:bg-surface-inset hover:text-content-primary'
               }`}
             >
-              {t(child.key)}
+              {child.label ?? t(child.key)}
             </Link>
           </li>
         ))}

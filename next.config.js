@@ -38,7 +38,11 @@ module.exports = {
       ['/hackathons/ethereum-builders-tour-cali', '/builders-tour'],
       ['/hackathon-ethcolombia-2023', '/hackathons/hackathon-web3-ethcolombia'],
       ['/hackathon-web3-cali-2025', '/hackathons/hackathon-web3-cali'],
-      ['/hackathon-usc-2025', '/hackathons/hackathon-usc'],
+      // The USC hackathon was announced and did not happen, so its event row is
+      // unpublished and /hackathons/hackathon-usc no longer resolves. This URL
+      // was published, so it still has to go somewhere — the list, not a 404,
+      // and not a redirect to a page that is itself gone.
+      ['/hackathon-usc-2025', '/hackathons'],
     ];
     return moved.map(([source, destination]) => ({ source, destination, permanent: true }));
   },

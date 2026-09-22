@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { asLocale, translator } from '../../lib/i18n';
 import NavEntry, { type NavItem } from './Nav';
+import { NAV_HACKATHONS } from '../../content/hackathons.generated';
+import { eventRoute } from '../../lib/routes';
 import SocialIcon, { type SocialName } from './SocialIcon';
 
 /**
@@ -11,7 +13,14 @@ import SocialIcon, { type SocialName } from './SocialIcon';
  * slicing it. `/events` and `/hackathons` stay real pages, because a nav item
  * that only opens a menu is a dead end for anyone who expected it to be one.
  */
-const NAV: readonly NavItem[] = [
+/**
+ * The bar, built per locale.
+ *
+ * A function rather than a const because the Hackathons menu names real
+ * hackathons, and their names come from the CMS with no translation key to look
+ * up. Everything else still goes through `t`.
+ */
+const navItems = (locale: 'es' | 'en'): readonly NavItem[] => [
   {
     // Points at the local list, not a hub. /events used to be a page whose only
     // content was two cards linking to these same two pages — the dropdown does
@@ -24,22 +33,22 @@ const NAV: readonly NavItem[] = [
       { href: '/events/international', key: 'nav.eventsIntl' },
     ],
   },
-  // The Builders Tour used to lead the bar as its own entry, which was right
-  // while it was selling a weekend that had not happened. It has happened, and
-  // it is a hackathon we ran, so it belongs where the other ones are.
+  // Every hackathon by name, newest first, so the menu is the list rather than
+  // a signpost to one. Clicking the parent opens /hackathons, which is the same
+  // set with posters and dates; hovering names them.
   //
-  // Flat, not expanded. The menu names the hackathon and the hackathon's page
-  // carries its own parts — the results, Frontier Cities — because a menu that
-  // unfolds a campaign's sub-pages inside a section about hackathons in general
-  // is a menu explaining our filing system. `/hackathons` is where every
-  // hackathon is listed, with its poster and its date, which is a better index
-  // than a column of text could be and never goes stale.
+  // `eventRoute` rather than a template, so the Builders Tour resolves to its
+  // campaign page here exactly as it does in a card and in the sitemap — the
+  // menu must not be the one place that links at a URL which 308s.
   {
     href: '/hackathons',
     key: 'nav.hackathons',
     children: [
-      { href: '/hackathons', key: 'nav.hackathonsAll' },
-      { href: '/builders-tour', key: 'nav.tour' },
+      ...NAV_HACKATHONS.map((h) => ({
+        href: eventRoute(h.slug, h.kind),
+        key: h.slug,
+        label: h.name[locale],
+      })),
       { href: '/hacker-houses', key: 'nav.hackerHouses' },
     ],
   },
@@ -120,6 +129,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const t = translator(locale);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const NAV = navItems(locale);
   const other = locale === 'es' ? 'en' : 'es';
   // Without the hash stripped this is a hydration mismatch: the server renders
   // asPath without the fragment and the client renders it with, so landing on
@@ -171,7 +181,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           {/* Desktop. The nav has outgrown a phone header, so below lg it moves
               into a sheet rather than scrolling sideways off the screen. */}
-          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Principal">
+          <nav className="hidden h-full items-stretch gap-0.5 lg:flex" aria-label="Principal">
             {/* Hidden below lg rather than unmounted, so its links — which is
                 every page on the site — stay in the HTML a crawler receives
                 whatever width it claims to be. */}
