@@ -559,6 +559,33 @@ export const othersLead = (locale: 'es' | 'en'): string => {
     : base;
 };
 
+/**
+ * Where the weekend was streamed.
+ *
+ * Both days went out live on two platforms at once. The YouTube recording can be
+ * framed; an X broadcast cannot, so that one is a link. No view counts on the
+ * page — they only go up, so any number written here is wrong by the time
+ * someone reads it, and a recording is worth watching or it is not.
+ *
+ * `youtube-nocookie.com` rather than `youtube.com`: it is the same player
+ * without the ad-tracking cookie dropped on a visitor who never pressed play.
+ * This is the first iframe on the site that needed `allow` and `allowFullScreen`
+ * — the Luma and Maps embeds take neither.
+ */
+export const STREAMS = {
+  youtube: {
+    url: 'https://www.youtube.com/watch?v=4E7bnnKVj-c',
+    /** Split out because the embed path takes the bare id, not the watch URL. */
+    videoId: '4E7bnnKVj-c',
+  },
+  x: {
+    url: 'https://x.com/i/broadcasts/1nxnRBgeYaoxO',
+  },
+} as const;
+
+export const youtubeEmbedUrl = (videoId: string) =>
+  `https://www.youtube-nocookie.com/embed/${videoId}`;
+
 /** `https://devfolio.co/projects/<slug>` — the record behind every card. */
 export const devfolioUrl = (slug: string) => `https://devfolio.co/projects/${slug}`;
 
@@ -626,13 +653,28 @@ export const RESULTS_COPY = {
   } as Bilingual,
   /**
    * "Everything that shipped" over eight of thirteen was simply false — the
-   * other five are in the EAG section above it. This section is the rest of
-   * the room, and the heading says that and nothing more.
+   * other five are in the EAG section above it. This is an invitation to the
+   * rest of the room rather than a consolation bracket: they are worth looking
+   * at, which is the reason they are on the page at all.
    */
-  othersTitle: { es: 'Los demás proyectos', en: 'The other projects' } as Bilingual,
+  othersTitle: {
+    es: '¡Conoce más proyectos participantes!',
+    en: 'Meet more of the projects that took part',
+  } as Bilingual,
   onDevfolio: { es: 'Ver en Devfolio', en: 'View on Devfolio' } as Bilingual,
   code: { es: 'Código', en: 'Code' } as Bilingual,
   demo: { es: 'Demo', en: 'Demo' } as Bilingual,
   video: { es: 'Video', en: 'Video' } as Bilingual,
   backToTour: { es: 'Volver al Builders Tour', en: 'Back to the Builders Tour' } as Bilingual,
+
+  // ── the stream ───────────────────────────────────────────────────────────
+  streamTitle: { es: 'Revive la transmisión', en: 'Watch it back' } as Bilingual,
+  streamLead: {
+    es: 'Los dos días salieron en vivo por YouTube y por X. Las grabaciones quedan.',
+    en: 'Both days went out live on YouTube and on X. The recordings are here.',
+  } as Bilingual,
+  streamOnYoutube: { es: 'Ver en YouTube', en: 'Watch on YouTube' } as Bilingual,
+  // Named as a broadcast rather than a video: X will not frame it, so this link
+  // leaves the site, and the label should say where it is going.
+  streamOnX: { es: 'Ver el directo en X', en: 'Watch the broadcast on X' } as Bilingual,
 } as const;

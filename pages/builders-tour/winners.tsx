@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Layout from '../../components/layout/Layout';
 import Seo from '../../components/layout/Seo';
 import { Section } from '../../components/layout/Page';
+import Streams from '../../components/media/Streams';
 import { clamp } from '../../lib/descriptions';
 import { breadcrumbJsonLd } from '../../lib/jsonld';
 import { asLocale, formatDate, type Locale } from '../../lib/i18n';
@@ -312,6 +313,14 @@ export default function Winners({ locale }: Props) {
             <WinnerCard key={project.slug} project={project} t={t} flip={i % 2 === 1} />
           ))}
         </div>
+      </Section>
+
+      <Section
+        id="stream"
+        title={t(RESULTS_COPY.streamTitle)}
+        lead={t(RESULTS_COPY.streamLead)}
+      >
+        <Streams locale={locale} />
       </Section>
 
       {/* The title sponsor's own track, with its three places standing open.

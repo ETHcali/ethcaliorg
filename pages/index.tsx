@@ -5,6 +5,8 @@ import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
 import { organizationJsonLd } from '../lib/jsonld';
 import { Section } from '../components/layout/Page';
+import Streams from '../components/media/Streams';
+import { RESULTS, RESULTS_COPY, PROJECTS } from '../content/results';
 import EventCard from '../components/events/EventCard';
 import { getEvents, getPartners, getVenues } from '../lib/content';
 import type { EventRecord, PartnerRecord } from '../types/content';
@@ -103,22 +105,26 @@ export default function Home({ upcoming, past, partners, totals, locale }: Props
         jsonLd={organizationJsonLd(locale)}
       />
 
-      {/* The one time-boxed thing on the site, above the fold until 20 September
-          because that is what the ad spend points at. */}
+      {/* The banner read "Inscripciones abiertas" under a signal-confirmed dot
+          for a weekend that ended on 20 September, which is the site telling a
+          first-time visitor to go and register for something that is over. The
+          slot still earns its place above the fold — it is the most recent thing
+          we did — so it now points at the result instead. */}
       <section className="mx-auto max-w-page px-gutter pt-8">
         <Link
-          href="/builders-tour"
+          href={RESULTS.path}
           className="group flex flex-wrap items-center gap-x-4 gap-y-2 rounded-card border border-line-brand bg-eth-blue-wash px-5 py-4 transition-colors hover:border-eth-blue"
         >
-          <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-signal-confirmed">
-            <span className="h-1.5 w-1.5 rounded-full bg-signal-confirmed" aria-hidden />
-            {en ? 'Registration open' : 'Inscripciones abiertas'}
+          <span className="text-[10px] font-bold uppercase tracking-widest text-eth-blue-text">
+            {en ? 'Results' : 'Resultados'}
           </span>
           <span className="text-sm font-bold text-content-primary">
-            Ethereum Builders Tour: Cali
+            {RESULTS_COPY.title[locale]} · {RESULTS.hackathon}
           </span>
           <span className="mono text-xs text-content-muted">
-            {en ? '19–20 September' : '19–20 de septiembre'}
+            {en
+              ? `${RESULTS.hackers}+ hackers · ${PROJECTS.length} projects`
+              : `+${RESULTS.hackers} hackers · ${PROJECTS.length} proyectos`}
           </span>
           <span className="ml-auto text-sm font-semibold text-eth-blue-text">→</span>
         </Link>
@@ -182,6 +188,24 @@ export default function Home({ upcoming, past, partners, totals, locale }: Props
           className="mt-6 inline-block text-sm text-eth-blue-text hover:underline"
         >
           {en ? 'All events' : 'Todos los eventos'} →
+        </Link>
+      </Section>
+
+      {/* The most recent thing we ran, as a thing you can watch rather than a
+          thing you can read about. It sits after the events because that is what
+          it is a recording of, and below the fold because it is a third-party
+          frame — see the note in components/media/Streams.tsx. */}
+      <Section
+        eyebrow={RESULTS.hackathon}
+        title={RESULTS_COPY.streamTitle[locale]}
+        lead={RESULTS_COPY.streamLead[locale]}
+      >
+        <Streams locale={locale} />
+        <Link
+          href={RESULTS.path}
+          className="mt-6 inline-block text-sm text-eth-blue-text hover:underline"
+        >
+          {RESULTS_COPY.title[locale]} →
         </Link>
       </Section>
 

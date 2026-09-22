@@ -14,24 +14,6 @@ import { RESULTS } from '../../content/results';
  * that only opens a menu is a dead end for anyone who expected it to be one.
  */
 const NAV: readonly NavItem[] = [
-  // The campaign entry. Paid traffic lands on /builders-tour directly, but
-  // organic visitors have to be able to find it too, so it still leads the nav.
-  //
-  // No longer `live`. That dot is `signal-confirmed`, and BRAND.md is explicit
-  // that a signal colour means something happened rather than that something is
-  // worth looking at — the weekend of 19–20 September is over, so a green dot
-  // beside it now says something untrue. The results took its place as the
-  // reason to click, and they are the first child.
-  {
-    href: '/builders-tour',
-    key: 'nav.tour',
-    matchPrefix: '/builders-tour',
-    children: [
-      { href: RESULTS.path, key: 'nav.winners' },
-      { href: '/builders-tour', key: 'nav.tour' },
-      { href: FRONTIER.path, key: 'nav.frontier' },
-    ],
-  },
   {
     // Points at the local list, not a hub. /events used to be a page whose only
     // content was two cards linking to these same two pages — the dropdown does
@@ -44,12 +26,26 @@ const NAV: readonly NavItem[] = [
       { href: '/events/international', key: 'nav.eventsIntl' },
     ],
   },
+  // The Builders Tour used to lead the bar as its own entry, which was right
+  // while it was selling a weekend that had not happened. It has happened. It is
+  // a hackathon we ran, so it belongs where the other ones are — as a third
+  // level inside Hackathons, keeping its three pages together rather than
+  // scattering them among the standing ones.
   {
     href: '/hackathons',
     key: 'nav.hackathons',
     children: [
       { href: '/hackathons', key: 'nav.hackathonsAll' },
       { href: '/hacker-houses', key: 'nav.hackerHouses' },
+      {
+        href: '/builders-tour',
+        key: 'nav.tour',
+        children: [
+          { href: RESULTS.path, key: 'nav.winners' },
+          { href: '/builders-tour', key: 'nav.tour' },
+          { href: FRONTIER.path, key: 'nav.frontier' },
+        ],
+      },
     ],
   },
   // Who we are, how we are governed, where we meet and what we own. Four pages
@@ -244,16 +240,43 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   ) : null}
 
                   <ul className="flex flex-col">
-                    {rows.map((row) => {
-                      const rowActive = current === row.href;
-                      return (
+                    {rows.map((row) =>
+                      // The third level, indented under its own label. Same
+                      // shape as the desktop panel, because a phone should get
+                      // the campaign's three pages grouped rather than dumped
+                      // in among the standing hackathon links.
+                      row.children ? (
+                        <li key={row.href}>
+                          <p className="px-1 pb-0.5 pt-3 text-[10px] font-semibold uppercase tracking-widest text-content-faint">
+                            {t(row.key)}
+                          </p>
+                          <ul className="flex flex-col">
+                            {row.children.map((g) => (
+                              <li key={g.href}>
+                                <Link
+                                  href={g.href}
+                                  aria-current={current === g.href ? 'page' : undefined}
+                                  onClick={() => setMenuOpen(false)}
+                                  className={`flex min-h-tap items-center rounded-chip pl-4 pr-1 text-sm transition-colors ${
+                                    current === g.href
+                                      ? 'font-semibold text-eth-blue-text'
+                                      : 'text-content-secondary'
+                                  }`}
+                                >
+                                  {t(g.key)}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      ) : (
                         <li key={row.href}>
                           <Link
                             href={row.href}
-                            aria-current={rowActive ? 'page' : undefined}
+                            aria-current={current === row.href ? 'page' : undefined}
                             onClick={() => setMenuOpen(false)}
                             className={`flex min-h-tap items-center rounded-chip px-1 text-sm transition-colors ${
-                              rowActive
+                              current === row.href
                                 ? 'font-semibold text-eth-blue-text'
                                 : item.children
                                   ? 'text-content-secondary'
@@ -263,8 +286,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             {t(row.key)}
                           </Link>
                         </li>
-                      );
-                    })}
+                      )
+                    )}
                   </ul>
                 </div>
               );
