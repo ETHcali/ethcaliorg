@@ -297,12 +297,29 @@ export const IMPACT = {
     users: { es: 'Billeteras onboardeadas', en: 'Wallets onboarded' } as Bilingual,
     transactions: { es: 'Transacciones onchain', en: 'Onchain transactions' } as Bilingual,
     volume: { es: 'USD movidos en tokens', en: 'USD moved in tokens' } as Bilingual,
-    fees: { es: 'USD en comisiones pagadas', en: 'USD paid in transaction fees' } as Bilingual,
+    fees: { es: 'USD en comisiones a la blockchain', en: 'USD in fees to the blockchain' } as Bilingual,
     chains: { es: 'Cadenas con actividad', en: 'Chains with activity' } as Bilingual,
     byChain: { es: 'Dónde ocurre', en: 'Where it happens' } as Bilingual,
     /** The bar chart ranks by transactions; this says so rather than leaving it guessed. */
     byChainUnit: { es: 'transacciones', en: 'transactions' } as Bilingual,
     others: { es: 'y {n} cadenas más', en: 'and {n} more chains' } as Bilingual,
+  },
+
+  /**
+   * The small line under a figure, for the ones whose label leaves a real
+   * question open.
+   *
+   * "USD en comisiones pagadas" did not say who was paid, and a number that
+   * size sitting on an organisation's own page reads as income. It is not: it
+   * is gas these wallets paid to the networks they transacted on, and ETH Cali
+   * never touched it. The label now names the recipient and this names what it
+   * is not, because the second half is the half a reader gets wrong.
+   */
+  feet: {
+    fees: {
+      es: 'Gas de red · no es ingreso de ETH Cali',
+      en: 'Network gas · not ETH Cali revenue',
+    } as Bilingual,
   },
 
   /**

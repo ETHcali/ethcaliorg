@@ -15,8 +15,8 @@ function Stat({ value, label, foot }: { value: string; label: string; foot?: str
     <div className="rounded-card border border-line-hairline bg-surface-slab p-5">
       <p className="mono text-2xl font-bold text-content-primary sm:text-3xl">{value}</p>
       <p className="mt-1 text-sm leading-snug text-content-secondary">{label}</p>
-      {/* Only the hand-counted figure carries one, so a figure with no footnote
-          is a figure straight off the chain. */}
+      {/* Two figures carry one: the hand-counted number, and the fee total,
+          which is the one a reader is most likely to read as income. */}
       {foot && (
         <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-wide text-content-faint">
           {foot}
@@ -55,7 +55,7 @@ export default function Impact({ locale }: { locale: Locale }) {
         <Stat value={n(DUNE.usersOnboarded)} label={t(IMPACT.labels.users)} />
         <Stat value={n(DUNE.transactions)} label={t(IMPACT.labels.transactions)} />
         <Stat value={usd(DUNE.volumeUsd)} label={t(IMPACT.labels.volume)} />
-        <Stat value={usd(DUNE.feesUsd)} label={t(IMPACT.labels.fees)} />
+        <Stat value={usd(DUNE.feesUsd)} label={t(IMPACT.labels.fees)} foot={t(IMPACT.feet.fees)} />
         <Stat value={n(DUNE.chains.length)} label={t(IMPACT.labels.chains)} />
         <Stat
           value={IMPACT.handCounted.value}
