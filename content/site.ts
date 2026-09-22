@@ -320,6 +320,10 @@ export const IMPACT = {
       es: 'Gas de red · no es ingreso de ETH Cali',
       en: 'Network gas · not ETH Cali revenue',
     } as Bilingual,
+    volume: {
+      es: 'Movidos por la comunidad, no por ETH Cali',
+      en: 'Moved by the community, not by ETH Cali',
+    } as Bilingual,
   },
 
   /**
