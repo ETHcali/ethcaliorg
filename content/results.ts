@@ -53,8 +53,8 @@ export const RESULTS = {
    * not five. Saying "five took a prize" undersells the room by three and tells
    * the HashKey entrants their result already happened without them.
    *
-   * The HashKey places and the Devcon tickets have not been awarded yet; the page
-   * holds them open rather than leaving them off.
+   * HashKey Chain announced its three places on 22 September 2026; the Devcon
+   * tickets are still unallocated and the page holds that one open.
    */
   prize: { each: 200, token: 'USDT', winners: 5 },
 } as const;
@@ -172,7 +172,11 @@ export const PROJECTS: readonly Project[] = [
         'and anyone hearing it.',
     },
     team: [{ name: 'Yoshiro Mare', handle: 'YoshiroMare' }],
-    tracks: ['AI x Ethereum & Agent Economy', 'AI-Native Creator Economy & Digital Rights', 'HSK Chain'],
+    tracks: [
+      'AI x Ethereum & Agent Economy',
+      'AI-Native Creator Economy & Digital Rights',
+      'HSK Chain',
+    ],
     links: {
       github: 'https://github.com/yoshiro-mare/pitch402-hackathon',
       demo: 'https://pitch402-hackathon.vercel.app/',
@@ -246,6 +250,9 @@ export const PROJECTS: readonly Project[] = [
   {
     name: 'PayAgent HSK',
     slug: 'payagenthsk-6cb5',
+    // Not one of EAG's five, but first on the HashKey Chain track — hence the
+    // photograph, which only winners carry.
+    photo: '/winnerseagglobalhackathon/payagentshsk.jpg',
     tagline: {
       es: 'Economía de agentes autónomos, pagos máquina a máquina con x402',
       en: 'Autonomous agent economy, x402 machine payments',
@@ -380,17 +387,17 @@ export const PROJECTS: readonly Project[] = [
         'shirt". The agent reads it, generates the QR and watches for confirmation on chain. The ' +
         'wallet is non-custodial — the keys never leave the phone.',
     },
-    team: [
-      { name: 'Emmanuel Buendía' },
-      { name: 'Juan Borrero', handle: 'juanjosbg' },
-    ],
+    team: [{ name: 'Emmanuel Buendía' }, { name: 'Juan Borrero', handle: 'juanjosbg' }],
     tracks: ['Real-World Ethereum Applications'],
     links: { github: 'https://github.com/EmanuelDesarrollo/ethereum-app-transaction' },
   },
   {
     name: 'Nature Intelligence',
     slug: 'nature-intelligence-0e1a',
-    tagline: { es: 'Observación satelital del territorio', en: 'Satellite observation of territory' },
+    tagline: {
+      es: 'Observación satelital del territorio',
+      en: 'Satellite observation of territory',
+    },
     blurb: {
       es:
         'Cruza el polígono oficial del Parque Tayrona con observaciones Sentinel-2 y NDVI para marcar ' +
@@ -405,7 +412,9 @@ export const PROJECTS: readonly Project[] = [
     },
     team: [{ name: 'Alejandro Realpe', handle: 'aleph1' }],
     tracks: ['Real-World Ethereum Applications'],
-    links: { github: 'https://github.com/symmetrysolutions1/Symmetry/tree/main/NatureIntelligence' },
+    links: {
+      github: 'https://github.com/symmetrysolutions1/Symmetry/tree/main/NatureIntelligence',
+    },
   },
   {
     name: 'Bootsstraps',
@@ -436,7 +445,10 @@ export const PROJECTS: readonly Project[] = [
   {
     name: 'HashPool',
     slug: 'mining-pools-840c',
-    tagline: { es: 'Pools de minería pequeños, repartidos con justicia', en: 'Micro mining pools, split fairly' },
+    tagline: {
+      es: 'Pools de minería pequeños, repartidos con justicia',
+      en: 'Micro mining pools, split fairly',
+    },
     blurb: {
       es:
         'Reparte ingresos y costos entre socios de un pool pequeño pesando hashrate efectivo por ' +
@@ -462,18 +474,17 @@ export const PROJECTS: readonly Project[] = [
 ];
 
 /**
- * The HashKey Chain track, held open.
+ * The HashKey Chain track.
  *
- * Three places, 1,000 USDT between them, judged separately from the EAG prize
- * and not awarded yet. The slots exist now with `slug: null` rather than being
- * added to the page when the result lands, for two reasons: a builder who
- * competed for this can see that their result is still coming, and filling it in
- * afterwards is one line per place rather than a new section written under time
- * pressure on the day it is announced.
+ * Three places, 1,000 USDT between them, judged separately from the EAG prize.
+ * The slots existed with `slug: null` from the day the page went up, so a
+ * builder who competed for this could see the result was still coming, and
+ * announcing it was one slug per place rather than a section written under time
+ * pressure. HashKey Chain announced on 22 September 2026 and the slugs went in.
  *
- * To announce a winner, put its Devfolio slug in `slug`. The card then renders
- * that project from `PROJECTS` — name, tagline, team, links — and the page copy
- * switches from "to be announced" on its own. Nothing else to change.
+ * A slot renders its project from `PROJECTS` — name, tagline, team, photo,
+ * links. `null` still works and renders the place as reserved, which is what
+ * the next edition of this page will want.
  */
 export interface HskSlot {
   place: 1 | 2 | 3;
@@ -492,9 +503,9 @@ export const HSK = {
   /** The name of the track exactly as it appears on each project's chips. */
   trackTag: 'HSK Chain',
   slots: [
-    { place: 1, prize: 500, slug: null },
-    { place: 2, prize: 300, slug: null },
-    { place: 3, prize: 200, slug: null },
+    { place: 1, prize: 500, slug: 'minganature-29f0' },
+    { place: 2, prize: 300, slug: 'trazamed-5a33' },
+    { place: 3, prize: 200, slug: 'payagenthsk-6cb5' },
   ] as readonly HskSlot[],
 } as const;
 
@@ -508,6 +519,15 @@ export const HSK_ENTRANTS = PROJECTS.filter((p) => p.tracks.includes(HSK.trackTa
 
 /** True once any place has been filled in. Drives the page copy. */
 export const HSK_ANNOUNCED = HSK.slots.some((s) => s.slug !== null);
+
+/**
+ * How many HashKey winners had already placed with EAG, counted off the data.
+ *
+ * "Prizes stack" was a rule while the track was open; once it was decided it
+ * became a fact with a number in it, and the number is read from the slots so
+ * the sentence cannot drift from the cards above it.
+ */
+export const HSK_STACKED = HSK.slots.filter((s) => s.slug && projectBySlug(s.slug)?.place).length;
 
 /**
  * The lead, counted rather than typed.
@@ -592,7 +612,9 @@ export const devfolioUrl = (slug: string) => `https://devfolio.co/projects/${slu
 /** A Devfolio profile, for the credit under each project. */
 export const devfolioProfile = (handle: string) => `https://devfolio.co/@${handle}`;
 
-export const WINNERS = PROJECTS.filter((p) => p.place) as readonly (Project & { place: 1 | 2 | 3 | 4 | 5 })[];
+export const WINNERS = PROJECTS.filter((p) => p.place) as readonly (Project & {
+  place: 1 | 2 | 3 | 4 | 5;
+})[];
 export const OTHERS = PROJECTS.filter((p) => !p.place);
 
 export const RESULTS_COPY = {
@@ -624,9 +646,15 @@ export const RESULTS_COPY = {
     es: 'Compitieron en este track',
     en: 'Competed on this track',
   } as Bilingual,
+  /** While the track was open. Kept for a `null` slot. */
   hskCumulative: {
     es: 'Los premios se acumulan: un proyecto que ya ganó arriba puede llevarse este también.',
     en: 'Prizes stack: a project that already won above can take this one too.',
+  } as Bilingual,
+  /** Once decided. `{n}` is `HSK_STACKED`. */
+  hskStacked: {
+    es: 'Los premios se acumularon: {n} de los tres también están entre los ganadores de EAG.',
+    en: "Prizes stacked: {n} of the three are also among EAG's winners.",
   } as Bilingual,
 
   // ── Devcon ───────────────────────────────────────────────────────────────
