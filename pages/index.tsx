@@ -22,6 +22,27 @@ interface Props {
   locale: Locale;
 }
 
+/**
+ * Marks that are drawn for a white ground and disappear on ours.
+ *
+ * Devcon's is deep blue and the Gobernación's is dark type inside a crest —
+ * against `--surface-slab` the first is a smudge and the second is unreadable,
+ * which it already was on the live site. Recolouring either would misrepresent
+ * it: Devcon's blue IS the brand, and a government crest is not ours to alter.
+ * So they get `--surface-paper` behind them, the same answer the Builders Tour
+ * sponsor wall reached for Icesi and Devcon.
+ *
+ * Keyed by logo path rather than by name, because the path is what decides
+ * whether the artwork needs a plate. `partners` has no column for this and the
+ * schema is the wallet app's to change.
+ */
+const NEEDS_PLATE = new Set([
+  '/tour/devcon-viii.webp',
+  '/gov/gov_valle.png',
+  '/gov/SEDEC.png',
+  '/universities/universidad_icesi.png',
+]);
+
 /** A row of partner or chain logos. Greyscale until hover, so no single sponsor shouts. */
 function LogoRow({
   items,
@@ -31,9 +52,14 @@ function LogoRow({
   return (
     <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
       {items.map((item) => {
+        const plate = item.logo ? NEEDS_PLATE.has(item.logo) : false;
         const inner = (
           <>
-            <div className="relative flex h-12 w-full items-center justify-center">
+            <div
+              className={`relative flex h-12 w-full items-center justify-center ${
+                plate ? 'rounded-chip bg-surface-paper px-3' : ''
+              }`}
+            >
               {item.logo ? (
                 <Image
                   src={item.logo}
@@ -44,15 +70,28 @@ function LogoRow({
                   // Both dimensions auto, not just width: next/image warns on
                   // every one of these logos otherwise, because constraining one
                   // axis in CSS and leaving the other fixed distorts the mark.
-                  className="h-auto max-h-12 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100"
+                  className={`h-auto w-auto object-contain transition-opacity ${
+                    plate ? 'max-h-10' : 'max-h-12 opacity-80 group-hover:opacity-100'
+                  }`}
                 />
               ) : (
                 <span className="text-sm font-bold text-content-secondary">{item.name}</span>
               )}
             </div>
-            <span className="mt-2 block text-center text-[11px] leading-tight text-content-faint">
-              {item.name}
-            </span>
+            {/* The caption, but only when there is artwork above it to caption.
+                A partner with no logo already renders its name as a wordmark,
+                and printing it again underneath said "Cámara de Comercio de
+                Cali / Cámara de Comercio de Cali".
+
+                `content-secondary`, not `content-faint`. Faint on a slab is
+                3.26:1 and this is small type — below the 18.66px bold that
+                would let it off with 3:1 — so every name under every logo on
+                this page failed AA. Secondary is 12.09:1. */}
+            {item.logo && (
+              <span className="mt-2 block text-center text-xs leading-tight text-content-secondary">
+                {item.name}
+              </span>
+            )}
           </>
         );
 
@@ -236,8 +275,13 @@ export default function Home({ upcoming, past, partners, totals, locale }: Props
         </Section>
       )}
 
+      {/* `supporter` is the government and institutional row now: the
+          Gobernación, the Cámara de Comercio and the Alcaldía. It used to also
+          carry Uniswap Labs and ETHGlobal, which are in the organisers row
+          above with the same logo files — the two marks rendered twice on this
+          page under two different headings. Those rows are unpublished. */}
       {by('supporter').length > 0 && (
-        <Section title={en ? 'Who backs us' : 'Quiénes nos respaldan'}>
+        <Section title={en ? 'Government and institutions' : 'Organizaciones gubernamentales'}>
           <LogoRow
             items={by('supporter').map((p) => ({ name: p.name, logo: p.logo_path, url: p.url }))}
           />
