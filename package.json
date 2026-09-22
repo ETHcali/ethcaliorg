@@ -5,14 +5,15 @@
   "description": "ethcali.org — the ETH Cali community site",
   "scripts": {
     "dev": "npm run nav && npm run brand-kit && next dev",
-    "build": "npm run nav && npm run brand-kit && next build",
+    "build": "npm run nav && npm run dune && npm run brand-kit && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "check": "tsx scripts/helpers.check.mts",
     "brand-kit": "tsx scripts/brand-kit.mts",
     "logos": "tsx scripts/split-logo-sheet.mts",
-    "nav": "tsx scripts/hackathon-nav.mts"
+    "nav": "tsx scripts/hackathon-nav.mts",
+    "dune": "tsx scripts/dune.mts"
   },
   "dependencies": {
     "@ethcali/design-tokens": "github:ETHcali/design-tokens#v1",

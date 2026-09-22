@@ -117,43 +117,66 @@ export const INTERSECTION = {
 /**
  * What five years added up to, and where to check it.
  *
- * These three cannot be derived from Supabase — the events table knows how many
- * meetups we ran, not how many people left one with a wallet — so they are
- * counted by hand and carry the date they were counted. That date is the whole
- * point of the field: an approximate number with a date is a snapshot, and the
- * same number without one reads as live and is quietly wrong forever. The site
- * already prints its own live counts in the home page hero; these sit beside
- * them and are labelled differently on purpose.
+ * Two of the three now come from the Dune dashboard rather than from memory.
+ * The hand-counted "400+ personas onboardeadas" that stood here was low: Dune's
+ * own counter says 441. The figure it replaced had no date on it either, which
+ * is the failure mode this block exists to avoid — an approximate number with a
+ * date is a snapshot, the same number without one reads as live and is quietly
+ * wrong forever.
  *
- * Last taken from the static site at commit 85cd3f6 (31 August 2026).
- *
- * The Dune dashboard is the onchain half and is linked rather than embedded.
- * Worth knowing before trusting it: as of this writing its eleven widgets all
- * render "Click Run to get results" for a logged-out visitor, so someone
- * following the link sees an empty dashboard until the queries are made to run
- * publicly on Dune's side.
+ * `source` marks which is which, and the note under the cards says so in prose.
+ * Mixing a measured number and a guessed one without distinguishing them makes
+ * the guess look measured.
  */
 export const IMPACT = {
   dashboardUrl: 'https://dune.com/ethcali/onchain-metrics-by-users-onboarded-by-ethcali',
-  countedOn: { es: 'agosto de 2026', en: 'August 2026' } as Bilingual,
+  /**
+   * The Dune counters behind the two onchain figures, as query/visualization
+   * ids. `scripts/dune.mts` reads the last saved result of each through Dune's
+   * official API and rewrites `metrics` below; without a DUNE_API_KEY it leaves
+   * the committed values alone.
+   *
+   * These ids were taken off the dashboard's own widget links. The dashboard
+   * page itself renders "Click Run to get results" to a logged-out visitor, but
+   * the saved results are real and current — dune.com/embeds/<q>/<v> shows them.
+   */
+  queries: {
+    usersOnboarded: { query: 6627839, visualization: 10454384 },
+    feesPaidUsd: { query: 6633618, visualization: 10462106 },
+  },
+  countedOn: { es: 'septiembre de 2026', en: 'September 2026' } as Bilingual,
   since: { es: 'Desde Devcon VI, en 2022.', en: 'Since Devcon VI, in 2022.' } as Bilingual,
   metrics: [
     {
-      value: '400+',
+      /** Dune: "Users onboarded". Was published as "400+" from a hand count. */
+      value: '441',
       label: { es: 'Personas onboardeadas', en: 'People onboarded' } as Bilingual,
+      source: 'dune' as const,
     },
     {
+      /** Dune: "Total transaction fees paid by users (usd)". */
+      value: '38.888',
+      label: { es: 'USD en comisiones pagadas', en: 'USD paid in transaction fees' } as Bilingual,
+      source: 'dune' as const,
+    },
+    {
+      /**
+       * Not on Dune and not derivable from it: the chain knows what a wallet
+       * did, not whether the person holding it writes Java for a living.
+       * Counted by hand, and labelled as such.
+       */
       value: '100+',
       label: { es: 'Developers Web2 alcanzados', en: 'Web2 developers reached' } as Bilingual,
-    },
-    {
-      value: '10+',
-      label: { es: 'ETH transados en EVM', en: 'ETH transacted on EVM' } as Bilingual,
+      source: 'hand' as const,
     },
   ],
   note: {
-    es: 'Cifras aproximadas, contadas a mano en agosto de 2026. Las métricas onchain en vivo están en Dune.',
-    en: 'Approximate figures, counted by hand in August 2026. The live onchain metrics are on Dune.',
+    es:
+      'Las dos primeras salen del tablero de Dune, del último cálculo guardado. La tercera se cuenta a ' +
+      'mano — la cadena sabe qué hizo una billetera, no a qué se dedica quien la usa.',
+    en:
+      'The first two come from the Dune dashboard, from its last saved run. The third is counted by ' +
+      'hand — the chain knows what a wallet did, not what the person holding it does for a living.',
   } as Bilingual,
   cta: { es: 'Ver las métricas onchain en Dune', en: 'See the onchain metrics on Dune' } as Bilingual,
   title: { es: 'Lo que hemos construido', en: 'What we have built' } as Bilingual,
@@ -452,6 +475,15 @@ export const SWAG_GROUPS: readonly SwagGroup[] = [
         name: { es: 'Mug Ethereum', en: 'Ethereum mug' },
         detail: { es: 'El octaedro, sin más.', en: 'The octahedron, nothing else.' },
         image: '/swags/mug-ethereum.png',
+        tags: [{ es: 'Cerámica', en: 'Ceramic' }],
+      },
+      {
+        name: { es: 'Mug ETHGlobal', en: 'ETHGlobal mug' },
+        detail: {
+          es: 'De los hackathons de ETHGlobal, con quienes organizamos.',
+          en: 'From the ETHGlobal hackathons, one of the organisations we run things with.',
+        },
+        image: '/swags/mug-ethglobal.png',
         tags: [{ es: 'Cerámica', en: 'Ceramic' }],
       },
       {
