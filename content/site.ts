@@ -300,8 +300,12 @@ export const IMPACT = {
     fees: { es: 'USD en comisiones a la blockchain', en: 'USD in fees to the blockchain' } as Bilingual,
     chains: { es: 'Cadenas con actividad', en: 'Chains with activity' } as Bilingual,
     byChain: { es: 'Dónde ocurre', en: 'Where it happens' } as Bilingual,
-    /** The bar chart ranks by value moved; this says so rather than leaving it guessed. */
-    byChainUnit: { es: 'volumen movido', en: 'value moved' } as Bilingual,
+    /**
+     * The bar chart ranks by value moved; this says so rather than leaving it
+     * guessed. It also names the currency: to a reader in Colombia a bare `$`
+     * is pesos, and $11,9M in pesos is a different story by a factor of 4000.
+     */
+    byChainUnit: { es: 'volumen movido en USD', en: 'value moved in USD' } as Bilingual,
     others: { es: 'y {n} cadenas más', en: 'and {n} more chains' } as Bilingual,
   },
 

@@ -45,16 +45,21 @@ export default function Impact({ locale }: { locale: Locale }) {
       : `$${n(v)}`;
 
   /**
-   * Compact, for the bar rows. $11,9M and $641K sit in the same narrow column;
-   * the full figure would wrap and the column would have to be twice as wide
-   * to hold a number nobody reads digit by digit.
+   * Compact, for the bar rows. US$11,9M and US$641K sit in the same narrow
+   * column; the full figure would wrap and the column would have to be twice
+   * as wide to hold a number nobody reads digit by digit.
+   *
+   * `US$` rather than `$`: the stat cards say "USD" in their label, but these
+   * rows have no label of their own and the site's first audience counts in
+   * pesos, where `$` is the peso sign. The header names the currency too; the
+   * figure repeats it because rows get read one at a time.
    */
   const usdShort = (v: number) =>
     v >= 1_000_000
-      ? `$${(v / 1_000_000).toLocaleString(tag, { maximumFractionDigits: 1 })}M`
+      ? `US$${(v / 1_000_000).toLocaleString(tag, { maximumFractionDigits: 1 })}M`
       : v >= 1_000
-        ? `$${Math.round(v / 1_000).toLocaleString(tag)}K`
-        : `$${n(v)}`;
+        ? `US$${Math.round(v / 1_000).toLocaleString(tag)}K`
+        : `US$${n(v)}`;
 
   const top = DUNE.chains.slice(0, IMPACT.topChains);
   const rest = DUNE.chains.length - top.length;
@@ -105,7 +110,7 @@ export default function Impact({ locale }: { locale: Locale }) {
                     style={{ width: `${Math.max(2, (c.volumeUsd / max) * 100)}%` }}
                   />
                 </span>
-                <span className="mono w-16 shrink-0 text-right text-xs text-content-muted sm:w-20">
+                <span className="mono w-[4.5rem] shrink-0 text-right text-xs text-content-muted sm:w-24">
                   {usdShort(c.volumeUsd)}
                 </span>
               </li>
