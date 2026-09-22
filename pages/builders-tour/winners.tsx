@@ -274,11 +274,11 @@ export default function Winners({ locale }: Props) {
         title={t(RESULTS_COPY.seoTitle)}
         description={clamp(resultsLead(locale))}
         path={RESULTS.path}
-        // The event's banner, not the first winner's photo. A forwarded link
-        // should show the tour a reader may not have heard of, not three
-        // people they have not met; the photos are on the page itself.
-        image={TOUR.banner.src}
-        imageSize={TOUR.banner}
+        // The closing banner, not the first winner's photo. A forwarded link
+        // shows the same picture the reader lands on; the team photos are on
+        // the page itself, one per place.
+        image={RESULTS.banner.src}
+        imageSize={RESULTS.banner}
         type="article"
         jsonLd={breadcrumbJsonLd(
           [
@@ -324,6 +324,21 @@ export default function Winners({ locale }: Props) {
           <p className="mono mt-5 text-sm text-content-muted">
             {formatDate(RESULTS.judgedOn, locale)} · {TOUR.venue.name[locale]}
           </p>
+
+          {/* The thank-you, before the ranking. It is also the share card, so
+              someone arriving from a forwarded link sees the picture they
+              clicked on and not a page that looks unrelated to it. */}
+          <div className="relative mt-10 overflow-hidden rounded-card border border-line-brand">
+            <Image
+              src={RESULTS.banner.src}
+              alt={RESULTS.banner.alt}
+              width={RESULTS.banner.width}
+              height={RESULTS.banner.height}
+              sizes="(min-width: 1024px) 1000px, 92vw"
+              className="h-auto w-full"
+              priority
+            />
+          </div>
         </div>
       </header>
 
