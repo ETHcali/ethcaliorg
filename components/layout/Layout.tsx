@@ -6,6 +6,7 @@ import { asLocale, translator } from '../../lib/i18n';
 import NavEntry, { type NavItem } from './Nav';
 import { NAV_HACKATHONS } from '../../content/hackathons.generated';
 import { eventRoute } from '../../lib/routes';
+import { appEntry } from '../../lib/links';
 import SocialIcon, { type SocialName } from './SocialIcon';
 
 /**
@@ -192,6 +193,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
+            {/* The way into app.ethcali.org, on every page of the site.
+
+                Until now the only routes in were four buried CTAs — "Apóyanos"
+                on the home page, "Donar" on /dao, "Ver tus coleccionables" on
+                /swag — so a reader who wanted the wallet had to find a donate
+                button to get to it.
+
+                A plain <a>, not next/link: a different origin. Filled, because
+                it is the one primary action the chrome carries; everything else
+                in this bar is navigation. Hidden below sm, where it would crowd
+                the burger — the phone sheet opens with its own full-width copy. */}
+            <a
+              href={appEntry()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden min-h-tap items-center rounded-control bg-eth-blue px-4 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift sm:inline-flex"
+            >
+              {t('nav.goToApp')} →
+            </a>
+
             {/* Keeps you on the page you are reading rather than dumping you home.
 
                 `min-h-tap` because this was 32px tall on a phone — the one
@@ -239,6 +260,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             className="max-h-[calc(100vh-var(--nav-h))] overflow-y-auto overscroll-contain border-t border-line-hairline bg-surface-void px-gutter py-3 lg:hidden"
             aria-label="Principal, móvil"
           >
+            {/* The phone's copy of the header button, which hides below sm so
+                it does not crowd the burger. First row, above the groups: it is
+                the one action here rather than another place to navigate to. */}
+            <a
+              href={appEntry()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              className="mb-2 flex min-h-tap items-center justify-center rounded-control bg-eth-blue px-4 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
+            >
+              {t('nav.goToApp')} →
+            </a>
+
             {NAV.map((item) => {
               const rows = item.children ?? [{ href: item.href, key: item.key }];
               return (

@@ -60,6 +60,7 @@ export function absoluteUrl(route: string, locale: string): string {
  */
 export const STATIC_ROUTES: readonly { route: string; priority: number }[] = [
   { route: '/', priority: 1.0 },
+  { route: '/app', priority: 0.8 },
   { route: '/builders-tour', priority: 0.9 },
   { route: '/builders-tour/frontier-cities-quest', priority: 0.9 },
   { route: '/builders-tour/winners', priority: 0.8 },

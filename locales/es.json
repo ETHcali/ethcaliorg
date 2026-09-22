@@ -17,7 +17,9 @@
     "frontier": "Frontier Cities",
     "winners": "Ganadores",
     "resources": "Recursos",
-    "team": "Equipo"
+    "team": "Equipo",
+    "goToApp": "Ir a la app",
+    "app": "La app"
   },
   "events": {
     "title": "Eventos",

@@ -29,7 +29,7 @@ import Streams from '../components/media/Streams';
 import { tourEventJsonLd, breadcrumbJsonLd } from '../lib/jsonld';
 import { clamp } from '../lib/descriptions';
 import { asLocale, formatDate, formatDateRange, type Locale } from '../lib/i18n';
-import { APP } from '../lib/links';
+import { appEntry } from '../lib/links';
 
 
 interface Props {
@@ -732,8 +732,12 @@ export default function BuildersTour({ locale }: Props) {
             <p className="mt-2 max-w-prose text-sm leading-relaxed text-content-secondary">
               {t(PAYOUT.noWallet.body)}
             </p>
+            {/* `appEntry('/wallet')` rather than the app's home page: this
+                block is addressed to a winner who has no wallet, so the
+                destination is the wallet, and the entry carries it through the
+                sign-in instead of dropping them on a landing page. */}
             <a
-              href={APP.home}
+              href={appEntry('/wallet')}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 inline-flex min-h-tap items-center rounded-control bg-eth-blue px-5 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
