@@ -5,12 +5,11 @@ import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
 import { organizationJsonLd } from '../lib/jsonld';
 import { Section } from '../components/layout/Page';
-import Streams from '../components/media/Streams';
 import { RESULTS, RESULTS_COPY, PROJECTS } from '../content/results';
 import EventCard from '../components/events/EventCard';
 import { getEvents, getPartners, getVenues } from '../lib/content';
 import type { EventRecord, PartnerRecord } from '../types/content';
-import { MISSION, CHAINS, type Bilingual } from '../content/site';
+import { MISSION, CHAINS, IMPACT, type Bilingual } from '../content/site';
 import { asLocale, type Locale } from '../lib/i18n';
 import { APP } from '../lib/links';
 
@@ -203,6 +202,42 @@ export default function Home({ upcoming, past, partners, totals, locale }: Props
         </div>
       </Section>
 
+      {/* The onchain half of the story, which the events table cannot tell: it
+          knows how many meetups ran, not how many people left one holding a
+          wallet. Restored from the static site, where it was the "Impacto"
+          section and was dropped in the rebuild.
+
+          The figures carry the month they were counted. An approximate number
+          with a date is a snapshot; the same number without one reads as live
+          and is quietly wrong forever. */}
+      <Section
+        eyebrow={IMPACT.eyebrow[locale]}
+        title={IMPACT.title[locale]}
+        lead={IMPACT.since[locale]}
+      >
+        <div className="grid gap-3 sm:grid-cols-3">
+          {IMPACT.metrics.map((m) => (
+            <div key={m.value} className="rounded-card border border-line-hairline bg-surface-slab p-5">
+              <p className="mono text-3xl font-bold text-content-primary">{m.value}</p>
+              <p className="mt-1 text-sm text-content-secondary">{m.label[locale]}</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-4 max-w-prose text-xs leading-relaxed text-content-muted">
+          {IMPACT.note[locale]}
+        </p>
+
+        <a
+          href={IMPACT.dashboardUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 inline-flex min-h-tap items-center rounded-control border border-line-strong px-5 text-sm font-semibold text-content-primary transition-colors hover:border-eth-blue hover:bg-eth-blue-wash"
+        >
+          {IMPACT.cta[locale]} →
+        </a>
+      </Section>
+
       {/* Upcoming first, and only when there is something. "Recent events"
           showing a year-old meetup is accurate and useless; an empty upcoming
           section would be worse, so it simply is not rendered. */}
@@ -227,24 +262,6 @@ export default function Home({ upcoming, past, partners, totals, locale }: Props
           className="mt-6 inline-block text-sm text-eth-blue-text hover:underline"
         >
           {en ? 'All events' : 'Todos los eventos'} →
-        </Link>
-      </Section>
-
-      {/* The most recent thing we ran, as a thing you can watch rather than a
-          thing you can read about. It sits after the events because that is what
-          it is a recording of, and below the fold because it is a third-party
-          frame — see the note in components/media/Streams.tsx. */}
-      <Section
-        eyebrow={RESULTS.hackathon}
-        title={RESULTS_COPY.streamTitle[locale]}
-        lead={RESULTS_COPY.streamLead[locale]}
-      >
-        <Streams locale={locale} />
-        <Link
-          href={RESULTS.path}
-          className="mt-6 inline-block text-sm text-eth-blue-text hover:underline"
-        >
-          {RESULTS_COPY.title[locale]} →
         </Link>
       </Section>
 

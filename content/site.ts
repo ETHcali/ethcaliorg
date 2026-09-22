@@ -17,36 +17,93 @@ export interface Bilingual {
 
 // ── about ───────────────────────────────────────────────────────────────────
 
+/**
+ * The four things we actually do, in the order they happen.
+ *
+ * The previous four were categories rather than activities — "Innovación
+ * tecnológica", "Impacto regional" — the kind of heading that could sit on any
+ * organisation's page without changing a word. These name the work: someone
+ * learns, then digs into something nobody has written up, then ships it, and
+ * the community is what carries them through all three.
+ */
 export const MISSION: readonly { title: Bilingual; detail: Bilingual }[] = [
   {
-    title: { es: 'Innovación tecnológica', en: 'Technical innovation' },
+    title: { es: 'Educación', en: 'Education' },
     detail: {
-      es: 'Construimos con Ethereum en el Pacífico Colombiano, donde antes no había con qué.',
-      en: 'We build with Ethereum in the Colombian Pacific, where there was nothing to build with before.',
+      es: 'Enseñamos Ethereum desde cero, en universidades y en meetups abiertos. El conocimiento se comparte, no se acumula.',
+      en: 'We teach Ethereum from zero, in universities and in open meetups. Knowledge is shared, not hoarded.',
+    },
+  },
+  {
+    title: { es: 'Investigación', en: 'Research' },
+    detail: {
+      es: 'Probamos lo que todavía no tiene manual — L2s, identidad, pagos con stablecoins — y publicamos lo que encontramos.',
+      en: 'We test what has no manual yet — L2s, identity, stablecoin payments — and publish what we find.',
+    },
+  },
+  {
+    title: { es: 'Construcción', en: 'Building' },
+    detail: {
+      es: 'Hackathons, contratos desplegados y aplicaciones que corren. Lo que sale de aquí se puede abrir y usar.',
+      en: 'Hackathons, deployed contracts and applications that run. What comes out of here can be opened and used.',
     },
   },
   {
     title: { es: 'Comunidad', en: 'Community' },
     detail: {
-      es: 'Construimos juntos. El conocimiento se comparte, no se acumula.',
-      en: 'We build together. Knowledge is shared, not hoarded.',
-    },
-  },
-  {
-    title: { es: 'Educación Web3', en: 'Web3 education' },
-    detail: {
-      es: 'Democratizamos el acceso a las tecnologías descentralizadas.',
-      en: 'We open up access to decentralised technology.',
-    },
-  },
-  {
-    title: { es: 'Impacto regional', en: 'Regional impact' },
-    detail: {
-      es: 'Que Cali y la región sean un hub tecnológico de referencia.',
-      en: 'To make Cali and the region a technology hub that counts.',
+      es: 'Nada de lo anterior lo hace una persona sola. Cali y el Pacífico construyendo juntos, con la puerta abierta.',
+      en: 'None of the above is done alone. Cali and the Pacific building together, with the door open.',
     },
   },
 ];
+
+// ── impact ──────────────────────────────────────────────────────────────────
+
+/**
+ * What five years added up to, and where to check it.
+ *
+ * These three cannot be derived from Supabase — the events table knows how many
+ * meetups we ran, not how many people left one with a wallet — so they are
+ * counted by hand and carry the date they were counted. That date is the whole
+ * point of the field: an approximate number with a date is a snapshot, and the
+ * same number without one reads as live and is quietly wrong forever. The site
+ * already prints its own live counts in the home page hero; these sit beside
+ * them and are labelled differently on purpose.
+ *
+ * Last taken from the static site at commit 85cd3f6 (31 August 2026).
+ *
+ * The Dune dashboard is the onchain half and is linked rather than embedded.
+ * Worth knowing before trusting it: as of this writing its eleven widgets all
+ * render "Click Run to get results" for a logged-out visitor, so someone
+ * following the link sees an empty dashboard until the queries are made to run
+ * publicly on Dune's side.
+ */
+export const IMPACT = {
+  dashboardUrl: 'https://dune.com/ethcali/onchain-metrics-by-users-onboarded-by-ethcali',
+  countedOn: { es: 'agosto de 2026', en: 'August 2026' } as Bilingual,
+  since: { es: 'Desde Devcon VI, en 2022.', en: 'Since Devcon VI, in 2022.' } as Bilingual,
+  metrics: [
+    {
+      value: '400+',
+      label: { es: 'Personas onboardeadas', en: 'People onboarded' } as Bilingual,
+    },
+    {
+      value: '100+',
+      label: { es: 'Developers Web2 alcanzados', en: 'Web2 developers reached' } as Bilingual,
+    },
+    {
+      value: '10+',
+      label: { es: 'ETH transados en EVM', en: 'ETH transacted on EVM' } as Bilingual,
+    },
+  ],
+  note: {
+    es: 'Cifras aproximadas, contadas a mano en agosto de 2026. Las métricas onchain en vivo están en Dune.',
+    en: 'Approximate figures, counted by hand in August 2026. The live onchain metrics are on Dune.',
+  } as Bilingual,
+  cta: { es: 'Ver las métricas onchain en Dune', en: 'See the onchain metrics on Dune' } as Bilingual,
+  title: { es: 'Lo que hemos construido', en: 'What we have built' } as Bilingual,
+  eyebrow: { es: 'Impacto', en: 'Impact' } as Bilingual,
+} as const;
 
 // ── DAO ─────────────────────────────────────────────────────────────────────
 

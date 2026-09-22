@@ -25,6 +25,7 @@ import {
 } from '../content/builders-tour';
 import { FRONTIER, QUEST, QUEST_CITIES, QUEST_COPY } from '../content/quest';
 import { RESULTS, RESULTS_COPY } from '../content/results';
+import Streams from '../components/media/Streams';
 import { tourEventJsonLd, breadcrumbJsonLd } from '../lib/jsonld';
 import { clamp } from '../lib/descriptions';
 import { asLocale, formatDate, formatDateRange, type Locale } from '../lib/i18n';
@@ -356,6 +357,21 @@ export default function BuildersTour({ locale }: Props) {
             priority
           />
         </div>
+      </Section>
+
+      {/* ── the recording ────────────────────────────────────────────────── */}
+      {/* Directly after what the event is, because this is the event. It was on
+          the home page, which was the wrong room for it: the home page
+          introduces ETH Cali to someone who has not heard of us, and two days of
+          hackathon footage is not that introduction. Here it is the proof behind
+          the paragraph above it. */}
+      <Section
+        id="stream"
+        eyebrow={RESULTS.hackathon}
+        title={t(RESULTS_COPY.streamTitle)}
+        lead={t(RESULTS_COPY.streamLead)}
+      >
+        <Streams locale={locale} />
       </Section>
 
       {/* ── the tour map ─────────────────────────────────────────────────── */}
