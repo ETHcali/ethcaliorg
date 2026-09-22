@@ -40,6 +40,11 @@ const NEEDS_PLATE = new Set([
   '/tour/devcon-viii.webp',
   '/gov/gov_valle.png',
   '/gov/SEDEC.png',
+  // Both institutional marks are dark type on white — the Alcaldía's crest with
+  // a black wordmark, the Cámara's "C" with a dark blue one. On --surface-slab
+  // the lettering vanishes, and neither is ours to recolour.
+  '/gov/alcaldia-cali.svg',
+  '/gov/camara-comercio-cali.svg',
   '/universities/universidad_icesi.png',
 ]);
 
