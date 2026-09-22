@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Layout from '../../components/layout/Layout';
 import Seo from '../../components/layout/Seo';
 import { Section } from '../../components/layout/Page';
-import Streams from '../../components/media/Streams';
 import { clamp } from '../../lib/descriptions';
 import { breadcrumbJsonLd } from '../../lib/jsonld';
 import { asLocale, formatDate, type Locale } from '../../lib/i18n';
@@ -17,6 +16,7 @@ import {
   HSK,
   HSK_ANNOUNCED,
   HSK_ENTRANTS,
+  HSK_STACKED,
   resultsLead,
   othersLead,
   projectBySlug,
@@ -141,9 +141,7 @@ function WinnerCard({
         <div className="p-6 sm:p-8">
           <div className="flex items-baseline gap-3">
             {/* The rank as a numeral, monospaced: it is a result, not a heading. */}
-            <span className="mono text-3xl font-bold text-eth-blue-text">
-              {project.place}
-            </span>
+            <span className="mono text-3xl font-bold text-eth-blue-text">{project.place}</span>
             <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
               {t(RESULTS_COPY.placeLabel)}
             </span>
@@ -189,46 +187,63 @@ function ProjectCard({ project, t }: { project: Project; t: (b: Bilingual) => st
  * The border is dashed while empty and solid once filled. That is the only
  * signal colour decision here — `signal-pending` is amber and means waiting,
  * which is exactly what this is.
+ *
+ * A filled slot leads with the showcase photograph, for the reason the EAG
+ * cards do: a prize is a line in a table, the team that took it is a room.
+ * Three columns instead of one, so the photo sits on top rather than beside.
  */
 function HskSlotCard({ slot, t }: { slot: HskSlot; t: (b: Bilingual) => string }) {
   const project = slot.slug ? projectBySlug(slot.slug) : null;
 
   return (
     <article
-      className={`flex min-h-[200px] flex-col rounded-card bg-surface-slab p-5 ${
+      className={`flex min-h-[200px] flex-col overflow-hidden rounded-card bg-surface-slab ${
         project ? 'border border-line-brand' : 'border border-dashed border-line-hairline'
       }`}
     >
-      <div className="flex items-baseline justify-between gap-3">
-        <div className="flex items-baseline gap-2">
-          <span className="mono text-3xl font-bold text-eth-blue-text">{slot.place}</span>
-          <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
-            {t(RESULTS_COPY.placeLabel)}
+      {project?.photo && (
+        <Image
+          src={project.photo}
+          alt={`${project.name} — ${HSK.sponsor}, ${RESULTS.hackathon}, Cali`}
+          width={1280}
+          height={960}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          className="h-48 w-full object-cover"
+        />
+      )}
+
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex items-baseline justify-between gap-3">
+          <div className="flex items-baseline gap-2">
+            <span className="mono text-3xl font-bold text-eth-blue-text">{slot.place}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
+              {t(RESULTS_COPY.placeLabel)}
+            </span>
+          </div>
+          <span className="mono text-sm font-bold text-content-primary">
+            {slot.prize} {HSK.token}
           </span>
         </div>
-        <span className="mono text-sm font-bold text-content-primary">
-          {slot.prize} {HSK.token}
-        </span>
-      </div>
 
-      {project ? (
-        <>
-          <h3 className="mt-4 text-lg">{project.name}</h3>
-          <p className="mt-1 text-sm text-eth-blue-text">{t(project.tagline)}</p>
-          <Team team={project.team} />
-          <div className="mt-auto pt-4">
-            <Links project={project} t={t} />
-          </div>
-        </>
-      ) : (
-        // Centred rather than pushed to the bottom. Once one place is filled it
-        // is a tall card next to two short ones, and `mt-auto` would strand the
-        // label at the foot of a column of nothing.
-        <p className="flex flex-1 items-center justify-center gap-2 py-6 text-sm text-content-muted">
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal-pending" aria-hidden />
-          {t(RESULTS_COPY.hskAwaiting)}
-        </p>
-      )}
+        {project ? (
+          <>
+            <h3 className="mt-4 text-lg">{project.name}</h3>
+            <p className="mt-1 text-sm text-eth-blue-text">{t(project.tagline)}</p>
+            <Team team={project.team} />
+            <div className="mt-auto pt-4">
+              <Links project={project} t={t} />
+            </div>
+          </>
+        ) : (
+          // Centred rather than pushed to the bottom. Once one place is filled it
+          // is a tall card next to two short ones, and `mt-auto` would strand the
+          // label at the foot of a column of nothing.
+          <p className="flex flex-1 items-center justify-center gap-2 py-6 text-sm text-content-muted">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal-pending" aria-hidden />
+            {t(RESULTS_COPY.hskAwaiting)}
+          </p>
+        )}
+      </div>
     </article>
   );
 }
@@ -315,19 +330,12 @@ export default function Winners({ locale }: Props) {
         </div>
       </Section>
 
-      <Section
-        id="stream"
-        title={t(RESULTS_COPY.streamTitle)}
-        lead={t(RESULTS_COPY.streamLead)}
-      >
-        <Streams locale={locale} />
-      </Section>
-
-      {/* The title sponsor's own track, with its three places standing open.
-          Judged separately from the EAG prize and not decided yet — so the
-          podium is built and empty rather than absent. A builder who entered
-          this track can see their result is still coming, and announcing it
-          later is a slug in `HSK.slots`, not a section written on the day. */}
+      {/* The title sponsor's own track, judged separately from the EAG prize.
+          The three places stood open and dashed on this page for two days
+          after EAG's were announced, so a builder who entered this track could
+          see the result was still coming; they are filled now. The recording
+          of the weekend used to sit between the two podiums — it lives on the
+          campaign page, where it is the event, not on the results. */}
       <Section
         id="hashkey"
         eyebrow={HSK.sponsor}
@@ -340,7 +348,11 @@ export default function Winners({ locale }: Props) {
           ))}
         </div>
 
-        <p className="mt-6 text-sm text-content-muted">{t(RESULTS_COPY.hskCumulative)}</p>
+        <p className="mt-6 text-sm text-content-muted">
+          {HSK_ANNOUNCED
+            ? t(RESULTS_COPY.hskStacked).replace('{n}', String(HSK_STACKED))
+            : t(RESULTS_COPY.hskCumulative)}
+        </p>
 
         {/* Who is actually in the running, read off the track chips rather than
             listed again. Five of the thirteen entered this track, and naming
@@ -385,11 +397,7 @@ export default function Winners({ locale }: Props) {
         </div>
       </Section>
 
-      <Section
-        id="projects"
-        title={t(RESULTS_COPY.othersTitle)}
-        lead={othersLead(locale)}
-      >
+      <Section id="projects" title={t(RESULTS_COPY.othersTitle)} lead={othersLead(locale)}>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {OTHERS.map((project) => (
             <ProjectCard key={project.slug} project={project} t={t} />
