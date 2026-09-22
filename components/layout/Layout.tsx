@@ -69,13 +69,22 @@ const navItems = (locale: 'es' | 'en'): readonly NavItem[] => [
     ],
   },
   // The things a reader can take away: learn something, wear something, use our
-  // mark. The parent points at /education because it is the one most people
-  // want; a nav entry that only opens a menu is a dead end.
+  // mark, open the app. The parent points at /education because it is the one
+  // most people want; a nav entry that only opens a menu is a dead end.
+  //
+  // `/app` is in this list and not in the bar, and the two are doing different
+  // jobs. The button in the header goes straight to app.ethcali.org because
+  // that is what someone who already knows what the app is wants — one click,
+  // no detour. This entry is for the reader who does not: a page in Spanish
+  // saying what a wallet is and that they install nothing, before they leave
+  // the site. Without it that page was in the sitemap at 0.8 and reachable from
+  // nowhere, which is the exact failure the comment two groups up describes.
   {
     href: '/education',
     key: 'nav.resources',
     children: [
       { href: '/education', key: 'nav.education' },
+      { href: '/app', key: 'nav.app' },
       { href: '/swag', key: 'nav.swag' },
       { href: '/brand-guidelines', key: 'nav.brand' },
     ],
