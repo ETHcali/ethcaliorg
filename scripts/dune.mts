@@ -40,7 +40,7 @@ const Q = {
   FEES: 6633618,
   FEES_BY_CHAIN: 6634734,
   TX_BY_CHAIN: 8802548,
-  VOLUME: 8802566,
+  VOLUME_BY_CHAIN: 8802566,
 } as const;
 
 function env(key: string): string | undefined {
@@ -88,12 +88,20 @@ const [usersRows, feesRows, feeChainRows, txChainRows, volumeRows] = await Promi
   rows(Q.FEES),
   rows(Q.FEES_BY_CHAIN),
   rows(Q.TX_BY_CHAIN),
-  rows(Q.VOLUME),
+  rows(Q.VOLUME_BY_CHAIN),
 ]);
 
 const usersOnboarded = usersRows?.[0] ? num(usersRows[0].total_count) : null;
 const feesUsd = feesRows?.[0] ? num(feesRows[0].total_txn_fee) : null;
-const volumeUsd = volumeRows?.[0] ? num(volumeRows[0].volume_usd) : null;
+/** Volume keyed by chain, and its own total — the sum is exact, one query. */
+const volumeByChain = new Map<string, number>();
+for (const r of volumeRows ?? []) {
+  const name = String(r.blockchain ?? '');
+  if (name) volumeByChain.set(name, num(r.volume_usd) ?? 0);
+}
+const volumeUsd = volumeRows?.length
+  ? [...volumeByChain.values()].reduce((sum, v) => sum + v, 0)
+  : null;
 
 /** Fees keyed by chain, so the transaction rows can pick them up as they merge. */
 const feeByChain = new Map<string, number>();
@@ -105,14 +113,21 @@ for (const r of feeChainRows ?? []) {
 // Sorted by transactions, not by fees. Fees rank Ethereum first because L1 gas
 // costs a thousand times what an L2 does — which says where the money went, not
 // where the community is. Base leads on transactions by a factor of ten.
+// Sorted by volume, because that is what the site's bars rank on. Transactions
+// put Base first and value puts Ethereum first, and both are true: an L2 is
+// where the community transacts, L1 is where the size sits.
 const chains = (txChainRows ?? [])
-  .map((r) => ({
-    name: String(r.blockchain ?? ''),
-    txCount: num(r.tx_count) ?? 0,
-    feesUsd: feeByChain.get(String(r.blockchain ?? '')) ?? 0,
-  }))
+  .map((r) => {
+    const name = String(r.blockchain ?? '');
+    return {
+      name,
+      txCount: num(r.tx_count) ?? 0,
+      volumeUsd: volumeByChain.get(name) ?? 0,
+      feesUsd: feeByChain.get(name) ?? 0,
+    };
+  })
   .filter((c) => c.name)
-  .sort((a, b) => b.txCount - a.txCount);
+  .sort((a, b) => b.volumeUsd - a.volumeUsd);
 
 const transactions = chains.reduce((sum, c) => sum + c.txCount, 0) || null;
 
@@ -151,8 +166,9 @@ const file = `/**
  *
  * - \\\`transactions\\\` and \\\`chains[].txCount\\\` come from \\\`gas.fees\\\` — one row per
  *   transaction, every chain Dune indexes.
- * - \\\`volumeUsd\\\` comes from \\\`tokens.transfers\\\`, which counts token movement
- *   and not the transactions that carried it.
+ * - \\\`volumeUsd\\\` and \\\`chains[].volumeUsd\\\` come from \\\`tokens.transfers\\\`,
+ *   which counts token movement and not the transactions that carried it. The
+ *   total is the exact sum of the per-chain rows: one query, one run.
  * - \\\`feesUsd\\\` and the per-chain fees are a separate run from the totals and
  *   differ from their sum by a few dollars.
  */
@@ -160,6 +176,7 @@ export interface DuneChain {
   /** As Dune names it — 'avalanche_c', 'zkevm'. content/site.ts maps these for display. */
   name: string;
   txCount: number;
+  volumeUsd: number;
   /** 0 where the dashboard's fee query filtered the chain out for being under $5. */
   feesUsd: number;
 }
@@ -174,7 +191,8 @@ export const DUNE = {
   chains: [
 ${chains
   .map(
-    (c) => `    { name: ${JSON.stringify(c.name)}, txCount: ${c.txCount}, feesUsd: ${c.feesUsd} },`
+    (c) =>
+      `    { name: ${JSON.stringify(c.name)}, txCount: ${c.txCount}, volumeUsd: ${c.volumeUsd}, feesUsd: ${c.feesUsd} },`
   )
   .join('\n')}
   ] as readonly DuneChain[],

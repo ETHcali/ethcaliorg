@@ -300,8 +300,8 @@ export const IMPACT = {
     fees: { es: 'USD en comisiones a la blockchain', en: 'USD in fees to the blockchain' } as Bilingual,
     chains: { es: 'Cadenas con actividad', en: 'Chains with activity' } as Bilingual,
     byChain: { es: 'Dónde ocurre', en: 'Where it happens' } as Bilingual,
-    /** The bar chart ranks by transactions; this says so rather than leaving it guessed. */
-    byChainUnit: { es: 'transacciones', en: 'transactions' } as Bilingual,
+    /** The bar chart ranks by value moved; this says so rather than leaving it guessed. */
+    byChainUnit: { es: 'volumen movido', en: 'value moved' } as Bilingual,
     others: { es: 'y {n} cadenas más', en: 'and {n} more chains' } as Bilingual,
   },
 
@@ -319,6 +319,10 @@ export const IMPACT = {
     fees: {
       es: 'Gas de red · no es ingreso de ETH Cali',
       en: 'Network gas · not ETH Cali revenue',
+    } as Bilingual,
+    transactions: {
+      es: 'Hechas por la comunidad, no por ETH Cali',
+      en: 'Made by the community, not by ETH Cali',
     } as Bilingual,
     volume: {
       es: 'Movidos por la comunidad, no por ETH Cali',
