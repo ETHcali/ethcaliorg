@@ -393,6 +393,22 @@ export const SWAG_GROUPS: readonly SwagGroup[] = [
         tags: [{ es: 'Edición limitada', en: 'Limited edition' }, { es: 'Frente y espalda', en: 'Front and back' }],
       },
       {
+        // The same two caps as above, photographed with the plinths swapped —
+        // octahedron to the front, the line to the back. Kept as its own card
+        // at the user's request after the difference was pointed out.
+        //
+        // Worth knowing if this is ever reprinted: the engraved plaque in this
+        // shot reads "Privacy IN Freedom Cap Collection". The caps themselves
+        // are correct in both, and the shot above has the plaque right.
+        name: { es: 'Gorra Privacy is Freedom — colección', en: 'Privacy is Freedom cap — collection' },
+        detail: {
+          es: 'La misma colección desde el otro lado: el octaedro al frente, la frase en la espalda.',
+          en: 'The same collection from the other side: the octahedron on the front, the line on the back.',
+        },
+        image: '/swags/cap-privacy-is-freedom-2.png',
+        tags: [{ es: 'Edición limitada', en: 'Limited edition' }, { es: 'Frente y espalda', en: 'Front and back' }],
+      },
+      {
         name: { es: 'Gorra Ethereum', en: 'Ethereum cap' },
         detail: { es: 'El octaedro bordado. La que más se pide.', en: 'The embroidered octahedron. The one most asked for.' },
         image: '/swags/cap-ethereum.png',
