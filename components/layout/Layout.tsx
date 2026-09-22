@@ -86,6 +86,7 @@ const navItems = (locale: 'es' | 'en'): readonly NavItem[] => [
       { href: '/education', key: 'nav.education' },
       { href: '/app', key: 'nav.app' },
       { href: '/swag', key: 'nav.swag' },
+      { href: '/collectibles', key: 'nav.collectibles' },
       { href: '/brand-guidelines', key: 'nav.brand' },
     ],
   },

@@ -19,7 +19,8 @@
     "resources": "Resources",
     "team": "Team",
     "goToApp": "Go to app",
-    "app": "The app"
+    "app": "The app",
+    "collectibles": "Collectibles"
   },
   "events": {
     "title": "Events",
