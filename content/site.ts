@@ -349,64 +349,139 @@ export const LEARNING_PATH: readonly LearningStep[] = [
 export interface SwagItem {
   name: Bilingual;
   detail: Bilingual;
-  image: string;
+  /** Site-relative path, or null for something that exists but is not photographed yet. */
+  image: string | null;
   tags: readonly Bilingual[];
 }
 
-export const SWAG: readonly SwagItem[] = [
+export interface SwagGroup {
+  id: string;
+  name: Bilingual;
+  items: readonly SwagItem[];
+  /** Set when the group has nothing to show yet. Said, not hidden. */
+  pending?: Bilingual;
+}
+
+/**
+ * The merch, by what it is.
+ *
+ * It used to be one flat grid of seven — two hoodies, four caps and a third
+ * hoodie in the middle — which made it impossible to see at a glance that there
+ * are caps at all. Grouping is the whole improvement: someone who wants a mug
+ * should not have to read seven captions to find out we make them.
+ *
+ * Six of the seven old images 404'd on the live site: the artwork was replaced
+ * and the paths in this file were not, so /swag was a page of broken frames.
+ *
+ * Aspect ratios differ by group and sometimes within one — the caps are 9:16
+ * product shots except the Privacy collection, which is a landscape pair
+ * showing front and back. The page contains rather than crops, so a cap is
+ * never beheaded to fit a square.
+ */
+export const SWAG_GROUPS: readonly SwagGroup[] = [
   {
-    name: { es: 'Hoodie blanco Ethereum', en: 'White Ethereum hoodie' },
-    detail: {
-      es: 'Hoodie premium con el logo de Ethereum y el branding de ETH Cali.',
-      en: 'Premium hoodie with the Ethereum logo and ETH Cali branding.',
+    id: 'caps',
+    name: { es: 'Gorras', en: 'Caps' },
+    items: [
+      {
+        name: { es: 'Gorra Privacy is Freedom', en: 'Privacy is Freedom cap' },
+        detail: {
+          es: 'La colección Valle del Cauca: el octaedro al frente, la frase atrás. Edición limitada.',
+          en: 'The Valle del Cauca collection: the octahedron on the front, the line on the back. Limited edition.',
+        },
+        image: '/swags/cap-privacy-is-freedom.png',
+        tags: [{ es: 'Edición limitada', en: 'Limited edition' }, { es: 'Frente y espalda', en: 'Front and back' }],
+      },
+      {
+        name: { es: 'Gorra Ethereum', en: 'Ethereum cap' },
+        detail: { es: 'El octaedro bordado. La que más se pide.', en: 'The embroidered octahedron. The one most asked for.' },
+        image: '/swags/cap-ethereum.png',
+        tags: [{ es: 'Bordada', en: 'Embroidered' }, { es: 'Ajustable', en: 'Adjustable' }],
+      },
+      {
+        name: { es: 'Gorra OP Mainnet', en: 'OP Mainnet cap' },
+        detail: { es: 'Con los colores de Optimism.', en: "In Optimism's colours." },
+        image: '/swags/cap-optimism.png',
+        tags: [{ es: 'Edición limitada', en: 'Limited edition' }],
+      },
+      {
+        name: { es: 'Gorra Uniswap', en: 'Uniswap cap' },
+        detail: { es: 'Para quienes viven en DeFi.', en: 'For the people who live in DeFi.' },
+        image: '/swags/cap-uniswap.png',
+        tags: [{ es: 'Edición limitada', en: 'Limited edition' }],
+      },
+      {
+        name: { es: 'Gorra Pepe', en: 'Pepe cap' },
+        detail: { es: 'Porque sí.', en: 'Because why not.' },
+        image: '/swags/cap-pepe.png',
+        tags: [{ es: 'Edición limitada', en: 'Limited edition' }],
+      },
+    ],
+  },
+  {
+    id: 'mugs',
+    name: { es: 'Mugs', en: 'Mugs' },
+    items: [
+      {
+        name: { es: 'Mug Ethereans', en: 'Ethereans mug' },
+        detail: {
+          es: 'La escena del génesis de Ethereum, dibujada a mano y en acuarela.',
+          en: "Ethereum's genesis scene, hand-drawn in watercolour.",
+        },
+        image: '/swags/mug-ethereans.png',
+        tags: [{ es: 'Conmemorativo', en: 'Commemorative' }],
+      },
+      {
+        name: { es: 'Mug Ethereum', en: 'Ethereum mug' },
+        detail: { es: 'El octaedro, sin más.', en: 'The octahedron, nothing else.' },
+        image: '/swags/mug-ethereum.png',
+        tags: [{ es: 'Cerámica', en: 'Ceramic' }],
+      },
+      {
+        name: { es: 'Mug Cyber Doge', en: 'Cyber Doge mug' },
+        detail: { es: 'El meme que sobrevivió a todos los ciclos.', en: 'The meme that outlived every cycle.' },
+        image: '/swags/mug-cyber-doge.png',
+        tags: [{ es: 'Edición limitada', en: 'Limited edition' }],
+      },
+    ],
+  },
+  {
+    id: 'hoodies',
+    name: { es: 'Hoodies', en: 'Hoodies' },
+    items: [
+      {
+        name: { es: 'Hoodie Colombian Collaborative', en: 'Colombian Collaborative hoodie' },
+        detail: {
+          es: 'Crudo, con el lockup al pecho y las manos sosteniendo el octaedro a la espalda. Hecho con artesanos del Valle.',
+          en: 'Undyed, the lockup on the chest and hands holding the octahedron on the back. Made with artisans from the Valle.',
+        },
+        image: '/swags/hoodie-cream.png',
+        tags: [{ es: 'Artesanal', en: 'Artisanal' }, { es: 'Frente y espalda', en: 'Front and back' }],
+      },
+      {
+        name: { es: 'Hoodie negro', en: 'Black hoodie' },
+        detail: { es: 'La versión oscura, con los detalles en ultramarino.', en: 'The dark version, details picked out in ultramarine.' },
+        image: '/swags/hoodie-black.png',
+        tags: [{ es: 'Algodón premium', en: 'Premium cotton' }],
+      },
+      {
+        name: { es: 'Hoodie Community Edition', en: 'Community Edition hoodie' },
+        detail: { es: 'Edición especial que celebra a la comunidad.', en: 'A special edition celebrating the community.' },
+        image: '/swags/hoodie-community.jpg',
+        tags: [{ es: 'Edición limitada', en: 'Limited edition' }],
+      },
+    ],
+  },
+  {
+    id: 'tshirts',
+    name: { es: 'Camisetas', en: 'T-shirts' },
+    items: [],
+    // Announced rather than omitted: an empty group says a camiseta is coming,
+    // where leaving it out says we do not make them.
+    pending: {
+      es: 'En preparación. Pronto.',
+      en: 'In the works. Soon.',
     },
-    image: '/swags/hoodie_white_ether.jpg',
-    tags: [{ es: 'Algodón premium', en: 'Premium cotton' }, { es: 'Logo Ethereum', en: 'Ethereum logo' }],
-  },
-  {
-    name: { es: 'Hoodie negro Ethereum', en: 'Black Ethereum hoodie' },
-    detail: {
-      es: 'La versión oscura, con los detalles del logo en ultramarino.',
-      en: 'The dark version, logo picked out in ultramarine.',
-    },
-    image: '/swags/hoodie_baclk_ether.jpg',
-    tags: [{ es: 'Algodón premium', en: 'Premium cotton' }, { es: 'Logo Ethereum', en: 'Ethereum logo' }],
-  },
-  {
-    name: { es: 'Hoodie Community Edition', en: 'Community Edition hoodie' },
-    detail: {
-      es: 'Edición especial que celebra a la comunidad.',
-      en: 'A special edition celebrating the community.',
-    },
-    image: '/swags/hoodie_white_people.jpg',
-    tags: [{ es: 'Edición limitada', en: 'Limited edition' }],
-  },
-  {
-    name: { es: 'Gorra Ethereum', en: 'Ethereum cap' },
-    detail: {
-      es: 'Gorra ajustable con el logo de Ethereum bordado.',
-      en: 'Adjustable cap with an embroidered Ethereum logo.',
-    },
-    image: '/swags/cap_eth.jpeg',
-    tags: [{ es: 'Ajustable', en: 'Adjustable' }, { es: 'Bordado', en: 'Embroidered' }],
-  },
-  {
-    name: { es: 'Gorra OP Mainnet', en: 'OP Mainnet cap' },
-    detail: { es: 'Con los colores de Optimism.', en: "In Optimism's colours." },
-    image: '/swags/cap_opmainnet.jpeg',
-    tags: [{ es: 'Edición limitada', en: 'Limited edition' }],
-  },
-  {
-    name: { es: 'Gorra Uniswap', en: 'Uniswap cap' },
-    detail: { es: 'Para quienes viven en DeFi.', en: 'For the people who live in DeFi.' },
-    image: '/swags/cap_uniswap.jpeg',
-    tags: [{ es: 'Edición limitada', en: 'Limited edition' }],
-  },
-  {
-    name: { es: 'Gorra Pepe × Ethereum', en: 'Pepe × Ethereum cap' },
-    detail: { es: 'Porque sí.', en: 'Because why not.' },
-    image: '/swags/cap_pepe.jpeg',
-    tags: [{ es: 'Edición limitada', en: 'Limited edition' }],
   },
 ];
 
