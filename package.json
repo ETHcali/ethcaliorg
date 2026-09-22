@@ -5,7 +5,7 @@
   "description": "ethcali.org — the ETH Cali community site",
   "scripts": {
     "dev": "npm run nav && npm run brand-kit && next dev",
-    "build": "npm run nav && npm run dune && npm run brand-kit && next build",
+    "build": "npm run nav && npm run dune && npm run collectibles && npm run brand-kit && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -13,7 +13,8 @@
     "brand-kit": "tsx scripts/brand-kit.mts",
     "logos": "tsx scripts/split-logo-sheet.mts",
     "nav": "tsx scripts/hackathon-nav.mts",
-    "dune": "tsx scripts/dune.mts"
+    "dune": "tsx scripts/dune.mts",
+    "collectibles": "tsx scripts/collectibles.mts"
   },
   "dependencies": {
     "@ethcali/design-tokens": "github:ETHcali/design-tokens#v1",
@@ -34,7 +35,8 @@
     "postcss": "8.5.28",
     "tailwindcss": "3.4.17",
     "tsx": "^4.23.13",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "sharp": "^0.35.4"
   },
   "repository": {
     "type": "git",

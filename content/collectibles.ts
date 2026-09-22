@@ -396,8 +396,14 @@ export const COLLECTIBLES_COPY = {
     poap: {
       name: 'POAP',
       detail: {
-        es: 'Proof of Attendance Protocol. Una insignia por haber estado.',
-        en: 'Proof of Attendance Protocol. A badge for having been there.',
+        es:
+          'Proof of Attendance Protocol. Una insignia por haber estado. POAP cerró sus páginas ' +
+          'públicas de cada drop, así que la insignia y el número de coleccionistas vienen de su ' +
+          'API — son los suyos, no los nuestros.',
+        en:
+          'Proof of Attendance Protocol. A badge for having been there. POAP retired its public ' +
+          'per-drop pages, so the badge and the collector count come from their API — they are ' +
+          "POAP's figures, not ours.",
       } as Bilingual,
     },
     unlock: {

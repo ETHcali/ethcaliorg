@@ -1,8 +1,10 @@
 import type { GetStaticProps } from 'next';
+import Image from 'next/image';
 import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
 import { PageHeader, Section } from '../components/layout/Page';
 import { COLLECTIBLES, COLLECTIBLES_COPY, type Collectible } from '../content/collectibles';
+import { POAP_DROPS, UNLOCK_LOCKS } from '../content/collectibles.generated';
 import { chainLabel, type Bilingual } from '../content/site';
 import { asLocale, formatDate, type Locale } from '../lib/i18n';
 import { httpUrl } from '../lib/url';
@@ -21,39 +23,86 @@ interface Props {
  * Grouped by year and newest first, because the question a reader has is "are
  * they still doing this" and a list that opens in 2022 answers it last.
  */
+/** The drop id is the tail of every POAP url the registry carries. */
+function dropId(item: Collectible): number {
+  const m = /\/drops\/(\d+)/.exec(item.url);
+  return m ? Number(m[1]) : -1;
+}
+
 function Card({ item, locale }: { item: Collectible; locale: Locale }) {
   const t = (b: Bilingual) => b[locale];
   const L = COLLECTIBLES_COPY.labels;
   const protocol = COLLECTIBLES_COPY.protocols[item.protocol];
-  const href = httpUrl(item.url);
   const post = httpUrl(item.post);
+
+  // The artwork, from whichever issuer made it: a POAP by its drop id, an
+  // Unlock NFT by its first lock — the multi-lock entries share one design.
+  const art =
+    item.protocol === 'poap'
+      ? POAP_DROPS[dropId(item)]
+      : UNLOCK_LOCKS[item.contracts?.[0]?.toLowerCase() ?? ''];
+
+  // The count is the issuer's where there is one. The registry recorded what
+  // the organisers expected on the night; POAP knows who actually turned up,
+  // and they disagree on four drops — the 2022 opening has one collector rather
+  // than the nobody we had written down. Unlock publishes no holder count, so
+  // there the registry's figure stands.
+  const holders = art?.collectors ?? item.holders;
+
+  // No link for a POAP. Their per-drop pages are gone — poap.gallery,
+  // drops.poap.xyz and collectors.poap.xyz all 301 to a marketing homepage —
+  // and a link that lands somewhere saying nothing about the drop is worse than
+  // no link, because it costs a click to find that out. The badge above is the
+  // replacement, and it is better proof than the link was.
+  const href = item.protocol === 'poap' ? null : httpUrl(item.url);
 
   return (
     <li className="flex flex-col rounded-card border border-line-hairline bg-surface-slab p-5">
-      <div className="flex flex-wrap items-center gap-1.5">
-        <span
-          className="rounded-chip bg-eth-blue-wash px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-eth-blue-text"
-          title={t(protocol.detail)}
-        >
-          {protocol.name}
-        </span>
-        <span className="rounded-chip border border-line-hairline px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-content-muted">
-          {chainLabel(item.chain)}
-        </span>
-        {/* Only worth saying when it is more than one — a single lock is the
-            normal case and a "1 contratos" chip is noise. */}
-        {item.contracts && item.contracts.length > 1 && (
-          <span className="rounded-chip border border-line-hairline px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-content-muted">
-            {t(L.contracts).replace('{n}', String(item.contracts.length))}
-          </span>
+      <div className="flex items-start gap-3">
+        {art?.imageUrl && (
+          // `contain`, not cover: POAP badges are round, Unlock's artwork is
+          // square, and several carry lettering that a crop cuts in half.
+          // Fixed dimensions rather than `fill`: these are always 64px and the
+          // sources are 160px webp, so a fill layout's srcset would offer sizes
+          // up to 3840 that do not exist. `contain`, not cover — POAP badges
+          // are round, Unlock's art is square, and several carry lettering that
+          // a crop cuts in half.
+          <Image
+            src={art.imageUrl}
+            alt=""
+            width={64}
+            height={64}
+            className="h-16 w-16 shrink-0 rounded-card bg-surface-inset object-contain"
+          />
         )}
+
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span
+              className="rounded-chip bg-eth-blue-wash px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-eth-blue-text"
+              title={t(protocol.detail)}
+            >
+              {protocol.name}
+            </span>
+            <span className="rounded-chip border border-line-hairline px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-content-muted">
+              {chainLabel(item.chain)}
+            </span>
+            {/* Only worth saying when it is more than one — a single lock is the
+                normal case and a "1 contratos" chip is noise. */}
+            {item.contracts && item.contracts.length > 1 && (
+              <span className="rounded-chip border border-line-hairline px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-content-muted">
+                {t(L.contracts).replace('{n}', String(item.contracts.length))}
+              </span>
+            )}
+          </div>
+
+          <h3 className="mt-2 text-base font-bold leading-snug text-content-primary">{item.name}</h3>
+
+          <p className="mono mt-1 text-xs text-content-faint">
+            {formatDate(item.date, locale, { day: 'numeric', month: 'short', year: 'numeric' })}
+          </p>
+        </div>
       </div>
-
-      <h3 className="mt-3 text-base font-bold leading-snug text-content-primary">{item.name}</h3>
-
-      <p className="mono mt-1 text-xs text-content-faint">
-        {formatDate(item.date, locale, { day: 'numeric', month: 'short', year: 'numeric' })}
-      </p>
 
       {item.alsoUsedFor && (
         <p className="mt-2 text-xs leading-relaxed text-content-muted">
@@ -63,14 +112,13 @@ function Card({ item, locale }: { item: Collectible; locale: Locale }) {
 
       {/* `!= null` and not a truthiness check: several of these were minted by
           nobody, and 0 collectors is a fact about the drop worth printing. */}
-      {item.holders != null && (
+      {holders != null && (
         <p className="mt-3 text-sm text-content-secondary">
-          <span className="mono font-bold text-content-primary">{item.holders}</span>{' '}
-          {t(L.holders)}
+          <span className="mono font-bold text-content-primary">{holders}</span> {t(L.holders)}
         </p>
       )}
 
-      <div className="mt-4 flex flex-wrap gap-4 pt-1">
+      <div className="mt-auto flex flex-wrap gap-4 pt-4">
         {href && (
           <a
             href={href}
