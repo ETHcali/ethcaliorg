@@ -218,8 +218,8 @@ export const ABOUT = {
   team: {
     title: { es: 'Quiénes lo hacen', en: 'Who does it' } as Bilingual,
     body: {
-      es: 'Veinte personas entre fundadores, core, elite, voluntarios y quienes lo construyeron antes. Todos empezaron como alguien que llegó a un meetup.',
-      en: 'Twenty people across founders, core, elite, volunteers and the ones who built it before. Every one of them started as someone who turned up to a meetup.',
+      es: 'Veinte personas entre fundadores, core, elite, contribuidores y voluntarios. Todos empezaron como alguien que llegó a un meetup.',
+      en: 'Twenty people across founders, core, elite, contributors and volunteers. Every one of them started as someone who turned up to a meetup.',
     } as Bilingual,
     cta: { es: 'Conocer al equipo', en: 'Meet the team' } as Bilingual,
   },

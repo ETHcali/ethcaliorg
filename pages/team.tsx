@@ -18,17 +18,26 @@ interface Props {
 /**
  * Grouped by standing, in the order people arrive at it.
  *
- * `key` is the `status` string as it is stored, and `Elite` was `Contributor`
- * until the people in it asked for a name that meant something. The label is
- * uppercased in the markup rather than in the data, so the word in Supabase
- * stays a word.
+ * `keys` are `status` strings as Supabase stores them, and a group can gather
+ * more than one. That is how "Antiguos core" stopped being its own heading
+ * without anybody's record being rewritten: the six people who were once core
+ * show up among the contributors and volunteers, and the CMS still knows they
+ * were core. Merging the statuses in the database would have read the same on
+ * the page and quietly destroyed that — six people's history, gone to save one
+ * line here.
+ *
+ * `Elite` was `Contributor` until the people in it asked for a name that meant
+ * something.
  */
-const GROUPS: readonly { key: string; label: Bilingual }[] = [
-  { key: 'Founder', label: { es: 'Fundadores', en: 'Founders' } },
-  { key: 'Core', label: { es: 'Core', en: 'Core' } },
-  { key: 'Elite', label: { es: 'Elite', en: 'Elite' } },
-  { key: 'Volunteer', label: { es: 'Voluntarios', en: 'Volunteers' } },
-  { key: 'Former Core', label: { es: 'Antiguos core', en: 'Former core' } },
+const GROUPS: readonly { id: string; keys: readonly string[]; label: Bilingual }[] = [
+  { id: 'founders', keys: ['Founder'], label: { es: 'Fundadores', en: 'Founders' } },
+  { id: 'core', keys: ['Core'], label: { es: 'Core', en: 'Core' } },
+  { id: 'elite', keys: ['Elite'], label: { es: 'Elite', en: 'Elite' } },
+  {
+    id: 'contributors',
+    keys: ['Volunteer', 'Former Core'],
+    label: { es: 'Contribuidores / Voluntarios', en: 'Contributors / Volunteers' },
+  },
 ];
 
 /**
@@ -119,8 +128,8 @@ export default function Team({ team, locale }: Props) {
   const en = locale === 'en';
 
   const lead = en
-    ? 'Founders, core, elite, volunteers and the people who built this before us. Every one of them started as someone who turned up to a meetup.'
-    : 'Fundadores, core, elite, voluntarios y quienes construyeron esto antes que nosotros. Todos empezaron como alguien que llegó a un meetup.';
+    ? 'Founders, core, elite, contributors and volunteers. Every one of them started as someone who turned up to a meetup.'
+    : 'Fundadores, core, elite, contribuidores y voluntarios. Todos empezaron como alguien que llegó a un meetup.';
 
   return (
     <Layout>
@@ -137,11 +146,11 @@ export default function Team({ team, locale }: Props) {
           costing most of a screen. Twenty people now fit in about two. */}
       <Section title={en ? 'The team' : 'El equipo'}>
         {GROUPS.map((group) => {
-          const members = team.filter((m) => m.status === group.key);
+          const members = team.filter((m) => group.keys.includes(m.status ?? ''));
           if (!members.length) return null;
 
           return (
-            <div key={group.key} className="mb-8 last:mb-0">
+            <div key={group.id} className="mb-8 last:mb-0">
               <h3 className="mb-3 flex items-baseline gap-2 text-xs font-bold uppercase tracking-widest text-content-faint">
                 {t(group.label)}
                 <span className="mono font-normal">{members.length}</span>
