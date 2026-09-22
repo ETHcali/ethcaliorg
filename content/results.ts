@@ -23,6 +23,24 @@ export const RESULTS = {
   path: '/builders-tour/winners',
 
   hackathon: 'EAG Global Buildathon',
+
+  /**
+   * The closing banner: "Gracias · Thank you · 謝謝" over the woven artwork,
+   * with every partner along the bottom. It opens the winners page and is
+   * that page's share card, so a forwarded link shows the same picture a
+   * reader lands on. The campaign page keeps `TOUR.banner`, which sells the
+   * weekend; this one thanks the room for it.
+   *
+   * 1200 wide under 300 KB, same rule as the tour banner: WhatsApp drops a
+   * preview image above roughly that size. The pixels are the JPEG's real
+   * pixels — change one and change the other.
+   */
+  banner: {
+    src: '/tour/builders-tour-closing.jpg',
+    width: 1200,
+    height: 671,
+    alt: 'Gracias · Thank you · 謝謝 — EAG, HashKey Chain, Devcon VIII India, Universidad Icesi, ETH Cali, Ekinoxis',
+  },
   /** The track the Cali room competed in. Left in English, as EAG publishes it. */
   track: 'Colombia Hackathon',
   devfolioUrl: 'https://eag-global-buildathon.devfolio.co',
