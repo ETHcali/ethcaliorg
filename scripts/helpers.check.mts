@@ -1,5 +1,6 @@
 import { formatDate, formatDateRange, translator, asLocale } from '../lib/i18n';
 import { localized } from '../types/content';
+import { httpUrl } from '../lib/url';
 
 let fail = 0;
 const eq = (label: string, got: unknown, want: unknown) => {
@@ -34,6 +35,24 @@ eq('translates', tEn('hackathons.prizePool'), 'Prize pool');
 eq('unknown key returns the key, not blank', tEs('does.not.exist'), 'does.not.exist');
 eq('asLocale rejects junk', asLocale('fr'), 'es');
 eq('asLocale passes en', asLocale('en'), 'en');
+
+// Every outbound link whose address comes from the CMS passes through httpUrl.
+// A `javascript:` URL contains no HTML-special character, so escaping lets it
+// through untouched — and the Leaflet popup on /venues builds its markup by
+// hand, with no JSX to hide behind. These cases are the reason that helper
+// exists; if one of them starts returning a string, the site has an XSS.
+eq('https passes', httpUrl('https://maps.app.goo.gl/X2BAQ'), 'https://maps.app.goo.gl/X2BAQ');
+eq('http passes', httpUrl('http://example.org/a?b=c'), 'http://example.org/a?b=c');
+eq('javascript: is blocked', httpUrl('javascript:alert(1)'), null);
+eq('javascript: blocked whatever the case', httpUrl('JaVaScRiPt:alert(1)'), null);
+eq('javascript: blocked with padding', httpUrl('  javascript:alert(1)  '), null);
+eq('data: is blocked', httpUrl('data:text/html,<script>alert(1)</script>'), null);
+eq('vbscript: is blocked', httpUrl('vbscript:msgbox(1)'), null);
+eq('file: is blocked', httpUrl('file:///etc/passwd'), null);
+eq('protocol-relative is blocked', httpUrl('//evil.example.com'), null);
+eq('junk is blocked', httpUrl('not a url'), null);
+eq('empty is blocked', httpUrl(''), null);
+eq('null is blocked', httpUrl(null), null);
 
 console.log(fail ? `\n${fail} FAILED` : '\nall passed');
 process.exit(fail ? 1 : 0);

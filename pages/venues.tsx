@@ -5,6 +5,7 @@ import Seo from '../components/layout/Seo';
 import { getVenues } from '../lib/content';
 import type { VenueRecord } from '../types/content';
 import { asLocale, translator, type Locale } from '../lib/i18n';
+import { httpUrl } from '../lib/url';
 
 /**
  * Client-only. Leaflet reaches for `window` the moment it is imported, so there
@@ -69,9 +70,9 @@ export default function Venues({ venues, locale }: Props) {
             >
               <h2 className="text-base font-bold text-content-primary">{v.name}</h2>
               {v.kind && <p className="mt-1 text-xs text-content-muted">{v.kind}</p>}
-              {v.maps_url && (
+              {httpUrl(v.maps_url) && (
                 <a
-                  href={v.maps_url}
+                  href={httpUrl(v.maps_url) as string}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-2 inline-flex min-h-tap items-center text-xs text-eth-blue-text hover:underline"

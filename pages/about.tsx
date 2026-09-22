@@ -7,6 +7,7 @@ import { getTeam } from '../lib/content';
 import type { TeamMemberRecord } from '../types/content';
 import { MISSION, type Bilingual } from '../content/site';
 import { asLocale, type Locale } from '../lib/i18n';
+import { httpUrl } from '../lib/url';
 
 interface Props {
   team: TeamMemberRecord[];
@@ -81,6 +82,7 @@ export default function About({ team, locale }: Props) {
                         ['x', m.twitter_url],
                         ['gh', m.github_url],
                       ] as const)
+                        .map(([label, url]) => [label, httpUrl(url as string)] as const)
                         .filter(([, url]) => Boolean(url))
                         .map(([label, url]) => (
                           <a

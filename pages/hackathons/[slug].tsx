@@ -5,6 +5,7 @@ import Layout from '../../components/layout/Layout';
 import Seo from '../../components/layout/Seo';
 import { getEvent, getEventSlugs } from '../../lib/content';
 import { hasCanonicalOverride } from '../../lib/routes';
+import { httpUrl } from '../../lib/url';
 import type { EventDetail } from '../../types/content';
 import { localized } from '../../types/content';
 import { posterSrc, DETAIL_SIZES } from '../../lib/images';
@@ -92,8 +93,9 @@ export default function HackathonPage({ event, locale }: Props) {
       [event.youtube_url, t('events.video')],
     ] as const
   )
-    .filter(([href]) => Boolean(href))
-    .map(([href, label]) => ({ href: href as string, label: label as string }));
+    // CMS-authored, so the scheme is checked rather than assumed. See lib/url.ts.
+    .map(([href, label]) => ({ href: httpUrl(href as string), label: label as string }))
+    .filter((l): l is { href: string; label: string } => l.href !== null);
 
   // `rsvp_count` is on every event row and was read only by the events
   // template, so four hackathons with a recorded turnout showed no number at
@@ -176,9 +178,9 @@ export default function HackathonPage({ event, locale }: Props) {
             {h?.partner_org && (
               <p className="mt-4 text-sm text-content-muted">
                 {t('hackathons.partner')}{' '}
-                {h.partner_url ? (
+                {httpUrl(h.partner_url) ? (
                   <a
-                    href={h.partner_url}
+                    href={httpUrl(h.partner_url) as string}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-eth-blue-text hover:underline"
@@ -242,14 +244,14 @@ export default function HackathonPage({ event, locale }: Props) {
           </section>
         )}
 
-        {event.poaps.length > 0 && (
+        {event.poaps.filter((p) => httpUrl(p.poap_url)).length > 0 && (
           <section className="mt-8">
             <h2 className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
               {t('events.poaps')}
             </h2>
             <div className="mt-3 flex flex-wrap gap-2">
-              {event.poaps.map((p) => (
-                <LinkChip key={p.id} href={p.poap_url}>
+              {event.poaps.filter((p) => httpUrl(p.poap_url)).map((p) => (
+                <LinkChip key={p.id} href={httpUrl(p.poap_url) as string}>
                   POAP
                   {p.collectors !== null && (
                     <span className="mono ml-2 text-content-faint">
@@ -269,8 +271,8 @@ export default function HackathonPage({ event, locale }: Props) {
             </h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {event.nfts.map((n) =>
-                n.nft_url ? (
-                  <LinkChip key={n.id} href={n.nft_url}>
+                httpUrl(n.nft_url) ? (
+                  <LinkChip key={n.id} href={httpUrl(n.nft_url) as string}>
                     {n.protocol ?? 'NFT'}
                     {n.mints !== null && (
                       <span className="mono ml-2 text-content-faint">

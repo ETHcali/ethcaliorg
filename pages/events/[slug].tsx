@@ -10,6 +10,7 @@ import { posterSrc, DETAIL_SIZES } from '../../lib/images';
 import { asLocale, formatDateRange, translator, type Locale } from '../../lib/i18n';
 import { eventJsonLd, breadcrumbJsonLd } from '../../lib/jsonld';
 import { eventDescription } from '../../lib/descriptions';
+import { httpUrl } from '../../lib/url';
 
 interface Props {
   event: EventDetail;
@@ -63,8 +64,11 @@ export default function EventPage({ event, locale }: Props) {
     [event.photos_url, t('events.photos')],
     [event.youtube_url, t('events.video')],
   ]
-    .filter(([href]) => Boolean(href))
-    .map(([href, label]) => ({ href: href as string, label: label as string }));
+    // Every one of these is typed into the CMS. `httpUrl` drops anything that
+    // is not http(s) — a `javascript:` address survives HTML escaping intact
+    // and React will render the scheme without complaint.
+    .map(([href, label]) => ({ href: httpUrl(href as string), label: label as string }))
+    .filter((l): l is { href: string; label: string } => l.href !== null);
 
   return (
     <Layout>
@@ -174,14 +178,14 @@ export default function EventPage({ event, locale }: Props) {
           </section>
         )}
 
-        {event.poaps.length > 0 && (
+        {event.poaps.filter((p) => httpUrl(p.poap_url)).length > 0 && (
           <section className="mt-10">
             <h2 className="text-[10px] font-semibold uppercase tracking-wide text-content-faint">
               {t('events.poaps')}
             </h2>
             <div className="mt-3 flex flex-wrap gap-2">
-              {event.poaps.map((p) => (
-                <LinkChip key={p.id} href={p.poap_url}>
+              {event.poaps.filter((p) => httpUrl(p.poap_url)).map((p) => (
+                <LinkChip key={p.id} href={httpUrl(p.poap_url) ?? '#'}>
                   POAP
                   {/* A copied count, not a live one — stated plainly rather than
                       shown as though it were read from the chain. */}
@@ -203,8 +207,8 @@ export default function EventPage({ event, locale }: Props) {
             </h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {event.nfts.map((n) =>
-                n.nft_url ? (
-                  <LinkChip key={n.id} href={n.nft_url}>
+                httpUrl(n.nft_url) ? (
+                  <LinkChip key={n.id} href={httpUrl(n.nft_url) as string}>
                     {n.protocol ?? 'NFT'}
                     {n.mints !== null && (
                       <span className="mono ml-2 text-content-faint">

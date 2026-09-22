@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import type { VenueRecord } from '../../types/content';
 import type { Locale } from '../../lib/i18n';
+import { httpUrl } from '../../lib/url';
 
 /**
  * The venues, on a map of Cali.
@@ -76,11 +77,16 @@ export default function VenueMap({
         }).addTo(instance);
 
         const open = locale === 'en' ? 'Open in Maps' : 'Ver en Maps';
+        // `httpUrl` and not just `escapeHtml`. This is the one place on the site
+        // that builds markup by hand, and escaping alone would have let a
+        // `javascript:` address straight into the href — it contains no
+        // HTML-special character, so escaping passes it through untouched.
+        const maps = httpUrl(v.maps_url);
         marker.bindPopup(
           `<strong>${escapeHtml(v.name)}</strong>` +
             (v.kind ? `<br><span class="venue-kind">${escapeHtml(v.kind)}</span>` : '') +
-            (v.maps_url
-              ? `<br><a href="${escapeHtml(v.maps_url)}" target="_blank" rel="noopener noreferrer">${open} →</a>`
+            (maps
+              ? `<br><a href="${escapeHtml(maps)}" target="_blank" rel="noopener noreferrer">${open} →</a>`
               : '')
         );
       }
@@ -112,11 +118,18 @@ export default function VenueMap({
   );
 }
 
-/** The names come from the CMS and go into a Leaflet popup as raw HTML. */
+/**
+ * The names come from the CMS and go into a Leaflet popup as raw HTML.
+ *
+ * Single quotes are escaped too. Every attribute here is double-quoted so they
+ * cannot break out today, but that is a property of this template rather than
+ * of the function, and the next person to use it should not have to check.
+ */
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }

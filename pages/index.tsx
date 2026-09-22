@@ -11,6 +11,7 @@ import { getEvents, getPartners, getVenues } from '../lib/content';
 import type { EventRecord, PartnerRecord } from '../types/content';
 import { MISSION, CHAINS, IMPACT, INTERSECTION, type Bilingual } from '../content/site';
 import { asLocale, type Locale } from '../lib/i18n';
+import { httpUrl } from '../lib/url';
 import { APP } from '../lib/links';
 
 interface Props {
@@ -94,11 +95,12 @@ function LogoRow({
           </>
         );
 
+        const href = httpUrl(item.url);
         return (
           <li key={item.name}>
-            {item.url ? (
+            {href ? (
               <a
-                href={item.url}
+                href={href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex flex-col rounded-card border border-line-hairline bg-surface-slab p-4 transition-colors hover:border-line-brand"
