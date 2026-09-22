@@ -57,6 +57,61 @@ export const MISSION: readonly { title: Bilingual; detail: Bilingual }[] = [
   },
 ];
 
+/**
+ * The four fields the work sits between.
+ *
+ * `MISSION` says what we do — teach, research, build, gather. This says where.
+ * They are deliberately one section on the page rather than two: the four
+ * activities happen at this crossing, and split apart they read as two
+ * unrelated lists of four.
+ *
+ * Stated as an intersection and not as a menu. Any one of these on its own is
+ * somebody else's field with a far bigger community than ours; what is actually
+ * ours is the seam where they meet — which is also, precisely, what came out of
+ * the Builders Tour weekend.
+ */
+export const INTERSECTION = {
+  title: { es: 'Dónde se cruzan', en: 'Where they meet' } as Bilingual,
+  lead: {
+    es:
+      'Las cuatro cosas de arriba ocurren en un mismo cruce. Ninguno de estos campos nos interesa ' +
+      'por separado — cada uno tiene comunidades mucho más grandes que la nuestra. Lo nuestro es la costura.',
+    en:
+      'The four things above happen at one crossing. None of these fields interests us on its own — ' +
+      'each has communities far larger than ours. What is ours is the seam.',
+  } as Bilingual,
+  fields: [
+    {
+      name: { es: 'Criptografía', en: 'Cryptography' } as Bilingual,
+      detail: {
+        es: 'Pruebas, firmas y divulgación selectiva: cómo demostrar algo sin entregarlo todo.',
+        en: 'Proofs, signatures and selective disclosure: how to prove something without handing over everything.',
+      } as Bilingual,
+    },
+    {
+      name: { es: 'Blockchain', en: 'Blockchain' } as Bilingual,
+      detail: {
+        es: 'Ethereum y sus L2. Donde el registro es público y cualquiera puede verificarlo por su cuenta.',
+        en: 'Ethereum and its L2s. Where the record is public and anyone can check it for themselves.',
+      } as Bilingual,
+    },
+    {
+      name: { es: 'Inteligencia artificial', en: 'Artificial intelligence' } as Bilingual,
+      detail: {
+        es: 'Agentes que actúan y pagan, con topes que impone un contrato y no una instrucción en un prompt.',
+        en: 'Agents that act and pay, with limits a contract enforces rather than a line in a prompt.',
+      } as Bilingual,
+    },
+    {
+      name: { es: 'Software de código abierto', en: 'Open-source software' } as Bilingual,
+      detail: {
+        es: 'Si no se puede leer, no se puede auditar. Lo que se construye aquí se publica.',
+        en: 'If it cannot be read, it cannot be audited. What gets built here gets published.',
+      } as Bilingual,
+    },
+  ],
+} as const;
+
 // ── impact ──────────────────────────────────────────────────────────────────
 
 /**

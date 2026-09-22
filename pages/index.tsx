@@ -9,7 +9,7 @@ import { RESULTS, RESULTS_COPY, PROJECTS } from '../content/results';
 import EventCard from '../components/events/EventCard';
 import { getEvents, getPartners, getVenues } from '../lib/content';
 import type { EventRecord, PartnerRecord } from '../types/content';
-import { MISSION, CHAINS, IMPACT, type Bilingual } from '../content/site';
+import { MISSION, CHAINS, IMPACT, INTERSECTION, type Bilingual } from '../content/site';
 import { asLocale, type Locale } from '../lib/i18n';
 import { APP } from '../lib/links';
 
@@ -199,6 +199,28 @@ export default function Home({ upcoming, past, partners, totals, locale }: Props
               <p className="mt-2 text-sm leading-relaxed text-content-muted">{t(m.detail)}</p>
             </div>
           ))}
+        </div>
+
+        {/* Where those four happen, inside the same section rather than below
+            it as a fifth heading: split apart they read as two unrelated lists
+            of four. The rule is one border, not two — the pillars are the verbs
+            and these are the ground. */}
+        <div className="mt-10 rounded-card border border-line-hairline bg-surface-slab p-6 sm:p-8">
+          <h3 className="text-lg font-bold text-content-primary">{INTERSECTION.title[locale]}</h3>
+          <p className="mt-2 max-w-prose text-sm leading-relaxed text-content-secondary">
+            {INTERSECTION.lead[locale]}
+          </p>
+
+          <dl className="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+            {INTERSECTION.fields.map((f) => (
+              <div key={f.name.en} className="border-l-2 border-line-brand pl-4">
+                <dt className="text-sm font-bold text-eth-blue-text">{f.name[locale]}</dt>
+                <dd className="mt-1 text-sm leading-relaxed text-content-muted">
+                  {f.detail[locale]}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </Section>
 
