@@ -10,6 +10,7 @@ import EventCard from '../components/events/EventCard';
 import { getEvents, getPartners, getVenues } from '../lib/content';
 import type { EventRecord, PartnerRecord } from '../types/content';
 import { MISSION, CHAINS, IMPACT, INTERSECTION, type Bilingual } from '../content/site';
+import Impact from '../components/impact/Impact';
 import { asLocale, type Locale } from '../lib/i18n';
 import { httpUrl } from '../lib/url';
 import { APP } from '../lib/links';
@@ -244,27 +245,7 @@ export default function Home({ upcoming, past, partners, totals, locale }: Props
         title={IMPACT.title[locale]}
         lead={IMPACT.since[locale]}
       >
-        <div className="grid gap-3 sm:grid-cols-3">
-          {IMPACT.metrics.map((m) => (
-            <div key={m.value} className="rounded-card border border-line-hairline bg-surface-slab p-5">
-              <p className="mono text-3xl font-bold text-content-primary">{m.value}</p>
-              <p className="mt-1 text-sm text-content-secondary">{m.label[locale]}</p>
-            </div>
-          ))}
-        </div>
-
-        <p className="mt-4 max-w-prose text-xs leading-relaxed text-content-muted">
-          {IMPACT.note[locale]}
-        </p>
-
-        <a
-          href={IMPACT.dashboardUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 inline-flex min-h-tap items-center rounded-control border border-line-strong px-5 text-sm font-semibold text-content-primary transition-colors hover:border-eth-blue hover:bg-eth-blue-wash"
-        >
-          {IMPACT.cta[locale]} →
-        </a>
+        <Impact locale={locale} />
       </Section>
 
       {/* Upcoming first, and only when there is something. "Recent events"

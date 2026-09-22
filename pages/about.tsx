@@ -4,7 +4,8 @@ import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
 import { PageHeader, Section } from '../components/layout/Page';
 import { getEvents, getVenues, getPartners, getTeam } from '../lib/content';
-import { ABOUT, MISSION, IMPACT, type Bilingual } from '../content/site';
+import { ABOUT, MISSION, type Bilingual } from '../content/site';
+import Impact from '../components/impact/Impact';
 import { asLocale, type Locale } from '../lib/i18n';
 
 interface Counts {
@@ -74,29 +75,10 @@ export default function About({ counts, locale }: Props) {
           <Stat value={String(counts.years)} label={t(L.years)} />
         </div>
 
-        {/* The onchain half, which the events table cannot count. Same figures
-            and the same caveat as the home page — stated once here rather than
-            re-derived, so the two pages cannot disagree. */}
-        <div className="mt-6 rounded-card border border-line-hairline bg-surface-slab p-5">
-          <div className="flex flex-wrap gap-x-10 gap-y-4">
-            {IMPACT.metrics.map((m) => (
-              <div key={m.value}>
-                <p className="mono text-xl font-bold text-content-primary">{m.value}</p>
-                <p className="mt-1 text-xs text-content-secondary">{m.label[locale]}</p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-4 max-w-prose text-xs leading-relaxed text-content-muted">
-            {t(IMPACT.note)}
-          </p>
-          <a
-            href={IMPACT.dashboardUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-block text-sm text-eth-blue-text hover:underline"
-          >
-            {t(IMPACT.cta)} →
-          </a>
+        {/* The onchain half, which the events table cannot count. Same
+            component as the home page, so the two cannot drift apart. */}
+        <div className="mt-8">
+          <Impact locale={locale} />
         </div>
       </Section>
 

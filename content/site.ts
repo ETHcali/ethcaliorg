@@ -241,67 +241,94 @@ export const ABOUT = {
 /**
  * What five years added up to, and where to check it.
  *
- * Two of the three now come from the Dune dashboard rather than from memory.
- * The hand-counted "400+ personas onboardeadas" that stood here was low: Dune's
- * own counter says 441. The figure it replaced had no date on it either, which
- * is the failure mode this block exists to avoid — an approximate number with a
- * date is a snapshot, the same number without one reads as live and is quietly
- * wrong forever.
+ * The onchain figures come from `content/dune.generated.ts`, which
+ * `scripts/dune.mts` writes from the Dune dashboard's saved runs on every build.
+ * They used to be hand-counted and stale: "400+ personas onboardeadas" against
+ * a real 441, and "10+ ETH transados" — a metric the dashboard does not even
+ * produce, so it was never checkable.
  *
- * `source` marks which is which, and the note under the cards says so in prose.
- * Mixing a measured number and a guessed one without distinguishing them makes
- * the guess look measured.
+ * `source` marks measured against counted, and the note says so in prose.
+ * A guess printed beside a measurement looks like a measurement.
  */
+
+/**
+ * Chain names as Dune stores them, for the ones where lowercasing the slug is
+ * not the brand. Everything else is title-cased on the way out — `scroll`,
+ * `linea`, `blast` and `taiko` all come out right that way.
+ */
+const CHAIN_NAMES: Record<string, string> = {
+  bnb: 'BNB Chain',
+  avalanche_c: 'Avalanche',
+  zkevm: 'Polygon zkEVM',
+  zksync: 'zkSync',
+  opbnb: 'opBNB',
+  xlayer: 'X Layer',
+  hyperevm: 'HyperEVM',
+  apechain: 'ApeChain',
+  bob: 'BOB',
+};
+
+export const chainLabel = (name: string): string =>
+  CHAIN_NAMES[name] ?? name.charAt(0).toUpperCase() + name.slice(1);
+
 export const IMPACT = {
   dashboardUrl: 'https://dune.com/ethcali/onchain-metrics-by-users-onboarded-by-ethcali',
-  /**
-   * The Dune counters behind the two onchain figures, as query/visualization
-   * ids. `scripts/dune.mts` reads the last saved result of each through Dune's
-   * official API and rewrites `metrics` below; without a DUNE_API_KEY it leaves
-   * the committed values alone.
-   *
-   * These ids were taken off the dashboard's own widget links. The dashboard
-   * page itself renders "Click Run to get results" to a logged-out visitor, but
-   * the saved results are real and current — dune.com/embeds/<q>/<v> shows them.
-   */
-  queries: {
-    usersOnboarded: { query: 6627839, visualization: 10454384 },
-    feesPaidUsd: { query: 6633618, visualization: 10462106 },
-  },
-  countedOn: { es: 'septiembre de 2026', en: 'September 2026' } as Bilingual,
   since: { es: 'Desde Devcon VI, en 2022.', en: 'Since Devcon VI, in 2022.' } as Bilingual,
-  metrics: [
-    {
-      /** Dune: "Users onboarded". Was published as "400+" from a hand count. */
-      value: '441',
-      label: { es: 'Personas onboardeadas', en: 'People onboarded' } as Bilingual,
-      source: 'dune' as const,
-    },
-    {
-      /** Dune: "Total transaction fees paid by users (usd)". */
-      value: '38.888',
-      label: { es: 'USD en comisiones pagadas', en: 'USD paid in transaction fees' } as Bilingual,
-      source: 'dune' as const,
-    },
-    {
-      /**
-       * Not on Dune and not derivable from it: the chain knows what a wallet
-       * did, not whether the person holding it writes Java for a living.
-       * Counted by hand, and labelled as such.
-       */
-      value: '100+',
-      label: { es: 'Developers Web2 alcanzados', en: 'Web2 developers reached' } as Bilingual,
-      source: 'hand' as const,
-    },
-  ],
-  note: {
+
+  /** How many chains to name before collapsing the rest into a count. */
+  topChains: 8,
+
+  /**
+   * Not on Dune and not derivable from it: the chain knows what a wallet did,
+   * not whether the person holding it writes Java for a living.
+   *
+   * `foot` replaces the paragraph that used to sit under the whole block
+   * explaining which figures were measured and which were not. One caveat
+   * belonged to one number, so it says so on that number instead of asking the
+   * reader to hold a footnote in their head while they look at the other five.
+   */
+  handCounted: {
+    value: '100+',
+    label: { es: 'Developers Web2 alcanzados', en: 'Web2 developers reached' } as Bilingual,
+    foot: { es: 'Conteo manual', en: 'Counted by hand' } as Bilingual,
+  },
+
+  labels: {
+    users: { es: 'Billeteras onboardeadas', en: 'Wallets onboarded' } as Bilingual,
+    transactions: { es: 'Transacciones onchain', en: 'Onchain transactions' } as Bilingual,
+    volume: { es: 'USD movidos en tokens', en: 'USD moved in tokens' } as Bilingual,
+    fees: { es: 'USD en comisiones pagadas', en: 'USD paid in transaction fees' } as Bilingual,
+    chains: { es: 'Cadenas con actividad', en: 'Chains with activity' } as Bilingual,
+    byChain: { es: 'Dónde ocurre', en: 'Where it happens' } as Bilingual,
+    /** The bar chart ranks by transactions; this says so rather than leaving it guessed. */
+    byChainUnit: { es: 'transacciones', en: 'transactions' } as Bilingual,
+    others: { es: 'y {n} cadenas más', en: 'and {n} more chains' } as Bilingual,
+  },
+
+  /**
+   * Where the numbers come from, which is the question the figures raise.
+   *
+   * Every query on the dashboard filters on one uploaded Dune dataset,
+   * `dune.ethcali.dataset_users_onboarded_eth_cali` — a single column of wallet
+   * addresses and nothing else, so Dune itself cannot say how the list was
+   * built. The description below is checked against the chain rather than
+   * assumed: the contract the most of these wallets have minted from is POAP
+   * (0x22c1f605…, 149 of them on Gnosis and 75 more on Base), and the next is
+   * BASETHCALI "BASE COMMUNITY CO" (0x19f7b283… on Base, 78 of them) — ETH
+   * Cali's own collectible. The list is the event attendance record.
+   *
+   * {n} is filled from the same figure the first stat shows, so the sentence
+   * cannot disagree with the card above it.
+   */
+  source: {
     es:
-      'Las dos primeras salen del tablero de Dune, del último cálculo guardado. La tercera se cuenta a ' +
-      'mano — la cadena sabe qué hizo una billetera, no a qué se dedica quien la usa.',
+      'Todas las cifras se calculan sobre la misma lista de {n} billeteras en Dune: las que ' +
+      'recogieron un POAP o un NFT de ETH Cali en nuestros eventos.',
     en:
-      'The first two come from the Dune dashboard, from its last saved run. The third is counted by ' +
-      'hand — the chain knows what a wallet did, not what the person holding it does for a living.',
+      'Every figure is computed over the same list of {n} wallets on Dune: the ones that picked ' +
+      'up a POAP or an ETH Cali NFT at one of our events.',
   } as Bilingual,
+
   cta: { es: 'Ver las métricas onchain en Dune', en: 'See the onchain metrics on Dune' } as Bilingual,
   title: { es: 'Lo que hemos construido', en: 'What we have built' } as Bilingual,
   eyebrow: { es: 'Impacto', en: 'Impact' } as Bilingual,
