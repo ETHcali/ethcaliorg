@@ -155,7 +155,7 @@ export const getStaticPaths: GetStaticPaths = async ({ locales = ['es'] }) => {
   return {
     // Every locale named explicitly, so /en/swag/<sku> is built and verified in
     // CI rather than left to the first visitor.
-    paths: locales.flatMap((locale) => skus.map((sku) => ({ params: { sku }, locale }))),
+    paths: locales.flatMap((locale) => skus.map((sku) => ({ params: { sku: sku.toLowerCase() }, locale }))),
     // A product activated in the CMS after this build resolves on first request.
     fallback: 'blocking',
   };
@@ -165,10 +165,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
   const raw = String(params?.sku ?? '');
   const sku = raw.toUpperCase();
 
-  // One URL per product. SKUs are uppercase; an ad link typed in lowercase
-  // 308s to the canonical spelling rather than serving a second copy of the
-  // page under a different address. The redirect goes to the same locale.
-  if (raw !== sku) {
+  // One URL per product, lowercase. The SKU itself stays uppercase on chain
+  // and in Supabase; a link typed with capitals 308s to the canonical
+  // spelling rather than serving a second copy of the page. Same locale.
+  if (raw !== raw.toLowerCase()) {
     return {
       redirect: { destination: localizedPath(swagRoute(sku), asLocale(locale)), permanent: true },
       revalidate: 60,
