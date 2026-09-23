@@ -12,7 +12,7 @@ import { APP } from '../lib/links';
 import { SWAG_CATEGORIES, type SwagProduct } from '../types/content';
 
 /** The Shopify storefront. Card payments happen there, in pesos. */
-const SHOP_ORIGIN = 'https://qpsxyq-9g.myshopify.com';
+const SHOP_ORIGIN = 'https://store.ethcali.org';
 
 interface Props {
   products: SwagProduct[];
