@@ -168,27 +168,6 @@ export default function Swag({ products, trm, locale }: Props) {
             })}
           </ul>
 
-          {group.key === 'Cap' && (
-            // Not a product: the Privacy is Freedom pair photographed from the
-            // other side. It stays as a gallery shot because it shows the
-            // collection as a set, which no single card does.
-            <figure className="mt-6 overflow-hidden rounded-card border border-line-hairline bg-surface-inset">
-              <div className="relative aspect-[21/9]">
-                <Image
-                  src="/swags/cap-privacy-is-freedom-2.png"
-                  alt={en ? 'The Privacy is Freedom collection, both caps' : 'La colección Privacy is Freedom, las dos gorras'}
-                  fill
-                  sizes="(min-width: 1024px) 960px, 92vw"
-                  className="object-contain p-2"
-                />
-              </div>
-              <figcaption className="px-4 py-3 text-xs text-content-muted">
-                {en
-                  ? 'The Privacy is Freedom collection as a set: the octahedron on one cap, the line on the other.'
-                  : 'La colección Privacy is Freedom completa: el octaedro en una gorra, la frase en la otra.'}
-              </figcaption>
-            </figure>
-          )}
         </Section>
       ))}
 
