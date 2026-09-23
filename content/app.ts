@@ -63,8 +63,8 @@ export const APP_AREAS: readonly {
   {
     title: { es: 'Swag', en: 'Swag' },
     detail: {
-      es: 'La tienda de merch, pagada en USDC. Se puede mirar sin entrar; para comprar necesitas wallet.',
-      en: 'The merch store, paid in USDC. Browsable without signing in; buying needs a wallet.',
+      es: 'La tienda: paga con tarjeta o con USDC en Base. Se puede mirar sin entrar; para pagar con USDC necesitas wallet.',
+      en: 'The store: pay by card or with USDC on Base. Browsable without signing in; paying with USDC needs a wallet.',
     },
     url: APP.swag,
     cta: { es: 'Ver la tienda', en: 'See the store' },

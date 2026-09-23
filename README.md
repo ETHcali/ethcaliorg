@@ -22,9 +22,12 @@ npm run dev
 
 ## How it is put together
 
-**Content lives in Supabase**, not in this repo. Events, venues, team and partners
-are read at build time with the anon key and re-fetched every 60s via ISR, so an
-edit in the CMS appears without a deploy.
+**Content lives in Supabase**, not in this repo. Events, venues, team, partners and
+the swag catalogue (`swag_products` with its Shopify and onchain variants) are read
+at build time with the anon key and re-fetched every 60s via ISR, so an edit in the
+CMS appears without a deploy. `/swag` also fetches the day's TRM from datos.gov.co at
+build time for the peso line under each price; if that fetch fails the page builds
+with USD only — there is no hardcoded rate to fall back to.
 
 There is **no service-role key here and no write path**. Every content table grants
 `anon` SELECT on published rows and nothing else. Editing happens in the wallet app
