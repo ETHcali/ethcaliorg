@@ -3,22 +3,65 @@ import Image from 'next/image';
 import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
 import { PageHeader, Section } from '../components/layout/Page';
-import { SWAG_GROUPS, SWAG_WAYS, type Bilingual } from '../content/site';
+import { SWAG_WAYS, type Bilingual } from '../content/site';
+import { getSwagCatalogue } from '../lib/content';
+import { getTrm, usdToCopRounded, type Trm } from '../lib/fx';
 import { asLocale, type Locale } from '../lib/i18n';
+import { posterSrc, GRID_SIZES } from '../lib/images';
 import { APP } from '../lib/links';
-import { GRID_SIZES } from '../lib/images';
+import { SWAG_CATEGORIES, type SwagProduct } from '../types/content';
+
+/** The Shopify storefront. Card payments happen there, in pesos. */
+const SHOP_ORIGIN = 'https://qpsxyq-9g.myshopify.com';
 
 interface Props {
+  products: SwagProduct[];
+  /** Null when datos.gov.co was unreachable at build. The page then shows USD only. */
+  trm: Trm | null;
   locale: Locale;
 }
 
-export default function Swag({ locale }: Props) {
+/** Section titles per category, in display order. Anything else lands under "other". */
+const CATEGORY_NAMES: Record<(typeof SWAG_CATEGORIES)[number] | 'other', Bilingual> = {
+  Cap: { es: 'Gorras', en: 'Caps' },
+  Mug: { es: 'Mugs', en: 'Mugs' },
+  Hoodie: { es: 'Hoodies', en: 'Hoodies' },
+  'T-shirt': { es: 'Camisetas', en: 'T-shirts' },
+  other: { es: 'Otros', en: 'Other' },
+};
+
+function groupByCategory(products: SwagProduct[]) {
+  const keys = [...SWAG_CATEGORIES, 'other'] as const;
+  const groups = new Map<(typeof keys)[number], SwagProduct[]>(keys.map((k) => [k, []]));
+  for (const p of products) {
+    const key = (SWAG_CATEGORIES as readonly string[]).includes(p.category)
+      ? (p.category as (typeof SWAG_CATEGORIES)[number])
+      : 'other';
+    groups.get(key)!.push(p);
+  }
+  // An empty category is dropped rather than shown as "coming soon": the table
+  // is the statement of what exists, and it says nothing about what is planned.
+  return keys.filter((k) => groups.get(k)!.length > 0).map((k) => ({ key: k, items: groups.get(k)! }));
+}
+
+export default function Swag({ products, trm, locale }: Props) {
   const t = (b: Bilingual) => b[locale];
   const en = locale === 'en';
+  const tag = en ? 'en-US' : 'es-CO';
+  // Spanish is required, English optional: an untranslated row reads as Spanish, never blank.
+  const pick = (es: string, en_: string) => (en && en_.trim() ? en_ : es);
 
   const lead = en
-    ? 'Designed from the official Ethereum ecosystem assets and our own identity. Free at our events; anything else is sold, in pesos or in crypto.'
-    : 'Diseñado con los assets oficiales del ecosistema Ethereum y nuestra propia identidad. Gratis en nuestros eventos; el resto se vende, en pesos o en cripto.';
+    ? 'Designed from the official Ethereum ecosystem assets and our own identity. Free at our events; the rest of the time it is sold, by card in pesos or in USDC on Base.'
+    : 'Diseñado con los assets oficiales del ecosistema Ethereum y nuestra propia identidad. Gratis en nuestros eventos; el resto del tiempo se vende, con tarjeta en pesos o en USDC en Base.';
+
+  const groups = groupByCategory(products);
+
+  const usd = (v: number) => `US$${v.toLocaleString(tag, { maximumFractionDigits: 2 })}`;
+  const cop = (v: number) =>
+    en
+      ? `≈ COP ${v.toLocaleString(tag)} at today's rate`
+      : `≈ COP ${v.toLocaleString(tag)} al cambio de hoy`;
 
   return (
     <Layout>
@@ -26,61 +69,125 @@ export default function Swag({ locale }: Props) {
 
       <PageHeader eyebrow="Merch" title={en ? 'Official swag' : 'Swag oficial'} lead={lead} />
 
-      {/* One section per kind. The catalogue used to be a single grid of seven
-          in no order, so you could not tell at a glance that there are caps at
-          all — you had to read every caption to find out what exists. */}
-      {SWAG_GROUPS.map((group) => (
-        <Section key={group.id} eyebrow={en ? 'Catalogue' : 'Catálogo'} title={t(group.name)}>
-          {group.items.length === 0 ? (
-            // An empty group is still information: it says a t-shirt is coming,
-            // where leaving the group out entirely says we do not make them.
-            <p className="rounded-card border border-dashed border-line-hairline bg-surface-slab p-5 text-sm text-content-muted">
-              {group.pending ? t(group.pending) : ''}
-            </p>
-          ) : (
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {group.items.map((item) => (
+      {products.length === 0 && (
+        // The fetch returned nothing — unconfigured env or an empty table. Say
+        // so in one line and keep the rest of the page; a store with no stock
+        // is still a page about how to earn the swag.
+        <Section eyebrow={en ? 'Catalogue' : 'Catálogo'} title={en ? 'Official swag' : 'Swag oficial'}>
+          <p className="rounded-card border border-dashed border-line-hairline bg-surface-slab p-5 text-sm text-content-muted">
+            {en ? 'Catalogue unavailable right now.' : 'Catálogo no disponible por ahora.'}
+          </p>
+        </Section>
+      )}
+
+      {/* One section per kind, in a fixed order: caps, mugs, hoodies, t-shirts.
+          A flat grid of seventeen would hide the fact that there are caps at
+          all until you had read every caption. */}
+      {groups.map((group) => (
+        <Section key={group.key} eyebrow={en ? 'Catalogue' : 'Catálogo'} title={t(CATEGORY_NAMES[group.key])}>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {group.items.map((item) => {
+              const name = pick(item.name_es, item.name_en) || item.sku;
+              const description = pick(item.description_es, item.description_en);
+              const image = posterSrc(item.image_path ? `/${item.image_path}` : null);
+              const priceUsd = Number(item.price_usd);
+              const priceCop = trm && Number.isFinite(priceUsd) ? usdToCopRounded(priceUsd, trm.rate) : null;
+              const shopUrl = item.shopify_handle ? `${SHOP_ORIGIN}/products/${item.shopify_handle}` : null;
+              const appUrl = `${APP.swag}#${item.sku}`;
+
+              return (
                 <li
-                  key={item.name.es}
+                  key={item.sku}
+                  id={item.sku}
                   className="flex flex-col overflow-hidden rounded-card border border-line-hairline bg-surface-slab"
                 >
-                  {item.image && (
+                  {image && (
                     // `object-contain`, not cover. These come in three shapes —
                     // 9:16 cap shots, square mugs, landscape pairs showing a
                     // front and a back — and cropping them all to a square cut
                     // the crown off every cap and half the artwork off every
                     // hoodie.
                     <div className="relative aspect-[4/3] bg-surface-inset">
-                      <Image
-                        src={item.image}
-                        alt={t(item.name)}
-                        fill
-                        sizes={GRID_SIZES}
-                        className="object-contain p-2"
-                      />
+                      <Image src={image} alt={name} fill sizes={GRID_SIZES} className="object-contain p-2" />
                     </div>
                   )}
                   <div className="flex flex-1 flex-col gap-2 p-4">
-                    <h3 className="text-base font-bold leading-snug text-content-primary">
-                      {t(item.name)}
-                    </h3>
-                    <p className="flex-1 text-sm leading-relaxed text-content-muted">
-                      {t(item.detail)}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag.es}
-                          className="rounded-chip bg-eth-blue-wash px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-eth-blue-text"
+                    <h3 className="text-base font-bold leading-snug text-content-primary">{name}</h3>
+                    {description && (
+                      <p className="flex-1 text-sm leading-relaxed text-content-muted">{description}</p>
+                    )}
+
+                    {item.sized && item.sizes.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {item.sizes.map((size) => (
+                          <span
+                            key={size}
+                            className="rounded-chip bg-eth-blue-wash px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-eth-blue-text"
+                          >
+                            {size}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="mt-1">
+                      <p className="text-lg font-bold text-content-primary">
+                        {Number.isFinite(priceUsd) ? usd(priceUsd) : '—'}
+                      </p>
+                      {priceCop !== null && (
+                        <p className="text-xs text-content-muted">{cop(priceCop)}</p>
+                      )}
+                    </div>
+
+                    {/* Two ways to pay, one per channel. Card goes to Shopify in
+                        pesos; USDC goes to the app, anchored on the SKU so the
+                        right card is in view when the wallet page opens. */}
+                    <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+                      {shopUrl && (
+                        <a
+                          href={shopUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-tap flex-1 items-center justify-center rounded-control bg-eth-blue px-4 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
                         >
-                          {t(tag)}
-                        </span>
-                      ))}
+                          {en ? 'Pay with card' : 'Comprar con tarjeta'}
+                        </a>
+                      )}
+                      <a
+                        href={appUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-tap flex-1 items-center justify-center rounded-control border border-line-strong px-4 text-sm font-semibold text-content-primary transition-colors hover:border-eth-blue hover:bg-eth-blue-wash"
+                      >
+                        {en ? 'Pay with USDC' : 'Pagar con USDC'}
+                      </a>
                     </div>
                   </div>
                 </li>
-              ))}
-            </ul>
+              );
+            })}
+          </ul>
+
+          {group.key === 'Cap' && (
+            // Not a product: the Privacy is Freedom pair photographed from the
+            // other side. It stays as a gallery shot because it shows the
+            // collection as a set, which no single card does.
+            <figure className="mt-6 overflow-hidden rounded-card border border-line-hairline bg-surface-inset">
+              <div className="relative aspect-[21/9]">
+                <Image
+                  src="/swags/cap-privacy-is-freedom-2.png"
+                  alt={en ? 'The Privacy is Freedom collection, both caps' : 'La colección Privacy is Freedom, las dos gorras'}
+                  fill
+                  sizes="(min-width: 1024px) 960px, 92vw"
+                  className="object-contain p-2"
+                />
+              </div>
+              <figcaption className="px-4 py-3 text-xs text-content-muted">
+                {en
+                  ? 'The Privacy is Freedom collection as a set: the octahedron on one cap, the line on the other.'
+                  : 'La colección Privacy is Freedom completa: el octaedro en una gorra, la frase en la otra.'}
+              </figcaption>
+            </figure>
           )}
         </Section>
       ))}
@@ -111,6 +218,10 @@ export default function Swag({ locale }: Props) {
   );
 }
 
-export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => ({
-  props: { locale: asLocale(locale) },
-});
+export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
+  const [products, trm] = await Promise.all([getSwagCatalogue(), getTrm()]);
+  return {
+    props: { products, trm, locale: asLocale(locale) },
+    revalidate: 60,
+  };
+};

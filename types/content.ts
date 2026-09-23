@@ -162,3 +162,52 @@ export function localized<T extends Record<string, unknown>>(
   const fallback = row[`${field}_es`];
   return typeof fallback === 'string' && fallback.trim() ? fallback : null;
 }
+
+// ── swag ────────────────────────────────────────────────────────────────────
+
+/** The four kinds the store sells. Also the order the catalogue is shown in. */
+export const SWAG_CATEGORIES = ['Cap', 'Mug', 'Hoodie', 'T-shirt'] as const;
+export type SwagCategory = (typeof SWAG_CATEGORIES)[number];
+
+/** One Shopify variant — a size of a product, or the product itself when unsized. */
+export interface SwagShopifyVariant {
+  shopify_variant_id: string;
+  sku: string;
+  size: string | null;
+  /** The peso price Shopify charges. Numeric in Postgres; a number or a string over PostgREST. */
+  price_cop: number | string | null;
+}
+
+/** The onchain twin of a product: one ERC-1155 token id per SKU on the collection. */
+export interface SwagOnchainVariant {
+  chain_id: number;
+  collection_address: string | null;
+  token_id: number;
+  status: string;
+}
+
+/**
+ * A row of `swag_products` with both its sale channels embedded. RLS limits
+ * anon to active products and live variants, so nothing here filters on
+ * either — an inactive product does not exist as far as this site can see.
+ */
+export interface SwagProduct {
+  id: number;
+  sku: string;
+  category: SwagCategory | string;
+  name_es: string;
+  name_en: string;
+  description_es: string;
+  description_en: string;
+  /** Relative to this site's /public, without the leading slash: `swags/cap-pepe.png`. */
+  image_path: string | null;
+  image_cid: string | null;
+  /** Numeric in Postgres. PostgREST sends a number, but a string is possible; parse it. */
+  price_usd: number | string;
+  sized: boolean;
+  sizes: string[];
+  shopify_handle: string | null;
+  sort_order: number;
+  swag_shopify_variants: SwagShopifyVariant[];
+  swag_variants: SwagOnchainVariant[];
+}

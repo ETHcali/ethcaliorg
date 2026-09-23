@@ -11,6 +11,7 @@ import type {
   EventRecord,
   EventDetail,
   PartnerRecord,
+  SwagProduct,
   TeamMemberRecord,
   VenueRecord,
 } from '../types/content';
@@ -136,4 +137,29 @@ export async function getSitemapEvents(): Promise<SitemapEvent[]> {
     .order('updated_at', { ascending: false });
   if (error) throw new Error(`getSitemapEvents: ${error.message}`);
   return (data ?? []) as SitemapEvent[];
+}
+
+/**
+ * The swag catalogue, with both ways to buy each item.
+ *
+ * `swag_products` is the product; `swag_shopify_variants` is the card path (one
+ * row per size, or one row for an unsized item) and `swag_variants` the USDC
+ * path (the ERC-1155 token id on the Base collection). RLS already limits anon
+ * to active products and live variants; the `active` filter here is belt and
+ * braces, so a policy change never puts a retired product back on the page.
+ */
+export async function getSwagCatalogue(): Promise<SwagProduct[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('swag_products')
+    .select(
+      `id, sku, category, name_es, name_en, description_es, description_en,
+       image_path, image_cid, price_usd, sized, sizes, shopify_handle, sort_order,
+       swag_shopify_variants (shopify_variant_id, sku, size, price_cop),
+       swag_variants (chain_id, collection_address, token_id, status)`
+    )
+    .eq('active', true)
+    .order('sort_order');
+  if (error) throw new Error(`getSwagCatalogue: ${error.message}`);
+  return (data ?? []) as unknown as SwagProduct[];
 }
