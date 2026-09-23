@@ -27,7 +27,7 @@ export const USDC_DISCOUNT_PCT = 10;
  * sitemap ever carries.
  */
 export function swagRoute(sku: string): string {
-  return `/swag/${sku.toUpperCase()}`;
+  return `/swag/${sku.toLowerCase()}`;
 }
 
 /** Numeric in Postgres, a number or a string over PostgREST; null when unusable. */
@@ -104,7 +104,7 @@ export function cartPermalink(variantGid: string, utm: Record<string, string> = 
  * needed for that path, which is why it lives there and not here.
  */
 export function appUsdcUrl(sku: string, size: string | null = null): string {
-  const url = new URL(`/swag/${sku.toUpperCase()}`, APP_ORIGIN);
+  const url = new URL(`/swag/${sku.toLowerCase()}`, APP_ORIGIN);
   url.searchParams.set('pay', 'usdc');
   if (size) url.searchParams.set('size', size);
   return url.toString();
