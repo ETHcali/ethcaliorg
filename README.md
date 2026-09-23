@@ -27,7 +27,11 @@ the swag catalogue (`swag_products` with its Shopify and onchain variants) are r
 at build time with the anon key and re-fetched every 60s via ISR, so an edit in the
 CMS appears without a deploy. `/swag` also fetches the day's TRM from datos.gov.co at
 build time for the peso line under each price; if that fetch fails the page builds
-with USD only — there is no hardcoded rate to fall back to.
+with USD only — there is no hardcoded rate to fall back to. Each active product also
+gets its own page at `/swag/<SKU>` (uppercase; lowercase 308s) — the ad landing page,
+with the photo as its Open Graph image, both prices, and the same purchase module as
+the grid card: card via the `store.ethcali.org/cart/<variant>:1` permalink (UTMs
+preserved), USDC via `app.ethcali.org/swag/<sku>?pay=usdc`.
 
 There is **no service-role key here and no write path**. Every content table grants
 `anon` SELECT on published rows and nothing else. Editing happens in the wallet app

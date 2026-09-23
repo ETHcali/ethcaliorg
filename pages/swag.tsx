@@ -1,17 +1,20 @@
 import type { GetStaticProps } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
 import { PageHeader, Section } from '../components/layout/Page';
+import Prices from '../components/swag/Prices';
+import PurchaseModule from '../components/swag/PurchaseModule';
 import { SWAG_WAYS, type Bilingual } from '../content/site';
 import { getSwagCatalogue } from '../lib/content';
-import { getTrm, usdToCopRounded, type Trm } from '../lib/fx';
+import { getTrm, type Trm } from '../lib/fx';
 import { asLocale, type Locale } from '../lib/i18n';
 import { posterSrc, GRID_SIZES } from '../lib/images';
 import { APP } from '../lib/links';
+import { swagRoute } from '../lib/swag';
 import { SWAG_CATEGORIES, type SwagProduct } from '../types/content';
 
-/** The Shopify storefront. Card payments happen there, in pesos. */
 
 interface Props {
   products: SwagProduct[];
@@ -46,21 +49,14 @@ function groupByCategory(products: SwagProduct[]) {
 export default function Swag({ products, trm, locale }: Props) {
   const t = (b: Bilingual) => b[locale];
   const en = locale === 'en';
-  const tag = en ? 'en-US' : 'es-CO';
   // Spanish is required, English optional: an untranslated row reads as Spanish, never blank.
   const pick = (es: string, en_: string) => (en && en_.trim() ? en_ : es);
 
   const lead = en
-    ? 'Designed from the official Ethereum ecosystem assets and our own identity. Free at our events; the rest of the time it is sold, by card in pesos or in USDC on Base.'
-    : 'Diseñado con los assets oficiales del ecosistema Ethereum y nuestra propia identidad. Gratis en nuestros eventos; el resto del tiempo se vende, con tarjeta en pesos o en USDC en Base.';
+    ? 'Designed from the official Ethereum ecosystem assets and our own identity. Free at our events; the rest of the time it is sold, by card or in USDC on Base — 10 % off with USDC.'
+    : 'Diseñado con los assets oficiales del ecosistema Ethereum y nuestra propia identidad. Gratis en nuestros eventos; el resto del tiempo se vende, con tarjeta o en USDC en Base — 10 % menos con USDC.';
 
   const groups = groupByCategory(products);
-
-  const usd = (v: number) => `US$${v.toLocaleString(tag, { maximumFractionDigits: 2 })}`;
-  const cop = (v: number) =>
-    en
-      ? `≈ COP ${v.toLocaleString(tag)} at today's rate`
-      : `≈ COP ${v.toLocaleString(tag)} al cambio de hoy`;
 
   return (
     <Layout>
@@ -89,9 +85,7 @@ export default function Swag({ products, trm, locale }: Props) {
               const name = pick(item.name_es, item.name_en) || item.sku;
               const description = pick(item.description_es, item.description_en);
               const image = posterSrc(item.image_path ? `/${item.image_path}` : null);
-              const priceUsd = Number(item.price_usd);
-              const priceCop = trm && Number.isFinite(priceUsd) ? usdToCopRounded(priceUsd, trm.rate) : null;
-              const appUrl = `${APP.swag}#${item.sku}`;
+              const href = swagRoute(item.sku);
 
               return (
                 <li
@@ -105,53 +99,29 @@ export default function Swag({ products, trm, locale }: Props) {
                     // front and a back — and cropping them all to a square cut
                     // the crown off every cap and half the artwork off every
                     // hoodie.
-                    <div className="relative aspect-[4/3] bg-surface-inset">
+                    <Link href={href} className="relative block aspect-[4/3] bg-surface-inset">
                       <Image src={image} alt={name} fill sizes={GRID_SIZES} className="object-contain p-2" />
-                    </div>
+                    </Link>
                   )}
                   <div className="flex flex-1 flex-col gap-2 p-4">
-                    <h3 className="text-base font-bold leading-snug text-content-primary">{name}</h3>
+                    <h3 className="text-base font-bold leading-snug text-content-primary">
+                      <Link href={href} className="transition-colors hover:text-eth-blue-text">
+                        {name}
+                      </Link>
+                    </h3>
                     {description && (
                       <p className="flex-1 text-sm leading-relaxed text-content-muted">{description}</p>
                     )}
 
-                    {item.sized && item.sizes.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {item.sizes.map((size) => (
-                          <span
-                            key={size}
-                            className="rounded-chip bg-eth-blue-wash px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-eth-blue-text"
-                          >
-                            {size}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
                     <div className="mt-1">
-                      <p className="text-lg font-bold text-content-primary">
-                        {Number.isFinite(priceUsd) ? usd(priceUsd) : '—'}
-                      </p>
-                      {priceCop !== null && (
-                        <p className="text-xs text-content-muted">{cop(priceCop)}</p>
-                      )}
+                      <Prices product={item} trm={trm} locale={locale} />
                     </div>
 
-                    {/* One door: the app. It shows the same card, anchored on the
-                        SKU, and offers card (Shopify checkout, straight to payment)
-                        or USDC on Base. Sending card buyers to the Shopify product
-                        page put a second storefront in the middle of the flow. */}
-                    <a
-                      href={appUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 inline-flex min-h-tap items-center justify-center rounded-control bg-eth-blue px-4 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
-                    >
-                      {en ? 'Buy in the app' : 'Comprar en la app'}
-                    </a>
-                    <p className="text-center text-xs text-content-faint">
-                      {en ? 'Card or USDC on Base' : 'Tarjeta o USDC en Base'}
-                    </p>
+                    {/* The same module as the product page, compact: size first
+                        when sized, then card (Shopify checkout, straight to
+                        payment) or USDC (the app). Buying from the grid needs no
+                        extra hop; the page exists for the ad and the share. */}
+                    <PurchaseModule product={item} locale={locale} compact />
                   </div>
                 </li>
               );

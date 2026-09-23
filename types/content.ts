@@ -204,6 +204,12 @@ export interface SwagProduct {
   image_cid: string | null;
   /** Numeric in Postgres. PostgREST sends a number, but a string is possible; parse it. */
   price_usd: number | string;
+  /**
+   * The USDC price, `price_usd × 0.9`, written by the onchain sync so the site
+   * shows it without an RPC call. Null on a row the sync has not visited; the
+   * site applies the discount itself in that case (`lib/swag.ts`).
+   */
+  price_usdc: number | string | null;
   sized: boolean;
   sizes: string[];
   shopify_handle: string | null;

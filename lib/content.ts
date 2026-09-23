@@ -148,18 +148,47 @@ export async function getSitemapEvents(): Promise<SitemapEvent[]> {
  * to active products and live variants; the `active` filter here is belt and
  * braces, so a policy change never puts a retired product back on the page.
  */
+const SWAG_SELECT = `id, sku, category, name_es, name_en, description_es, description_en,
+       image_path, image_cid, price_usd, price_usdc, sized, sizes, shopify_handle, sort_order,
+       swag_shopify_variants (shopify_variant_id, sku, size, price_cop),
+       swag_variants (chain_id, collection_address, token_id, status)`;
+
 export async function getSwagCatalogue(): Promise<SwagProduct[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from('swag_products')
-    .select(
-      `id, sku, category, name_es, name_en, description_es, description_en,
-       image_path, image_cid, price_usd, sized, sizes, shopify_handle, sort_order,
-       swag_shopify_variants (shopify_variant_id, sku, size, price_cop),
-       swag_variants (chain_id, collection_address, token_id, status)`
-    )
+    .select(SWAG_SELECT)
     .eq('active', true)
     .order('sort_order');
   if (error) throw new Error(`getSwagCatalogue: ${error.message}`);
   return (data ?? []) as unknown as SwagProduct[];
+}
+
+/**
+ * One product by SKU, for its own page. SKUs are stored uppercase; the lookup
+ * is case-insensitive so `getStaticProps` can decide whether to redirect a
+ * lowercase URL rather than 404 it.
+ */
+export async function getSwagProduct(sku: string): Promise<SwagProduct | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from('swag_products')
+    .select(SWAG_SELECT)
+    .eq('active', true)
+    .ilike('sku', sku)
+    .maybeSingle();
+  if (error) throw new Error(`getSwagProduct(${sku}): ${error.message}`);
+  return (data as unknown as SwagProduct) ?? null;
+}
+
+/** Every active SKU, for `getStaticPaths` and the sitemap. */
+export async function getSwagSkus(): Promise<string[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('swag_products')
+    .select('sku')
+    .eq('active', true)
+    .order('sort_order');
+  if (error) throw new Error(`getSwagSkus: ${error.message}`);
+  return (data ?? []).map((r) => r.sku as string);
 }
