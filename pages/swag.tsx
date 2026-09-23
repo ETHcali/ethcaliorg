@@ -12,7 +12,6 @@ import { APP } from '../lib/links';
 import { SWAG_CATEGORIES, type SwagProduct } from '../types/content';
 
 /** The Shopify storefront. Card payments happen there, in pesos. */
-const SHOP_ORIGIN = 'https://store.ethcali.org';
 
 interface Props {
   products: SwagProduct[];
@@ -92,7 +91,6 @@ export default function Swag({ products, trm, locale }: Props) {
               const image = posterSrc(item.image_path ? `/${item.image_path}` : null);
               const priceUsd = Number(item.price_usd);
               const priceCop = trm && Number.isFinite(priceUsd) ? usdToCopRounded(priceUsd, trm.rate) : null;
-              const shopUrl = item.shopify_handle ? `${SHOP_ORIGIN}/products/${item.shopify_handle}` : null;
               const appUrl = `${APP.swag}#${item.sku}`;
 
               return (
@@ -139,29 +137,21 @@ export default function Swag({ products, trm, locale }: Props) {
                       )}
                     </div>
 
-                    {/* Two ways to pay, one per channel. Card goes to Shopify in
-                        pesos; USDC goes to the app, anchored on the SKU so the
-                        right card is in view when the wallet page opens. */}
-                    <div className="mt-2 flex flex-col gap-2 sm:flex-row">
-                      {shopUrl && (
-                        <a
-                          href={shopUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex min-h-tap flex-1 items-center justify-center rounded-control bg-eth-blue px-4 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
-                        >
-                          {en ? 'Pay with card' : 'Comprar con tarjeta'}
-                        </a>
-                      )}
-                      <a
-                        href={appUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex min-h-tap flex-1 items-center justify-center rounded-control border border-line-strong px-4 text-sm font-semibold text-content-primary transition-colors hover:border-eth-blue hover:bg-eth-blue-wash"
-                      >
-                        {en ? 'Pay with USDC' : 'Pagar con USDC'}
-                      </a>
-                    </div>
+                    {/* One door: the app. It shows the same card, anchored on the
+                        SKU, and offers card (Shopify checkout, straight to payment)
+                        or USDC on Base. Sending card buyers to the Shopify product
+                        page put a second storefront in the middle of the flow. */}
+                    <a
+                      href={appUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex min-h-tap items-center justify-center rounded-control bg-eth-blue px-4 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
+                    >
+                      {en ? 'Buy in the app' : 'Comprar en la app'}
+                    </a>
+                    <p className="text-center text-xs text-content-faint">
+                      {en ? 'Card or USDC on Base' : 'Tarjeta o USDC en Base'}
+                    </p>
                   </div>
                 </li>
               );
