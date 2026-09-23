@@ -744,7 +744,10 @@ export const SWAG_GROUPS: readonly SwagGroup[] = [
   },
 ];
 
-/** Swag is earned, never sold. These are the four ways. */
+/**
+ * Swag is free at ETH Cali events — these are the four ways to earn it there.
+ * Any other request is a sale: pesos through the store, or crypto in the app.
+ */
 export const SWAG_WAYS: readonly { title: Bilingual; detail: Bilingual }[] = [
   {
     title: { es: 'Asiste a eventos', en: 'Show up' },

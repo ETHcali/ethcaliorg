@@ -17,8 +17,8 @@ export default function Swag({ locale }: Props) {
   const en = locale === 'en';
 
   const lead = en
-    ? "Designed from the official Ethereum ecosystem assets and our own identity. It is not for sale — it is earned."
-    : 'Diseñado con los assets oficiales del ecosistema Ethereum y nuestra propia identidad. No se vende: se gana.';
+    ? 'Designed from the official Ethereum ecosystem assets and our own identity. Free at our events; anything else is sold, in pesos or in crypto.'
+    : 'Diseñado con los assets oficiales del ecosistema Ethereum y nuestra propia identidad. Gratis en nuestros eventos; el resto se vende, en pesos o en cripto.';
 
   return (
     <Layout>
@@ -87,7 +87,7 @@ export default function Swag({ locale }: Props) {
 
       <Section
         eyebrow={en ? 'How to get it' : 'Cómo conseguirlo'}
-        title={en ? 'It is earned, not sold' : 'Se gana, no se vende'}
+        title={en ? 'Free at events, sold the rest of the time' : 'Gratis en eventos, a la venta el resto del tiempo'}
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {SWAG_WAYS.map((w) => (
