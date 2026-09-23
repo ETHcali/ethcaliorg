@@ -63,8 +63,8 @@ export const APP_AREAS: readonly {
   {
     title: { es: 'Swag', en: 'Swag' },
     detail: {
-      es: 'La tienda: paga con tarjeta o con USDC en Base. Se puede mirar sin entrar; para pagar con USDC necesitas wallet.',
-      en: 'The store: pay by card or with USDC on Base. Browsable without signing in; paying with USDC needs a wallet.',
+      es: 'La tienda: paga con tarjeta o con USDC en Ethereum. Se puede mirar sin entrar; para pagar con USDC necesitas wallet.',
+      en: 'The store: pay by card or with USDC on Ethereum. Browsable without signing in; paying with USDC needs a wallet.',
     },
     url: APP.swag,
     cta: { es: 'Ver la tienda', en: 'See the store' },
@@ -72,8 +72,8 @@ export const APP_AREAS: readonly {
   {
     title: { es: 'Donaciones', en: 'Donations' },
     detail: {
-      es: 'Campañas abiertas en ETH, USDC y COPm. El muro de donantes y los totales son públicos y se leen de la cadena, entres o no.',
-      en: 'Open campaigns in ETH, USDC and COPm. The donor wall and the totals are public and read from the chain, signed in or not.',
+      es: 'Campañas abiertas en ETH y USDC. El muro de donantes y los totales son públicos y se leen de la cadena, entres o no.',
+      en: 'Open campaigns in ETH and USDC. The donor wall and the totals are public and read from the chain, signed in or not.',
     },
     url: APP.donations,
     cta: { es: 'Ver las campañas', en: 'See the campaigns' },
@@ -117,21 +117,16 @@ export const APP_FEATURES: readonly { n: string; title: Bilingual; detail: Bilin
 ];
 
 /**
- * The networks the app itself supports.
+ * The network the app runs on.
  *
- * Not `CHAINS` from `content/site.ts`: that one is "where ETH Cali deploys" and
- * includes Polygon and Gnosis, where the wallet does not run. This is the list
- * in the app's own chain switcher, and Celo is on it because COPm lives there.
+ * One chain, Ethereum mainnet, by decision (2026-09-23): everything a user can do
+ * in the app happens there. The one exception is the ethcali.eth name claim, whose
+ * registrar lives on Base; the app switches you there only to sign that. Not
+ * `CHAINS` from `content/site.ts`, which is "where ETH Cali has deployed" over the
+ * years and is a different question.
  */
 export const APP_NETWORKS: readonly { name: string; note: Bilingual | null }[] = [
-  { name: 'Base', note: null },
   { name: 'Ethereum', note: null },
-  { name: 'Optimism', note: null },
-  { name: 'Unichain', note: null },
-  {
-    name: 'Celo',
-    note: { es: 'donde vive COPm', en: 'where COPm lives' },
-  },
 ];
 
 /**

@@ -125,8 +125,13 @@ export default function AppPage({ locale }: Props) {
       </Section>
 
       <Section
-        eyebrow={en ? 'Networks' : 'Redes'}
-        title={en ? 'The same address on five chains' : 'La misma dirección en cinco cadenas'}
+        eyebrow={en ? 'Network' : 'Red'}
+        title={en ? 'One chain: Ethereum' : 'Una sola cadena: Ethereum'}
+        lead={
+          en
+            ? 'Everything in the app happens on Ethereum mainnet, gas paid by ETH Cali. The only exception is the ethcali.eth name claim, whose registrar lives on Base; the app switches you there just to sign that.'
+            : 'Todo en la app ocurre en Ethereum mainnet, con el gas pagado por ETH Cali. La única excepción es el reclamo del nombre ethcali.eth, cuyo registrador vive en Base; la app te cambia allá solo para firmar eso.'
+        }
       >
         <ul className="flex flex-wrap gap-2">
           {APP_NETWORKS.map((n) => (
