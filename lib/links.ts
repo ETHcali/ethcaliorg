@@ -18,7 +18,6 @@ export const APP = {
   wallet: `${APP_ORIGIN}/wallet`,
   /** Proof of personhood — a ZK passport proof, not a document upload. */
   identity: `${APP_ORIGIN}/sybil`,
-  profile: `${APP_ORIGIN}/profile`,
   /** The CMS behind this site. Admin-gated by ADMIN_ROLE on chain. */
   adminContent: `${APP_ORIGIN}/admin/content`,
 } as const;
@@ -31,7 +30,7 @@ export const APP = {
  * typo here is not an error, it is a link that quietly goes somewhere else. This
  * union is the site's half of that contract. Keep the two in step.
  */
-export type AppRoute = '/wallet' | '/faucet' | '/sybil' | '/swag' | '/donations' | '/profile';
+export type AppRoute = '/wallet' | '/faucet' | '/sybil' | '/swag' | '/donations';
 
 /**
  * The front door, carrying where you were headed.
