@@ -19,8 +19,8 @@ interface Props {
   /** The share image's real pixels, when the caller knows them. Platforms lay
    *  out the card before the image lands; without these it reflows after. */
   imageSize?: { width: number; height: number };
-  /** `article` for a single event, `website` for a listing. */
-  type?: 'website' | 'article';
+  /** `article` for a single event, `product` for a swag page, `website` for a listing. */
+  type?: 'website' | 'article' | 'product';
   /** JSON-LD for this page. Rendered as-is into a ld+json script. */
   jsonLd?: Record<string, unknown> | readonly Record<string, unknown>[];
 }

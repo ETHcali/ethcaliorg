@@ -1,7 +1,8 @@
 import type { GetServerSideProps } from 'next';
-import { getSitemapEvents } from '../lib/content';
+import { getSitemapEvents, getSwagSkus } from '../lib/content';
 import { LOCALES, DEFAULT_LOCALE, STATIC_ROUTES, absoluteUrl } from '../lib/seo';
 import { eventRoute } from '../lib/routes';
+import { swagRoute } from '../lib/swag';
 
 /**
  * /sitemap.xml
@@ -52,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   // A failed fetch must not serve a sitemap that silently omits every event —
   // that would actively tell a crawler those URLs are gone. Better to 503 and
   // let it retry with the previous sitemap still in its index.
-  const events = await getSitemapEvents();
+  const [events, skus] = await Promise.all([getSitemapEvents(), getSwagSkus()]);
 
   const entries: Entry[] = [
     ...STATIC_ROUTES.map(({ route, priority }) => ({ route, priority })),
@@ -63,6 +64,9 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       .map((e) => ({ route: eventRoute(e.slug, e.kind), priority: 0.6, lastmod: e.updated_at }))
       // /builders-tour is already in STATIC_ROUTES at a higher priority.
       .filter((e) => !STATIC_ROUTES.some((r) => r.route === e.route)),
+    // One page per active product, the ad landing pages. `swagRoute` is the
+    // uppercase spelling the page itself declares canonical.
+    ...skus.map((sku) => ({ route: swagRoute(sku), priority: 0.7 })),
   ];
 
   const body = [
