@@ -142,7 +142,6 @@ export default function SwagProductPage({ product, trm, locale }: Props) {
 
             <PurchaseModule product={product} locale={locale} />
 
-            <p className="mono text-[10px] uppercase tracking-wide text-content-faint">{product.sku}</p>
           </div>
         </div>
       </article>
