@@ -18,9 +18,9 @@ import { APP, appEntry } from '../lib/links';
 import type { Bilingual } from './site';
 
 /**
- * The five places the app can take you.
+ * The six places the app can take you.
  *
- * `entry` says how to link there, and it is not cosmetic. The first three need
+ * `entry` says how to link there, and it is not cosmetic. The first four need
  * a session: linked to directly while signed out, the app bounces you to its
  * landing page and forgets where you were going. `appEntry` carries the
  * destination through the sign-in so you arrive where you clicked. The last two
@@ -32,6 +32,8 @@ export const APP_AREAS: readonly {
   detail: Bilingual;
   url: string;
   cta: Bilingual;
+  /** The same rendered object the app's own landing page uses for this area. */
+  image: string;
 }[] = [
   {
     title: { es: 'Wallet', en: 'Wallet' },
@@ -41,15 +43,17 @@ export const APP_AREAS: readonly {
     },
     url: appEntry('/wallet'),
     cta: { es: 'Abrir mi wallet', en: 'Open my wallet' },
+    image: '/images/app/wallet.webp',
   },
   {
     title: { es: 'Faucet', en: 'Faucet' },
     detail: {
-      es: 'ETH de prueba desde las bóvedas de la comunidad, sin pedirle permiso a nadie. Primero verificas que eres una persona.',
-      en: 'Test ETH from the community vaults, without asking anyone. You verify you are a person first.',
+      es: 'Cuando ETH Cali abre una bóveda para un evento o una hackathon, reclamas un poco de ETH para gas sin pedirle permiso a nadie. Primero verificas que eres una persona.',
+      en: 'When ETH Cali opens a vault for an event or a hackathon, you claim a little ETH for gas without asking anyone. You verify you are a person first.',
     },
     url: appEntry('/faucet'),
     cta: { es: 'Ir al faucet', en: 'Go to the faucet' },
+    image: '/images/app/faucet.webp',
   },
   {
     title: { es: 'Identidad', en: 'Identity' },
@@ -59,6 +63,17 @@ export const APP_AREAS: readonly {
     },
     url: appEntry('/sybil'),
     cta: { es: 'Verificarme', en: 'Verify myself' },
+    image: '/images/app/identity.webp',
+  },
+  {
+    title: { es: 'Certificados', en: 'Certificates' },
+    detail: {
+      es: 'Quienes construyen y organizan los eventos de ETH Cali reciben un certificado soulbound en Ethereum, con PDF y credencial de LinkedIn en un clic.',
+      en: 'Builders and organisers of ETH Cali events receive a soulbound certificate on Ethereum, with a PDF and a one-click LinkedIn credential.',
+    },
+    url: appEntry('/certificate'),
+    cta: { es: 'Ver mis certificados', en: 'See my certificates' },
+    image: '/images/app/certificates.webp',
   },
   {
     title: { es: 'Swag', en: 'Swag' },
@@ -68,6 +83,7 @@ export const APP_AREAS: readonly {
     },
     url: APP.swag,
     cta: { es: 'Ver la tienda', en: 'See the store' },
+    image: '/images/app/swag.webp',
   },
   {
     title: { es: 'Donaciones', en: 'Donations' },
@@ -77,6 +93,7 @@ export const APP_AREAS: readonly {
     },
     url: APP.donations,
     cta: { es: 'Ver las campañas', en: 'See the campaigns' },
+    image: '/images/app/donations.webp',
   },
 ];
 

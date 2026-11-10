@@ -91,7 +91,7 @@ export default function AppPage({ locale }: Props) {
           distinction is made once, in content/app.ts, not here. */}
       <Section
         eyebrow={en ? 'What is inside' : 'Qué hay adentro'}
-        title={en ? 'Five places it takes you' : 'Cinco lugares a los que te lleva'}
+        title={en ? 'Six places it takes you' : 'Seis lugares a los que te lleva'}
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {APP_AREAS.map((area) => (
@@ -101,6 +101,7 @@ export default function AppPage({ locale }: Props) {
               detail={t(area.detail)}
               url={area.url}
               cta={t(area.cta)}
+              image={area.image}
             />
           ))}
         </div>
