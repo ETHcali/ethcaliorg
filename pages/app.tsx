@@ -20,8 +20,8 @@ interface Props {
  * Laid out like the app's own signed-out page (wallet_ethcali/pages/index.tsx)
  * so the two read as one product: the same headline, the same six cells with
  * the same images, the same order. Two additions the app does not need: the
- * integrations as a moving strip of links, and the one-line note that the app
- * itself is in English.
+ * network and the integrations in one band under the hero (the strip moves),
+ * and, in Spanish, a line saying the app itself is in English.
  */
 
 const ETH_LOGO = '/chains/ethereum.png';
@@ -96,11 +96,55 @@ export default function AppPage({ locale }: Props) {
               {en ? 'on Ethereum' : 'en Ethereum'}
             </p>
           </div>
+          {!en && (
+            <p className="mt-4 text-sm text-content-faint">La app está en inglés por ahora; esta página es la guía en español.</p>
+          )}
+        </div>
+      </section>
+
+      {/* ── Network + built on: one band straight under the hero ──
+          The chain on the left, what the app is built on moving beside it, so
+          both read before the six areas instead of after them. Stacks on a
+          phone: the network row, then the strip at full width. */}
+      <section aria-label={en ? 'Network and integrations' : 'Red e integraciones'} className="border-y border-line-hairline bg-surface-slab">
+        <div className="mx-auto flex max-w-page flex-col gap-5 py-6 lg:flex-row lg:items-center lg:gap-8 lg:px-gutter">
+          <div className="flex shrink-0 items-center gap-4 px-gutter lg:border-r lg:border-line-hairline lg:px-0 lg:pr-8">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface-paper">
+              <Image src={ETH_LOGO} alt="Ethereum" width={20} height={30} className="h-7 w-auto" />
+            </span>
+            <div>
+              <p className="mono text-[11px] uppercase tracking-[0.16em] text-content-faint">{en ? 'Network' : 'Red'}</p>
+              <p className="text-base font-bold">Ethereum mainnet</p>
+            </div>
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <p id="tools-heading" className="mono mb-3 px-gutter text-[11px] uppercase tracking-[0.16em] text-content-faint lg:px-0">
+              {en ? 'Built on' : 'Construida con'}
+            </p>
+            <div
+              aria-labelledby="tools-heading"
+              className="marquee relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] motion-reduce:[mask-image:none]"
+            >
+              <div className="marquee-track flex w-max gap-3 motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:px-gutter lg:motion-reduce:px-0">
+                <div className="flex shrink-0 gap-3 motion-reduce:flex-wrap">
+                  {APP_TOOLS.map((tool) => (
+                    <ToolLink key={tool.name} {...tool} />
+                  ))}
+                </div>
+                <div className="flex shrink-0 gap-3 motion-reduce:hidden" aria-hidden>
+                  {APP_TOOLS.map((tool) => (
+                    <ToolLink key={tool.name} {...tool} hidden />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ── The six areas, as on the app ── */}
-      <section aria-labelledby="areas-heading" className="mx-auto max-w-page px-gutter pb-12 sm:pb-16 lg:pb-24">
+      <section aria-labelledby="areas-heading" className="mx-auto max-w-page px-gutter pb-12 pt-10 sm:pb-16 sm:pt-14 lg:pb-24 lg:pt-16">
         <h2 id="areas-heading" className="mono mb-6 text-[11px] font-normal uppercase tracking-[0.16em] text-content-faint">
           {en ? 'What you can do here' : 'Lo que puedes hacer'}
         </h2>
@@ -138,52 +182,6 @@ export default function AppPage({ locale }: Props) {
             </li>
           ))}
         </ul>
-      </section>
-
-      {/* ── Built on: a moving strip of links ── */}
-      <section aria-labelledby="tools-heading" className="pb-12 sm:pb-16 lg:pb-24">
-        <div className="mx-auto max-w-page px-gutter">
-          <h2 id="tools-heading" className="mono mb-6 text-[11px] font-normal uppercase tracking-[0.16em] text-content-faint">
-            {en ? 'Built on' : 'Construida con'}
-          </h2>
-        </div>
-        <div
-          className="marquee relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:[mask-image:none]"
-        >
-          <div className="marquee-track flex w-max gap-3 motion-reduce:mx-auto motion-reduce:w-full motion-reduce:max-w-page motion-reduce:flex-wrap motion-reduce:px-gutter">
-            <div className="flex shrink-0 gap-3 motion-reduce:flex-wrap">
-              {APP_TOOLS.map((tool) => (
-                <ToolLink key={tool.name} {...tool} />
-              ))}
-            </div>
-            <div className="flex shrink-0 gap-3 motion-reduce:hidden" aria-hidden>
-              {APP_TOOLS.map((tool) => (
-                <ToolLink key={tool.name} {...tool} hidden />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Network: the one chain, with its own mark ── */}
-      <section className="mx-auto max-w-page px-gutter pb-16 sm:pb-24">
-        <div className="flex flex-col gap-6 rounded-card border border-line-hairline bg-surface-slab p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-          <div className="flex items-center gap-5">
-            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-surface-paper">
-              <Image src={ETH_LOGO} alt="Ethereum" width={26} height={40} className="h-10 w-auto" />
-            </span>
-            <div>
-              <p className="mono text-[11px] uppercase tracking-[0.16em] text-content-faint">{en ? 'Network' : 'Red'}</p>
-              <p className="mt-1 text-xl font-bold">Ethereum mainnet</p>
-              <p className="mt-1 text-sm text-content-muted">
-                {en
-                  ? 'Everything in the app happens on Ethereum, with the gas paid by ETH Cali.'
-                  : 'Todo pasa en Ethereum, con el gas pagado por ETH Cali. La app está en inglés por ahora; esta página es la guía en español.'}
-              </p>
-            </div>
-          </div>
-          <GoToApp label={goToApp} />
-        </div>
       </section>
     </Layout>
   );
