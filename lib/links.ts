@@ -30,12 +30,12 @@ export const APP = {
  * typo here is not an error, it is a link that quietly goes somewhere else. This
  * union is the site's half of that contract. Keep the two in step.
  */
-export type AppRoute = '/wallet' | '/faucet' | '/sybil' | '/swag' | '/donations';
+export type AppRoute = '/wallet' | '/faucet' | '/sybil' | '/certificate' | '/swag' | '/donations';
 
 /**
  * The front door, carrying where you were headed.
  *
- * `/wallet`, `/faucet` and `/sybil` need a session. Linking straight at one
+ * `/wallet`, `/faucet`, `/sybil` and `/certificate` need a session. Linking straight at one
  * while signed out bounces you to the app's landing page and *forgets the
  * destination* — you sign in and arrive somewhere you did not ask for. This
  * lands on the same landing page with the destination attached, and the app

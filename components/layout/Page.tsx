@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useState } from 'react';
 
 /** The heading block every non-event page opens with. */
@@ -98,28 +99,50 @@ export function Address({ value, label }: { value: string; label?: string }) {
   );
 }
 
-/** A titled card with an outbound link. Used across DAO, education and swag. */
+/**
+ * A titled card with an outbound link. Used across DAO, education, swag and /app.
+ *
+ * `image` is optional and only /app passes it: the rendered objects shared with
+ * the app's landing page. Decorative (the title says what the card is), so the
+ * alt text is empty, and the edges fade out with an alpha mask so the image's own
+ * near-black background never draws a rectangle on the card.
+ */
 export function LinkCard({
   title,
   detail,
   url,
   cta,
+  image,
 }: {
   title: string;
   detail: string;
   url: string;
   cta?: string;
+  image?: string;
 }) {
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex flex-col rounded-card border border-line-hairline bg-surface-slab p-5 transition-colors hover:border-line-brand"
+      className="group flex flex-col overflow-hidden rounded-card border border-line-hairline bg-surface-slab transition-colors hover:border-line-brand"
     >
-      <h3 className="text-base font-bold text-content-primary">{title}</h3>
-      <p className="mt-2 flex-1 text-sm leading-relaxed text-content-muted">{detail}</p>
-      <span className="mt-4 text-sm font-semibold text-eth-blue-text">{cta ?? 'Ver'} →</span>
+      {image && (
+        <span className="relative block aspect-[16/10]">
+          <Image
+            src={image}
+            alt=""
+            fill
+            sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+            className="object-contain opacity-90 transition-opacity [mask-image:radial-gradient(ellipse_closest-side_at_center,black_60%,transparent_100%)] group-hover:opacity-100 motion-reduce:transition-none"
+          />
+        </span>
+      )}
+      <span className={`flex flex-1 flex-col p-5 ${image ? 'pt-1' : ''}`}>
+        <h3 className="text-base font-bold text-content-primary">{title}</h3>
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-content-muted">{detail}</p>
+        <span className="mt-4 text-sm font-semibold text-eth-blue-text">{cta ?? 'Ver'} →</span>
+      </span>
     </a>
   );
 }
