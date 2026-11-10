@@ -67,7 +67,7 @@ function Member({ m, locale }: { m: TeamMemberRecord; locale: Locale }) {
     .filter((l): l is readonly ['linkedin' | 'x' | 'github', string] => l[1] !== null);
 
   return (
-    <li className="flex items-center gap-3 rounded-card border border-line-hairline bg-surface-slab p-3">
+    <li className="flex min-w-0 items-center gap-3 rounded-card border border-line-hairline bg-surface-slab p-3">
       {m.image_path ? (
         <Image
           src={m.image_path}
@@ -155,7 +155,10 @@ export default function Team({ team, locale }: Props) {
                 {t(group.label)}
                 <span className="mono font-normal">{members.length}</span>
               </h3>
-              <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {/* `grid-cols-1`, not the implicit column: an implicit track sizes to its
+                  widest card, and a long name plus three icons made the page
+                  64px wider than a 390px phone. */}
+              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {members.map((m) => (
                   <Member key={m.id} m={m} locale={locale} />
                 ))}
