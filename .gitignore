@@ -16,3 +16,7 @@ admin/
 # Built by scripts/brand-kit.mts before every dev and build, from the file list
 # in content/brand.ts. A ZIP in git is a snapshot of a folder that keeps moving.
 public/brand-kit/
+
+# Claude Code: per-machine settings and personal notes
+.claude/settings.local.json
+CLAUDE.local.md

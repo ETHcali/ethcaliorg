@@ -8,6 +8,7 @@ import { NAV_HACKATHONS } from '../../content/hackathons.generated';
 import { eventRoute } from '../../lib/routes';
 import { appEntry } from '../../lib/links';
 import SocialIcon, { type SocialName } from './SocialIcon';
+import { EthPrice } from './EthPrice';
 
 /**
  * Top-level entries carry their own page; the dropdown children are the ways of
@@ -214,6 +215,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 it is the one primary action the chrome carries; everything else
                 in this bar is navigation. Hidden below sm, where it would crowd
                 the burger — the phone sheet opens with its own full-width copy. */}
+            <EthPrice locale={locale} />
+
             <a
               href={appEntry()}
               target="_blank"
