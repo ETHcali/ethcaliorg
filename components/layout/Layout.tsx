@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { asLocale, translator } from '../../lib/i18n';
 import NavEntry, { type NavItem } from './Nav';
+import MobileNav from './MobileNav';
 import { NAV_HACKATHONS } from '../../content/hackathons.generated';
 import { eventRoute } from '../../lib/routes';
 import { appEntry } from '../../lib/links';
@@ -141,6 +142,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const locale = asLocale(router.locale);
   const t = translator(locale);
   const [menuOpen, setMenuOpen] = useState(false);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+
+  // A link inside the sheet closes it on click; this covers every other way
+  // the route can change while it is open (back button, a programmatic push).
+  useEffect(() => {
+    router.events.on('routeChangeStart', closeMenu);
+    return () => router.events.off('routeChangeStart', closeMenu);
+  }, [router.events, closeMenu]);
 
   const NAV = navItems(locale);
   const other = locale === 'es' ? 'en' : 'es';
@@ -243,6 +252,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
+              aria-controls="mobile-nav"
               aria-label="Menú"
               className="flex h-12 w-12 items-center justify-center rounded-chip border border-line-hairline text-content-muted transition-colors hover:text-content-primary lg:hidden"
             >
@@ -257,71 +267,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* The phone sheet.
-            Scrollable and capped at the viewport below the bar: five groups is
-            seventeen rows, and on a short phone in landscape the last of them
-            used to sit below the fold with no way to reach it.
-
-            Every group renders as a heading plus its children, and the heading
-            is NOT a link. Each group's parent href is also one of its children
-            — that is the invariant NAV keeps — so linking the heading too put
-            "Nosotros" directly above "Nosotros" and "Hackathons" above
-            "Hackathons". On a pointer the parent is still a real link; here the
-            child list already contains it. */}
-        {menuOpen && (
-          <nav
-            className="max-h-[calc(100vh-var(--nav-h))] overflow-y-auto overscroll-contain border-t border-line-hairline bg-surface-void px-gutter py-3 lg:hidden"
-            aria-label="Principal, móvil"
-          >
-            {/* The phone's copy of the header button, which hides below sm so
-                it does not crowd the burger. First row, above the groups: it is
-                the one action here rather than another place to navigate to. */}
-            <a
-              href={appEntry()}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setMenuOpen(false)}
-              className="mb-2 flex min-h-tap items-center justify-center rounded-control bg-eth-blue px-4 text-sm font-bold text-on-brand transition-colors hover:bg-eth-blue-lift"
-            >
-              {t('nav.goToApp')} →
-            </a>
-
-            {NAV.map((item) => {
-              const rows = item.children ?? [{ href: item.href, key: item.key }];
-              return (
-                <div key={item.href} className="border-b border-line-hairline/60 py-2 last:border-b-0">
-                  {item.children ? (
-                    <p className="px-1 py-1 text-[11px] font-semibold uppercase tracking-widest text-content-faint">
-                      {t(item.key)}
-                    </p>
-                  ) : null}
-
-                  <ul className="flex flex-col">
-                    {rows.map((row) => (
-                      <li key={row.href}>
-                        <Link
-                          href={row.href}
-                          aria-current={current === row.href ? 'page' : undefined}
-                          onClick={() => setMenuOpen(false)}
-                          className={`flex min-h-tap items-center rounded-chip px-1 text-sm transition-colors ${
-                            current === row.href
-                              ? 'font-semibold text-eth-blue-text'
-                              : item.children
-                                ? 'text-content-secondary'
-                                : 'font-semibold text-content-primary'
-                          }`}
-                        >
-                          {t(row.key)}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </nav>
-        )}
       </header>
+
+      <MobileNav
+        items={NAV}
+        t={t}
+        current={current}
+        open={menuOpen}
+        onClose={closeMenu}
+        goToApp={{ href: appEntry(), label: t('nav.goToApp') }}
+      />
 
       <main className="flex-1">{children}</main>
 
