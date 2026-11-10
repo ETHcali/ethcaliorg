@@ -29,6 +29,8 @@ import type { Bilingual } from './site';
  */
 export const APP_AREAS: readonly {
   title: Bilingual;
+  /** The panel's big line on /app; `title` is the small label above it. */
+  headline: Bilingual;
   detail: Bilingual;
   url: string;
   cta: Bilingual;
@@ -37,9 +39,10 @@ export const APP_AREAS: readonly {
 }[] = [
   {
     title: { es: 'Wallet', en: 'Wallet' },
+    headline: { es: 'Tu wallet. Nuestro gas.', en: 'Your wallet. Our gas.' },
     detail: {
-      es: 'Tu billetera de autocustodia. Entras con correo, passkey o Google y las llaves quedan tuyas — nadie de ETH Cali puede mover tus fondos.',
-      en: 'Your self-custody wallet. Sign in with email, a passkey or Google and the keys stay yours — nobody at ETH Cali can move your funds.',
+      es: 'Entras con correo o passkey. Las llaves son tuyas y el gas lo paga ETH Cali.',
+      en: 'Sign in with email or a passkey. The keys are yours; ETH Cali pays the gas.',
     },
     url: appEntry('/wallet'),
     cta: { es: 'Abrir mi wallet', en: 'Open my wallet' },
@@ -47,9 +50,10 @@ export const APP_AREAS: readonly {
   },
   {
     title: { es: 'Faucet', en: 'Faucet' },
+    headline: { es: 'ETH para arrancar.', en: 'ETH to get started.' },
     detail: {
-      es: 'Cuando ETH Cali abre una bóveda para un evento o una hackathon, reclamas un poco de ETH para gas sin pedirle permiso a nadie. Primero verificas que eres una persona.',
-      en: 'When ETH Cali opens a vault for an event or a hackathon, you claim a little ETH for gas without asking anyone. You verify you are a person first.',
+      es: 'Un poco de ETH para gas cuando abrimos una bóveda para un evento o una hackathon.',
+      en: 'A little ETH for gas when we open a vault for an event or a hackathon.',
     },
     url: appEntry('/faucet'),
     cta: { es: 'Ir al faucet', en: 'Go to the faucet' },
@@ -57,9 +61,10 @@ export const APP_AREAS: readonly {
   },
   {
     title: { es: 'Identidad', en: 'Identity' },
+    headline: { es: 'Una persona, cero datos.', en: 'One person, zero data.' },
     detail: {
-      es: 'Demuestras que eres una sola persona con una prueba de conocimiento cero sobre tu pasaporte. Guardamos un nullifier, nunca un nombre ni una foto.',
-      en: 'Prove you are one person with a zero-knowledge proof over your passport. We store a nullifier, never a name and never a photo.',
+      es: 'Pruebas con tu pasaporte que eres una persona. A la cadena solo llega un código anónimo.',
+      en: 'Prove with your passport that you are one person. Only an anonymous code reaches the chain.',
     },
     url: appEntry('/sybil'),
     cta: { es: 'Verificarme', en: 'Verify myself' },
@@ -67,9 +72,10 @@ export const APP_AREAS: readonly {
   },
   {
     title: { es: 'Certificados', en: 'Certificates' },
+    headline: { es: 'Lo que construiste, en la cadena.', en: 'What you built, onchain.' },
     detail: {
-      es: 'Quienes construyen y organizan los eventos de ETH Cali reciben un certificado soulbound en Ethereum, con PDF y credencial de LinkedIn en un clic.',
-      en: 'Builders and organisers of ETH Cali events receive a soulbound certificate on Ethereum, with a PDF and a one-click LinkedIn credential.',
+      es: '¿Construiste u organizaste con nosotros? Tu certificado vive en Ethereum, con PDF y LinkedIn.',
+      en: 'Built or organised with us? Your certificate lives on Ethereum, with a PDF and LinkedIn.',
     },
     url: appEntry('/certificate'),
     cta: { es: 'Ver mis certificados', en: 'See my certificates' },
@@ -77,9 +83,10 @@ export const APP_AREAS: readonly {
   },
   {
     title: { es: 'Swag', en: 'Swag' },
+    headline: { es: 'Merch que también es token.', en: 'Merch that is also a token.' },
     detail: {
-      es: 'La tienda: paga con tarjeta o con USDC en Ethereum. Se puede mirar sin entrar; para pagar con USDC necesitas wallet.',
-      en: 'The store: pay by card or with USDC on Ethereum. Browsable without signing in; paying with USDC needs a wallet.',
+      es: 'Paga con tarjeta o con USDC. Cada diseño es un token que te quedas.',
+      en: 'Pay by card or with USDC. Every design is a token you keep.',
     },
     url: APP.swag,
     cta: { es: 'Ver la tienda', en: 'See the store' },
@@ -87,63 +94,15 @@ export const APP_AREAS: readonly {
   },
   {
     title: { es: 'Donaciones', en: 'Donations' },
+    headline: { es: 'Donaciones que puedes verificar.', en: 'Donations you can verify.' },
     detail: {
-      es: 'Campañas abiertas en ETH y USDC. El muro de donantes y los totales son públicos y se leen de la cadena, entres o no.',
-      en: 'Open campaigns in ETH and USDC. The donor wall and the totals are public and read from the chain, signed in or not.',
+      es: 'Dona en ETH o USDC. Los totales y el muro de donantes se leen de la cadena.',
+      en: 'Give in ETH or USDC. Totals and the donor wall are read from the chain.',
     },
     url: APP.donations,
     cta: { es: 'Ver las campañas', en: 'See the campaigns' },
     image: '/images/app/donations.webp',
   },
-];
-
-/** What makes it different from any other wallet. Four, same as the app says. */
-export const APP_FEATURES: readonly { n: string; title: Bilingual; detail: Bilingual }[] = [
-  {
-    n: '01',
-    title: { es: 'El gas lo paga la comunidad', en: 'Gas paid by the community' },
-    detail: {
-      es: 'Cada transacción va patrocinada. No necesitas comprar ETH antes de poder hacer nada — que es exactamente donde se atasca casi todo el mundo la primera vez.',
-      en: 'Every transaction is sponsored. You never buy ETH just to be able to do anything — which is exactly where almost everyone gets stuck the first time.',
-    },
-  },
-  {
-    n: '02',
-    title: { es: 'Identidad sin vigilancia', en: 'Identity without surveillance' },
-    detail: {
-      es: 'La prueba de personhood es criptográfica, no un formulario. Se verifica contra tu pasaporte en tu propio dispositivo y lo único que llega a la cadena es un identificador que no se puede revertir a ti.',
-      en: 'The personhood proof is cryptographic, not a form. It is checked against your passport on your own device, and the only thing that reaches the chain is an identifier that cannot be turned back into you.',
-    },
-  },
-  {
-    n: '03',
-    title: { es: 'Las llaves son tuyas', en: 'The keys are yours' },
-    detail: {
-      es: 'Autocustodia de verdad: la wallet se crea en tu sesión y puedes exportarla o conectar la que ya tengas. ETH Cali no custodia fondos de nadie.',
-      en: 'Real self-custody: the wallet is created in your session and you can export it, or connect one you already have. ETH Cali holds nobody’s funds.',
-    },
-  },
-  {
-    n: '04',
-    title: { es: 'Todo queda en la cadena', en: 'Everything settles onchain' },
-    detail: {
-      es: 'Compras y donaciones dejan recibo — un token que te quedas — y los totales de cada campaña se pueden verificar contra el contrato sin creernos nada.',
-      en: 'Purchases and donations leave a receipt — a token you keep — and every campaign total can be checked against the contract without taking our word for it.',
-    },
-  },
-];
-
-/**
- * The network the app runs on.
- *
- * One chain, Ethereum mainnet, by decision (2026-09-23): everything a user can do
- * in the app happens there. The one exception is the ethcali.eth name claim, whose
- * registrar lives on Base; the app switches you there only to sign that. Not
- * `CHAINS` from `content/site.ts`, which is "where ETH Cali has deployed" over the
- * years and is a different question.
- */
-export const APP_NETWORKS: readonly { name: string; note: Bilingual | null }[] = [
-  { name: 'Ethereum', note: null },
 ];
 
 /**
