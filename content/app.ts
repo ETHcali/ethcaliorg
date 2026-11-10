@@ -18,86 +18,80 @@ import { APP, appEntry } from '../lib/links';
 import type { Bilingual } from './site';
 
 /**
- * The six places the app can take you.
+ * The six places the app can take you, in the app's own order and words.
  *
- * `entry` says how to link there, and it is not cosmetic. The first four need
- * a session: linked to directly while signed out, the app bounces you to its
- * landing page and forgets where you were going. `appEntry` carries the
- * destination through the sign-in so you arrive where you clicked. The last two
- * read fine signed out — a login wall in front of a donor wall is a click for
- * nothing — so they are plain deep links.
+ * Mirrors `AREAS` in wallet_ethcali/pages/index.tsx: same order, same titles,
+ * same images (public/images/app). The English is the app's copy verbatim; the
+ * Spanish says the same thing. Change one, change the other.
+ *
+ * `url` decides how you get there. The first four need a session, so they go
+ * through the app's front door with the destination attached (`appEntry`) and
+ * you land where you clicked after signing in. Swag and donations read fine
+ * signed out, so they are plain deep links.
  */
 export const APP_AREAS: readonly {
   title: Bilingual;
-  /** The panel's big line on /app; `title` is the small label above it. */
-  headline: Bilingual;
   detail: Bilingual;
   url: string;
   cta: Bilingual;
-  /** The same rendered object the app's own landing page uses for this area. */
+  /** The same rendered object the app's landing page uses for this area. */
   image: string;
 }[] = [
   {
-    title: { es: 'Wallet', en: 'Wallet' },
-    headline: { es: 'Tu wallet. Nuestro gas.', en: 'Your wallet. Our gas.' },
+    title: { es: 'Una wallet que paga su propio gas', en: 'A wallet that pays its own gas' },
     detail: {
-      es: 'Entras con correo o passkey. Las llaves son tuyas y el gas lo paga ETH Cali.',
-      en: 'Sign in with email or a passkey. The keys are yours; ETH Cali pays the gas.',
+      es: 'Envía, recibe e intercambia ETH, USDC, USDT y EURC en Ethereum. La comunidad patrocina el gas; las llaves son tuyas.',
+      en: 'Send, receive and swap ETH, USDC, USDT and EURC on Ethereum. The community sponsors the gas; the keys stay yours.',
     },
     url: appEntry('/wallet'),
-    cta: { es: 'Abrir mi wallet', en: 'Open my wallet' },
+    cta: { es: 'Abrir tu wallet', en: 'Open your wallet' },
     image: '/images/app/wallet.webp',
   },
   {
-    title: { es: 'Faucet', en: 'Faucet' },
-    headline: { es: 'ETH para arrancar.', en: 'ETH to get started.' },
+    title: { es: 'Identidad sin vigilancia', en: 'Identity without surveillance' },
     detail: {
-      es: 'Un poco de ETH para gas cuando abrimos una bóveda para un evento o una hackathon.',
-      en: 'A little ETH for gas when we open a vault for an event or a hackathon.',
+      es: 'Demuestra que eres una sola persona con una prueba de conocimiento cero sobre tu pasaporte y reclama tu nombre.ethcali.eth. Guardamos un nullifier, nunca un nombre.',
+      en: 'Prove you are one person with a zero-knowledge passport proof, then claim your name.ethcali.eth. We store a nullifier, never a name.',
+    },
+    url: appEntry('/sybil'),
+    cta: { es: 'Verificarte', en: 'Verify yourself' },
+    image: '/images/app/identity.webp',
+  },
+  {
+    title: { es: 'Un faucet para humanos verificados', en: 'A faucet for verified humans' },
+    detail: {
+      es: 'Cuando ETH Cali abre una bóveda para un evento o una hackathon, las personas verificadas reclaman un poco de ETH para gas sin pedirle permiso a nadie.',
+      en: 'When ETH Cali opens a vault for an event or a hackathon, verified people claim a little ETH for gas without asking anyone.',
     },
     url: appEntry('/faucet'),
     cta: { es: 'Ir al faucet', en: 'Go to the faucet' },
     image: '/images/app/faucet.webp',
   },
   {
-    title: { es: 'Identidad', en: 'Identity' },
-    headline: { es: 'Una persona, cero datos.', en: 'One person, zero data.' },
+    title: { es: 'Certificados que son tuyos', en: 'Certificates you own' },
     detail: {
-      es: 'Pruebas con tu pasaporte que eres una persona. A la cadena solo llega un código anónimo.',
-      en: 'Prove with your passport that you are one person. Only an anonymous code reaches the chain.',
-    },
-    url: appEntry('/sybil'),
-    cta: { es: 'Verificarme', en: 'Verify myself' },
-    image: '/images/app/identity.webp',
-  },
-  {
-    title: { es: 'Certificados', en: 'Certificates' },
-    headline: { es: 'Lo que construiste, en la cadena.', en: 'What you built, onchain.' },
-    detail: {
-      es: '¿Construiste u organizaste con nosotros? Tu certificado vive en Ethereum, con PDF y LinkedIn.',
-      en: 'Built or organised with us? Your certificate lives on Ethereum, with a PDF and LinkedIn.',
+      es: 'Quienes construyen y organizan los eventos de ETH Cali reciben un certificado soulbound en Ethereum, con PDF y credencial de LinkedIn en un clic.',
+      en: 'Builders and organisers of ETH Cali events receive a soulbound certificate on Ethereum, with a PDF and a one-click LinkedIn credential.',
     },
     url: appEntry('/certificate'),
-    cta: { es: 'Ver mis certificados', en: 'See my certificates' },
+    cta: { es: 'Ver tus certificados', en: 'See your certificates' },
     image: '/images/app/certificates.webp',
   },
   {
-    title: { es: 'Swag', en: 'Swag' },
-    headline: { es: 'Merch que también es token.', en: 'Merch that is also a token.' },
+    title: { es: 'Swag, con tarjeta o USDC', en: 'Swag, paid by card or USDC' },
     detail: {
-      es: 'Paga con tarjeta o con USDC. Cada diseño es un token que te quedas.',
-      en: 'Pay by card or with USDC. Every design is a token you keep.',
+      es: 'Cada diseño es un token en Ethereum. Paga con tarjeta, o en USDC por menos, y el token es tuyo de cualquier forma.',
+      en: 'Every design is a token on Ethereum. Pay by card, or in USDC for less, and the token is yours either way.',
     },
     url: APP.swag,
-    cta: { es: 'Ver la tienda', en: 'See the store' },
+    cta: { es: 'Ver la tienda', en: 'Browse the store' },
     image: '/images/app/swag.webp',
   },
   {
-    title: { es: 'Donaciones', en: 'Donations' },
-    headline: { es: 'Donaciones que puedes verificar.', en: 'Donations you can verify.' },
+    title: { es: 'Donaciones que puedes verificar', en: 'Donations you can verify' },
     detail: {
-      es: 'Dona en ETH o USDC. Los totales y el muro de donantes se leen de la cadena.',
-      en: 'Give in ETH or USDC. Totals and the donor wall are read from the chain.',
+      es: 'Apoya las campañas de ETH Cali en ETH o USDC, directo al Safe de la comunidad. Los totales y el muro de donantes se leen de la cadena.',
+      en: 'Fund ETH Cali campaigns in ETH or USDC, straight to the community Safe. Totals and the donor wall are read from the chain.',
     },
     url: APP.donations,
     cta: { es: 'Ver las campañas', en: 'See the campaigns' },
@@ -106,14 +100,16 @@ export const APP_AREAS: readonly {
 ];
 
 /**
- * How you get in.
- *
- * Neither property answers this anywhere today, and it is the first question a
- * first-time donor has — most people assume "wallet" means installing something.
+ * What the app is built on, for the moving strip on /app. The app's own landing
+ * page lists the first six as "Built on"; Safe is here too because every
+ * donation lands in the community Safe. Each links to the project itself.
  */
-export const APP_SIGNIN: readonly Bilingual[] = [
-  { es: 'Correo electrónico', en: 'Email' },
-  { es: 'Passkey (Face ID o huella)', en: 'Passkey (Face ID or fingerprint)' },
-  { es: 'Google', en: 'Google' },
-  { es: 'Una wallet que ya tengas', en: 'A wallet you already have' },
+export const APP_TOOLS: readonly { name: string; logo: string; url: string }[] = [
+  { name: 'Privy', logo: '/tools/privy.png', url: 'https://www.privy.io' },
+  { name: 'ZKPassport', logo: '/tools/zkpassport.png', url: 'https://zkpassport.id' },
+  { name: 'ENS', logo: '/tools/ens.svg', url: 'https://ens.domains' },
+  { name: 'LI.FI', logo: '/tools/lifi.png', url: 'https://li.fi' },
+  { name: 'POAP', logo: '/tools/poap.png', url: 'https://poap.xyz' },
+  { name: 'OpenSea', logo: '/tools/opensea.svg', url: 'https://opensea.io' },
+  { name: 'Safe', logo: '/tools/safe.svg', url: 'https://safe.global' },
 ];

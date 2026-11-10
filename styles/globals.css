@@ -126,3 +126,22 @@
 .leaflet-container a.leaflet-popup-close-button:hover {
   color: var(--text-primary);
 }
+
+/* The /app integrations strip: two identical copies of the list side by side,
+   shifted by exactly one copy's width, so the loop has no seam. Linear because
+   it is constant motion. Paused while hovered or focused so a logo can be read
+   and clicked; still under reduced motion, where the strip wraps instead. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 32s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
