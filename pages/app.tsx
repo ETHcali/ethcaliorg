@@ -2,8 +2,7 @@ import type { GetStaticProps } from 'next';
 import Image from 'next/image';
 import Layout from '../components/layout/Layout';
 import Seo from '../components/layout/Seo';
-import Reveal from '../components/layout/Reveal';
-import { APP_AREAS, APP_SIGNIN } from '../content/app';
+import { APP_AREAS, APP_TOOLS } from '../content/app';
 import type { Bilingual } from '../content/site';
 import { asLocale, type Locale } from '../lib/i18n';
 import { appEntry } from '../lib/links';
@@ -13,28 +12,46 @@ interface Props {
 }
 
 /**
- * /app — what app.ethcali.org is, before you open it.
+ * /app — app.ethcali.org's landing page, on this site and in both languages.
  *
  * `pages/app.tsx` is an ordinary route. `pages/_app.tsx` is the reserved one and
  * is a different file; Next only treats the underscore names specially.
  *
- * A scroll story, not a document: one sentence up top, then one panel per area
- * of the app — image, headline, one line, a way in — revealed as you reach it.
- * The images are the same set the app's own landing page uses, so the two read
- * as one product. The app is in English and on another origin; this page is the
- * Spanish explanation, and says so once, at the end, next to the last button.
+ * Laid out like the app's own signed-out page (wallet_ethcali/pages/index.tsx)
+ * so the two read as one product: the same headline, the same six cells with
+ * the same images, the same order. Two additions the app does not need: the
+ * integrations as a moving strip of links, and the one-line note that the app
+ * itself is in English.
  */
 
-/** The filled CTA, used in the hero and again at the end. */
+const ETH_LOGO = '/chains/ethereum.png';
+
 function GoToApp({ label }: { label: string }) {
   return (
     <a
       href={appEntry()}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex min-h-tap items-center rounded-control bg-eth-blue px-6 text-sm font-bold text-on-brand transition-[background-color,transform] duration-150 ease-out hover:bg-eth-blue-lift active:scale-[0.97] motion-reduce:active:scale-100"
+      className="inline-flex min-h-[56px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-eth-blue px-7 text-base font-bold text-on-brand transition-[background-color,transform] duration-150 ease-out hover:bg-eth-blue-lift active:scale-[0.97] motion-reduce:active:scale-100"
     >
       {label} →
+    </a>
+  );
+}
+
+function ToolLink({ name, logo, url, hidden }: { name: string; logo: string; url: string; hidden?: boolean }) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      // The second copy exists only to close the loop; keep it out of the
+      // tab order and away from screen readers.
+      {...(hidden ? { tabIndex: -1, 'aria-hidden': true } : {})}
+      className="flex min-h-tap shrink-0 items-center gap-3 rounded-full border border-line-hairline bg-surface-slab px-5 text-content-secondary transition-colors hover:border-line-brand hover:text-content-primary"
+    >
+      <Image src={logo} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
+      <span className="mono text-sm">{name}</span>
     </a>
   );
 }
@@ -43,117 +60,130 @@ export default function AppPage({ locale }: Props) {
   const t = (b: Bilingual) => b[locale];
   const en = locale === 'en';
 
-  const tagline = en ? 'One wallet. The community pays the gas.' : 'Una wallet. El gas lo pone la comunidad.';
-  const description = en
-    ? 'A self-custody wallet for the ETH Cali community: sign in with email or a passkey, keep your keys, and let ETH Cali pay the gas.'
-    : 'Una wallet de autocustodia para la comunidad de ETH Cali: entras con correo o passkey, las llaves son tuyas y ETH Cali paga el gas.';
-  const goToApp = en ? 'Go to app' : 'Ir a la app';
+  const lead = en
+    ? 'A self-custody wallet that feels like a fintech app. Sign in with email or a passkey, keep your own keys, and let the ETH Cali community cover the gas.'
+    : 'Una wallet de autocustodia que se siente como una app fintech. Entras con correo o passkey, las llaves son tuyas y la comunidad de ETH Cali paga el gas.';
+  const goToApp = en ? 'Open the app' : 'Abrir la app';
 
   return (
     <Layout>
-      <Seo title={en ? 'The ETH Cali app' : 'La app de ETH Cali'} description={description} path="/app" />
+      <Seo title={en ? 'The ETH Cali app' : 'La app de ETH Cali'} description={lead} path="/app" />
 
-      {/* ── Hero: one sentence, one button, how you get in ── */}
+      {/* ── Hero: the app's own headline ── */}
       <section className="relative overflow-hidden">
-        {/* The one gradient the brand allows: ultramarine to transparent, ≤16%. */}
+        {/* The only gradient the brand allows: ultramarine to transparent, ≤16%. */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
-          style={{
-            background: 'radial-gradient(55% 60% at 80% 20%, rgb(var(--eth-blue-rgb) / 0.16), transparent 70%)',
-          }}
+          style={{ background: 'radial-gradient(60% 55% at 78% 18%, rgb(var(--eth-blue-rgb) / 0.16), transparent 70%)' }}
         />
-        <div className="relative mx-auto max-w-page px-gutter pb-16 pt-14 sm:pb-24 sm:pt-20">
-          <p className="mono text-[11px] uppercase tracking-widest text-eth-blue-text">app.ethcali.org</p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[1.02] tracking-tight sm:text-6xl">
-            {en ? 'The ETH Cali app' : 'La app de ETH Cali'}
+        <div className="relative mx-auto max-w-page px-gutter pb-12 pt-12 sm:pb-16 sm:pt-16 lg:pb-24">
+          <p className="mono mb-4 text-[11px] uppercase tracking-[0.16em] text-eth-blue-text">
+            {en ? 'Wallet · Cali, Colombia' : 'Wallet · Cali, Colombia'}
+          </p>
+          <h1 className="max-w-3xl text-[44px] font-black leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-7xl">
+            {en ? (
+              <>Your keys.<br /> Our gas.</>
+            ) : (
+              <>Tus llaves.<br /> Nuestro gas.</>
+            )}
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-content-secondary sm:text-xl">{tagline}</p>
-          <div className="mt-8">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-content-secondary sm:mt-6 sm:text-lg">{lead}</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <GoToApp label={goToApp} />
-          </div>
-          <div className="mt-10">
-            <p className="text-sm text-content-faint">
-              {en ? 'Nothing to install. Sign in with:' : 'Sin instalar nada. Entras con:'}
+            <p className="mono text-xs text-content-faint">
+              gas 0.00 <span className="text-signal-confirmed">· {en ? 'sponsored' : 'patrocinado'}</span>{' '}
+              {en ? 'on Ethereum' : 'en Ethereum'}
             </p>
-            <ul className="mt-3 flex flex-wrap gap-2">
-              {APP_SIGNIN.map((method) => (
-                <li
-                  key={method.es}
-                  className="inline-flex min-h-[36px] items-center rounded-full border border-line-strong px-4 text-sm text-content-secondary"
-                >
-                  {t(method)}
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </section>
 
-      {/* ── One panel per area, image and text alternating sides ── */}
-      <div className="border-t border-line-hairline">
-        {APP_AREAS.map((area, i) => {
-          const flip = i % 2 === 1;
-          return (
-            <section
-              key={area.title.es}
-              aria-labelledby={`area-${i}`}
-              className="border-b border-line-hairline"
-            >
-              <div className="mx-auto grid max-w-page items-center gap-6 px-gutter py-12 sm:py-16 md:min-h-[70vh] md:grid-cols-2 md:gap-12 md:py-20">
-                <Reveal className={flip ? 'md:order-2' : ''}>
-                  <div className="relative mx-auto aspect-[4/3] w-full max-w-[520px]">
-                    {/* Decorative: the headline says what the area is. */}
-                    <Image
-                      src={area.image}
-                      alt=""
-                      fill
-                      sizes="(min-width: 768px) 520px, 92vw"
-                      className="object-contain [mask-image:radial-gradient(ellipse_closest-side_at_center,black_60%,transparent_100%)]"
-                    />
-                  </div>
-                </Reveal>
-                <Reveal delay={90}>
-                  <p className="mono text-[11px] uppercase tracking-widest text-content-faint">
-                    /{String(i + 1).padStart(2, '0')} · {t(area.title)}
-                  </p>
-                  <h2 id={`area-${i}`} className="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-                    {t(area.headline)}
-                  </h2>
-                  <p className="mt-4 max-w-md text-base text-content-secondary sm:text-lg">{t(area.detail)}</p>
-                  <a
-                    href={area.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-6 inline-flex min-h-tap items-center text-sm font-semibold text-eth-blue-text transition-colors hover:text-content-primary"
-                  >
+      {/* ── The six areas, as on the app ── */}
+      <section aria-labelledby="areas-heading" className="mx-auto max-w-page px-gutter pb-12 sm:pb-16 lg:pb-24">
+        <h2 id="areas-heading" className="mono mb-6 text-[11px] font-normal uppercase tracking-[0.16em] text-content-faint">
+          {en ? 'What you can do here' : 'Lo que puedes hacer'}
+        </h2>
+        {/* The 1px gap over a hairline background draws the grid lines. */}
+        <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-card border border-line-hairline bg-line-hairline sm:grid-cols-2 lg:grid-cols-3">
+          {APP_AREAS.map((area, i) => (
+            <li key={area.url} className="flex">
+              <a
+                href={area.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-full w-full flex-col bg-surface-void text-left"
+              >
+                <span className="relative block aspect-[16/10] overflow-hidden">
+                  {/* Decorative: the title says what the cell is. */}
+                  <Image
+                    src={area.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+                    className="object-contain opacity-90 transition-opacity duration-200 [mask-image:radial-gradient(ellipse_closest-side_at_center,black_60%,transparent_100%)] group-hover:opacity-100 motion-reduce:transition-none"
+                  />
+                </span>
+                <span className="flex flex-1 flex-col px-5 pb-5 sm:px-6 sm:pb-6">
+                  <span className="mono mb-3 text-[11px] tracking-[0.16em] text-content-faint">
+                    /{String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="mb-2 block text-lg font-bold leading-snug text-content-primary sm:text-xl">{t(area.title)}</span>
+                  <span className="mb-5 block flex-1 text-sm leading-relaxed text-content-muted">{t(area.detail)}</span>
+                  <span className="inline-flex min-h-tap items-center gap-2 text-sm font-semibold text-eth-blue-text group-hover:text-content-primary">
                     {t(area.cta)} →
-                  </a>
-                </Reveal>
-              </div>
-            </section>
-          );
-        })}
-      </div>
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      {/* ── Close: the one chain, the language caveat, the button again ── */}
-      <section className="mx-auto max-w-page px-gutter py-16 sm:py-24">
-        <Reveal>
-          <div className="rounded-card border border-line-brand bg-eth-blue-wash p-6 sm:p-10">
-            <p className="mono text-[11px] uppercase tracking-widest text-eth-blue-text">Ethereum mainnet</p>
-            <h2 className="mt-3 text-2xl font-bold sm:text-4xl">
-              {en ? 'Everything happens on Ethereum.' : 'Todo pasa en Ethereum.'}
-            </h2>
-            <p className="mt-3 max-w-prose text-content-secondary">
-              {en
-                ? 'The app is in English for now; this page is the Spanish guide to it.'
-                : 'La app está en inglés por ahora; esta página es la guía en español.'}
-            </p>
-            <div className="mt-6">
-              <GoToApp label={goToApp} />
+      {/* ── Built on: a moving strip of links ── */}
+      <section aria-labelledby="tools-heading" className="pb-12 sm:pb-16 lg:pb-24">
+        <div className="mx-auto max-w-page px-gutter">
+          <h2 id="tools-heading" className="mono mb-6 text-[11px] font-normal uppercase tracking-[0.16em] text-content-faint">
+            {en ? 'Built on' : 'Construida con'}
+          </h2>
+        </div>
+        <div
+          className="marquee relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:[mask-image:none]"
+        >
+          <div className="marquee-track flex w-max gap-3 motion-reduce:mx-auto motion-reduce:w-full motion-reduce:max-w-page motion-reduce:flex-wrap motion-reduce:px-gutter">
+            <div className="flex shrink-0 gap-3 motion-reduce:flex-wrap">
+              {APP_TOOLS.map((tool) => (
+                <ToolLink key={tool.name} {...tool} />
+              ))}
+            </div>
+            <div className="flex shrink-0 gap-3 motion-reduce:hidden" aria-hidden>
+              {APP_TOOLS.map((tool) => (
+                <ToolLink key={tool.name} {...tool} hidden />
+              ))}
             </div>
           </div>
-        </Reveal>
+        </div>
+      </section>
+
+      {/* ── Network: the one chain, with its own mark ── */}
+      <section className="mx-auto max-w-page px-gutter pb-16 sm:pb-24">
+        <div className="flex flex-col gap-6 rounded-card border border-line-hairline bg-surface-slab p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <div className="flex items-center gap-5">
+            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-surface-paper">
+              <Image src={ETH_LOGO} alt="Ethereum" width={26} height={40} className="h-10 w-auto" />
+            </span>
+            <div>
+              <p className="mono text-[11px] uppercase tracking-[0.16em] text-content-faint">{en ? 'Network' : 'Red'}</p>
+              <p className="mt-1 text-xl font-bold">Ethereum mainnet</p>
+              <p className="mt-1 text-sm text-content-muted">
+                {en
+                  ? 'Everything in the app happens on Ethereum, with the gas paid by ETH Cali.'
+                  : 'Todo pasa en Ethereum, con el gas pagado por ETH Cali. La app está en inglés por ahora; esta página es la guía en español.'}
+              </p>
+            </div>
+          </div>
+          <GoToApp label={goToApp} />
+        </div>
       </section>
     </Layout>
   );
