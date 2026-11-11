@@ -22,6 +22,10 @@ npm run build     # builds every event page in both locales
   partners) and `/admin/team` (the team), behind an on-chain ADMIN_ROLE check.
 - **`team_members` is read with `select *`.** Whatever column exists there is published; private
   contact details live in `team_member_contacts`, which this site cannot read. Do not widen that.
+- **Upcoming events come from Luma, past events from Supabase.** `/events/local` embeds the ETH
+  Cali Luma calendar (`components/events/LumaCalendar.tsx`), so a new Luma event needs no CMS
+  row. Only Luma's `/embed/...` URLs can be framed; Apple Pay does not work inside an embed, so
+  keep the link out. A past event still needs its row and a poster in `public/events/`.
 - **Campaign content lives in `content/`** and belongs in git: the Builders Tour
   (`content/builders-tour.ts`), Frontier Cities (`content/quest.ts`), the hardware inventory.
   It goes out on paid traffic with fixed dates, so every change is reviewed in a diff.
