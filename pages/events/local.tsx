@@ -2,6 +2,7 @@ import type { GetStaticProps } from 'next';
 import Layout from '../../components/layout/Layout';
 import Seo from '../../components/layout/Seo';
 import EventGrid from '../../components/events/EventGrid';
+import LumaCalendar from '../../components/events/LumaCalendar';
 import { getEvents } from '../../lib/content';
 import type { EventRecord } from '../../types/content';
 import { asLocale, translator, type Locale } from '../../lib/i18n';
@@ -32,9 +33,26 @@ export default function LocalEvents({ events, locale }: Props) {
           {t('events.localLead')}
         </p>
 
-        <div className="mt-10">
-          <EventGrid events={events} locale={locale} headingLevel={2} />
-        </div>
+        <section aria-labelledby="upcoming-heading" className="mt-10">
+          <h2 id="upcoming-heading" className="text-xl sm:text-2xl">
+            {t('events.upcoming')}
+          </h2>
+          <p className="mt-2 max-w-prose text-sm text-content-secondary">
+            {t('events.upcomingLead')}
+          </p>
+          <div className="mt-5">
+            <LumaCalendar title={t('events.upcoming')} openLabel={t('events.openLuma')} />
+          </div>
+        </section>
+
+        <section aria-labelledby="past-heading" className="mt-12">
+          <h2 id="past-heading" className="text-xl sm:text-2xl">
+            {t('events.past')}
+          </h2>
+          <div className="mt-6">
+            <EventGrid events={events} locale={locale} headingLevel={3} />
+          </div>
+        </section>
       </div>
     </Layout>
   );
